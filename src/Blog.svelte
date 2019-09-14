@@ -89,9 +89,8 @@
 <p> Haskell MVar and TMVar monads are objects with values that get removed and replaced. This isn\'t mutation in Haskell, but changing methods or attributes in objects is considered mutation in JavaScript. Go figure. </p>
 <p> Thoughts of using immutable data or strict typing in JavaScript programs have perished now that I am using Svelte. Variables in Svelte's small modules can't clash with one another (unless one is embedded in another); and one would have to be nine-tenths asleep to fail to notice clashes inside of a small module. Consequences of mutations are certainly easy to see. Working in Svelte is pleasantly relaxing. </p>
 <p> Here's the code that makes the buttons below work: </p>
-
 <pre>{code}</pre>
-
+<br>
 <button on:click={monad}>A Simple Monad</button>
 <br>
 <br>
@@ -106,8 +105,9 @@
 <br>
 <button on:click={matrix}>Beauty of Svelte</button>
 
-
 {#if j === 1}
+<br>
+<br>
 			<Monad />
 {/if}
 
@@ -127,6 +127,8 @@
   <Matrix />
 {/if}
 <br>
+<br>
+
 {#if j === 0}
 <p> Clicking the buttons changes the value of j. j is the gate keeper in the #if statements. This is quite elegant, and all the credit goes to Svelte.</p>
 {/if}

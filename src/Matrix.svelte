@@ -26,25 +26,16 @@
       var a = ar[k]
       ar[k] = ar[n];
       ar[n] = a;
-      console.log("In exchange, j is", j);
-      console.log("In exchange, cache is", cache)
       return ar;
    }
 
    var back = function back () {
        j = j-=1;
-       console.log("j is", j);
-       console.log("cache is", cache)
    }
 
    var forward = function forward () {
        j = j+=1;
-       console.log("j is", j);
-       console.log("cache is", cache)
     }
-
-       console.log("j is", j);
-       console.log("cache is", cache)
 
   var jsCode = `var cache = [[1,2,3,4,5,6,7,8,9]];
     $: cache  // The $: makes cache reactive
@@ -78,56 +69,27 @@
 
      var forward = function forward () {
          j = j+=1;
-      }
-  `
-var htmlCode =
-`<div id = buttons>
-    <button id = m0  on:click = {ob.push} >{cache[j][0]}</button>
-    <button id = m1  on:click = {ob.push} >{cache[j][1]}</button>
-    <button id = m2  on:click = {ob.push} >{cache[j][2]}</button>
-    <button id = m3  on:click = {ob.push} >{cache[j][3]}</button>
-    <button id = m4  on:click = {ob.push} >{cache[j][4]}</button>
-    <button id = m5  on:click = {ob.push} >{cache[j][5]}</button>
-    <button id = m6  on:click = {ob.push} >{cache[j][6]}</button>
-    <button id = m7  on:click = {ob.push} >{cache[j][7]}</button>
-    <button id = m8  on:click = {ob.push} >{cache[j][8]}</button>
-</div>
-<br>
-<br>
-{#if j > 0}
-  <button on:click={back}>
-  BACK
-  </button>
-{/if}
-<br>
-<br>
-{#if j < cache.length -1}
-  <button on:click={forward}>
-  FORWARD
-  </button>
-{/if}
-<br>
-<br>
-`
-</script>
-
-<h2>A Little Svelte Module</h2>
-<p> If you click any two numbers (below), they switch locations and a "BACK" button appears. If you go back and click two numbers, the result gets inserted  at your location.</p>
-<p> I can use simple variables knowing they will never clash with a similarly named variable in a differenct module. Svelte code is consise and efficient. Coding in Svelte is so relaxing. </p>
-<div id = buttons>
+     }`
+var htmlCode = `
 <button id = m0  on:click = {ob.push} >{cache[j][0]}</button>
 <button id = m1  on:click = {ob.push} >{cache[j][1]}</button>
 <button id = m2  on:click = {ob.push} >{cache[j][2]}</button>
+<br>
+<br>
+<br>
 <button id = m3  on:click = {ob.push} >{cache[j][3]}</button>
 <button id = m4  on:click = {ob.push} >{cache[j][4]}</button>
 <button id = m5  on:click = {ob.push} >{cache[j][5]}</button>
+<br>
+<br>
+<br>
 <button id = m6  on:click = {ob.push} >{cache[j][6]}</button>
 <button id = m7  on:click = {ob.push} >{cache[j][7]}</button>
 <button id = m8  on:click = {ob.push} >{cache[j][8]}</button>
 </div>
-<br>
-<br>
 {#if j > 0}
+<br>
+<br>
 	<button on:click={back}>
 		BACK
 	</button>
@@ -138,10 +100,49 @@ var htmlCode =
 	<button on:click={forward}>
 		FORWARD
 	</button>
+ <br>
+ <br>
+{/if} `
+</script>
+<h2>A Little Svelte Module</h2>
+<p> If you click any two numbers (below), they switch locations and a "BACK" button appears. If you go back and click two numbers, the result gets inserted  at your location.</p>
+<p> I can use simple variables knowing they will never clash with a similarly named variable in a differenct module. Svelte code is consise and efficient. Coding in Svelte is so relaxing. </p>
+<div id = buttons>
+<br>
+<button id = m0  on:click = {ob.push} >{cache[j][0]}</button>
+<button id = m1  on:click = {ob.push} >{cache[j][1]}</button>
+<button id = m2  on:click = {ob.push} >{cache[j][2]}</button>
+<br>
+<br>
+<br>
+<button id = m3  on:click = {ob.push} >{cache[j][3]}</button>
+<button id = m4  on:click = {ob.push} >{cache[j][4]}</button>
+<button id = m5  on:click = {ob.push} >{cache[j][5]}</button>
+<br>
+<br>
+<br>
+<button id = m6  on:click = {ob.push} >{cache[j][6]}</button>
+<button id = m7  on:click = {ob.push} >{cache[j][7]}</button>
+<button id = m8  on:click = {ob.push} >{cache[j][8]}</button>
+</div>
+{#if j > 0}
+<br>
+<br>
+	<button on:click={back}>
+		BACK
+	</button>
 {/if}
 <br>
+<br>
+{#if j < cache.length -1}
+	<button on:click={forward}>
+		FORWARD
+	</button>
+ <br>
+ <br>
+{/if}
 <p> This is the JavaScript code inside of the "script" tags: </p>
 <pre>{jsCode}</pre>
-<p> And here is the HTML code </p>
+<p> And here is the HTML code: </p>
 <pre> {htmlCode} </pre>
-<p> Is Svelte awesome or what? </p>
+<p> Is Svelte awesome, or what? </p>
