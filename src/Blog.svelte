@@ -4,6 +4,64 @@
     import Monad2 from './Monad2.svelte'
     import Haskell from './Haskell.svelte'
     import Bugs from './Bugs.svelte'
+    import Matrix from './Matrix.svelte'
+
+    let j = 0;
+
+    function monad () {j = 1};
+    function monad2 () {j = 2};
+    function haskell () {j = 3};
+    function bugs () {j = 4};
+    function matrix () {j = 5};
+    var code = `
+        import Monad from './Monad.svelte'
+        import Monad2 from './Monad2.svelte'
+        import Haskell from './Haskell.svelte'
+        import Bugs from './Bugs.svelte'
+        import Matrix from './Matrix.svelte'
+
+        let j = 0;
+
+        function monad () {j = 1};
+        function monad2 () {j = 2};
+        function haskell () {j = 3};
+        function bugs () {j = 4};
+        function matrix () {j = 5};
+
+        <button on:click={monad}>A Simple Monad</button>
+        <br>
+        <br>
+        <button on:click={monad2}>A Swiss Army Knife Monad</button>
+        <br>
+        <br>
+        <button on:click={haskell}>Hidden Haskell Information</button>
+        <br>
+        <br>
+        <button on:click={bugs}>100% Effectove Non-Toxic Bed Bug Eradication</button>
+        <br>
+        <br>
+        <button on:click={matrix}>Beauty of Svelte</button>
+
+
+        {#if j === 1}
+        			<Monad />
+        {/if}
+
+        {#if j === 2}
+          <Monad2 />
+        {/if}
+
+        {#if j === 3}
+          <Haskell />
+        {/if}
+
+        {#if j === 4}
+          <Bugs />
+        {/if}
+
+        {#if j === 5}
+          <Matrix />
+        {/if} `
 </script>
 
 <style>
@@ -13,17 +71,67 @@
 
 <h1>David's Blog</h1>
 <div id = 'content'>
-<p> This will be a repository for all sorts of things, but mainly ideas and techniques related to computer programming.  David Schalk, August 13, 2019 </p>
-<a href = "http://schalk.site" target = "_blank" > JavaScript and Functional Programming </a>
-<p> This is a Svelte application. I liked Cycle.js a lot more than React, but Svelte is now my framework of choice. I code modules in plain HTML. There is no need for a Virtual DOM. The code is at </p>
+<span class = tao> The topics in this blog pertain mostly to computer programming. JavaScript and Haskell are my favorite languages.</span>
+<a href = "https://svelte.dev/"  target = "_blank">Svelte</a>
+<span>, upon which this website rests, is my choice for front-end web development. The code for this site is at </span>
 <a href = "https://github.com/dschalk/game2">blog repository</a>
-<p> Click the caption (above) to see the current version of a project I started three years agp. The front end operates in a Cycle.js framework and the back end in a modified Haskell Wai WebSockets server. </p>
-<p> I started the project to show the utility of the little "monads" I defined. These were objects "m" that held a value "x" and a method "bnd" such that m.bnd(func) for some function "func" a new monad named "m" as before holding a value named "x" === func(x). Each new "m" was actually a clone that appropriated the name "m" and changed the x value to func(x), leaving leaving the previous "m" intact and persistent as long as there was a reference to it, as a member of an array for example. </p>
-<span> Presently I am inclined to mutate objects if I don\'t need the old version. I don\'t like to unnecessarily leave debris for the garbage collector. I do this knowing that some people will think less of my programming expertise. See  </span>
+<span> -- David Schalk </span>
+<br>
+<br>
+<h3>JavaScript and Functional Programming</h3>
+<span class = tao> The current version of a project I started three years ago is now called </span>
+<a href = "http://schalk.site" target = "_blank" > JavaScript and Functional Programming </a>
+<span> The front end operates in a Cycle.js framework and the back end in a modified Haskell Wai WebSockets server. </span>
+<p> I started the project to show the utility of the little "monads" I defined in various ways. These were objects "m" that held a value "x" and a method "bnd" such that m.bnd(func) for some function "func" made "m" point to a new monad whose x value was func(old x). The old monad persisted as long as there was a reference to it, as when it was an item in an array. I didn't mind mutating the name m, but in order to preserve a record of the mutations, m.x was never mutated.</p>
+<span class = tao> Presently I am inclined to mutate objects if I don\'t need the old version, and that is rearely the case. I don\'t like to unnecessarily leave debris for the garbage collector. I do this knowing that some people will think less of my programming abilities. See  </span>
 <a href = "http://cloudingmine.com/avoid-javascript-object-mutation-at-all-costs/ " target = "_blank"> Avoid JavaScript object mutation at all costs </a>
-<p> Haskell MVar and TMVar monads are objects with values that get removed and replaced. This isn\'t mutation in Haskell, but changing a methods or attributes in objects is mutation in JavaScript. In Haskell, changes that take place in the IO, State, and are no cause for concern if the results are sent away from the main body of programs. JavaScript mutations whose side effects do not occur in the main body of programs don\'t worry me, although browser engine optimization might be a concern. </p>
-<Monad />
-<Monad2 />
-<Haskell />
-<Bugs />
+<span> Well, you know what if they can't take a joke. </span>
+<p> Haskell MVar and TMVar monads are objects with values that get removed and replaced. This isn\'t mutation in Haskell, but changing methods or attributes in objects is considered mutation in JavaScript. Go figure. </p>
+<p> Thoughts of using immutable data or strict typing in JavaScript programs have perished now that I am using Svelte. Variables in Svelte's small modules can't clash with one another (unless one is embedded in another); and one would have to be nine-tenths asleep to fail to notice clashes inside of a small module. Consequences of mutations are certainly easy to see. Working in Svelte is pleasantly relaxing. </p>
+<p> Here's the code that makes the buttons below work: </p>
+
+<pre>{code}</pre>
+
+<button on:click={monad}>A Simple Monad</button>
+<br>
+<br>
+<button on:click={monad2}>A Swiss Army Knife Monad</button>
+<br>
+<br>
+<button on:click={haskell}>Hidden Haskell Information</button>
+<br>
+<br>
+<button on:click={bugs}>100% Effectove Non-Toxic Bed Bug Eradication</button>
+<br>
+<br>
+<button on:click={matrix}>Beauty of Svelte</button>
+
+
+{#if j === 1}
+			<Monad />
+{/if}
+
+{#if j === 2}
+  <Monad2 />
+{/if}
+
+{#if j === 3}
+  <Haskell />
+{/if}
+
+{#if j === 4}
+  <Bugs />
+{/if}
+
+{#if j === 5}
+  <Matrix />
+{/if}
+<br>
+{#if j === 0}
+<p> Clicking the buttons changes the value of j. j is the gate keeper in the #if statements. This is quite elegant, and all the credit goes to Svelte.</p>
+{/if}
+<br>
+<br>
+<br>
+<br>
 </div>
