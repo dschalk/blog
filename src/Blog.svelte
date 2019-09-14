@@ -79,10 +79,12 @@
 <br>
 <br>
 <h3>JavaScript and Functional Programming</h3>
-<span class = tao> The current version of a project I started three years ago is now called </span>
+<span class = tao> The current version of a project I started several years ago is now called </span>
 <a href = "http://schalk.site" target = "_blank" > JavaScript and Functional Programming </a>
 <span> The front end operates in a Cycle.js framework and the back end in a modified Haskell Wai WebSockets server. </span>
-<p> I started the project to show the utility of the little "monads" I defined in various ways. These were objects "m" that held a value "x" and a method "bnd" such that m.bnd(func) for some function "func" made "m" point to a new monad whose x value was func(old x). The old monad persisted as long as there was a reference to it, as when it was an item in an array. I didn't mind mutating the name m, but in order to preserve a record of the mutations, m.x was never mutated.</p>
+<span> Before that, my front end was the React framework. I wrote an elaborate program named </span>
+<a href = "http://game.schalk.site" target = "_blank">Websockets Game of Score" </a> <span> that uses the Websockets server I use today in an expanded form that accomodates subsequent projects. <span>
+<p> I started the JavaScript and Functional Programming project to show the utility of the little "monads" I defined in various ways. These were objects "m" that held a value "x" and a method "bnd" such that m.bnd(func) for some function "func" made "m" point to a new monad whose x value was func(old x). The old monad persisted as long as there was a reference to it, as when it was an item in an array. I didn't mind mutating the name m, but in order to preserve a record of the mutations, m.x was never mutated.</p>
 <span class = tao> Presently I am inclined to mutate objects if I don\'t need the old version, and that is rearely the case. I don\'t like to unnecessarily leave debris for the garbage collector. I do this knowing that some people will think less of my programming abilities. See  </span>
 <a href = "http://cloudingmine.com/avoid-javascript-object-mutation-at-all-costs/ " target = "_blank"> Avoid JavaScript object mutation at all costs </a>
 <span> Well, you know what if they can't take a joke. </span>
@@ -106,8 +108,6 @@
 <button on:click={matrix}>Beauty of Svelte</button>
 
 {#if j === 1}
-<br>
-<br>
 			<Monad />
 {/if}
 
