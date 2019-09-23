@@ -2,25 +2,18 @@
 
 
 <script>
-var axe = `var mon = Monad(3);
-var a = mon(x=>x**3)(x=>x+3)(x=>x**2)(stop)
-console.log("a is", a)  // a os 900
-console.log("mon is", mon);  /*ƒ foo(func) {
-        var stop = "stop";
-        if (func.name === "stop") return x;else {
-            x = func(x);
-            return foo;
-        }
-    } */
-mon(x => x/100)
-console.log("mon(stop) now is",mon(stop))  // mon(stop) now is 9 `
+import {fade} from "svelte/transition"
+let visible = true;
+
+
+var axe = `var mon = Monad(3);var a = mon(x=>x**3)(x=>x+3)(x=>x**2)(stop)console.log("a is", a) // a os 900console.log("mon is", mon); /*ƒ foo(func) {var stop = "stop";if (func.name === "stop") return x;else {x = func(x);return foo;}} */mon(x => x/100)console.log("mon(stop) now is",mon(stop))`
 </script>
-
-<style>
-    h3 {font-size: 27px;}
-</style>
-
-<h2> Eradication of Bed Bugs </h2>
+{#if visible}
+ <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
+ <br><br>
+COMPLETE ERADICATION OF BED BUGS
+ </div>
+{/if}
 <p> I had a massive bed bug infestation in my rented condominium before I knew what hit me. My box springs were on the floor, making it easy for bed bugs to climb onto my mattress and feast while I slept.</p>
 <p> When I realized what was happening, I saw that large numbers of bed bugs were clustered at numerous locations on on the walls near the head of my bed. They were seeking the source of the carbon dioxide I exhaled as I slept. I squashed them and washed the walls. Many others were hiding in my mattress. I encased the mattress and those bugs are now dead. </p>
 <p> I know the procedure I am about to describe works because I used it and eradication proceeded quickly to completion. Over the past two years there has been no sign of a bedbug being in my home. My strategy was to put my box springs on a metal frame, encase my mattress, and apply fluffed up silica gel on the floor under and around my bed.</p>

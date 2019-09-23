@@ -2,6 +2,9 @@
 
 
 <script>
+import {fade} from "svelte/transition"
+let visible = true;
+
 let GHC_IO = `module GHC.IO.Unsafe (
     unsafePerformIO, unsafeInterleaveIO,
     unsafeDupablePerformIO, unsafeDupableInterleaveIO,
@@ -15,6 +18,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
 </script>
 
 <style>
+
 h3 {
     font-size: 27px;
 }
@@ -23,9 +27,13 @@ h3 {
      color: #aaddff;
 }
 </style>
+{#if visible}
+ <div style = "font-family: Times New Roman; text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
+ <br><br>
+HASKELL TUTORIAL SUPPLEMENT
+ </div>
+{/if}
 
-
-<h2>Haskell Tutorial Supplement</h2>
 <p> If you are learning to program in Haskell, the book or blog or YouTube video on which you rely might be telling you that mutations can occur only inside of monads or somewhere away from a program such as the command line or a browser. You might be learning that mutations and side effects can occur only in the lazy IO monad. If so, don't believe it. You are being misled.  </p>
 <p> Even if you resent being lied to, you might find value in some of the dishonest learning resources. They are trying to teach best practices. Just know know that it is easy to mutate values and types anywhere in a Haskell program. Doing so before you know what your compiler (presumably GHC) will do with your mutations is asking for bugs and crashes.  Here are some unsafe functions with descriptions from their creators and maintainers: </p>
 <p id = large> Unsafe.Coerce </p>

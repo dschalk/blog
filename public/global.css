@@ -13,9 +13,7 @@
     color: #d3ead5;
     margin-top: 20px;
     font-size: 18px;
-    -webkit-box-shadow: inset 0px 0px 20px 0px rgb(0,0,0);
-    -moz-box-shadow:    inset 0px 0px 20px 0px rgb(0,0,0);
-    box-shadow:         inset 0px 0px 20px 0px rgb(0,0,0);
+    box-shadow: inset 0px 0px 20px 0px rgb(0,0,0);
     padding: 3px 0px 3px 3px;
   }
 
@@ -29,8 +27,21 @@
   text-indent: 1.6%;
 }
 
+.abs {
+  position: absolute;
+  top: 500px;
+  left: 500px;
+  width: 45%;
+}
+
+.center {
+  text-align: center;
+  transform: translate(-50%,-50%);
+  font-family: serif;
+}
+
 .blue_green {
-  color: "#aaeeff"
+  color: #aaeeff;
 }
 
 .flex-container {
@@ -118,20 +129,26 @@ pre {
     color: #00ffdd;
     font-size: 24px;
     -webkit-box-shadow: 0px 0px 15px 0px rgb(255, 215, 0);
-    -moz-box-shadow:    0px 0px 15px 0px rgb(255, 215, 0);
     box-shadow:         0px 0px 15px 0px rgb(255, 215, 0);
     padding: 3px 10px 3px 10px;
   }
 
   button:hover {
-    color: blue;
+    margin-left: 5%;
+    border-width: 2px;
+    border-radius: 10px;
+    font-size: 31px;
+    -webkit-box-shadow: 0px 0px 15px 0px rgb(255, 215, 0);
+    box-shadow:         0px 0px 15px 0px rgb(255, 215, 0);
+    padding: 3px 10px 3px 10px;
+    color: #000000;
     background-color: lightblue;
     border-color: #0000AA;
     border-radius: 10px;
   }
 
   #buttonB {
-    font-size: 18;
+    font-size: 18px;
     margin-right: 2%;
   }
 
@@ -139,8 +156,10 @@ pre {
     margin-left: 8%;
   }
 
+.icon {
+    line-height: 1;
 
-  label {
+label {
     background-color: #331903;
     text-align: left;
     border-color: #331903;
@@ -169,7 +188,7 @@ pre {
   width: 50%;
   font-family: monospace;
   font-size: 22px;
-  margin-left: auto;
+  margin-left: 3%;
   margin-right: auto;
   display: block;
   text-indent 1.6%;
@@ -178,8 +197,7 @@ pre {
 #content2{ width: 90%;
   font-size: 22px;
   font-family: monospace;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 3%;
   display: block;
   text-indent 1.6%;
 }
@@ -187,15 +205,17 @@ pre {
 .content2{ width: 90%;
   font-size: 22px;
   font-family: monospace;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 3%;
   display: block;
   text-indent 1.6%;
 }
 
 .large {
-  font-size: 62;
-  color: #e6d0f2;
+  font-size: 144px;
+  color: DE3ead5;
+  textAlign: center;
+  color: red
+
 }
 
 .tao {

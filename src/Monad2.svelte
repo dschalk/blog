@@ -1,5 +1,9 @@
 
 <script>
+
+import {fade} from "svelte/transition"
+let visible = true;
+
 var monad2 = `
 var Monad2 = function Monad2 ( AR = [] )  {
   var f_, p;
@@ -33,12 +37,10 @@ var Monad2 = function Monad2 ( AR = [] )  {
     };
     return f_;
   })(x)
-}
- `
+} `
  </script>
 
 <style>
-
 h3 {
    font-size: 27px;
 }
@@ -46,7 +48,12 @@ h3 {
    indent-text: 3%;
 }
 </style>
-<h2>Complex Monads</h2>
+<br><br><br>
+ {#if visible}
+ 	<div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
+COMPLEX MONADS
+ 	</div>
+ {/if}
 <p> The basic JavaScript monad is good for composing simple functions. But what if you want your monad to accept raw data and Promises? What if you want to mimick the behavior of transducers and perform multiple transformations, including filtering, on arrays, sets, or any other container of enumerable data? Here's a monad that has been reliably performing these tasks in my current project: </p>
 <pre>{monad2}</pre>
 <span class = tao> You can see Monad2 in action at </span>
