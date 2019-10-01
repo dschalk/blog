@@ -117,8 +117,8 @@ A SIMPLE LITTLE MONAD
  	</div>
  {/if}
  <br>
-<span style = "text-indent: 3%"> The word "monad" has been around for centuries. Gottfried Leibniz published </span>
-<span style = "font-style: italic"> Monadology </span>
+<span style = "text-indent : 3%"> The word "monad" has been around for centuries. Gottfried Leibniz published </span>
+<span class = tao; style = "font-style: italic"> Monadology </span>
 <span> in 1714. The precursor to the familiar symbol of yin-yang, taijitu (太極圖), has a version with two dots added, has been given the august designation: "The Great Monad". A single note in music theory is called a monad. All of this is too tangential to warrant references. I Googled around a little to get it and you can too if the word "monad" interests you.</span>
 <p> Monads in the Haskell Programming Language were inspired by Category Theory monads. In order to be Category Theory monads, function must exist in a mathematically rigorous "category". Haskells objects and functions are not the objects and morphisms of Category Theory. Making a category out of most of Haskell's functions and types is an amusing pasttime for some people, but I doubt that it has any practical value. </p>
 <p> So it should be no surprise that my JavaScript monads are not Category Theory monads. They do obey a JavaScript version of the Haskell monad laws, which are not a requirement in Haskell but are indicative of utility and robustness objects (including functions) don't constitute a category. But functions that hold values and compose with multiple functions that operate on their values behave like Category Theory monads enough to justify calling them "monads".</p>
