@@ -1,97 +1,364 @@
 
 <script>
+/*
+{#if countKeys(O) > 30}
+
+     {N = -1}
+     {M = -1}
+     {setTimeout(() => {
+        O = new Object
+        factors()
+     },500)}
+ {/if}
+
+var arr = [1,2,3];
+$: arr;
+
+function Bonad (z = [1,2,3]) {
+  arr = z;
+  let x = arr.slice(-1)[0];
+  let stop = "stop";
+  let foo = function foo (func) {
+     let x = arr.slice(-1)[0];
+    if (x instanceof Promise) {
+      console.log("In Promise block -- x, arr, func", x, ar, func);
+      x.then(y => arr = arr.concat(func(y)));
+      return foo;
+   }
+    else if (func.name === "stop") return arr
+    else if (typeof func === "function") {
+      arr = arr.concat(func(x));
+      return foo;
+    }
+    else if (typeof func !== "undefined") {
+      arr = arr.concat(func);
+      return foo;
+    }
+  }
+  return foo;
+}
+*/
 
 import {fade} from "svelte/transition"
 let visible = true;
 
-var MonadAsync = function MonadAsync ( AR = [] )  {
-  var f_, p;
-  var ar = AR.slice();
-  var x = ar.pop();
-  return (function run (x) {
-    if (x === null || x === NaN) {
-      x === undefined
-      x = f_('stop').pop()
+   async function pause (x) {
+      await wait(1000)
+      return x;
     }
-    else if (x instanceof Promise) x.then(y =>
-      {if (y != undefined && typeof y !== "boolean" && y === y &&
-      y.name !== "f_" && y.name !== "stop" ) {
-      ar.push(y);
-    }})
-    else if (x != undefined && x === x  && x !== false
-      && x.name !== "f_" && x.name !== "stop" ) {
-      ar.push(x);
-    };
-    function f_ (func) {
-      if (func === 'stop' || func === 'S') return ar;
-      else if (func === 'finish' || func === 'F') return Object.freeze(ar);
-      else if (typeof func !== "function") p = func;
-      else if (x instanceof Promise) p = x.then(v => func(v));
-      else p = func(x);
-      return run(p);
-    };
-    return f_;
-  })(x)
-}
-var monadAsync = `
-var MonadAsync = function MonadAsync ( AR = [] )  {
-  var f_, p;
-  var ar = AR.slice();
-  var x = ar.pop();
-  return (function run (x) {
-    if (x === null || x === NaN ||
-      x === undefined) x = f_('stop').pop();
-    if (x instanceof Filt) {
-      var z = ar.pop();
-      if (x.filt(z)) x = z; else ar = [];
+
+    var pauseP = t => async x => {
+      await wait(t*1000)
+      return x;
     }
-    else if (x instanceof Promise) x.then(y =>
-      {if (y != undefined && typeof y !== "boolean" && y === y &&
-      y.name !== "f_" && y.name !== "stop" ) {
-      ar.push(y);
-      diffRender()
-    }})
-    else if (x != undefined && x === x  && x !== false
-      && x.name !== "f_" && x.name !== "stop" ) {
-      ar.push(x);
-      diffRender()
-    };
-    function f_ (func) {
-      if (func === 'stop' || func === 'S') return ar;
-      else if (func === 'finish' || func === 'F') return Object.freeze(ar);
-      else if (typeof func !== "function") p = func;
-      else if (x instanceof Promise) p = x.then(v => func(v));
-      else p = func(x);
-      return run(p);
 
-    return f_;
-  })(x)
-} `
- </script>
+    async function pauseM (x) {
+      await wait(600)
+      return ret(x);
+    }
 
-<style>
+    async function pauseX (x) {
+      await wait(x);
+    }
 
-h3 {
-   font-size: 27px;
-}
-#tao {
-   indent-text: 3%;
-}
-</style>
+    async function squareP (x) {
+      await wait(1200)
+      return x*x;
+    }
+
+    var divPinverse = a => async b => {
+      await wait (600)
+      return a/b;
+    }
+
+    var divP = a => async b => {
+      await wait (600)
+      return b/a;
+    }
+
+    var doubleP = async a => {
+      await wait (1000)
+      return a+a;
+    }
+
+    var toInt = a => pareseInt(a, 10);
+
+    var addP_toInt = x => async y => {
+      await wait(1000)
+      return toInt(x) + toInt(y);
+    }
+
+    var addP = x => async y => {
+      await wait(1000)
+      return x + y;
+    }
+
+    var multP = x => async y => {
+      await wait(1200)
+      return x * y;
+    }
+
+    var powP = x => async y => {
+      await wait(1200)
+      return y**x;
+    }
+
+    async function cubeP (x) {
+      await wait(1200)
+      return x*x*x;
+    }
+
+    async function idP (x) {
+      await wait(1200)
+      return x;
+    }
+    async function sqrtP (x) {
+      await wait(1200)
+      return x**(1/2)
+    }
+
+    var _conveNt_ = a => b => parseFloat(b,a);
+    var toFloat = _conveNt_ (10);
+
+    function intArray (n) {
+      return [...Array(n).keys()];
+    }
+
+    function wait(ms) {
+       return new Promise(r => setTimeout(r, ms));
+    }
+
+    var cube = x => x**3;
+    var pow = p => x => x**p;
+    var square = x => x*x;
+    var add = x => y => x+y;
+    var sqrt = x => x**(1/2);
+    var root = r => x => x(1/r);
+    var div = d => x => x/d;
+
+   var f = function f () {};
+   var f_ = function f_ () {};
+   var sto = "sto";
+   var halt = "halt";
+
+   var O = new Object();
+   $: O;
+
+   var M = -1;
+   $: M;
+   var N = -1;
+   $: N;
+   var T = -1;
+   $: T;
+   var Q = -1
+   $: Q;
+
+   var lock = false;
+   $: lock
+
+   var Monad = function Monad ( AR = [], name = "generic"  )  {
+     var f_, p, run;
+     var ar = AR.slice();
+     var name = name;
+     O[name] = ar;
+     console.log("In Monad -- O[name] is", O[name]);
+     let x = O[name].pop();
+     let halt = "halt";
+     return run = (function run (x) {
+       if (x instanceof Promise) x.then(y =>
+         {if (y != undefined && typeof y !== "boolean" && y === y &&
+         y.name !== "f_" && y.name !== "halt" ) {
+         O[name] = O[name].concat(y)
+       }})
+       else if (x != undefined && x === x  && x !== false
+       && x.name !== "f_" && x.name !== "halt" ) {
+         O[name] = O[name].concat(x)
+       };
+       function f_ (func) {
+         if (func === 'halt' || func === 'S') return O[name];
+         else if (typeof func !== "function") p = func;
+         else if (x instanceof Promise) p = x.then(v => func(v));
+         else p = func(x);
+         return run(p);
+       };
+       return f_;
+     })(x);
+   }
+
+    /* let a0 = *Monad([3])(cube)
+     (add(3))(square)(div(100))
+     (sqrt)(()=>this)(halt); */
+
+   var socket = new WebSocket("ws://schalk.net:3055");
+
+   socket.onclose = function (event) {
+     console.log('<><><> ALERT - socket is closing. <><><> ', event);
+   };
+
+   var socketBool = true;
+
+   socket.onmessage = function(e) {
+     var v = e.data.split(',');
+     if (v[0] === "BE#$42") {
+       Q = Q + 1;
+       Monad([v[3]], "c"+Q);
+       if (socketBool) worker_O.postMessage([v[3]])
+     }
+   }
+
+   login();
+
+   function login() {
+     console.log('00000000000000000000000000000000 Entering login', socket.readyState);
+     setTimeout(function () {
+       if (socket.readyState === 1) {
+         console.log('readyState is', socket.readyState);
+         var v = Math.random().toString().substring(5);
+         var v2 = v.toString().substring(2);
+         var combo = v + '<o>' + v2;
+         socket.send('CC#$42' + combo);
+         factors();
+         factors();
+         factors();
+         // socket.send(`GZ#$42,solo,${v}`);
+       } else {
+         login();
+       }
+     }, 200)
+   }
+
+   function isEmpty(obj) {
+       for(var key in obj) {
+           if(obj.hasOwnProperty(key))
+               return false;
+       }
+       return true;
+   };
+
+   function countKeys(ob, s) {
+      var N = 0
+      for(var key in ob) if (key.startsWith(s)) N+=1;
+      return N;
+   }
+
+   var groupDelete = function groupDelete (ob, x) {
+      for (var x in ob) if (x.startsWith("d")) delete ob[x]
+   }
+
+   var clearOb = function clearOb (ob) {
+      for (var x in ob) delete ob[x]
+   }
+
+   function factors () {
+      if (lock === false) {
+         lock = true;
+         clearOb(O);
+         N = -1;
+         M = -1;
+         Q = -1;
+         groupDelete(O, "c");
+         groupDelete(O, "d");
+         fact();
+      }
+      else {
+         setTimeout(()=> {
+         factors()
+      },1000)
+      }
+   }
+
+   var fact = function fact () {
+      console.log("factors button was clicked O is", O);
+      socket.send("BE#$42,solo,3032896499791,1000000")
+      socket.send("BE#$42,solo,3032896499791,1000")
+      socket.send("BE#$42,solo,3032896499791,100000")
+      socket.send("BE#$42,solo,3032896499791,100000")
+      socket.send("BE#$42,solo,3032896499791,10000")
+      socket.send("BE#$42,solo,3032896499791,100000")
+      socket.send("BE#$42,solo,3032896499791,100000")
+      socket.send("BE#$42,solo,3032896499791,1000")
+      socket.send("BE#$42,solo,3032896499791,1000000")
+      socket.send("BE#$42,solo,3032896499791,10000")
+      socket.send("BE#$42,solo,3032896499791,100000")
+      socket.send("BE#$42,solo,3032896499791,100000")
+      socket.send("BE#$42,solo,3032896499791,100000")
+      socket.send("BE#$42,solo,3032896499791,10000")
+      socket.send("BE#$42,solo,3032896499791,100000")
+
+     console.log(">>>>>>>>>> ************** >>>>>>>O is", O)
+   }
+
+   /*   if (countKeys(O) > 34) {
+         console.log("************ MORE THAN 34 ENTRIES IN O *************")
+           setTimeout( () => {
+           N = -1;
+           M = -1;
+           Q = -1;
+           clearOb(O);
+           factors();
+       },700)
+   } */
+
+   var worker_O = new Worker('worker_O.js');
+
+   worker_O.onmessage = e => {
+     console.log("onmessage e in Monad2.svelte is", e);
+     M = M = M + 1;
+     Monad([e.data], "d"+M);
+     var A = countKeys(O,"c");
+     console.log("M and A are", M, A);
+     if (M === 14) {
+       lock = false;
+     }
+   }
+
+</script>
 <br><br><br>
- {#if visible}
- 	<div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
-COMPLEX MONADS
- 	</div>
- {/if}
-<p> The basic JavaScript monad is good for composing simple functions. But what if you want your monad to accept raw data and Promises? What if you want to mimick the behavior of transducers and perform multiple transformations, including filtering, on arrays, sets, or any other container of enumerable data? Here's a monad that has been reliably performing these tasks in my current project: </p>
-<pre>{monadAsync}</pre>
-<span class = tao> You can see MonadAsync in action at </span>
-<a href = "http://schalk.site" target = "_blank"> schalk.site</a>
-<span> MonadAsync is named "Comp" there. Demonstration 1 shows MonadAsync (a/k/a "Comp") restarting, running asynchronous code, and forking into orthogonal branches. Demonstration 2 compares ordinary dot composition, a transducer, and MonadAsync. In a single step, MonadAsync gets the result the transducer gets in a single step and the dot procedure gets in five steps, four of which create useless intermediate arrays for the garbage collector to clean up. </span>
-<p> You might wonder what "diffRender()" is. schalk.site is in a Cycle.js framework. In Cycle.js, reactivity is usually accomplished by merging streams and havind main() send the result into the virtual DOM. This is convenient when main() is responding to DOM events. Responding to other things, for example incoming WebSockets or Web Worker messages for example , requires dedicated drivers. After defining numerous drivers I lost patience and started using diffRender(). </p>
-<span class = tao>  diffRender() increments a number in the virtual DOM up to 50 then starts again at 0. This prompts Snabbdom to diff the entire virtual DOM. The Snabbdom API provides more targeted ways to force updates. patch(oldVnode, newVnode) comes to mind. I might have gotten around to benchmarking various alternatives to defining drivers but instead, I switched to </span>
-<a href = "https://svelte.dev/"  target = "_blank">Svelte</a>
-<span> It isn't burdened with a virtual DOM, and Svelte provides reactivity with elegant simplicity. </span>
+{#if visible}
+	<div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
+ASYNCHRONOUS MONAD
+	</div>
+{/if}
+
+<br><br>
+<button on:click = {factors}>EXECUTE factors()</button>
+<br><br>
+<span style = "color: #EEBBBB"> The WebSockets server sent these pseudo-random numbers: </span>
+<span> {O.c0}, {O.c1}, {O.c2}, {O.c3}, {O.c4}, {O.c5}, {O.c6}, {O.c7}, {O.c8}, {O.c9}, {O.c10}, {O.c11}, {O.c12}, {O.c13}, {O.c14}</span>
+<br><br>
+<div style = "color: #EEBBBB"> The web worker sent these results: </div>
+<div>
+{O.d0}
+<br>
+{O.d1}
+<br>
+{O.d2}
+<br>
+{O.d3}
+<br>
+{O.d4}
+<br>
+{O.d5}
+<br>
+{O.d6}
+<br>
+{O.d7}
+<br>
+{O.d8}
+<br>
+{O.d9}
+<br>
+{O.d10}
+<br>
+{O.d11}
+<br>
+{O.d12}
+<br>
+{O.d13}
+<br>
+{O.d14}
+<br>
+</div>
+<br>
 <span> The code for this Svelte application is at </span>
 <a href = "https://github.com/dschalk/blog/" target = "_blank">GitHub repository</a>

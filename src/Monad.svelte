@@ -42,11 +42,11 @@ let ar = [];
 let mon = Monad(3);
 let mon2 = Monad();
 ar.push(mon(stop));
-var a = mon(x=>x**3)(x=>x+3)(x=>x**2)(stop)
+var a = mon(x=>x**3)(x=>x+3)(x=>x**2)
 ar.push(a);
-ar.push(mon(x => x/100)(stop));
+ar.push(mon(x => x/100);
 ar.push(mon2(mon(stop)(x=>x*100)))
-console.log("ar is", ar)  // [3, 900, 9] `
+console.log("ar.map(v=>v('stop')) is", ar.map(v=>v('stop')))  // [3, 900, 9] `
 
 function Monad (z) {
   var x = z;
@@ -80,15 +80,6 @@ let mona = bonads(num);
 $: mona
 console.log(mona)
 
-let ar = [];
-let mon = Monad(3);
-let mon2 = Monad();
-ar.push(mon(stop));
-var a = mon(x=>x**3)(x=>x+3)(x=>x**2)(stop)
-ar.push(a);
-ar.push(mon(x => x/100)(stop));
-ar.push(mon2(()=>mon(stop))(x=>x*100)(stop))
-
 function numF (e) {num = e.target.value; console.log("e.target.value is", e.target.value); return e.target.value}
 $: num
 
@@ -117,8 +108,8 @@ A SIMPLE LITTLE MONAD
  	</div>
  {/if}
  <br>
-<span style = "text-indent : 3%"> The word "monad" has been around for centuries. Gottfried Leibniz published </span>
-<span class = tao; style = "font-style: italic"> Monadology </span>
+<span class="tao"> The word "monad" has been around for centuries. Gottfried Leibniz published </span>
+<span style = "font-style: italic"> Monadology </span>
 <span> in 1714. The precursor to the familiar symbol of yin-yang, taijitu (太極圖), has a version with two dots added, has been given the august designation: "The Great Monad". A single note in music theory is called a monad. All of this is too tangential to warrant references. I Googled around a little to get it and you can too if the word "monad" interests you.</span>
 <p> Monads in the Haskell Programming Language were inspired by Category Theory monads. In order to be Category Theory monads, function must exist in a mathematically rigorous "category". Haskells objects and functions are not the objects and morphisms of Category Theory. Making a category out of most of Haskell's functions and types is an amusing pasttime for some people, but I doubt that it has any practical value. </p>
 <p> So it should be no surprise that my JavaScript monads are not Category Theory monads. They do obey a JavaScript version of the Haskell monad laws, which are not a requirement in Haskell but are indicative of utility and robustness objects (including functions) don't constitute a category. But functions that hold values and compose with multiple functions that operate on their values behave like Category Theory monads enough to justify calling them "monads".</p>
@@ -137,14 +128,8 @@ A SIMPLE LITTLE MONAD
 </pre>
 
 <p> As expected, mon returns which is the "foo()" returned by by calling Monad(3):</p>
-{mon}
 
-<p> mon() is still the foo() returned by Monad(). Because mon() maintains a reference to the x in the context of its creation, x will not be garbage collected. </p>
+<p> mon is still the foo() returned by Monad(). Because mon points to x in the context of its creation by Monad(), x will not be garbage collected. Care should be taken not to polute memory with useless x's.</p>
 
-<p> It is convenient to have state, in the form of x, safely tucked away in a closure; but if later in your program you no longer have any use for x, it's up to you to destroy the named monad that points to it. </p>
-<p> One reason Svelte is so fast and efficient is that it mutates variables and objects. In this and other ways, Svelte has shaken off the bonds of current conventional "wisdom". </p>
-<p>If you want to save older versions of a monad, you can stash it in an ordinary curly braces object, an array, a set, etc. Here's some code that demonstrates preserving a monad's history. It also demonstrates a monad named "mon2" branching off of mon and going its own way. </p>
-<pre>{fred}</pre>
-<p> ar is {ar} </p>
-<span class=tao> Another technique is to keep the array of computation results in the closure.  It would then be convenient to run functions on array elements or the array itself. Monads could be asynchronous, populating the array with Promise resolution values. They could even be made to perform multiple array transformation - including map, filter, and reduce - in a single step, just as transducers do. To see a monad that does all of these things, click "A Swiss Army Knife Monad". </span>
-<span id = aside> By the way, I leave sentence punctuation outside of quotation marks, which is customary in the UK and eliminates the ambiguity inherent in the standard American syntax.</span>
+<p> One reason Svelte is so fast and efficient is that it mutates variables and the attributes and methods of objects. Each module in a discrete global space.  When modules are small, applications are easy to organize and mutations don't have unforseen effects in other parts of applications. Svelte shook off the bonds of current conventional "wisdom" advocating immutability, virtual DOM, and assigning types to functions. </p>
+<p> The next entry in the monad series defines a variation of Monad that maintains and array of primitive data, function return values, and Promise resolution values. Functions have access to everything in the array when they execute. </p>

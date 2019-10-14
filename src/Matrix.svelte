@@ -111,28 +111,26 @@ var html = `{#if visible}
                         <div style = "margin-Left: 2%; width: 50%" >
 
 <p> If you click any two numbers (below), they switch locations and a "BACK" button appears. If you go back and click two numbers, the result gets inserted  at your location.</p>
-<p> I can use simple variables knowing they will never clash with a similarly named variable in a differenct module. Svelte code is consise and efficient. Coding in Svelte is so relaxing. </p>
+<p> I can use simple variables knowing they will never clash with a similarly named variable in a differenct module. Svelte code is consise and efficient. Coding in Svelte is so relaxing. Slap that bitch.</p>
 
-<br>
-<br>
-	<button on:click={back}>
+<br>	<button on:click={back}>
 		BACK
 	</button>
 <br>
 <br>
+
    <div style="text-indent:20px"><button>{ j }</button></div>
 <br>
 	<button on:click={forward}>
 		FORWARD
 	</button>
- <br>
- <br>
                         </div>
-                     <div style = "marginRight: 2%; width: 50%;">
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                     <div style = "marginRight: 2%; width: 50%; font-size: 30">
+<br><br><br><br><br><p>Suck my dick</p>
 <button id = m0  on:click = {ob.push} >{cache[j][0]}</button>
 <button id = m1  on:click = {ob.push} >{cache[j][1]}</button>
-<button id = m2  on:click = {ob.push} >{cache[j][2]}</button>
+<button id = m2  on:click = {ob.push} >{cache[j][
+   2]}</button>
 <br>
 <br>
 <button id = m3  on:click = {ob.push} >{cache[j][3]}</button>
@@ -141,7 +139,8 @@ var html = `{#if visible}
 <br>
 <br>
 <button id = m6  on:click = {ob.push} >{cache[j][6]}</button>
-<button id = m7  on:click = {ob.push} >{cache[j][7]}</button>
+<button id = m7  on:click = {ob.push} >{cache[j]
+   [7]}</button>
 <button id = m8  on:click = {ob.push} >{cache[j][8]}</button>
 </div>
 </div>
@@ -157,7 +156,6 @@ var html = `{#if visible}
  A LITTLE SVELTE MODULE
  </div>
 {/if}
-
                         <div style = "display: flex">
                         <div style = "margin-Left: 2%; width: 50%" >
 
@@ -180,7 +178,7 @@ var html = `{#if visible}
  <br>
                         </div>
                      <div style = "marginRight: 2%; width: 50%;">
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br>
 <button id = m0  on:click = {ob.push} >{cache[j][0]}</button>
 <button id = m1  on:click = {ob.push} >{cache[j][1]}</button>
 <button id = m2  on:click = {ob.push} >{cache[j][2]}</button>

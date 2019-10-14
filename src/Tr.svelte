@@ -330,6 +330,3 @@ console.log("*******************************");
 TRANSDUCER SIMULATION
  </div>
 {/if}
-
-<p> She wants to know when we are going to fuck her </p>
-<h1>Rita wants a butt fucking</h1>
