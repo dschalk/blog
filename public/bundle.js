@@ -926,7 +926,7 @@ console.log("a is", a)  // a is 900`;
 
     const file$1 = "src/Monad2.svelte";
 
-    // (317:0) {#if visible}
+    // (320:0) {#if visible}
     function create_if_block$1(ctx) {
     	var div_1, div_1_transition, current;
 
@@ -938,7 +938,7 @@ console.log("a is", a)  // a is 900`;
     			set_style(div_1, "text-align", "center");
     			set_style(div_1, "color", "hsl(210, 90%, 90%)");
     			set_style(div_1, "font-size", "32px");
-    			add_location(div_1, file$1, 317, 1, 7253);
+    			add_location(div_1, file$1, 320, 1, 7286);
     		},
 
     		m: function mount(target, anchor) {
@@ -1102,42 +1102,42 @@ console.log("a is", a)  // a is 900`;
     			t88 = space();
     			a = element("a");
     			a.textContent = "GitHub repository";
-    			add_location(br0, file$1, 315, 0, 7225);
-    			add_location(br1, file$1, 315, 4, 7229);
-    			add_location(br2, file$1, 315, 8, 7233);
-    			add_location(br3, file$1, 322, 0, 7414);
-    			add_location(br4, file$1, 322, 4, 7418);
-    			add_location(button, file$1, 323, 0, 7423);
-    			add_location(br5, file$1, 324, 0, 7479);
-    			add_location(br6, file$1, 324, 4, 7483);
+    			add_location(br0, file$1, 318, 0, 7258);
+    			add_location(br1, file$1, 318, 4, 7262);
+    			add_location(br2, file$1, 318, 8, 7266);
+    			add_location(br3, file$1, 325, 0, 7447);
+    			add_location(br4, file$1, 325, 4, 7451);
+    			add_location(button, file$1, 326, 0, 7456);
+    			add_location(br5, file$1, 327, 0, 7512);
+    			add_location(br6, file$1, 327, 4, 7516);
     			set_style(span0, "color", "#EEBBBB");
-    			add_location(span0, file$1, 325, 0, 7488);
-    			add_location(span1, file$1, 326, 0, 7584);
-    			add_location(br7, file$1, 327, 0, 7722);
-    			add_location(br8, file$1, 327, 4, 7726);
+    			add_location(span0, file$1, 328, 0, 7521);
+    			add_location(span1, file$1, 329, 0, 7617);
+    			add_location(br7, file$1, 330, 0, 7755);
+    			add_location(br8, file$1, 330, 4, 7759);
     			set_style(div0, "color", "#EEBBBB");
-    			add_location(div0, file$1, 328, 0, 7731);
-    			add_location(br9, file$1, 331, 0, 7817);
-    			add_location(br10, file$1, 333, 0, 7829);
-    			add_location(br11, file$1, 335, 0, 7841);
-    			add_location(br12, file$1, 337, 0, 7853);
-    			add_location(br13, file$1, 339, 0, 7865);
-    			add_location(br14, file$1, 341, 0, 7877);
-    			add_location(br15, file$1, 343, 0, 7889);
-    			add_location(br16, file$1, 345, 0, 7901);
-    			add_location(br17, file$1, 347, 0, 7913);
-    			add_location(br18, file$1, 349, 0, 7925);
-    			add_location(br19, file$1, 351, 0, 7938);
-    			add_location(br20, file$1, 353, 0, 7951);
-    			add_location(br21, file$1, 355, 0, 7964);
-    			add_location(br22, file$1, 357, 0, 7977);
-    			add_location(br23, file$1, 359, 0, 7990);
-    			add_location(div1, file$1, 329, 0, 7804);
-    			add_location(br24, file$1, 361, 0, 8002);
-    			add_location(span2, file$1, 362, 0, 8007);
+    			add_location(div0, file$1, 331, 0, 7764);
+    			add_location(br9, file$1, 334, 0, 7850);
+    			add_location(br10, file$1, 336, 0, 7862);
+    			add_location(br11, file$1, 338, 0, 7874);
+    			add_location(br12, file$1, 340, 0, 7886);
+    			add_location(br13, file$1, 342, 0, 7898);
+    			add_location(br14, file$1, 344, 0, 7910);
+    			add_location(br15, file$1, 346, 0, 7922);
+    			add_location(br16, file$1, 348, 0, 7934);
+    			add_location(br17, file$1, 350, 0, 7946);
+    			add_location(br18, file$1, 352, 0, 7958);
+    			add_location(br19, file$1, 354, 0, 7971);
+    			add_location(br20, file$1, 356, 0, 7984);
+    			add_location(br21, file$1, 358, 0, 7997);
+    			add_location(br22, file$1, 360, 0, 8010);
+    			add_location(br23, file$1, 362, 0, 8023);
+    			add_location(div1, file$1, 332, 0, 7837);
+    			add_location(br24, file$1, 364, 0, 8035);
+    			add_location(span2, file$1, 365, 0, 8040);
     			attr(a, "href", "https://github.com/dschalk/blog/");
     			attr(a, "target", "_blank");
-    			add_location(a, file$1, 363, 0, 8065);
+    			add_location(a, file$1, 366, 0, 8098);
     			dispose = listen(button, "click", ctx.factors);
     		},
 
@@ -1600,6 +1600,8 @@ console.log("a is", a)  // a is 900`;
          var A = countKeys(O,"c");
          console.log("M and A are", M, A);
          if (M === 14) {
+            $$invalidate('M', M = -1);
+            $$invalidate('N', N = -1);
            $$invalidate('lock', lock = false);
          }
        };
@@ -3194,7 +3196,7 @@ console.log("a is", a)  // a is 900`;
 
     const file$9 = "src/Blog.svelte";
 
-    // (110:0) {#if j === 0}
+    // (108:0) {#if j === 0}
     function create_if_block_8(ctx) {
     	var current;
 
@@ -3228,7 +3230,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (113:0) {#if j === 1}
+    // (111:0) {#if j === 1}
     function create_if_block_7(ctx) {
     	var current;
 
@@ -3262,7 +3264,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (116:0) {#if j === 2}
+    // (114:0) {#if j === 2}
     function create_if_block_6(ctx) {
     	var current;
 
@@ -3296,7 +3298,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (119:0) {#if j === 3}
+    // (117:0) {#if j === 3}
     function create_if_block_5(ctx) {
     	var current;
 
@@ -3330,7 +3332,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (122:0) {#if j === 4}
+    // (120:0) {#if j === 4}
     function create_if_block_4(ctx) {
     	var current;
 
@@ -3364,7 +3366,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (125:0) {#if j === 5}
+    // (123:0) {#if j === 5}
     function create_if_block_3(ctx) {
     	var current;
 
@@ -3398,7 +3400,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (128:0) {#if j === 6}
+    // (126:0) {#if j === 6}
     function create_if_block_2(ctx) {
     	var current;
 
@@ -3432,7 +3434,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (131:0) {#if j === 7}
+    // (129:0) {#if j === 7}
     function create_if_block_1(ctx) {
     	var current;
 
@@ -3466,7 +3468,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (134:0) {#if j === 8}
+    // (132:0) {#if j === 8}
     function create_if_block$9(ctx) {
     	var current;
 
@@ -3501,7 +3503,7 @@ console.log("a is", a)  // a is 900`;
     }
 
     function create_fragment$9(ctx) {
-    	var div15, br0, br1, t0, div14, div11, br2, br3, br4, br5, br6, br7, br8, t1, ul, li0, div0, t3, br9, t4, li1, div1, t6, br10, t7, li2, div2, t9, br11, t10, li3, div3, t12, br12, t13, li4, div4, t15, br13, t16, li5, div5, t18, br14, t19, li6, div6, t21, br15, t22, li7, div7, t24, br16, t25, li8, div8, t27, br17, t28, li9, div9, t30, br18, t31, li10, div10, t33, br19, t34, div13, div12, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, br20, br21, br22, t46, br23, br24, current, dispose;
+    	var div14, br0, br1, t0, div13, div10, br2, br3, br4, br5, br6, br7, br8, t1, ul, li0, div0, t3, br9, t4, li1, div1, t6, br10, t7, li2, div2, t9, br11, t10, li3, div3, t12, br12, t13, li4, div4, t15, br13, t16, li5, div5, t18, br14, t19, li6, div6, t21, br15, t22, li7, div7, t24, br16, t25, li8, div8, t27, br17, t28, li9, div9, t30, br18, t31, div12, div11, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, br19, br20, br21, t43, br22, br23, current, dispose;
 
     	var if_block0 = (ctx.j === 0) && create_if_block_8();
 
@@ -3523,12 +3525,12 @@ console.log("a is", a)  // a is 900`;
 
     	return {
     		c: function create() {
-    			div15 = element("div");
+    			div14 = element("div");
     			br0 = element("br");
     			br1 = element("br");
     			t0 = space();
-    			div14 = element("div");
-    			div11 = element("div");
+    			div13 = element("div");
+    			div10 = element("div");
     			br2 = element("br");
     			br3 = element("br");
     			br4 = element("br");
@@ -3558,80 +3560,74 @@ console.log("a is", a)  // a is 900`;
     			t10 = space();
     			li3 = element("li");
     			div3 = element("div");
-    			div3.textContent = "Handling Promises in Monads";
+    			div3.textContent = "Asynchronous Monads";
     			t12 = space();
     			br12 = element("br");
     			t13 = space();
     			li4 = element("li");
     			div4 = element("div");
-    			div4.textContent = "Asynchrous Functions";
+    			div4.textContent = "Transducer Simulator";
     			t15 = space();
     			br13 = element("br");
     			t16 = space();
     			li5 = element("li");
     			div5 = element("div");
-    			div5.textContent = "Transducer Simulator";
+    			div5.textContent = "MISCELANEOUS TOPICS";
     			t18 = space();
     			br14 = element("br");
     			t19 = space();
     			li6 = element("li");
     			div6 = element("div");
-    			div6.textContent = "MISCELANEOUS TOPICS";
+    			div6.textContent = "Hidden Haskell Information";
     			t21 = space();
     			br15 = element("br");
     			t22 = space();
     			li7 = element("li");
     			div7 = element("div");
-    			div7.textContent = "Hidden Haskell Information";
+    			div7.textContent = "Bed Bug Eradication";
     			t24 = space();
     			br16 = element("br");
     			t25 = space();
     			li8 = element("li");
     			div8 = element("div");
-    			div8.textContent = "Bed Bug Eradication";
+    			div8.textContent = "Toggle Theme";
     			t27 = space();
     			br17 = element("br");
     			t28 = space();
     			li9 = element("li");
     			div9 = element("div");
-    			div9.textContent = "Toggle Theme";
+    			div9.textContent = "Home";
     			t30 = space();
     			br18 = element("br");
     			t31 = space();
-    			li10 = element("li");
-    			div10 = element("div");
-    			div10.textContent = "Home";
-    			t33 = space();
-    			br19 = element("br");
-    			t34 = space();
-    			div13 = element("div");
     			div12 = element("div");
-    			div12.textContent = "DAVID SCHALK'S BLOG";
-    			t36 = space();
+    			div11 = element("div");
+    			div11.textContent = "DAVID SCHALK'S BLOG";
+    			t33 = space();
     			if (if_block0) if_block0.c();
-    			t37 = space();
+    			t34 = space();
     			if (if_block1) if_block1.c();
-    			t38 = space();
+    			t35 = space();
     			if (if_block2) if_block2.c();
-    			t39 = space();
+    			t36 = space();
     			if (if_block3) if_block3.c();
-    			t40 = space();
+    			t37 = space();
     			if (if_block4) if_block4.c();
-    			t41 = space();
+    			t38 = space();
     			if (if_block5) if_block5.c();
-    			t42 = space();
+    			t39 = space();
     			if (if_block6) if_block6.c();
-    			t43 = space();
+    			t40 = space();
     			if (if_block7) if_block7.c();
-    			t44 = space();
+    			t41 = space();
     			if (if_block8) if_block8.c();
-    			t45 = space();
+    			t42 = space();
+    			br19 = element("br");
     			br20 = element("br");
     			br21 = element("br");
+    			t43 = space();
     			br22 = element("br");
-    			t46 = space();
     			br23 = element("br");
-    			br24 = element("br");
     			add_location(br0, file$9, 74, 0, 1525);
     			add_location(br1, file$9, 74, 4, 1529);
     			add_location(br2, file$9, 79, 24, 1684);
@@ -3655,68 +3651,63 @@ console.log("a is", a)  // a is 900`;
     			attr(div3, "class", "button");
     			add_location(div3, file$9, 87, 28, 2123);
     			add_location(li3, file$9, 87, 24, 2119);
-    			add_location(br12, file$9, 88, 24, 2225);
+    			add_location(br12, file$9, 88, 24, 2217);
     			attr(div4, "class", "button");
-    			add_location(div4, file$9, 89, 28, 2258);
-    			add_location(li4, file$9, 89, 24, 2254);
-    			add_location(br13, file$9, 90, 24, 2356);
-    			attr(div5, "class", "button");
-    			add_location(div5, file$9, 91, 28, 2389);
-    			add_location(li5, file$9, 91, 24, 2385);
-    			add_location(br14, file$9, 92, 24, 2483);
-    			add_location(div6, file$9, 93, 28, 2516);
-    			add_location(li6, file$9, 93, 24, 2512);
-    			add_location(br15, file$9, 94, 24, 2576);
+    			add_location(div4, file$9, 89, 28, 2250);
+    			add_location(li4, file$9, 89, 24, 2246);
+    			add_location(br13, file$9, 90, 24, 2348);
+    			add_location(div5, file$9, 91, 28, 2381);
+    			add_location(li5, file$9, 91, 24, 2377);
+    			add_location(br14, file$9, 92, 24, 2441);
+    			attr(div6, "class", "button");
+    			add_location(div6, file$9, 93, 28, 2474);
+    			add_location(li6, file$9, 93, 24, 2470);
+    			add_location(br15, file$9, 94, 24, 2575);
     			attr(div7, "class", "button");
-    			add_location(div7, file$9, 95, 28, 2609);
-    			add_location(li7, file$9, 95, 24, 2605);
-    			add_location(br16, file$9, 96, 24, 2710);
+    			add_location(div7, file$9, 95, 28, 2608);
+    			add_location(li7, file$9, 95, 24, 2604);
+    			add_location(br16, file$9, 96, 24, 2700);
     			attr(div8, "class", "button");
-    			add_location(div8, file$9, 97, 28, 2743);
-    			add_location(li8, file$9, 97, 24, 2739);
-    			add_location(br17, file$9, 98, 24, 2835);
+    			add_location(div8, file$9, 97, 28, 2733);
+    			add_location(li8, file$9, 97, 24, 2729);
+    			add_location(br17, file$9, 98, 24, 2817);
     			attr(div9, "class", "button");
-    			add_location(div9, file$9, 99, 28, 2868);
-    			add_location(li9, file$9, 99, 24, 2864);
-    			add_location(br18, file$9, 100, 24, 2952);
-    			attr(div10, "class", "button");
-    			add_location(div10, file$9, 101, 28, 2985);
-    			add_location(li10, file$9, 101, 24, 2981);
-    			add_location(br19, file$9, 102, 24, 3062);
+    			add_location(div9, file$9, 99, 28, 2850);
+    			add_location(li9, file$9, 99, 24, 2846);
+    			add_location(br18, file$9, 100, 24, 2927);
     			set_style(ul, "list-style", "none");
     			attr(ul, "class", "svelte-wv8yxe");
     			add_location(ul, file$9, 80, 24, 1737);
-    			set_style(div11, "margin-Right", "2%");
-    			set_style(div11, "width", "20%");
-    			add_location(div11, file$9, 78, 24, 1614);
-    			set_style(div12, "font-weight", "900");
-    			set_style(div12, "font-size", "45px");
-    			set_style(div12, "color", "#bbbb00");
-    			set_style(div12, "text-align", "center");
-    			add_location(div12, file$9, 106, 24, 3222);
-    			add_location(br20, file$9, 138, 0, 3636);
-    			add_location(br21, file$9, 138, 4, 3640);
-    			add_location(br22, file$9, 138, 8, 3644);
-    			set_style(div13, "margin-Right", "2%");
-    			set_style(div13, "width", "80%");
-    			add_location(div13, file$9, 105, 24, 3152);
-    			set_style(div14, "display", "flex");
-    			add_location(div14, file$9, 76, 24, 1559);
-    			attr(div15, "class", "content");
-    			add_location(div15, file$9, 73, 0, 1503);
-    			add_location(br23, file$9, 142, 0, 3670);
-    			add_location(br24, file$9, 142, 4, 3674);
+    			set_style(div10, "margin-Right", "2%");
+    			set_style(div10, "width", "20%");
+    			add_location(div10, file$9, 78, 24, 1614);
+    			set_style(div11, "font-weight", "900");
+    			set_style(div11, "font-size", "45px");
+    			set_style(div11, "color", "#bbbb00");
+    			set_style(div11, "text-align", "center");
+    			add_location(div11, file$9, 104, 24, 3087);
+    			add_location(br19, file$9, 136, 0, 3501);
+    			add_location(br20, file$9, 136, 4, 3505);
+    			add_location(br21, file$9, 136, 8, 3509);
+    			set_style(div12, "margin-Right", "2%");
+    			set_style(div12, "width", "80%");
+    			add_location(div12, file$9, 103, 24, 3017);
+    			set_style(div13, "display", "flex");
+    			add_location(div13, file$9, 76, 24, 1559);
+    			attr(div14, "class", "content");
+    			add_location(div14, file$9, 73, 0, 1503);
+    			add_location(br22, file$9, 140, 0, 3535);
+    			add_location(br23, file$9, 140, 4, 3539);
 
     			dispose = [
     				listen(div0, "click", ctx.matrix),
     				listen(div2, "click", ctx.monad),
     				listen(div3, "click", ctx.monad2),
     				listen(div4, "click", ctx.transduce),
-    				listen(div5, "click", ctx.async),
-    				listen(div7, "click", ctx.haskell),
-    				listen(div8, "click", ctx.bugs),
-    				listen(div9, "click", ctx.tog),
-    				listen(div10, "click", ctx.home)
+    				listen(div6, "click", ctx.haskell),
+    				listen(div7, "click", ctx.bugs),
+    				listen(div8, "click", ctx.tog),
+    				listen(div9, "click", ctx.home)
     			];
     		},
 
@@ -3725,21 +3716,21 @@ console.log("a is", a)  // a is 900`;
     		},
 
     		m: function mount(target, anchor) {
-    			insert(target, div15, anchor);
-    			append(div15, br0);
-    			append(div15, br1);
-    			append(div15, t0);
-    			append(div15, div14);
-    			append(div14, div11);
-    			append(div11, br2);
-    			append(div11, br3);
-    			append(div11, br4);
-    			append(div11, br5);
-    			append(div11, br6);
-    			append(div11, br7);
-    			append(div11, br8);
-    			append(div11, t1);
-    			append(div11, ul);
+    			insert(target, div14, anchor);
+    			append(div14, br0);
+    			append(div14, br1);
+    			append(div14, t0);
+    			append(div14, div13);
+    			append(div13, div10);
+    			append(div10, br2);
+    			append(div10, br3);
+    			append(div10, br4);
+    			append(div10, br5);
+    			append(div10, br6);
+    			append(div10, br7);
+    			append(div10, br8);
+    			append(div10, t1);
+    			append(div10, ul);
     			append(ul, li0);
     			append(li0, div0);
     			append(ul, t3);
@@ -3789,39 +3780,34 @@ console.log("a is", a)  // a is 900`;
     			append(li9, div9);
     			append(ul, t30);
     			append(ul, br18);
-    			append(ul, t31);
-    			append(ul, li10);
-    			append(li10, div10);
-    			append(ul, t33);
-    			append(ul, br19);
-    			append(div14, t34);
-    			append(div14, div13);
+    			append(div13, t31);
     			append(div13, div12);
-    			append(div13, t36);
-    			if (if_block0) if_block0.m(div13, null);
-    			append(div13, t37);
-    			if (if_block1) if_block1.m(div13, null);
-    			append(div13, t38);
-    			if (if_block2) if_block2.m(div13, null);
-    			append(div13, t39);
-    			if (if_block3) if_block3.m(div13, null);
-    			append(div13, t40);
-    			if (if_block4) if_block4.m(div13, null);
-    			append(div13, t41);
-    			if (if_block5) if_block5.m(div13, null);
-    			append(div13, t42);
-    			if (if_block6) if_block6.m(div13, null);
-    			append(div13, t43);
-    			if (if_block7) if_block7.m(div13, null);
-    			append(div13, t44);
-    			if (if_block8) if_block8.m(div13, null);
-    			append(div13, t45);
-    			append(div13, br20);
-    			append(div13, br21);
-    			append(div13, br22);
-    			insert(target, t46, anchor);
+    			append(div12, div11);
+    			append(div12, t33);
+    			if (if_block0) if_block0.m(div12, null);
+    			append(div12, t34);
+    			if (if_block1) if_block1.m(div12, null);
+    			append(div12, t35);
+    			if (if_block2) if_block2.m(div12, null);
+    			append(div12, t36);
+    			if (if_block3) if_block3.m(div12, null);
+    			append(div12, t37);
+    			if (if_block4) if_block4.m(div12, null);
+    			append(div12, t38);
+    			if (if_block5) if_block5.m(div12, null);
+    			append(div12, t39);
+    			if (if_block6) if_block6.m(div12, null);
+    			append(div12, t40);
+    			if (if_block7) if_block7.m(div12, null);
+    			append(div12, t41);
+    			if (if_block8) if_block8.m(div12, null);
+    			append(div12, t42);
+    			append(div12, br19);
+    			append(div12, br20);
+    			append(div12, br21);
+    			insert(target, t43, anchor);
+    			insert(target, br22, anchor);
     			insert(target, br23, anchor);
-    			insert(target, br24, anchor);
     			current = true;
     		},
 
@@ -3831,7 +3817,7 @@ console.log("a is", a)  // a is 900`;
     					if_block0 = create_if_block_8();
     					if_block0.c();
     					transition_in(if_block0, 1);
-    					if_block0.m(div13, t37);
+    					if_block0.m(div12, t34);
     				} else {
     									transition_in(if_block0, 1);
     				}
@@ -3848,7 +3834,7 @@ console.log("a is", a)  // a is 900`;
     					if_block1 = create_if_block_7();
     					if_block1.c();
     					transition_in(if_block1, 1);
-    					if_block1.m(div13, t38);
+    					if_block1.m(div12, t35);
     				} else {
     									transition_in(if_block1, 1);
     				}
@@ -3865,7 +3851,7 @@ console.log("a is", a)  // a is 900`;
     					if_block2 = create_if_block_6();
     					if_block2.c();
     					transition_in(if_block2, 1);
-    					if_block2.m(div13, t39);
+    					if_block2.m(div12, t36);
     				} else {
     									transition_in(if_block2, 1);
     				}
@@ -3882,7 +3868,7 @@ console.log("a is", a)  // a is 900`;
     					if_block3 = create_if_block_5();
     					if_block3.c();
     					transition_in(if_block3, 1);
-    					if_block3.m(div13, t40);
+    					if_block3.m(div12, t37);
     				} else {
     									transition_in(if_block3, 1);
     				}
@@ -3899,7 +3885,7 @@ console.log("a is", a)  // a is 900`;
     					if_block4 = create_if_block_4();
     					if_block4.c();
     					transition_in(if_block4, 1);
-    					if_block4.m(div13, t41);
+    					if_block4.m(div12, t38);
     				} else {
     									transition_in(if_block4, 1);
     				}
@@ -3916,7 +3902,7 @@ console.log("a is", a)  // a is 900`;
     					if_block5 = create_if_block_3();
     					if_block5.c();
     					transition_in(if_block5, 1);
-    					if_block5.m(div13, t42);
+    					if_block5.m(div12, t39);
     				} else {
     									transition_in(if_block5, 1);
     				}
@@ -3933,7 +3919,7 @@ console.log("a is", a)  // a is 900`;
     					if_block6 = create_if_block_2();
     					if_block6.c();
     					transition_in(if_block6, 1);
-    					if_block6.m(div13, t43);
+    					if_block6.m(div12, t40);
     				} else {
     									transition_in(if_block6, 1);
     				}
@@ -3950,7 +3936,7 @@ console.log("a is", a)  // a is 900`;
     					if_block7 = create_if_block_1();
     					if_block7.c();
     					transition_in(if_block7, 1);
-    					if_block7.m(div13, t44);
+    					if_block7.m(div12, t41);
     				} else {
     									transition_in(if_block7, 1);
     				}
@@ -3967,7 +3953,7 @@ console.log("a is", a)  // a is 900`;
     					if_block8 = create_if_block$9();
     					if_block8.c();
     					transition_in(if_block8, 1);
-    					if_block8.m(div13, t45);
+    					if_block8.m(div12, t42);
     				} else {
     									transition_in(if_block8, 1);
     				}
@@ -4009,7 +3995,7 @@ console.log("a is", a)  // a is 900`;
 
     		d: function destroy(detaching) {
     			if (detaching) {
-    				detach(div15);
+    				detach(div14);
     			}
 
     			if (if_block0) if_block0.d();
@@ -4023,9 +4009,9 @@ console.log("a is", a)  // a is 900`;
     			if (if_block8) if_block8.d();
 
     			if (detaching) {
-    				detach(t46);
+    				detach(t43);
+    				detach(br22);
     				detach(br23);
-    				detach(br24);
     			}
 
     			run_all(dispose);
@@ -4039,7 +4025,7 @@ console.log("a is", a)  // a is 900`;
         var j = 0;
 
         function monad () {$$invalidate('j', j = 1); console.log(j);}    function monad2 () {$$invalidate('j', j = 2); console.log(j);}    function haskell () {$$invalidate('j', j = 3); console.log(j);}    function bugs () {$$invalidate('j', j = 4); console.log(j);}    function matrix () {$$invalidate('j', j = 5); console.log(j);}    function transduce () {$$invalidate('j', j = 6);} console.log(j);
-        function async () {$$invalidate('j', j = 7); console.log(j);}    function tog () {$$invalidate('j', j = 8); console.log(j);}    function home () {$$invalidate('j', j = 0); console.log(j);}
+        function tog () {$$invalidate('j', j = 8); console.log(j);}    function home () {$$invalidate('j', j = 0); console.log(j);}
         console.log("j is", j);
 
     	$$self.$$.update = ($$dirty = { j: 1 }) => {
@@ -4054,7 +4040,6 @@ console.log("a is", a)  // a is 900`;
     		bugs,
     		matrix,
     		transduce,
-    		async,
     		tog,
     		home
     	};

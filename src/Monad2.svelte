@@ -308,11 +308,14 @@ let visible = true;
      var A = countKeys(O,"c");
      console.log("M and A are", M, A);
      if (M === 14) {
+        M = -1;
+        N = -1;
        lock = false;
      }
    }
 
 </script>
+
 <br><br><br>
 {#if visible}
 	<div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>

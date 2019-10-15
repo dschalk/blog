@@ -85,11 +85,9 @@ button {
                         <br>
                         <li><div class='button'  on:click={monad}>A Simple Monad</div></li>
                         <br>
-                        <li><div class='button'  on:click={monad2}>Handling Promises in Monads</div></li>
+                        <li><div class='button'  on:click={monad2}>Asynchronous Monads</div></li>
                         <br>
-                        <li><div class='button'  on:click={transduce}>Asynchrous Functions</div></li>
-                        <br>
-                        <li><div class='button'  on:click={async}>Transducer Simulator</div></li>
+                        <li><div class='button'  on:click={transduce}>Transducer Simulator</div></li>
                         <br>
                         <li><div>MISCELANEOUS TOPICS</div></li>
                         <br>
