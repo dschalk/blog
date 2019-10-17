@@ -129,7 +129,7 @@ pre {
 }
 
 .button:hover {
-  font-size: 31px;
+  font-size: 22px;
   color: #FFCC00;
 }
 
@@ -154,7 +154,7 @@ pre {
     box-shadow:         0px 0px 15px 0px rgb(255, 215, 0);
     padding: 3px 10px 3px 10px;
     color: #000000;
-    font-size: 32px;
+    font-size: 22px;
     background-color: lightblue;
     border-color: #0000AA;
     border-radius: 10px;

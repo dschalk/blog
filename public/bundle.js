@@ -926,7 +926,7 @@ console.log("a is", a)  // a is 900`;
 
     const file$1 = "src/Monad2.svelte";
 
-    // (320:0) {#if visible}
+    // (383:0) {#if visible}
     function create_if_block$1(ctx) {
     	var div_1, div_1_transition, current;
 
@@ -938,7 +938,7 @@ console.log("a is", a)  // a is 900`;
     			set_style(div_1, "text-align", "center");
     			set_style(div_1, "color", "hsl(210, 90%, 90%)");
     			set_style(div_1, "font-size", "32px");
-    			add_location(div_1, file$1, 320, 1, 7286);
+    			add_location(div_1, file$1, 383, 1, 8925);
     		},
 
     		m: function mount(target, anchor) {
@@ -973,7 +973,7 @@ console.log("a is", a)  // a is 900`;
     }
 
     function create_fragment$1(ctx) {
-    	var br0, br1, br2, t0, t1, br3, br4, t2, button, t4, br5, br6, t5, span0, t7, span1, t8_value = ctx.O.c0 + "", t8, t9, t10_value = ctx.O.c1 + "", t10, t11, t12_value = ctx.O.c2 + "", t12, t13, t14_value = ctx.O.c3 + "", t14, t15, t16_value = ctx.O.c4 + "", t16, t17, t18_value = ctx.O.c5 + "", t18, t19, t20_value = ctx.O.c6 + "", t20, t21, t22_value = ctx.O.c7 + "", t22, t23, t24_value = ctx.O.c8 + "", t24, t25, t26_value = ctx.O.c9 + "", t26, t27, t28_value = ctx.O.c10 + "", t28, t29, t30_value = ctx.O.c11 + "", t30, t31, t32_value = ctx.O.c12 + "", t32, t33, t34_value = ctx.O.c13 + "", t34, t35, t36_value = ctx.O.c14 + "", t36, t37, br7, br8, t38, div0, t40, div1, t41_value = ctx.O.d0 + "", t41, t42, br9, t43, t44_value = ctx.O.d1 + "", t44, t45, br10, t46, t47_value = ctx.O.d2 + "", t47, t48, br11, t49, t50_value = ctx.O.d3 + "", t50, t51, br12, t52, t53_value = ctx.O.d4 + "", t53, t54, br13, t55, t56_value = ctx.O.d5 + "", t56, t57, br14, t58, t59_value = ctx.O.d6 + "", t59, t60, br15, t61, t62_value = ctx.O.d7 + "", t62, t63, br16, t64, t65_value = ctx.O.d8 + "", t65, t66, br17, t67, t68_value = ctx.O.d9 + "", t68, t69, br18, t70, t71_value = ctx.O.d10 + "", t71, t72, br19, t73, t74_value = ctx.O.d11 + "", t74, t75, br20, t76, t77_value = ctx.O.d12 + "", t77, t78, br21, t79, t80_value = ctx.O.d13 + "", t80, t81, br22, t82, t83_value = ctx.O.d14 + "", t83, t84, br23, t85, br24, t86, span2, t88, a, current, dispose;
+    	var br0, br1, br2, t0, t1, br3, br4, t2, button, t4, br5, br6, t5, span0, t7, span1, t8_value = ctx.O.c0 + "", t8, t9, t10_value = ctx.O.c1 + "", t10, t11, t12_value = ctx.O.c2 + "", t12, t13, t14_value = ctx.O.c3 + "", t14, t15, t16_value = ctx.O.c4 + "", t16, t17, t18_value = ctx.O.c5 + "", t18, t19, t20_value = ctx.O.c6 + "", t20, t21, t22_value = ctx.O.c7 + "", t22, t23, t24_value = ctx.O.c8 + "", t24, t25, t26_value = ctx.O.c9 + "", t26, t27, t28_value = ctx.O.c10 + "", t28, t29, t30_value = ctx.O.c11 + "", t30, t31, t32_value = ctx.O.c12 + "", t32, t33, t34_value = ctx.O.c13 + "", t34, t35, t36_value = ctx.O.c14 + "", t36, t37, br7, br8, t38, div0, t40, div1, t41_value = ctx.O.d0 + "", t41, t42, br9, t43, t44_value = ctx.O.d1 + "", t44, t45, br10, t46, t47_value = ctx.O.d2 + "", t47, t48, br11, t49, t50_value = ctx.O.d3 + "", t50, t51, br12, t52, t53_value = ctx.O.d4 + "", t53, t54, br13, t55, t56_value = ctx.O.d5 + "", t56, t57, br14, t58, t59_value = ctx.O.d6 + "", t59, t60, br15, t61, t62_value = ctx.O.d7 + "", t62, t63, br16, t64, t65_value = ctx.O.d8 + "", t65, t66, br17, t67, t68_value = ctx.O.d9 + "", t68, t69, br18, t70, t71_value = ctx.O.d10 + "", t71, t72, br19, t73, t74_value = ctx.O.d11 + "", t74, t75, br20, t76, t77_value = ctx.O.d12 + "", t77, t78, br21, t79, t80_value = ctx.O.d13 + "", t80, t81, br22, t82, t83_value = ctx.O.d14 + "", t83, t84, br23, t85, br24, t86, p0, pre0, t88, t89, pre1, t90, t91, p1, pre2, t93, t94, p2, t96, pre3, t97, t98, p3, pre4, t100, t101, p4, pre5, t103, t104, p5, t106, br25, t107, span2, t109, a, current, dispose;
 
     	var if_block =  create_if_block$1();
 
@@ -1097,47 +1097,94 @@ console.log("a is", a)  // a is 900`;
     			t85 = space();
     			br24 = element("br");
     			t86 = space();
+    			p0 = element("p");
+    			p0.textContent = "There are many ways to display the behavior of monads returned by Monad(). For this demonstration, a simple object named \"O\" was created and Monad was modified to make key-value pairs on O out of each monad's monad's name and array.\n";
+    			pre0 = element("pre");
+    			t88 = text(ctx.mon);
+    			t89 = text("\nThe statement \"Monad(['value\"], 'key\")(x => 'This is the ' + x)(x => x + '.')(halt)\" attaches the the resulting monad to O as follows:\n");
+    			pre1 = element("pre");
+    			t90 = text(ctx.statement);
+    			t91 = space();
+    			p1 = element("p");
+    			p1.textContent = "The demonstration procedure is initiated by calling factors().\n";
+    			pre2 = element("pre");
+    			t93 = text(ctx.fa);
+    			t94 = space();
+    			p2 = element("p");
+    			p2.textContent = "factor() is called once every second until lock === false; then, lock is set to true and fact() is called. The lock assures that the procedures initiated by fact() will complete before fact() is called again.";
+    			t96 = space();
+    			pre3 = element("pre");
+    			t97 = text(ctx.fac);
+    			t98 = space();
+    			p3 = element("p");
+    			p3.textContent = "Messages are sent to the Haskell WebSockets server requesting random numbers between 1 and the integer specified at the end of the request. randomR from the System.Random library produces a number which is sent back to the browser with prefix \"BE#$42\". Messages from the server are parsed and processed in socket.onmessage, which requests the random number's prime decomposition from worker_O.\n";
+    			pre4 = element("pre");
+    			t100 = text(ctx.onmessServer);
+    			t101 = space();
+    			p4 = element("p");
+    			p4.textContent = "Messages from the web worker are processed in worker_O.onmessage\n";
+    			pre5 = element("pre");
+    			t103 = text(ctx.onmessWorker);
+    			t104 = space();
+    			p5 = element("p");
+    			p5.textContent = "When M === 14 the process is complete. M and N are set to -1 and lock is set to false, allowing another possible call to random() to call rand().";
+    			t106 = space();
+    			br25 = element("br");
+    			t107 = space();
     			span2 = element("span");
     			span2.textContent = "The code for this Svelte application is at";
-    			t88 = space();
+    			t109 = space();
     			a = element("a");
     			a.textContent = "GitHub repository";
-    			add_location(br0, file$1, 318, 0, 7258);
-    			add_location(br1, file$1, 318, 4, 7262);
-    			add_location(br2, file$1, 318, 8, 7266);
-    			add_location(br3, file$1, 325, 0, 7447);
-    			add_location(br4, file$1, 325, 4, 7451);
-    			add_location(button, file$1, 326, 0, 7456);
-    			add_location(br5, file$1, 327, 0, 7512);
-    			add_location(br6, file$1, 327, 4, 7516);
+    			add_location(br0, file$1, 381, 0, 8897);
+    			add_location(br1, file$1, 381, 4, 8901);
+    			add_location(br2, file$1, 381, 8, 8905);
+    			add_location(br3, file$1, 388, 0, 9086);
+    			add_location(br4, file$1, 388, 4, 9090);
+    			add_location(button, file$1, 389, 0, 9095);
+    			add_location(br5, file$1, 390, 0, 9151);
+    			add_location(br6, file$1, 390, 4, 9155);
     			set_style(span0, "color", "#EEBBBB");
-    			add_location(span0, file$1, 328, 0, 7521);
-    			add_location(span1, file$1, 329, 0, 7617);
-    			add_location(br7, file$1, 330, 0, 7755);
-    			add_location(br8, file$1, 330, 4, 7759);
+    			add_location(span0, file$1, 391, 0, 9160);
+    			add_location(span1, file$1, 392, 0, 9256);
+    			add_location(br7, file$1, 393, 0, 9394);
+    			add_location(br8, file$1, 393, 4, 9398);
     			set_style(div0, "color", "#EEBBBB");
-    			add_location(div0, file$1, 331, 0, 7764);
-    			add_location(br9, file$1, 334, 0, 7850);
-    			add_location(br10, file$1, 336, 0, 7862);
-    			add_location(br11, file$1, 338, 0, 7874);
-    			add_location(br12, file$1, 340, 0, 7886);
-    			add_location(br13, file$1, 342, 0, 7898);
-    			add_location(br14, file$1, 344, 0, 7910);
-    			add_location(br15, file$1, 346, 0, 7922);
-    			add_location(br16, file$1, 348, 0, 7934);
-    			add_location(br17, file$1, 350, 0, 7946);
-    			add_location(br18, file$1, 352, 0, 7958);
-    			add_location(br19, file$1, 354, 0, 7971);
-    			add_location(br20, file$1, 356, 0, 7984);
-    			add_location(br21, file$1, 358, 0, 7997);
-    			add_location(br22, file$1, 360, 0, 8010);
-    			add_location(br23, file$1, 362, 0, 8023);
-    			add_location(div1, file$1, 332, 0, 7837);
-    			add_location(br24, file$1, 364, 0, 8035);
-    			add_location(span2, file$1, 365, 0, 8040);
+    			add_location(div0, file$1, 394, 0, 9403);
+    			add_location(br9, file$1, 397, 0, 9489);
+    			add_location(br10, file$1, 399, 0, 9501);
+    			add_location(br11, file$1, 401, 0, 9513);
+    			add_location(br12, file$1, 403, 0, 9525);
+    			add_location(br13, file$1, 405, 0, 9537);
+    			add_location(br14, file$1, 407, 0, 9549);
+    			add_location(br15, file$1, 409, 0, 9561);
+    			add_location(br16, file$1, 411, 0, 9573);
+    			add_location(br17, file$1, 413, 0, 9585);
+    			add_location(br18, file$1, 415, 0, 9597);
+    			add_location(br19, file$1, 417, 0, 9610);
+    			add_location(br20, file$1, 419, 0, 9623);
+    			add_location(br21, file$1, 421, 0, 9636);
+    			add_location(br22, file$1, 423, 0, 9649);
+    			add_location(br23, file$1, 425, 0, 9662);
+    			add_location(div1, file$1, 395, 0, 9476);
+    			add_location(br24, file$1, 427, 0, 9674);
+    			add_location(p0, file$1, 428, 0, 9679);
+    			add_location(pre0, file$1, 429, 0, 9916);
+    			add_location(pre1, file$1, 431, 0, 10068);
+    			add_location(p1, file$1, 432, 0, 10091);
+    			add_location(pre2, file$1, 433, 0, 10158);
+    			add_location(p2, file$1, 434, 0, 10174);
+    			add_location(pre3, file$1, 435, 0, 10392);
+    			add_location(p3, file$1, 436, 0, 10409);
+    			add_location(pre4, file$1, 437, 0, 10807);
+    			add_location(p4, file$1, 438, 0, 10833);
+    			add_location(pre5, file$1, 439, 0, 10902);
+    			add_location(p5, file$1, 440, 0, 10928);
+    			add_location(br25, file$1, 441, 0, 11083);
+    			add_location(span2, file$1, 442, 0, 11088);
     			attr(a, "href", "https://github.com/dschalk/blog/");
     			attr(a, "target", "_blank");
-    			add_location(a, file$1, 366, 0, 8098);
+    			add_location(a, file$1, 443, 0, 11146);
     			dispose = listen(button, "click", ctx.factors);
     		},
 
@@ -1261,8 +1308,36 @@ console.log("a is", a)  // a is 900`;
     			insert(target, t85, anchor);
     			insert(target, br24, anchor);
     			insert(target, t86, anchor);
+    			insert(target, p0, anchor);
+    			insert(target, pre0, anchor);
+    			append(pre0, t88);
+    			insert(target, t89, anchor);
+    			insert(target, pre1, anchor);
+    			append(pre1, t90);
+    			insert(target, t91, anchor);
+    			insert(target, p1, anchor);
+    			insert(target, pre2, anchor);
+    			append(pre2, t93);
+    			insert(target, t94, anchor);
+    			insert(target, p2, anchor);
+    			insert(target, t96, anchor);
+    			insert(target, pre3, anchor);
+    			append(pre3, t97);
+    			insert(target, t98, anchor);
+    			insert(target, p3, anchor);
+    			insert(target, pre4, anchor);
+    			append(pre4, t100);
+    			insert(target, t101, anchor);
+    			insert(target, p4, anchor);
+    			insert(target, pre5, anchor);
+    			append(pre5, t103);
+    			insert(target, t104, anchor);
+    			insert(target, p5, anchor);
+    			insert(target, t106, anchor);
+    			insert(target, br25, anchor);
+    			insert(target, t107, anchor);
     			insert(target, span2, anchor);
-    			insert(target, t88, anchor);
+    			insert(target, t109, anchor);
     			insert(target, a, anchor);
     			current = true;
     		},
@@ -1444,8 +1519,30 @@ console.log("a is", a)  // a is 900`;
     				detach(t85);
     				detach(br24);
     				detach(t86);
+    				detach(p0);
+    				detach(pre0);
+    				detach(t89);
+    				detach(pre1);
+    				detach(t91);
+    				detach(p1);
+    				detach(pre2);
+    				detach(t94);
+    				detach(p2);
+    				detach(t96);
+    				detach(pre3);
+    				detach(t98);
+    				detach(p3);
+    				detach(pre4);
+    				detach(t101);
+    				detach(p4);
+    				detach(pre5);
+    				detach(t104);
+    				detach(p5);
+    				detach(t106);
+    				detach(br25);
+    				detach(t107);
     				detach(span2);
-    				detach(t88);
+    				detach(t109);
     				detach(a);
     			}
 
@@ -1453,12 +1550,6 @@ console.log("a is", a)  // a is 900`;
     		}
     	};
     }
-
-    function countKeys(ob, s) {
-        var N = 0;
-        for(var key in ob) if (key.startsWith(s)) N+=1;
-        return N;
-     }
 
     function instance$1($$self, $$props, $$invalidate) {
 
@@ -1475,15 +1566,9 @@ console.log("a is", a)  // a is 900`;
          var ar = AR.slice();
          var name = name;
          O[name] = ar; $$invalidate('O', O);
-         console.log("In Monad -- O[name] is", O[name]);
          let x = O[name].pop();
          return run = (function run (x) {
-           if (x instanceof Promise) x.then(y =>
-             {if (y != undefined && typeof y !== "boolean" && y === y &&
-             y.name !== "f_" && y.name !== "halt" ) {
-             O[name] = O[name].concat(y); $$invalidate('O', O);
-           }});
-           else if (x != undefined && x === x  && x !== false
+         if (x != undefined && x === x  && x !== false
            && x.name !== "f_" && x.name !== "halt" ) {
              O[name] = O[name].concat(x); $$invalidate('O', O);
            }       function f_ (func) {
@@ -1560,14 +1645,13 @@ console.log("a is", a)  // a is 900`;
        }
 
        var fact = function fact () {
-          console.log("factors button was clicked O is", O);
-          socket.send("BE#$42,solo,3032896499791,1000000");
+          socket.send("BE#$42,solo,3032896499791,10000");
           socket.send("BE#$42,solo,3032896499791,1000");
           socket.send("BE#$42,solo,3032896499791,100000");
           socket.send("BE#$42,solo,3032896499791,100000");
           socket.send("BE#$42,solo,3032896499791,10000");
           socket.send("BE#$42,solo,3032896499791,100000");
-          socket.send("BE#$42,solo,3032896499791,100000");
+          socket.send("BE#$42,solo,3032896499791,1000000");
           socket.send("BE#$42,solo,3032896499791,1000");
           socket.send("BE#$42,solo,3032896499791,1000000");
           socket.send("BE#$42,solo,3032896499791,10000");
@@ -1577,11 +1661,9 @@ console.log("a is", a)  // a is 900`;
           socket.send("BE#$42,solo,3032896499791,10000");
           socket.send("BE#$42,solo,3032896499791,100000");
 
-         console.log(">>>>>>>>>> ************** >>>>>>>O is", O);
        };
 
        /*   if (countKeys(O) > 34) {
-             console.log("************ MORE THAN 34 ENTRIES IN O *************")
                setTimeout( () => {
                N = -1;
                M = -1;
@@ -1594,17 +1676,94 @@ console.log("a is", a)  // a is 900`;
        var worker_O = new Worker('worker_O.js');
 
        worker_O.onmessage = e => {
-         console.log("onmessage e in Monad2.svelte is", e);
          $$invalidate('M', M = M = M + 1); $$invalidate('M', M);
          Monad([e.data], "d"+M);
-         var A = countKeys(O,"c");
-         console.log("M and A are", M, A);
          if (M === 14) {
             $$invalidate('M', M = -1);
             $$invalidate('N', N = -1);
            $$invalidate('lock', lock = false);
          }
        };
+      var mon = `   var Monad = function Monad ( AR = [], name = "generic"  )  {
+       var f_, p, run;
+       var ar = AR.slice();
+       var name = name;
+       O[name] = ar;
+       let x = O[name].pop();
+       return run = (function run (x) {
+       if (x != undefined && x === x  && x !== false
+         && x.name !== "f_" && x.name !== "halt" ) {
+           O[name] = O[name].concat(x)
+         };
+         function f_ (func) {
+           if (func === 'halt' || func === 'S') return O[name];
+           else if (typeof func !== "function") p = func;
+           else if (x instanceof Promise) p = x.then(v => func(v));
+           else p = func(x);
+           return run(p);
+         };
+         return f_;
+       })(x);
+    } `;
+
+      var statement = `    Monad(["value"], "key")(x => "This is the " + x)(x => x + ".")(halt)
+    O.key   // ["value", "This is the value", "This is the value."]`;
+
+      var fa = `    function factors () {
+     if (lock === false) {
+        lock = true;
+        clearOb(O);
+        N = -1;
+        M = -1;
+        Q = -1;
+        groupDelete(O, "c");
+        groupDelete(O, "d");
+        fact();
+     }
+     else {
+        setTimeout(()=> {
+        factors()
+     },1000)
+     }
+  }`;
+
+    var fac = `  var fact = function fact () {
+   socket.send("BE#$42,solo,3032896499791,10000")
+   socket.send("BE#$42,solo,3032896499791,1000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+   socket.send("BE#$42,solo,3032896499791,10000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+   socket.send("BE#$42,solo,3032896499791,1000000")
+   socket.send("BE#$42,solo,3032896499791,1000")
+   socket.send("BE#$42,solo,3032896499791,1000000")
+   socket.send("BE#$42,solo,3032896499791,10000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+   socket.send("BE#$42,solo,3032896499791,10000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+
+}`;
+
+      var onmessServer = `  ar v = e.data.split(',');
+  if (v[0] === "BE#$42") {
+    Q = Q + 1;
+    Monad([v[3]], "c"+Q);
+    worker_O.postMessage([v[3]])
+  }
+}  `;
+
+      var onmessWorker = `    worker_O.onmessage = e => {
+     M = M = M + 1;
+     Monad([e.data], "d"+M);
+     if (M === 14) {
+        M = -1;
+        N = -1;
+       lock = false;
+     }
+   } `;
+
     	$$self.$$.update = ($$dirty = { O: 1, M: 1, N: 1, T: 1, Q: 1, lock: 1 }) => {
     		if ($$dirty.O) ;
     		if ($$dirty.M) ;
@@ -1614,7 +1773,16 @@ console.log("a is", a)  // a is 900`;
     		if ($$dirty.lock) ;
     	};
 
-    	return { O, factors };
+    	return {
+    		O,
+    		factors,
+    		mon,
+    		statement,
+    		fa,
+    		fac,
+    		onmessServer,
+    		onmessWorker
+    	};
     }
 
     class Monad2 extends SvelteComponentDev {
@@ -1624,12 +1792,431 @@ console.log("a is", a)  // a is 900`;
     	}
     }
 
+    /* src/Monad3.svelte generated by Svelte v3.9.1 */
+
+    const file$2 = "src/Monad3.svelte";
+
+    // (205:0) {#if visible}
+    function create_if_block$2(ctx) {
+    	var div_1, br0, br1, t, div_1_transition, current;
+
+    	return {
+    		c: function create() {
+    			div_1 = element("div");
+    			br0 = element("br");
+    			br1 = element("br");
+    			t = text("\nHandling Promises With Monads");
+    			add_location(br0, file$2, 206, 1, 5203);
+    			add_location(br1, file$2, 206, 5, 5207);
+    			set_style(div_1, "font-family", "Times New Roman");
+    			set_style(div_1, "text-align", "center");
+    			set_style(div_1, "color", "hsl(210, 90%, 90%)");
+    			set_style(div_1, "font-size", "32px");
+    			add_location(div_1, file$2, 205, 1, 5075);
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert(target, div_1, anchor);
+    			append(div_1, br0);
+    			append(div_1, br1);
+    			append(div_1, t);
+    			current = true;
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			add_render_callback(() => {
+    				if (!div_1_transition) div_1_transition = create_bidirectional_transition(div_1, fade, {}, true);
+    				div_1_transition.run(1);
+    			});
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			if (!div_1_transition) div_1_transition = create_bidirectional_transition(div_1, fade, {}, false);
+    			div_1_transition.run(0);
+
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(div_1);
+    				if (div_1_transition) div_1_transition.end();
+    			}
+    		}
+    	};
+    }
+
+    function create_fragment$2(ctx) {
+    	var t0, br0, t1, h20, t2, t3_value = ctx.O.test + "", t3, t4, h21, t5, t6_value = ctx.O.test_2 + "", t6, t7, p0, t9, pre0, t10, t11, p1, t13, pre1, t14, t15, p2, t17, pre2, t18, t19, br1, t20, button, t22, h22, t23, t24_value = ctx.O.test + "", t24, t25, h23, t26, t27_value = ctx.O.test_2 + "", t27, t28, br2, t29, span0, t31, span1, t33, span2, current, dispose;
+
+    	var if_block =  create_if_block$2();
+
+    	return {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			t0 = space();
+    			br0 = element("br");
+    			t1 = space();
+    			h20 = element("h2");
+    			t2 = text("O.test is ");
+    			t3 = text(t3_value);
+    			t4 = space();
+    			h21 = element("h2");
+    			t5 = text("O.test_2 is ");
+    			t6 = text(t6_value);
+    			t7 = space();
+    			p0 = element("p");
+    			p0.textContent = "Here's the modified monad constructor:";
+    			t9 = space();
+    			pre0 = element("pre");
+    			t10 = text(ctx.mon);
+    			t11 = space();
+    			p1 = element("p");
+    			p1.textContent = "After monads encounter \"halt\", they can use the function resume() to continue processing data where they left off and (2) they can branch off in new monads created by branch(). Here are the definitions:";
+    			t13 = space();
+    			pre1 = element("pre");
+    			t14 = text(ctx.fs);
+    			t15 = space();
+    			p2 = element("p");
+    			p2.textContent = "This is the statement that produces the observed results when \"START\" is clicked.";
+    			t17 = space();
+    			pre2 = element("pre");
+    			t18 = text(ctx.code);
+    			t19 = space();
+    			br1 = element("br");
+    			t20 = space();
+    			button = element("button");
+    			button.textContent = "START";
+    			t22 = space();
+    			h22 = element("h2");
+    			t23 = text("O.test is ");
+    			t24 = text(t24_value);
+    			t25 = space();
+    			h23 = element("h2");
+    			t26 = text("O.test_2 is ");
+    			t27 = text(t27_value);
+    			t28 = space();
+    			br2 = element("br");
+    			t29 = space();
+    			span0 = element("span");
+    			span0.textContent = "Notice the statement:";
+    			t31 = space();
+    			span1 = element("span");
+    			span1.textContent = "()=>addP(O.test_2[2])(O.test_2[1])";
+    			t33 = space();
+    			span2 = element("span");
+    			span2.textContent = ". Promises in chains of ES6 Promises can't access previous Promise resolution values. One way to get access to prior resolution values is to encapsulate Promise chains in Monad(). This also makes it convenient to resume or branch from terminated computation chains; and this can be accomplished without naming the chains.";
+    			add_location(br0, file$2, 210, 0, 5256);
+    			add_location(h20, file$2, 211, 0, 5261);
+    			add_location(h21, file$2, 212, 0, 5289);
+    			add_location(p0, file$2, 213, 0, 5321);
+    			add_location(pre0, file$2, 214, 0, 5369);
+    			add_location(p1, file$2, 215, 0, 5386);
+    			add_location(pre1, file$2, 216, 0, 5597);
+    			add_location(p2, file$2, 217, 0, 5613);
+    			add_location(pre2, file$2, 218, 0, 5704);
+    			add_location(br1, file$2, 219, 0, 5722);
+    			add_location(button, file$2, 220, 0, 5727);
+    			add_location(h22, file$2, 222, 0, 5770);
+    			add_location(h23, file$2, 223, 0, 5798);
+    			add_location(br2, file$2, 224, 0, 5830);
+    			attr(span0, "class", "tao");
+    			add_location(span0, file$2, 225, 0, 5835);
+    			set_style(span1, "color", "#AAFFAA");
+    			add_location(span1, file$2, 226, 0, 5886);
+    			add_location(span2, file$2, 227, 0, 5959);
+    			dispose = listen(button, "click", ctx.start);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert(target, t0, anchor);
+    			insert(target, br0, anchor);
+    			insert(target, t1, anchor);
+    			insert(target, h20, anchor);
+    			append(h20, t2);
+    			append(h20, t3);
+    			insert(target, t4, anchor);
+    			insert(target, h21, anchor);
+    			append(h21, t5);
+    			append(h21, t6);
+    			insert(target, t7, anchor);
+    			insert(target, p0, anchor);
+    			insert(target, t9, anchor);
+    			insert(target, pre0, anchor);
+    			append(pre0, t10);
+    			insert(target, t11, anchor);
+    			insert(target, p1, anchor);
+    			insert(target, t13, anchor);
+    			insert(target, pre1, anchor);
+    			append(pre1, t14);
+    			insert(target, t15, anchor);
+    			insert(target, p2, anchor);
+    			insert(target, t17, anchor);
+    			insert(target, pre2, anchor);
+    			append(pre2, t18);
+    			insert(target, t19, anchor);
+    			insert(target, br1, anchor);
+    			insert(target, t20, anchor);
+    			insert(target, button, anchor);
+    			insert(target, t22, anchor);
+    			insert(target, h22, anchor);
+    			append(h22, t23);
+    			append(h22, t24);
+    			insert(target, t25, anchor);
+    			insert(target, h23, anchor);
+    			append(h23, t26);
+    			append(h23, t27);
+    			insert(target, t28, anchor);
+    			insert(target, br2, anchor);
+    			insert(target, t29, anchor);
+    			insert(target, span0, anchor);
+    			insert(target, t31, anchor);
+    			insert(target, span1, anchor);
+    			insert(target, t33, anchor);
+    			insert(target, span2, anchor);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			{
+    				if (!if_block) {
+    					if_block = create_if_block$2();
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(t0.parentNode, t0);
+    				} else {
+    									transition_in(if_block, 1);
+    				}
+    			}
+
+    			if ((!current || changed.O) && t3_value !== (t3_value = ctx.O.test + "")) {
+    				set_data(t3, t3_value);
+    			}
+
+    			if ((!current || changed.O) && t6_value !== (t6_value = ctx.O.test_2 + "")) {
+    				set_data(t6, t6_value);
+    			}
+
+    			if ((!current || changed.O) && t24_value !== (t24_value = ctx.O.test + "")) {
+    				set_data(t24, t24_value);
+    			}
+
+    			if ((!current || changed.O) && t27_value !== (t27_value = ctx.O.test_2 + "")) {
+    				set_data(t27, t27_value);
+    			}
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(if_block);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (if_block) if_block.d(detaching);
+
+    			if (detaching) {
+    				detach(t0);
+    				detach(br0);
+    				detach(t1);
+    				detach(h20);
+    				detach(t4);
+    				detach(h21);
+    				detach(t7);
+    				detach(p0);
+    				detach(t9);
+    				detach(pre0);
+    				detach(t11);
+    				detach(p1);
+    				detach(t13);
+    				detach(pre1);
+    				detach(t15);
+    				detach(p2);
+    				detach(t17);
+    				detach(pre2);
+    				detach(t19);
+    				detach(br1);
+    				detach(t20);
+    				detach(button);
+    				detach(t22);
+    				detach(h22);
+    				detach(t25);
+    				detach(h23);
+    				detach(t28);
+    				detach(br2);
+    				detach(t29);
+    				detach(span0);
+    				detach(t31);
+    				detach(span1);
+    				detach(t33);
+    				detach(span2);
+    			}
+
+    			dispose();
+    		}
+    	};
+    }
+
+    async function squareP (x) {
+        await wait$1(1200);
+        return x*x;
+      }
+
+    async function cubeP (x) {
+        await wait$1(1200);
+        return x*x*x;
+      }
+
+    async function sqrtP (x) {
+        await wait$1(1200);
+        return x**(1/2)
+      }
+
+    function wait$1(ms) {
+         return new Promise(r => setTimeout(r, ms));
+      }
+
+    function instance$2($$self, $$props, $$invalidate) {
+
+        var divP = a => async b => {
+          await wait$1 (1000);
+          return b/a;
+        };
+
+        var addP = x => async y => {
+          await wait$1(1000);
+          return x + y;
+        };
+
+        var multP = x => async y => {
+          await wait$1(1200);
+          return x * y;
+        };
+
+       var O = new Object();
+
+       var Monad = function Monad ( AR = [], name = "generic"  )  {
+         var p, run;
+         var ar = AR.slice();
+         var name = name;
+         O[name] = ar; $$invalidate('O', O);
+         let x = O[name].pop();
+         return run = (function run (x) {
+           if (x instanceof Promise) x.then(y => {
+             console.log(x, "is a Promise");
+             if (y != undefined && y == y && y.name !== "f_") {
+             O[name] = O[name].concat(y); $$invalidate('O', O);
+             }
+           });
+           if (!(x instanceof Promise)) {
+              console.log(x, "is not a promise");
+              if (x != undefined && x == x) {
+                 O[name] = O[name].concat(x); $$invalidate('O', O);
+              }
+           }
+           function f_ (func) {
+             if (func === 'halt' || func === 'S') return O[name].slice();
+             else if (typeof func !== "function") p = func;
+             else if (x instanceof Promise) p = x.then(v => func(v));
+             else p = func(x);
+             return run(p);
+           }       return f_;
+         })(x);
+      };
+
+       var branch = function branch (s,s2) {return Monad(O[s].slice(-1)  , s2)};
+       var resume = function resume (s) {return Monad(O[s], s)};
+
+       Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))
+       (() => branch("test", "test_2")(sqrtP)(cubeP)(()=>addP(O.test_2[2])
+       (O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))
+       (() => resume("test")(multP(4))(addP(6))));
+
+       setTimeout(()=>console.log("O is", O),15000);
+
+    var mon = `   var Monad = function Monad ( AR = [], name = "generic"  )  {
+     var f_, p, run;
+     var ar = AR.slice();
+     var name = name;
+     O[name] = ar;
+     let x = O[name].pop();
+     return run = (function run (x) {
+       if (x instanceof Promise) x.then(y => {
+         console.log(x, "is a Promise");
+         if (y != undefined && y == y && y.name !== "f_") {
+         O[name] = O[name].concat(y)
+         }
+       })
+       if (!(x instanceof Promise)) {
+          console.log(x, "is not a promise");
+          if (x != undefined && x == x) {
+             O[name] = O[name].concat(x)
+          }
+       }
+       function f_ (func) {
+         if (func === 'halt' || func === 'S') return O[name].slice();
+         else if (typeof func !== "function") p = func;
+         else if (x instanceof Promise) p = x.then(v => func(v));
+         else p = func(x);
+         return run(p);
+       };
+       return f_;
+     })(x);
+  }`;
+
+      var start = function start () {
+         $$invalidate('O', O = {});
+         Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))
+         (() => branch("test", "test_2")(sqrtP)(cubeP)(()=>addP(O.test_2[2])
+         (O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))
+         (() => resume("test")(multP(4))(addP(6))));
+      };
+
+    var fs = `   var branch = function branch (s,s2) {return Monad(O[s].slice(-1)  , s2)}
+   var resume = function resume (s) {return Monad(O[s], s)}`;
+    var code = `    Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))
+     (() => branch("test", "test_2")(sqrtP)(cubeP)(()=>addP(O.test_2[2])
+     (O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))
+     (() => resume("test")(multP(4))(addP(6))))`;
+
+    	$$self.$$.update = ($$dirty = { O: 1, M: 1, N: 1, T: 1, Q: 1, lock: 1 }) => {
+    		if ($$dirty.O) ;
+    		if ($$dirty.M) ;
+    		if ($$dirty.N) ;
+    		if ($$dirty.T) ;
+    		if ($$dirty.Q) ;
+    		if ($$dirty.lock) ;
+    	};
+
+    	return { O, mon, start, fs, code };
+    }
+
+    class Monad3 extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$2, create_fragment$2, safe_not_equal, []);
+    	}
+    }
+
     /* src/Haskell.svelte generated by Svelte v3.9.1 */
 
-    const file$2 = "src/Haskell.svelte";
+    const file$3 = "src/Haskell.svelte";
 
     // (30:0) {#if visible}
-    function create_if_block$2(ctx) {
+    function create_if_block$3(ctx) {
     	var div, br0, br1, t, div_transition, current;
 
     	return {
@@ -1638,13 +2225,13 @@ console.log("a is", a)  // a is 900`;
     			br0 = element("br");
     			br1 = element("br");
     			t = text("\nHASKELL TUTORIAL SUPPLEMENT");
-    			add_location(br0, file$2, 31, 1, 721);
-    			add_location(br1, file$2, 31, 5, 725);
+    			add_location(br0, file$3, 31, 1, 721);
+    			add_location(br1, file$3, 31, 5, 725);
     			set_style(div, "font-family", "Times New Roman");
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file$2, 30, 1, 594);
+    			add_location(div, file$3, 30, 1, 594);
     		},
 
     		m: function mount(target, anchor) {
@@ -1681,10 +2268,10 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function create_fragment$2(ctx) {
+    function create_fragment$3(ctx) {
     	var t0, p0, t2, p1, t4, p2, t6, p3, t8, span0, t10, a0, t12, br0, t13, pre, t15, p4, t17, span1, t19, a1, t21, br1, t22, br2, t23, span2, t25, a2, t27, span3, t29, a3, current;
 
-    	var if_block =  create_if_block$2();
+    	var if_block =  create_if_block$3();
 
     	return {
     		c: function create() {
@@ -1737,36 +2324,36 @@ console.log("a is", a)  // a is 900`;
     			t29 = space();
     			a3 = element("a");
     			a3.textContent = "Top level mutable state";
-    			add_location(p0, file$2, 36, 0, 773);
-    			add_location(p1, file$2, 37, 0, 1156);
+    			add_location(p0, file$3, 36, 0, 773);
+    			add_location(p1, file$3, 37, 0, 1156);
     			attr(p2, "id", "large");
     			attr(p2, "class", "svelte-hw6ke3");
-    			add_location(p2, file$2, 38, 0, 1603);
-    			add_location(p3, file$2, 39, 0, 1637);
+    			add_location(p2, file$3, 38, 0, 1603);
+    			add_location(p3, file$3, 39, 0, 1637);
     			attr(span0, "class", "tao");
-    			add_location(span0, file$2, 40, 0, 1924);
+    			add_location(span0, file$3, 40, 0, 1924);
     			attr(a0, "href", "http://hackage.haskell.org/package/base-4.12.0.0/docs/Unsafe-Coerce.html");
     			attr(a0, "target", "_blank");
-    			add_location(a0, file$2, 41, 0, 2042);
-    			add_location(br0, file$2, 42, 0, 2163);
-    			add_location(pre, file$2, 43, 0, 2170);
-    			add_location(p4, file$2, 44, 0, 2197);
+    			add_location(a0, file$3, 41, 0, 2042);
+    			add_location(br0, file$3, 42, 0, 2163);
+    			add_location(pre, file$3, 43, 0, 2170);
+    			add_location(p4, file$3, 44, 0, 2197);
     			attr(span1, "class", "tao");
-    			add_location(span1, file$2, 45, 0, 2759);
+    			add_location(span1, file$3, 45, 0, 2759);
     			attr(a1, "href", "http://hackage.haskell.org/package/base-4.12.0.0/docs/src/GHC.IO.Unsafe.html");
     			attr(a1, "target", "_blank");
-    			add_location(a1, file$2, 46, 0, 2815);
-    			add_location(br1, file$2, 47, 0, 2942);
-    			add_location(br2, file$2, 48, 0, 2949);
+    			add_location(a1, file$3, 46, 0, 2815);
+    			add_location(br1, file$3, 47, 0, 2942);
+    			add_location(br2, file$3, 48, 0, 2949);
     			attr(span2, "class", "tao");
-    			add_location(span2, file$2, 49, 0, 2956);
+    			add_location(span2, file$3, 49, 0, 2956);
     			attr(a2, "href", "https://wiki.haskell.org/Unsafe_functions");
     			attr(a2, "target", "_blank");
-    			add_location(a2, file$2, 50, 0, 3065);
-    			add_location(span3, file$2, 51, 0, 3166);
+    			add_location(a2, file$3, 50, 0, 3065);
+    			add_location(span3, file$3, 51, 0, 3166);
     			attr(a3, "href", "https://wiki.haskell.org/Top_level_mutable_state");
     			attr(a3, "target", "_blank");
-    			add_location(a3, file$2, 52, 0, 3254);
+    			add_location(a3, file$3, 52, 0, 3254);
     		},
 
     		l: function claim(nodes) {
@@ -1815,7 +2402,7 @@ console.log("a is", a)  // a is 900`;
     		p: function update(changed, ctx) {
     			{
     				if (!if_block) {
-    					if_block = create_if_block$2();
+    					if_block = create_if_block$3();
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(t0.parentNode, t0);
@@ -1879,7 +2466,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function instance$2($$self) {
+    function instance$3($$self) {
 
     	return {};
     }
@@ -1887,16 +2474,16 @@ console.log("a is", a)  // a is 900`;
     class Haskell extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$2, create_fragment$2, safe_not_equal, []);
+    		init(this, options, instance$3, create_fragment$3, safe_not_equal, []);
     	}
     }
 
     /* src/Bugs.svelte generated by Svelte v3.9.1 */
 
-    const file$3 = "src/Bugs.svelte";
+    const file$4 = "src/Bugs.svelte";
 
     // (12:0) {#if visible}
-    function create_if_block$3(ctx) {
+    function create_if_block$4(ctx) {
     	var div, br0, br1, t, div_transition, current;
 
     	return {
@@ -1905,13 +2492,13 @@ console.log("a is", a)  // a is 900`;
     			br0 = element("br");
     			br1 = element("br");
     			t = text("\nCOMPLETE ERADICATION OF BED BUGS");
-    			add_location(br0, file$3, 13, 1, 522);
-    			add_location(br1, file$3, 13, 5, 526);
+    			add_location(br0, file$4, 13, 1, 522);
+    			add_location(br1, file$4, 13, 5, 526);
     			set_style(div, "font-family", "Times New Roman");
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file$3, 12, 1, 394);
+    			add_location(div, file$4, 12, 1, 394);
     		},
 
     		m: function mount(target, anchor) {
@@ -1948,10 +2535,10 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function create_fragment$3(ctx) {
+    function create_fragment$4(ctx) {
     	var t0, p0, t2, p1, t4, p2, t6, p3, t8, p4, t10, p5, t12, p6, t14, p7, t16, p8, t18, p9, t20, p10, t22, p11, current;
 
-    	var if_block =  create_if_block$3();
+    	var if_block =  create_if_block$4();
 
     	return {
     		c: function create() {
@@ -1992,18 +2579,18 @@ console.log("a is", a)  // a is 900`;
     			t22 = space();
     			p11 = element("p");
     			p11.textContent = "Heat treatment is the current state of the art. It costs thousands of dollars and sometimes doesn't work. Google searches result in nothing but misinformation so I felt obliged to publish this. I urge the reader to spread the word wherever it might be noticed by a bed bug victim.";
-    			add_location(p0, file$3, 17, 0, 578);
-    			add_location(p1, file$3, 18, 0, 787);
-    			add_location(p2, file$3, 19, 0, 1150);
-    			add_location(p3, file$3, 20, 0, 1498);
-    			add_location(p4, file$3, 21, 0, 1799);
-    			add_location(p5, file$3, 22, 0, 2159);
-    			add_location(p6, file$3, 23, 0, 2418);
-    			add_location(p7, file$3, 24, 0, 2862);
-    			add_location(p8, file$3, 25, 0, 3320);
-    			add_location(p9, file$3, 26, 0, 3646);
-    			add_location(p10, file$3, 27, 0, 3802);
-    			add_location(p11, file$3, 28, 0, 4189);
+    			add_location(p0, file$4, 17, 0, 578);
+    			add_location(p1, file$4, 18, 0, 787);
+    			add_location(p2, file$4, 19, 0, 1150);
+    			add_location(p3, file$4, 20, 0, 1498);
+    			add_location(p4, file$4, 21, 0, 1799);
+    			add_location(p5, file$4, 22, 0, 2159);
+    			add_location(p6, file$4, 23, 0, 2418);
+    			add_location(p7, file$4, 24, 0, 2862);
+    			add_location(p8, file$4, 25, 0, 3320);
+    			add_location(p9, file$4, 26, 0, 3646);
+    			add_location(p10, file$4, 27, 0, 3802);
+    			add_location(p11, file$4, 28, 0, 4189);
     		},
 
     		l: function claim(nodes) {
@@ -2042,7 +2629,7 @@ console.log("a is", a)  // a is 900`;
     		p: function update(changed, ctx) {
     			{
     				if (!if_block) {
-    					if_block = create_if_block$3();
+    					if_block = create_if_block$4();
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(t0.parentNode, t0);
@@ -2096,7 +2683,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function instance$3($$self) {
+    function instance$4($$self) {
 
     	return {};
     }
@@ -2104,16 +2691,16 @@ console.log("a is", a)  // a is 900`;
     class Bugs extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$3, create_fragment$3, safe_not_equal, []);
+    		init(this, options, instance$4, create_fragment$4, safe_not_equal, []);
     	}
     }
 
     /* src/Matrix.svelte generated by Svelte v3.9.1 */
 
-    const file$4 = "src/Matrix.svelte";
+    const file$5 = "src/Matrix.svelte";
 
     // (153:0) {#if visible}
-    function create_if_block$4(ctx) {
+    function create_if_block$5(ctx) {
     	var div, br0, br1, t, div_transition, current;
 
     	return {
@@ -2122,13 +2709,13 @@ console.log("a is", a)  // a is 900`;
     			br0 = element("br");
     			br1 = element("br");
     			t = text("\n A LITTLE SVELTE MODULE");
-    			add_location(br0, file$4, 154, 1, 4325);
-    			add_location(br1, file$4, 154, 5, 4329);
+    			add_location(br0, file$5, 154, 1, 4325);
+    			add_location(br1, file$5, 154, 5, 4329);
     			set_style(div, "font-family", "Times New Roman");
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file$4, 153, 1, 4197);
+    			add_location(div, file$5, 153, 1, 4197);
     		},
 
     		m: function mount(target, anchor) {
@@ -2165,10 +2752,10 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function create_fragment$4(ctx) {
+    function create_fragment$5(ctx) {
     	var t0, div3, div1, p0, t2, p1, t4, br0, t5, br1, t6, button0, t8, br2, t9, br3, t10, div0, button1, t11, t12, br4, t13, button2, t15, br5, t16, br6, t17, div2, br7, br8, br9, br10, br11, br12, br13, br14, br15, br16, t18, button3, t19_value = ctx.cache[ctx.j][0] + "", t19, t20, button4, t21_value = ctx.cache[ctx.j][1] + "", t21, t22, button5, t23_value = ctx.cache[ctx.j][2] + "", t23, t24, br17, t25, br18, t26, button6, t27_value = ctx.cache[ctx.j][3] + "", t27, t28, button7, t29_value = ctx.cache[ctx.j][4] + "", t29, t30, button8, t31_value = ctx.cache[ctx.j][5] + "", t31, t32, br19, t33, br20, t34, button9, t35_value = ctx.cache[ctx.j][6] + "", t35, t36, button10, t37_value = ctx.cache[ctx.j][7] + "", t37, t38, button11, t39_value = ctx.cache[ctx.j][8] + "", t39, t40, p2, t42, pre0, t43, t44, p3, t46, pre1, t47, t48, p4, current, dispose;
 
-    	var if_block =  create_if_block$4();
+    	var if_block =  create_if_block$5();
 
     	return {
     		c: function create() {
@@ -2267,65 +2854,65 @@ console.log("a is", a)  // a is 900`;
     			t48 = space();
     			p4 = element("p");
     			p4.textContent = "Is Svelte awesome, or what?";
-    			add_location(p0, file$4, 161, 0, 4496);
-    			add_location(p1, file$4, 162, 0, 4675);
-    			add_location(br0, file$4, 164, 0, 4869);
-    			add_location(br1, file$4, 165, 0, 4874);
-    			add_location(button0, file$4, 166, 1, 4880);
-    			add_location(br2, file$4, 169, 0, 4923);
-    			add_location(br3, file$4, 170, 0, 4928);
-    			add_location(button1, file$4, 171, 33, 4966);
+    			add_location(p0, file$5, 161, 0, 4496);
+    			add_location(p1, file$5, 162, 0, 4675);
+    			add_location(br0, file$5, 164, 0, 4869);
+    			add_location(br1, file$5, 165, 0, 4874);
+    			add_location(button0, file$5, 166, 1, 4880);
+    			add_location(br2, file$5, 169, 0, 4923);
+    			add_location(br3, file$5, 170, 0, 4928);
+    			add_location(button1, file$5, 171, 33, 4966);
     			set_style(div0, "text-indent", "20px");
-    			add_location(div0, file$4, 171, 3, 4936);
-    			add_location(br4, file$4, 172, 0, 4995);
-    			add_location(button2, file$4, 173, 1, 5001);
-    			add_location(br5, file$4, 176, 1, 5051);
-    			add_location(br6, file$4, 177, 1, 5057);
+    			add_location(div0, file$5, 171, 3, 4936);
+    			add_location(br4, file$5, 172, 0, 4995);
+    			add_location(button2, file$5, 173, 1, 5001);
+    			add_location(br5, file$5, 176, 1, 5051);
+    			add_location(br6, file$5, 177, 1, 5057);
     			set_style(div1, "margin-Left", "2%");
     			set_style(div1, "width", "50%");
-    			add_location(div1, file$4, 159, 24, 4450);
-    			add_location(br7, file$4, 180, 0, 5159);
-    			add_location(br8, file$4, 180, 4, 5163);
-    			add_location(br9, file$4, 180, 8, 5167);
-    			add_location(br10, file$4, 180, 12, 5171);
-    			add_location(br11, file$4, 180, 16, 5175);
-    			add_location(br12, file$4, 180, 20, 5179);
-    			add_location(br13, file$4, 180, 24, 5183);
-    			add_location(br14, file$4, 180, 28, 5187);
-    			add_location(br15, file$4, 180, 32, 5191);
-    			add_location(br16, file$4, 180, 36, 5195);
+    			add_location(div1, file$5, 159, 24, 4450);
+    			add_location(br7, file$5, 180, 0, 5159);
+    			add_location(br8, file$5, 180, 4, 5163);
+    			add_location(br9, file$5, 180, 8, 5167);
+    			add_location(br10, file$5, 180, 12, 5171);
+    			add_location(br11, file$5, 180, 16, 5175);
+    			add_location(br12, file$5, 180, 20, 5179);
+    			add_location(br13, file$5, 180, 24, 5183);
+    			add_location(br14, file$5, 180, 28, 5187);
+    			add_location(br15, file$5, 180, 32, 5191);
+    			add_location(br16, file$5, 180, 36, 5195);
     			attr(button3, "id", "m0");
-    			add_location(button3, file$4, 181, 0, 5200);
+    			add_location(button3, file$5, 181, 0, 5200);
     			attr(button4, "id", "m1");
-    			add_location(button4, file$4, 182, 0, 5262);
+    			add_location(button4, file$5, 182, 0, 5262);
     			attr(button5, "id", "m2");
-    			add_location(button5, file$4, 183, 0, 5324);
-    			add_location(br17, file$4, 184, 0, 5386);
-    			add_location(br18, file$4, 185, 0, 5391);
+    			add_location(button5, file$5, 183, 0, 5324);
+    			add_location(br17, file$5, 184, 0, 5386);
+    			add_location(br18, file$5, 185, 0, 5391);
     			attr(button6, "id", "m3");
-    			add_location(button6, file$4, 186, 0, 5396);
+    			add_location(button6, file$5, 186, 0, 5396);
     			attr(button7, "id", "m4");
-    			add_location(button7, file$4, 187, 0, 5458);
+    			add_location(button7, file$5, 187, 0, 5458);
     			attr(button8, "id", "m5");
-    			add_location(button8, file$4, 188, 0, 5520);
-    			add_location(br19, file$4, 189, 0, 5582);
-    			add_location(br20, file$4, 190, 0, 5587);
+    			add_location(button8, file$5, 188, 0, 5520);
+    			add_location(br19, file$5, 189, 0, 5582);
+    			add_location(br20, file$5, 190, 0, 5587);
     			attr(button9, "id", "m6");
-    			add_location(button9, file$4, 191, 0, 5592);
+    			add_location(button9, file$5, 191, 0, 5592);
     			attr(button10, "id", "m7");
-    			add_location(button10, file$4, 192, 0, 5654);
+    			add_location(button10, file$5, 192, 0, 5654);
     			attr(button11, "id", "m8");
-    			add_location(button11, file$4, 193, 0, 5716);
+    			add_location(button11, file$5, 193, 0, 5716);
     			set_style(div2, "marginRight", "2%");
     			set_style(div2, "width", "50%");
-    			add_location(div2, file$4, 179, 21, 5114);
+    			add_location(div2, file$5, 179, 21, 5114);
     			set_style(div3, "display", "flex");
-    			add_location(div3, file$4, 158, 24, 4396);
-    			add_location(p2, file$4, 196, 0, 5792);
-    			add_location(pre0, file$4, 197, 0, 5989);
-    			add_location(p3, file$4, 198, 0, 6007);
-    			add_location(pre1, file$4, 199, 0, 6043);
-    			add_location(p4, file$4, 200, 0, 6061);
+    			add_location(div3, file$5, 158, 24, 4396);
+    			add_location(p2, file$5, 196, 0, 5792);
+    			add_location(pre0, file$5, 197, 0, 5989);
+    			add_location(p3, file$5, 198, 0, 6007);
+    			add_location(pre1, file$5, 199, 0, 6043);
+    			add_location(p4, file$5, 200, 0, 6061);
 
     			dispose = [
     				listen(button0, "click", ctx.back),
@@ -2441,7 +3028,7 @@ console.log("a is", a)  // a is 900`;
     		p: function update(changed, ctx) {
     			{
     				if (!if_block) {
-    					if_block = create_if_block$4();
+    					if_block = create_if_block$5();
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(t0.parentNode, t0);
@@ -2525,7 +3112,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function instance$4($$self, $$props, $$invalidate) {
+    function instance$5($$self, $$props, $$invalidate) {
     	
 
       var cache = [[1,2,3,4,5,6,7,8,9]];
@@ -2684,16 +3271,16 @@ console.log("a is", a)  // a is 900`;
     class Matrix extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$4, create_fragment$4, safe_not_equal, []);
+    		init(this, options, instance$5, create_fragment$5, safe_not_equal, []);
     	}
     }
 
     /* src/Transducer.svelte generated by Svelte v3.9.1 */
 
-    const file$5 = "src/Transducer.svelte";
+    const file$6 = "src/Transducer.svelte";
 
     // (8:0) {#if visible}
-    function create_if_block$5(ctx) {
+    function create_if_block$6(ctx) {
     	var div, div_transition, current;
 
     	return {
@@ -2704,121 +3291,7 @@ console.log("a is", a)  // a is 900`;
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file$5, 8, 1, 96);
-    		},
-
-    		m: function mount(target, anchor) {
-    			insert(target, div, anchor);
-    			current = true;
-    		},
-
-    		i: function intro(local) {
-    			if (current) return;
-    			add_render_callback(() => {
-    				if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, true);
-    				div_transition.run(1);
-    			});
-
-    			current = true;
-    		},
-
-    		o: function outro(local) {
-    			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
-    			div_transition.run(0);
-
-    			current = false;
-    		},
-
-    		d: function destroy(detaching) {
-    			if (detaching) {
-    				detach(div);
-    				if (div_transition) div_transition.end();
-    			}
-    		}
-    	};
-    }
-
-    function create_fragment$5(ctx) {
-    	var t, p, current;
-
-    	var if_block =  create_if_block$5();
-
-    	return {
-    		c: function create() {
-    			if (if_block) if_block.c();
-    			t = space();
-    			p = element("p");
-    			p.textContent = "Howdy folks";
-    			add_location(p, file$5, 12, 0, 259);
-    		},
-
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-    		},
-
-    		m: function mount(target, anchor) {
-    			if (if_block) if_block.m(target, anchor);
-    			insert(target, t, anchor);
-    			insert(target, p, anchor);
-    			current = true;
-    		},
-
-    		p: function update(changed, ctx) {
-    			{
-    				if (!if_block) {
-    					if_block = create_if_block$5();
-    					if_block.c();
-    					transition_in(if_block, 1);
-    					if_block.m(t.parentNode, t);
-    				} else {
-    									transition_in(if_block, 1);
-    				}
-    			}
-    		},
-
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(if_block);
-    			current = true;
-    		},
-
-    		o: function outro(local) {
-    			transition_out(if_block);
-    			current = false;
-    		},
-
-    		d: function destroy(detaching) {
-    			if (if_block) if_block.d(detaching);
-
-    			if (detaching) {
-    				detach(t);
-    				detach(p);
-    			}
-    		}
-    	};
-    }
-
-    class Transducer extends SvelteComponentDev {
-    	constructor(options) {
-    		super(options);
-    		init(this, options, null, create_fragment$5, safe_not_equal, []);
-    	}
-    }
-
-    /* src/Asynchronous_Monad.svelte generated by Svelte v3.9.1 */
-
-    const file$6 = "src/Asynchronous_Monad.svelte";
-
-    // (25:0) {#if visible}
-    function create_if_block$6(ctx) {
-    	var div, div_transition, current;
-
-    	return {
-    		c: function create() {
-    			div = element("div");
-    			div.textContent = "ASYNCHRONOUS MONADS";
-    			attr(div, "style", "font-family: Times New Roman;  text-    align: center; color: hsl(210, 90%, 90%); font-size: 32px;");
-    			add_location(div, file$6, 25, 4, 365);
+    			add_location(div, file$6, 8, 1, 96);
     		},
 
     		m: function mount(target, anchor) {
@@ -2853,7 +3326,7 @@ console.log("a is", a)  // a is 900`;
     }
 
     function create_fragment$6(ctx) {
-    	var t, h3, current;
+    	var t, p, current;
 
     	var if_block =  create_if_block$6();
 
@@ -2861,9 +3334,9 @@ console.log("a is", a)  // a is 900`;
     		c: function create() {
     			if (if_block) if_block.c();
     			t = space();
-    			h3 = element("h3");
-    			h3.textContent = "You bet!";
-    			add_location(h3, file$6, 30, 0, 545);
+    			p = element("p");
+    			p.textContent = "Howdy folks";
+    			add_location(p, file$6, 12, 0, 259);
     		},
 
     		l: function claim(nodes) {
@@ -2873,7 +3346,7 @@ console.log("a is", a)  // a is 900`;
     		m: function mount(target, anchor) {
     			if (if_block) if_block.m(target, anchor);
     			insert(target, t, anchor);
-    			insert(target, h3, anchor);
+    			insert(target, p, anchor);
     			current = true;
     		},
 
@@ -2906,13 +3379,127 @@ console.log("a is", a)  // a is 900`;
 
     			if (detaching) {
     				detach(t);
+    				detach(p);
+    			}
+    		}
+    	};
+    }
+
+    class Transducer extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, null, create_fragment$6, safe_not_equal, []);
+    	}
+    }
+
+    /* src/Asynchronous_Monad.svelte generated by Svelte v3.9.1 */
+
+    const file$7 = "src/Asynchronous_Monad.svelte";
+
+    // (25:0) {#if visible}
+    function create_if_block$7(ctx) {
+    	var div, div_transition, current;
+
+    	return {
+    		c: function create() {
+    			div = element("div");
+    			div.textContent = "ASYNCHRONOUS MONADS";
+    			attr(div, "style", "font-family: Times New Roman;  text-    align: center; color: hsl(210, 90%, 90%); font-size: 32px;");
+    			add_location(div, file$7, 25, 4, 365);
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert(target, div, anchor);
+    			current = true;
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			add_render_callback(() => {
+    				if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, true);
+    				div_transition.run(1);
+    			});
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
+    			div_transition.run(0);
+
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(div);
+    				if (div_transition) div_transition.end();
+    			}
+    		}
+    	};
+    }
+
+    function create_fragment$7(ctx) {
+    	var t, h3, current;
+
+    	var if_block =  create_if_block$7();
+
+    	return {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			t = space();
+    			h3 = element("h3");
+    			h3.textContent = "You bet!";
+    			add_location(h3, file$7, 30, 0, 545);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert(target, t, anchor);
+    			insert(target, h3, anchor);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			{
+    				if (!if_block) {
+    					if_block = create_if_block$7();
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(t.parentNode, t);
+    				} else {
+    									transition_in(if_block, 1);
+    				}
+    			}
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(if_block);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (if_block) if_block.d(detaching);
+
+    			if (detaching) {
+    				detach(t);
     				detach(h3);
     			}
     		}
     	};
     }
 
-    function instance$5($$self) {
+    function instance$6($$self) {
 
     	return {};
     }
@@ -2920,16 +3507,16 @@ console.log("a is", a)  // a is 900`;
     class Asynchronous_Monad extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$5, create_fragment$6, safe_not_equal, []);
+    		init(this, options, instance$6, create_fragment$7, safe_not_equal, []);
     	}
     }
 
     /* src/ToggleTheme.svelte generated by Svelte v3.9.1 */
 
-    const file$7 = "src/ToggleTheme.svelte";
+    const file$8 = "src/ToggleTheme.svelte";
 
     // (7:1) {#if dark}
-    function create_if_block$7(ctx) {
+    function create_if_block$8(ctx) {
     	var link;
 
     	return {
@@ -2937,7 +3524,7 @@ console.log("a is", a)  // a is 900`;
     			link = element("link");
     			attr(link, "rel", "stylesheet");
     			attr(link, "href", "style.css");
-    			add_location(link, file$7, 7, 1, 115);
+    			add_location(link, file$8, 7, 1, 115);
     		},
 
     		m: function mount(target, anchor) {
@@ -2952,10 +3539,10 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function create_fragment$7(ctx) {
+    function create_fragment$8(ctx) {
     	var if_block_anchor, t0, h1, t2, button, dispose;
 
-    	var if_block = (ctx.dark) && create_if_block$7();
+    	var if_block = (ctx.dark) && create_if_block$8();
 
     	return {
     		c: function create() {
@@ -2967,8 +3554,8 @@ console.log("a is", a)  // a is 900`;
     			t2 = space();
     			button = element("button");
     			button.textContent = "toggle theme";
-    			add_location(h1, file$7, 11, 0, 179);
-    			add_location(button, file$7, 13, 0, 202);
+    			add_location(h1, file$8, 11, 0, 179);
+    			add_location(button, file$8, 13, 0, 202);
     			dispose = listen(button, "click", ctx.toggleTheme);
     		},
 
@@ -2988,7 +3575,7 @@ console.log("a is", a)  // a is 900`;
     		p: function update(changed, ctx) {
     			if (ctx.dark) {
     				if (!if_block) {
-    					if_block = create_if_block$7();
+    					if_block = create_if_block$8();
     					if_block.c();
     					if_block.m(if_block_anchor.parentNode, if_block_anchor);
     				}
@@ -3017,7 +3604,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function instance$6($$self, $$props, $$invalidate) {
+    function instance$7($$self, $$props, $$invalidate) {
     	let dark = false;
     	const toggleTheme = () => { const $$result = dark = dark === false; $$invalidate('dark', dark); return $$result; };
 
@@ -3027,16 +3614,16 @@ console.log("a is", a)  // a is 900`;
     class ToggleTheme extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$6, create_fragment$7, safe_not_equal, []);
+    		init(this, options, instance$7, create_fragment$8, safe_not_equal, []);
     	}
     }
 
     /* src/Home.svelte generated by Svelte v3.9.1 */
 
-    const file$8 = "src/Home.svelte";
+    const file$9 = "src/Home.svelte";
 
     // (6:0) {#if visible}
-    function create_if_block$8(ctx) {
+    function create_if_block$9(ctx) {
     	var div, br0, br1, t, div_transition, current;
 
     	return {
@@ -3045,13 +3632,13 @@ console.log("a is", a)  // a is 900`;
     			br0 = element("br");
     			br1 = element("br");
     			t = text("\n FIRST POST");
-    			add_location(br0, file$8, 7, 1, 222);
-    			add_location(br1, file$8, 7, 5, 226);
+    			add_location(br0, file$9, 7, 1, 222);
+    			add_location(br1, file$9, 7, 5, 226);
     			set_style(div, "font-family", "Times New Roman");
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file$8, 6, 1, 94);
+    			add_location(div, file$9, 6, 1, 94);
     		},
 
     		m: function mount(target, anchor) {
@@ -3088,10 +3675,10 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function create_fragment$8(ctx) {
+    function create_fragment$9(ctx) {
     	var t0, br0, t1, p0, t3, p1, t5, p2, t7, br1, t8, br2, current;
 
-    	var if_block =  create_if_block$8();
+    	var if_block =  create_if_block$9();
 
     	return {
     		c: function create() {
@@ -3111,12 +3698,12 @@ console.log("a is", a)  // a is 900`;
     			br1 = element("br");
     			t8 = space();
     			br2 = element("br");
-    			add_location(br0, file$8, 11, 0, 257);
-    			add_location(p0, file$8, 12, 0, 262);
-    			add_location(p1, file$8, 14, 0, 838);
-    			add_location(p2, file$8, 16, 0, 1717);
-    			add_location(br1, file$8, 17, 0, 2031);
-    			add_location(br2, file$8, 18, 0, 2036);
+    			add_location(br0, file$9, 11, 0, 257);
+    			add_location(p0, file$9, 12, 0, 262);
+    			add_location(p1, file$9, 14, 0, 838);
+    			add_location(p2, file$9, 16, 0, 1717);
+    			add_location(br1, file$9, 17, 0, 2031);
+    			add_location(br2, file$9, 18, 0, 2036);
     		},
 
     		l: function claim(nodes) {
@@ -3143,7 +3730,7 @@ console.log("a is", a)  // a is 900`;
     		p: function update(changed, ctx) {
     			{
     				if (!if_block) {
-    					if_block = create_if_block$8();
+    					if_block = create_if_block$9();
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(t0.parentNode, t0);
@@ -3188,16 +3775,16 @@ console.log("a is", a)  // a is 900`;
     class Home extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, null, create_fragment$8, safe_not_equal, []);
+    		init(this, options, null, create_fragment$9, safe_not_equal, []);
     	}
     }
 
     /* src/Blog.svelte generated by Svelte v3.9.1 */
 
-    const file$9 = "src/Blog.svelte";
+    const file$a = "src/Blog.svelte";
 
-    // (108:0) {#if j === 0}
-    function create_if_block_8(ctx) {
+    // (112:0) {#if j === 0}
+    function create_if_block_9(ctx) {
     	var current;
 
     	var home_1 = new Home({ $$inline: true });
@@ -3230,8 +3817,8 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (111:0) {#if j === 1}
-    function create_if_block_7(ctx) {
+    // (115:0) {#if j === 1}
+    function create_if_block_8(ctx) {
     	var current;
 
     	var monad_1 = new Monad_1({ $$inline: true });
@@ -3264,8 +3851,8 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (114:0) {#if j === 2}
-    function create_if_block_6(ctx) {
+    // (118:0) {#if j === 2}
+    function create_if_block_7(ctx) {
     	var current;
 
     	var monad2_1 = new Monad2({ $$inline: true });
@@ -3298,7 +3885,41 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (117:0) {#if j === 3}
+    // (121:0) {#if j === 9}
+    function create_if_block_6(ctx) {
+    	var current;
+
+    	var monad3_1 = new Monad3({ $$inline: true });
+
+    	return {
+    		c: function create() {
+    			monad3_1.$$.fragment.c();
+    		},
+
+    		m: function mount(target, anchor) {
+    			mount_component(monad3_1, target, anchor);
+    			current = true;
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(monad3_1.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(monad3_1.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			destroy_component(monad3_1, detaching);
+    		}
+    	};
+    }
+
+    // (124:0) {#if j === 3}
     function create_if_block_5(ctx) {
     	var current;
 
@@ -3332,7 +3953,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (120:0) {#if j === 4}
+    // (127:0) {#if j === 4}
     function create_if_block_4(ctx) {
     	var current;
 
@@ -3366,7 +3987,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (123:0) {#if j === 5}
+    // (130:0) {#if j === 5}
     function create_if_block_3(ctx) {
     	var current;
 
@@ -3400,7 +4021,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (126:0) {#if j === 6}
+    // (133:0) {#if j === 6}
     function create_if_block_2(ctx) {
     	var current;
 
@@ -3434,7 +4055,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (129:0) {#if j === 7}
+    // (136:0) {#if j === 7}
     function create_if_block_1(ctx) {
     	var current;
 
@@ -3468,8 +4089,8 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (132:0) {#if j === 8}
-    function create_if_block$9(ctx) {
+    // (139:0) {#if j === 8}
+    function create_if_block$a(ctx) {
     	var current;
 
     	var toggletheme = new ToggleTheme({ $$inline: true });
@@ -3502,35 +4123,37 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function create_fragment$9(ctx) {
-    	var div14, br0, br1, t0, div13, div10, br2, br3, br4, br5, br6, br7, br8, t1, ul, li0, div0, t3, br9, t4, li1, div1, t6, br10, t7, li2, div2, t9, br11, t10, li3, div3, t12, br12, t13, li4, div4, t15, br13, t16, li5, div5, t18, br14, t19, li6, div6, t21, br15, t22, li7, div7, t24, br16, t25, li8, div8, t27, br17, t28, li9, div9, t30, br18, t31, div12, div11, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, br19, br20, br21, t43, br22, br23, current, dispose;
+    function create_fragment$a(ctx) {
+    	var div15, br0, br1, t0, div14, div11, br2, br3, br4, br5, br6, br7, br8, t1, ul, li0, div0, t3, br9, t4, li1, div1, t6, br10, t7, li2, div2, t9, br11, t10, li3, div3, t12, br12, t13, li4, div4, t15, br13, t16, li5, div5, t18, br14, t19, li6, div6, t21, br15, t22, li7, div7, t24, br16, t25, li8, div8, t27, br17, t28, li9, div9, t30, br18, t31, li10, div10, t33, br19, t34, div13, div12, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, br20, br21, br22, t47, br23, br24, current, dispose;
 
-    	var if_block0 = (ctx.j === 0) && create_if_block_8();
+    	var if_block0 = (ctx.j === 0) && create_if_block_9();
 
-    	var if_block1 = (ctx.j === 1) && create_if_block_7();
+    	var if_block1 = (ctx.j === 1) && create_if_block_8();
 
-    	var if_block2 = (ctx.j === 2) && create_if_block_6();
+    	var if_block2 = (ctx.j === 2) && create_if_block_7();
 
-    	var if_block3 = (ctx.j === 3) && create_if_block_5();
+    	var if_block3 = (ctx.j === 9) && create_if_block_6();
 
-    	var if_block4 = (ctx.j === 4) && create_if_block_4();
+    	var if_block4 = (ctx.j === 3) && create_if_block_5();
 
-    	var if_block5 = (ctx.j === 5) && create_if_block_3();
+    	var if_block5 = (ctx.j === 4) && create_if_block_4();
 
-    	var if_block6 = (ctx.j === 6) && create_if_block_2();
+    	var if_block6 = (ctx.j === 5) && create_if_block_3();
 
-    	var if_block7 = (ctx.j === 7) && create_if_block_1();
+    	var if_block7 = (ctx.j === 6) && create_if_block_2();
 
-    	var if_block8 = (ctx.j === 8) && create_if_block$9();
+    	var if_block8 = (ctx.j === 7) && create_if_block_1();
+
+    	var if_block9 = (ctx.j === 8) && create_if_block$a();
 
     	return {
     		c: function create() {
-    			div14 = element("div");
+    			div15 = element("div");
     			br0 = element("br");
     			br1 = element("br");
     			t0 = space();
-    			div13 = element("div");
-    			div10 = element("div");
+    			div14 = element("div");
+    			div11 = element("div");
     			br2 = element("br");
     			br3 = element("br");
     			br4 = element("br");
@@ -3566,148 +4189,161 @@ console.log("a is", a)  // a is 900`;
     			t13 = space();
     			li4 = element("li");
     			div4 = element("div");
-    			div4.textContent = "Transducer Simulator";
+    			div4.textContent = "Promises Monad";
     			t15 = space();
     			br13 = element("br");
     			t16 = space();
     			li5 = element("li");
     			div5 = element("div");
-    			div5.textContent = "MISCELANEOUS TOPICS";
+    			div5.textContent = "Transducer Simulator";
     			t18 = space();
     			br14 = element("br");
     			t19 = space();
     			li6 = element("li");
     			div6 = element("div");
-    			div6.textContent = "Hidden Haskell Information";
+    			div6.textContent = "MISCELANEOUS TOPICS";
     			t21 = space();
     			br15 = element("br");
     			t22 = space();
     			li7 = element("li");
     			div7 = element("div");
-    			div7.textContent = "Bed Bug Eradication";
+    			div7.textContent = "Hidden Haskell Information";
     			t24 = space();
     			br16 = element("br");
     			t25 = space();
     			li8 = element("li");
     			div8 = element("div");
-    			div8.textContent = "Toggle Theme";
+    			div8.textContent = "Bed Bug Eradication";
     			t27 = space();
     			br17 = element("br");
     			t28 = space();
     			li9 = element("li");
     			div9 = element("div");
-    			div9.textContent = "Home";
+    			div9.textContent = "Toggle Theme";
     			t30 = space();
     			br18 = element("br");
     			t31 = space();
-    			div12 = element("div");
-    			div11 = element("div");
-    			div11.textContent = "DAVID SCHALK'S BLOG";
+    			li10 = element("li");
+    			div10 = element("div");
+    			div10.textContent = "Home";
     			t33 = space();
-    			if (if_block0) if_block0.c();
-    			t34 = space();
-    			if (if_block1) if_block1.c();
-    			t35 = space();
-    			if (if_block2) if_block2.c();
-    			t36 = space();
-    			if (if_block3) if_block3.c();
-    			t37 = space();
-    			if (if_block4) if_block4.c();
-    			t38 = space();
-    			if (if_block5) if_block5.c();
-    			t39 = space();
-    			if (if_block6) if_block6.c();
-    			t40 = space();
-    			if (if_block7) if_block7.c();
-    			t41 = space();
-    			if (if_block8) if_block8.c();
-    			t42 = space();
     			br19 = element("br");
+    			t34 = space();
+    			div13 = element("div");
+    			div12 = element("div");
+    			div12.textContent = "DAVID SCHALK'S BLOG";
+    			t36 = space();
+    			if (if_block0) if_block0.c();
+    			t37 = space();
+    			if (if_block1) if_block1.c();
+    			t38 = space();
+    			if (if_block2) if_block2.c();
+    			t39 = space();
+    			if (if_block3) if_block3.c();
+    			t40 = space();
+    			if (if_block4) if_block4.c();
+    			t41 = space();
+    			if (if_block5) if_block5.c();
+    			t42 = space();
+    			if (if_block6) if_block6.c();
+    			t43 = space();
+    			if (if_block7) if_block7.c();
+    			t44 = space();
+    			if (if_block8) if_block8.c();
+    			t45 = space();
+    			if (if_block9) if_block9.c();
+    			t46 = space();
     			br20 = element("br");
     			br21 = element("br");
-    			t43 = space();
     			br22 = element("br");
+    			t47 = space();
     			br23 = element("br");
-    			add_location(br0, file$9, 74, 0, 1525);
-    			add_location(br1, file$9, 74, 4, 1529);
-    			add_location(br2, file$9, 79, 24, 1684);
-    			add_location(br3, file$9, 79, 28, 1688);
-    			add_location(br4, file$9, 79, 32, 1692);
-    			add_location(br5, file$9, 79, 36, 1696);
-    			add_location(br6, file$9, 79, 40, 1700);
-    			add_location(br7, file$9, 79, 44, 1704);
-    			add_location(br8, file$9, 79, 48, 1708);
+    			br24 = element("br");
+    			add_location(br0, file$a, 76, 0, 1614);
+    			add_location(br1, file$a, 76, 4, 1618);
+    			add_location(br2, file$a, 81, 24, 1773);
+    			add_location(br3, file$a, 81, 28, 1777);
+    			add_location(br4, file$a, 81, 32, 1781);
+    			add_location(br5, file$a, 81, 36, 1785);
+    			add_location(br6, file$a, 81, 40, 1789);
+    			add_location(br7, file$a, 81, 44, 1793);
+    			add_location(br8, file$a, 81, 48, 1797);
     			attr(div0, "class", "button");
-    			add_location(div0, file$9, 81, 28, 1798);
-    			add_location(li0, file$9, 81, 24, 1794);
-    			add_location(br9, file$9, 82, 24, 1883);
-    			add_location(div1, file$9, 83, 28, 1916);
-    			add_location(li1, file$9, 83, 24, 1912);
-    			add_location(br10, file$9, 84, 24, 1969);
+    			add_location(div0, file$a, 83, 28, 1887);
+    			add_location(li0, file$a, 83, 24, 1883);
+    			add_location(br9, file$a, 84, 24, 1972);
+    			add_location(div1, file$a, 85, 28, 2005);
+    			add_location(li1, file$a, 85, 24, 2001);
+    			add_location(br10, file$a, 86, 24, 2058);
     			attr(div2, "class", "button");
-    			add_location(div2, file$9, 85, 28, 2002);
-    			add_location(li2, file$9, 85, 24, 1998);
-    			add_location(br11, file$9, 86, 24, 2090);
+    			add_location(div2, file$a, 87, 28, 2091);
+    			add_location(li2, file$a, 87, 24, 2087);
+    			add_location(br11, file$a, 88, 24, 2179);
     			attr(div3, "class", "button");
-    			add_location(div3, file$9, 87, 28, 2123);
-    			add_location(li3, file$9, 87, 24, 2119);
-    			add_location(br12, file$9, 88, 24, 2217);
+    			add_location(div3, file$a, 89, 28, 2212);
+    			add_location(li3, file$a, 89, 24, 2208);
+    			add_location(br12, file$a, 90, 24, 2306);
     			attr(div4, "class", "button");
-    			add_location(div4, file$9, 89, 28, 2250);
-    			add_location(li4, file$9, 89, 24, 2246);
-    			add_location(br13, file$9, 90, 24, 2348);
-    			add_location(div5, file$9, 91, 28, 2381);
-    			add_location(li5, file$9, 91, 24, 2377);
-    			add_location(br14, file$9, 92, 24, 2441);
-    			attr(div6, "class", "button");
-    			add_location(div6, file$9, 93, 28, 2474);
-    			add_location(li6, file$9, 93, 24, 2470);
-    			add_location(br15, file$9, 94, 24, 2575);
+    			add_location(div4, file$a, 91, 28, 2339);
+    			add_location(li4, file$a, 91, 24, 2335);
+    			add_location(br13, file$a, 92, 24, 2428);
+    			attr(div5, "class", "button");
+    			add_location(div5, file$a, 93, 28, 2461);
+    			add_location(li5, file$a, 93, 24, 2457);
+    			add_location(br14, file$a, 94, 24, 2559);
+    			add_location(div6, file$a, 95, 28, 2592);
+    			add_location(li6, file$a, 95, 24, 2588);
+    			add_location(br15, file$a, 96, 24, 2652);
     			attr(div7, "class", "button");
-    			add_location(div7, file$9, 95, 28, 2608);
-    			add_location(li7, file$9, 95, 24, 2604);
-    			add_location(br16, file$9, 96, 24, 2700);
+    			add_location(div7, file$a, 97, 28, 2685);
+    			add_location(li7, file$a, 97, 24, 2681);
+    			add_location(br16, file$a, 98, 24, 2786);
     			attr(div8, "class", "button");
-    			add_location(div8, file$9, 97, 28, 2733);
-    			add_location(li8, file$9, 97, 24, 2729);
-    			add_location(br17, file$9, 98, 24, 2817);
+    			add_location(div8, file$a, 99, 28, 2819);
+    			add_location(li8, file$a, 99, 24, 2815);
+    			add_location(br17, file$a, 100, 24, 2911);
     			attr(div9, "class", "button");
-    			add_location(div9, file$9, 99, 28, 2850);
-    			add_location(li9, file$9, 99, 24, 2846);
-    			add_location(br18, file$9, 100, 24, 2927);
+    			add_location(div9, file$a, 101, 28, 2944);
+    			add_location(li9, file$a, 101, 24, 2940);
+    			add_location(br18, file$a, 102, 24, 3028);
+    			attr(div10, "class", "button");
+    			add_location(div10, file$a, 103, 28, 3061);
+    			add_location(li10, file$a, 103, 24, 3057);
+    			add_location(br19, file$a, 104, 24, 3138);
     			set_style(ul, "list-style", "none");
     			attr(ul, "class", "svelte-wv8yxe");
-    			add_location(ul, file$9, 80, 24, 1737);
-    			set_style(div10, "margin-Right", "2%");
-    			set_style(div10, "width", "20%");
-    			add_location(div10, file$9, 78, 24, 1614);
-    			set_style(div11, "font-weight", "900");
-    			set_style(div11, "font-size", "45px");
-    			set_style(div11, "color", "#bbbb00");
-    			set_style(div11, "text-align", "center");
-    			add_location(div11, file$9, 104, 24, 3087);
-    			add_location(br19, file$9, 136, 0, 3501);
-    			add_location(br20, file$9, 136, 4, 3505);
-    			add_location(br21, file$9, 136, 8, 3509);
-    			set_style(div12, "margin-Right", "2%");
-    			set_style(div12, "width", "80%");
-    			add_location(div12, file$9, 103, 24, 3017);
-    			set_style(div13, "display", "flex");
-    			add_location(div13, file$9, 76, 24, 1559);
-    			attr(div14, "class", "content");
-    			add_location(div14, file$9, 73, 0, 1503);
-    			add_location(br22, file$9, 140, 0, 3535);
-    			add_location(br23, file$9, 140, 4, 3539);
+    			add_location(ul, file$a, 82, 24, 1826);
+    			set_style(div11, "margin-Right", "2%");
+    			set_style(div11, "width", "20%");
+    			add_location(div11, file$a, 80, 24, 1703);
+    			set_style(div12, "font-weight", "900");
+    			set_style(div12, "font-size", "45px");
+    			set_style(div12, "color", "#bbbb00");
+    			set_style(div12, "text-align", "center");
+    			add_location(div12, file$a, 108, 24, 3298);
+    			add_location(br20, file$a, 143, 0, 3743);
+    			add_location(br21, file$a, 143, 4, 3747);
+    			add_location(br22, file$a, 143, 8, 3751);
+    			set_style(div13, "margin-Right", "2%");
+    			set_style(div13, "width", "80%");
+    			add_location(div13, file$a, 107, 24, 3228);
+    			set_style(div14, "display", "flex");
+    			add_location(div14, file$a, 78, 24, 1648);
+    			attr(div15, "class", "content");
+    			add_location(div15, file$a, 75, 0, 1592);
+    			add_location(br23, file$a, 147, 0, 3777);
+    			add_location(br24, file$a, 147, 4, 3781);
 
     			dispose = [
     				listen(div0, "click", ctx.matrix),
     				listen(div2, "click", ctx.monad),
     				listen(div3, "click", ctx.monad2),
-    				listen(div4, "click", ctx.transduce),
-    				listen(div6, "click", ctx.haskell),
-    				listen(div7, "click", ctx.bugs),
-    				listen(div8, "click", ctx.tog),
-    				listen(div9, "click", ctx.home)
+    				listen(div4, "click", ctx.monad3),
+    				listen(div5, "click", ctx.transduce),
+    				listen(div7, "click", ctx.haskell),
+    				listen(div8, "click", ctx.bugs),
+    				listen(div9, "click", ctx.tog),
+    				listen(div10, "click", ctx.home)
     			];
     		},
 
@@ -3716,21 +4352,21 @@ console.log("a is", a)  // a is 900`;
     		},
 
     		m: function mount(target, anchor) {
-    			insert(target, div14, anchor);
-    			append(div14, br0);
-    			append(div14, br1);
-    			append(div14, t0);
-    			append(div14, div13);
-    			append(div13, div10);
-    			append(div10, br2);
-    			append(div10, br3);
-    			append(div10, br4);
-    			append(div10, br5);
-    			append(div10, br6);
-    			append(div10, br7);
-    			append(div10, br8);
-    			append(div10, t1);
-    			append(div10, ul);
+    			insert(target, div15, anchor);
+    			append(div15, br0);
+    			append(div15, br1);
+    			append(div15, t0);
+    			append(div15, div14);
+    			append(div14, div11);
+    			append(div11, br2);
+    			append(div11, br3);
+    			append(div11, br4);
+    			append(div11, br5);
+    			append(div11, br6);
+    			append(div11, br7);
+    			append(div11, br8);
+    			append(div11, t1);
+    			append(div11, ul);
     			append(ul, li0);
     			append(li0, div0);
     			append(ul, t3);
@@ -3780,44 +4416,51 @@ console.log("a is", a)  // a is 900`;
     			append(li9, div9);
     			append(ul, t30);
     			append(ul, br18);
-    			append(div13, t31);
+    			append(ul, t31);
+    			append(ul, li10);
+    			append(li10, div10);
+    			append(ul, t33);
+    			append(ul, br19);
+    			append(div14, t34);
+    			append(div14, div13);
     			append(div13, div12);
-    			append(div12, div11);
-    			append(div12, t33);
-    			if (if_block0) if_block0.m(div12, null);
-    			append(div12, t34);
-    			if (if_block1) if_block1.m(div12, null);
-    			append(div12, t35);
-    			if (if_block2) if_block2.m(div12, null);
-    			append(div12, t36);
-    			if (if_block3) if_block3.m(div12, null);
-    			append(div12, t37);
-    			if (if_block4) if_block4.m(div12, null);
-    			append(div12, t38);
-    			if (if_block5) if_block5.m(div12, null);
-    			append(div12, t39);
-    			if (if_block6) if_block6.m(div12, null);
-    			append(div12, t40);
-    			if (if_block7) if_block7.m(div12, null);
-    			append(div12, t41);
-    			if (if_block8) if_block8.m(div12, null);
-    			append(div12, t42);
-    			append(div12, br19);
-    			append(div12, br20);
-    			append(div12, br21);
-    			insert(target, t43, anchor);
-    			insert(target, br22, anchor);
+    			append(div13, t36);
+    			if (if_block0) if_block0.m(div13, null);
+    			append(div13, t37);
+    			if (if_block1) if_block1.m(div13, null);
+    			append(div13, t38);
+    			if (if_block2) if_block2.m(div13, null);
+    			append(div13, t39);
+    			if (if_block3) if_block3.m(div13, null);
+    			append(div13, t40);
+    			if (if_block4) if_block4.m(div13, null);
+    			append(div13, t41);
+    			if (if_block5) if_block5.m(div13, null);
+    			append(div13, t42);
+    			if (if_block6) if_block6.m(div13, null);
+    			append(div13, t43);
+    			if (if_block7) if_block7.m(div13, null);
+    			append(div13, t44);
+    			if (if_block8) if_block8.m(div13, null);
+    			append(div13, t45);
+    			if (if_block9) if_block9.m(div13, null);
+    			append(div13, t46);
+    			append(div13, br20);
+    			append(div13, br21);
+    			append(div13, br22);
+    			insert(target, t47, anchor);
     			insert(target, br23, anchor);
+    			insert(target, br24, anchor);
     			current = true;
     		},
 
     		p: function update(changed, ctx) {
     			if (ctx.j === 0) {
     				if (!if_block0) {
-    					if_block0 = create_if_block_8();
+    					if_block0 = create_if_block_9();
     					if_block0.c();
     					transition_in(if_block0, 1);
-    					if_block0.m(div12, t34);
+    					if_block0.m(div13, t37);
     				} else {
     									transition_in(if_block0, 1);
     				}
@@ -3831,10 +4474,10 @@ console.log("a is", a)  // a is 900`;
 
     			if (ctx.j === 1) {
     				if (!if_block1) {
-    					if_block1 = create_if_block_7();
+    					if_block1 = create_if_block_8();
     					if_block1.c();
     					transition_in(if_block1, 1);
-    					if_block1.m(div12, t35);
+    					if_block1.m(div13, t38);
     				} else {
     									transition_in(if_block1, 1);
     				}
@@ -3848,10 +4491,10 @@ console.log("a is", a)  // a is 900`;
 
     			if (ctx.j === 2) {
     				if (!if_block2) {
-    					if_block2 = create_if_block_6();
+    					if_block2 = create_if_block_7();
     					if_block2.c();
     					transition_in(if_block2, 1);
-    					if_block2.m(div12, t36);
+    					if_block2.m(div13, t39);
     				} else {
     									transition_in(if_block2, 1);
     				}
@@ -3863,12 +4506,12 @@ console.log("a is", a)  // a is 900`;
     				check_outros();
     			}
 
-    			if (ctx.j === 3) {
+    			if (ctx.j === 9) {
     				if (!if_block3) {
-    					if_block3 = create_if_block_5();
+    					if_block3 = create_if_block_6();
     					if_block3.c();
     					transition_in(if_block3, 1);
-    					if_block3.m(div12, t37);
+    					if_block3.m(div13, t40);
     				} else {
     									transition_in(if_block3, 1);
     				}
@@ -3880,12 +4523,12 @@ console.log("a is", a)  // a is 900`;
     				check_outros();
     			}
 
-    			if (ctx.j === 4) {
+    			if (ctx.j === 3) {
     				if (!if_block4) {
-    					if_block4 = create_if_block_4();
+    					if_block4 = create_if_block_5();
     					if_block4.c();
     					transition_in(if_block4, 1);
-    					if_block4.m(div12, t38);
+    					if_block4.m(div13, t41);
     				} else {
     									transition_in(if_block4, 1);
     				}
@@ -3897,12 +4540,12 @@ console.log("a is", a)  // a is 900`;
     				check_outros();
     			}
 
-    			if (ctx.j === 5) {
+    			if (ctx.j === 4) {
     				if (!if_block5) {
-    					if_block5 = create_if_block_3();
+    					if_block5 = create_if_block_4();
     					if_block5.c();
     					transition_in(if_block5, 1);
-    					if_block5.m(div12, t39);
+    					if_block5.m(div13, t42);
     				} else {
     									transition_in(if_block5, 1);
     				}
@@ -3914,12 +4557,12 @@ console.log("a is", a)  // a is 900`;
     				check_outros();
     			}
 
-    			if (ctx.j === 6) {
+    			if (ctx.j === 5) {
     				if (!if_block6) {
-    					if_block6 = create_if_block_2();
+    					if_block6 = create_if_block_3();
     					if_block6.c();
     					transition_in(if_block6, 1);
-    					if_block6.m(div12, t40);
+    					if_block6.m(div13, t43);
     				} else {
     									transition_in(if_block6, 1);
     				}
@@ -3931,12 +4574,12 @@ console.log("a is", a)  // a is 900`;
     				check_outros();
     			}
 
-    			if (ctx.j === 7) {
+    			if (ctx.j === 6) {
     				if (!if_block7) {
-    					if_block7 = create_if_block_1();
+    					if_block7 = create_if_block_2();
     					if_block7.c();
     					transition_in(if_block7, 1);
-    					if_block7.m(div12, t41);
+    					if_block7.m(div13, t44);
     				} else {
     									transition_in(if_block7, 1);
     				}
@@ -3948,12 +4591,12 @@ console.log("a is", a)  // a is 900`;
     				check_outros();
     			}
 
-    			if (ctx.j === 8) {
+    			if (ctx.j === 7) {
     				if (!if_block8) {
-    					if_block8 = create_if_block$9();
+    					if_block8 = create_if_block_1();
     					if_block8.c();
     					transition_in(if_block8, 1);
-    					if_block8.m(div12, t42);
+    					if_block8.m(div13, t45);
     				} else {
     									transition_in(if_block8, 1);
     				}
@@ -3961,6 +4604,23 @@ console.log("a is", a)  // a is 900`;
     				group_outros();
     				transition_out(if_block8, 1, 1, () => {
     					if_block8 = null;
+    				});
+    				check_outros();
+    			}
+
+    			if (ctx.j === 8) {
+    				if (!if_block9) {
+    					if_block9 = create_if_block$a();
+    					if_block9.c();
+    					transition_in(if_block9, 1);
+    					if_block9.m(div13, t46);
+    				} else {
+    									transition_in(if_block9, 1);
+    				}
+    			} else if (if_block9) {
+    				group_outros();
+    				transition_out(if_block9, 1, 1, () => {
+    					if_block9 = null;
     				});
     				check_outros();
     			}
@@ -3977,6 +4637,7 @@ console.log("a is", a)  // a is 900`;
     			transition_in(if_block6);
     			transition_in(if_block7);
     			transition_in(if_block8);
+    			transition_in(if_block9);
     			current = true;
     		},
 
@@ -3990,12 +4651,13 @@ console.log("a is", a)  // a is 900`;
     			transition_out(if_block6);
     			transition_out(if_block7);
     			transition_out(if_block8);
+    			transition_out(if_block9);
     			current = false;
     		},
 
     		d: function destroy(detaching) {
     			if (detaching) {
-    				detach(div14);
+    				detach(div15);
     			}
 
     			if (if_block0) if_block0.d();
@@ -4007,11 +4669,12 @@ console.log("a is", a)  // a is 900`;
     			if (if_block6) if_block6.d();
     			if (if_block7) if_block7.d();
     			if (if_block8) if_block8.d();
+    			if (if_block9) if_block9.d();
 
     			if (detaching) {
-    				detach(t43);
-    				detach(br22);
+    				detach(t47);
     				detach(br23);
+    				detach(br24);
     			}
 
     			run_all(dispose);
@@ -4019,12 +4682,12 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function instance$7($$self, $$props, $$invalidate) {
+    function instance$8($$self, $$props, $$invalidate) {
     	
 
         var j = 0;
 
-        function monad () {$$invalidate('j', j = 1); console.log(j);}    function monad2 () {$$invalidate('j', j = 2); console.log(j);}    function haskell () {$$invalidate('j', j = 3); console.log(j);}    function bugs () {$$invalidate('j', j = 4); console.log(j);}    function matrix () {$$invalidate('j', j = 5); console.log(j);}    function transduce () {$$invalidate('j', j = 6);} console.log(j);
+        function monad () {$$invalidate('j', j = 1); console.log(j);}    function monad2 () {$$invalidate('j', j = 2); console.log(j);}    function monad3 () {$$invalidate('j', j = 9); console.log(j);}    function haskell () {$$invalidate('j', j = 3); console.log(j);}    function bugs () {$$invalidate('j', j = 4); console.log(j);}    function matrix () {$$invalidate('j', j = 5); console.log(j);}    function transduce () {$$invalidate('j', j = 6);} console.log(j);
         function tog () {$$invalidate('j', j = 8); console.log(j);}    function home () {$$invalidate('j', j = 0); console.log(j);}
         console.log("j is", j);
 
@@ -4036,6 +4699,7 @@ console.log("a is", a)  // a is 900`;
     		j,
     		monad,
     		monad2,
+    		monad3,
     		haskell,
     		bugs,
     		matrix,
@@ -4048,13 +4712,13 @@ console.log("a is", a)  // a is 900`;
     class Blog extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$7, create_fragment$9, safe_not_equal, []);
+    		init(this, options, instance$8, create_fragment$a, safe_not_equal, []);
     	}
     }
 
     /* src/App.svelte generated by Svelte v3.9.1 */
 
-    function create_fragment$a(ctx) {
+    function create_fragment$b(ctx) {
     	var current;
 
     	var blog = new Blog({ $$inline: true });
@@ -4096,7 +4760,7 @@ console.log("a is", a)  // a is 900`;
     class App extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, null, create_fragment$a, safe_not_equal, []);
+    		init(this, options, null, create_fragment$b, safe_not_equal, []);
     	}
     }
 

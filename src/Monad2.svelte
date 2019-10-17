@@ -21,7 +21,6 @@ function Bonad (z = [1,2,3]) {
   let foo = function foo (func) {
      let x = arr.slice(-1)[0];
     if (x instanceof Promise) {
-      console.log("In Promise block -- x, arr, func", x, ar, func);
       x.then(y => arr = arr.concat(func(y)));
       return foo;
    }
@@ -161,16 +160,9 @@ let visible = true;
      var ar = AR.slice();
      var name = name;
      O[name] = ar;
-     console.log("In Monad -- O[name] is", O[name]);
      let x = O[name].pop();
-     let halt = "halt";
      return run = (function run (x) {
-       if (x instanceof Promise) x.then(y =>
-         {if (y != undefined && typeof y !== "boolean" && y === y &&
-         y.name !== "f_" && y.name !== "halt" ) {
-         O[name] = O[name].concat(y)
-       }})
-       else if (x != undefined && x === x  && x !== false
+     if (x != undefined && x === x  && x !== false
        && x.name !== "f_" && x.name !== "halt" ) {
          O[name] = O[name].concat(x)
        };
@@ -195,14 +187,12 @@ let visible = true;
      console.log('<><><> ALERT - socket is closing. <><><> ', event);
    };
 
-   var socketBool = true;
-
    socket.onmessage = function(e) {
      var v = e.data.split(',');
      if (v[0] === "BE#$42") {
        Q = Q + 1;
        Monad([v[3]], "c"+Q);
-       if (socketBool) worker_O.postMessage([v[3]])
+       worker_O.postMessage([v[3]])
      }
    }
 
@@ -268,14 +258,13 @@ let visible = true;
    }
 
    var fact = function fact () {
-      console.log("factors button was clicked O is", O);
-      socket.send("BE#$42,solo,3032896499791,1000000")
+      socket.send("BE#$42,solo,3032896499791,10000")
       socket.send("BE#$42,solo,3032896499791,1000")
       socket.send("BE#$42,solo,3032896499791,100000")
       socket.send("BE#$42,solo,3032896499791,100000")
       socket.send("BE#$42,solo,3032896499791,10000")
       socket.send("BE#$42,solo,3032896499791,100000")
-      socket.send("BE#$42,solo,3032896499791,100000")
+      socket.send("BE#$42,solo,3032896499791,1000000")
       socket.send("BE#$42,solo,3032896499791,1000")
       socket.send("BE#$42,solo,3032896499791,1000000")
       socket.send("BE#$42,solo,3032896499791,10000")
@@ -285,11 +274,9 @@ let visible = true;
       socket.send("BE#$42,solo,3032896499791,10000")
       socket.send("BE#$42,solo,3032896499791,100000")
 
-     console.log(">>>>>>>>>> ************** >>>>>>>O is", O)
    }
 
    /*   if (countKeys(O) > 34) {
-         console.log("************ MORE THAN 34 ENTRIES IN O *************")
            setTimeout( () => {
            N = -1;
            M = -1;
@@ -302,11 +289,8 @@ let visible = true;
    var worker_O = new Worker('worker_O.js');
 
    worker_O.onmessage = e => {
-     console.log("onmessage e in Monad2.svelte is", e);
      M = M = M + 1;
      Monad([e.data], "d"+M);
-     var A = countKeys(O,"c");
-     console.log("M and A are", M, A);
      if (M === 14) {
         M = -1;
         N = -1;
@@ -314,6 +298,85 @@ let visible = true;
      }
    }
 
+  var mon = `   var Monad = function Monad ( AR = [], name = "generic"  )  {
+       var f_, p, run;
+       var ar = AR.slice();
+       var name = name;
+       O[name] = ar;
+       let x = O[name].pop();
+       return run = (function run (x) {
+       if (x != undefined && x === x  && x !== false
+         && x.name !== "f_" && x.name !== "halt" ) {
+           O[name] = O[name].concat(x)
+         };
+         function f_ (func) {
+           if (func === 'halt' || func === 'S') return O[name];
+           else if (typeof func !== "function") p = func;
+           else if (x instanceof Promise) p = x.then(v => func(v));
+           else p = func(x);
+           return run(p);
+         };
+         return f_;
+       })(x);
+    } `
+
+  var statement = `    Monad(["value"], "key")(x => "This is the " + x)(x => x + ".")(halt)
+    O.key   // ["value", "This is the value", "This is the value."]`
+
+  var fa = `    function factors () {
+     if (lock === false) {
+        lock = true;
+        clearOb(O);
+        N = -1;
+        M = -1;
+        Q = -1;
+        groupDelete(O, "c");
+        groupDelete(O, "d");
+        fact();
+     }
+     else {
+        setTimeout(()=> {
+        factors()
+     },1000)
+     }
+  }`
+
+var fac = `  var fact = function fact () {
+   socket.send("BE#$42,solo,3032896499791,10000")
+   socket.send("BE#$42,solo,3032896499791,1000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+   socket.send("BE#$42,solo,3032896499791,10000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+   socket.send("BE#$42,solo,3032896499791,1000000")
+   socket.send("BE#$42,solo,3032896499791,1000")
+   socket.send("BE#$42,solo,3032896499791,1000000")
+   socket.send("BE#$42,solo,3032896499791,10000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+   socket.send("BE#$42,solo,3032896499791,10000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+
+}`
+
+  var onmessServer = `  ar v = e.data.split(',');
+  if (v[0] === "BE#$42") {
+    Q = Q + 1;
+    Monad([v[3]], "c"+Q);
+    worker_O.postMessage([v[3]])
+  }
+}  `
+
+  var onmessWorker = `    worker_O.onmessage = e => {
+     M = M = M + 1;
+     Monad([e.data], "d"+M);
+     if (M === 14) {
+        M = -1;
+        N = -1;
+       lock = false;
+     }
+   } `
 </script>
 
 <br><br><br>
@@ -362,6 +425,20 @@ ASYNCHRONOUS MONAD
 {O.d14}
 <br>
 </div>
+<br>
+<p> There are many ways to display the behavior of monads returned by Monad(). For this demonstration, a simple object named "O" was created and Monad was modified to make key-value pairs on O out of each monad's monad's name and array.
+<pre>{mon}</pre>
+The statement "Monad(['value"], 'key")(x => 'This is the ' + x)(x => x + '.')(halt)" attaches the the resulting monad to O as follows:
+<pre>{statement}</pre>
+<p> The demonstration procedure is initiated by calling factors().
+<pre>{fa}</pre>
+<p> factor() is called once every second until lock === false; then, lock is set to true and fact() is called. The lock assures that the procedures initiated by fact() will complete before fact() is called again. </p>
+<pre>{fac}</pre>
+<p> Messages are sent to the Haskell WebSockets server requesting random numbers between 1 and the integer specified at the end of the request. randomR from the System.Random library produces a number which is sent back to the browser with prefix "BE#$42". Messages from the server are parsed and processed in socket.onmessage, which requests the random number's prime decomposition from worker_O.
+<pre>{onmessServer}</pre>
+<p> Messages from the web worker are processed in worker_O.onmessage
+<pre>{onmessWorker}</pre>
+<p> When M === 14 the process is complete. M and N are set to -1 and lock is set to false, allowing another possible call to random() to call rand(). </p>
 <br>
 <span> The code for this Svelte application is at </span>
 <a href = "https://github.com/dschalk/blog/" target = "_blank">GitHub repository</a>

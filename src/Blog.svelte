@@ -6,6 +6,7 @@
 
     import Monad from './Monad.svelte'
     import Monad2 from './Monad2.svelte'
+    import Monad3 from './Monad3.svelte'
     import Haskell from './Haskell.svelte'
     import Bugs from './Bugs.svelte'
     import Matrix from './Matrix.svelte'
@@ -18,6 +19,7 @@
 
     function monad () {j = 1; console.log(j)};
     function monad2 () {j = 2; console.log(j)};
+    function monad3 () {j = 9; console.log(j)};
     function haskell () {j = 3; console.log(j)};
     function bugs () {j = 4; console.log(j)};
     function matrix () {j = 5; console.log(j)};
@@ -87,6 +89,8 @@ button {
                         <br>
                         <li><div class='button'  on:click={monad2}>Asynchronous Monads</div></li>
                         <br>
+                        <li><div class='button'  on:click={monad3}>Promises Monad</div></li>
+                        <br>
                         <li><div class='button'  on:click={transduce}>Transducer Simulator</div></li>
                         <br>
                         <li><div>MISCELANEOUS TOPICS</div></li>
@@ -113,6 +117,9 @@ button {
 {/if}
 {#if j === 2}
 <Monad2 />
+{/if}
+{#if j === 9}
+<Monad3 />
 {/if}
 {#if j === 3}
 <Haskell />
