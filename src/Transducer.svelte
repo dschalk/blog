@@ -3,8 +3,10 @@ import {fade} from "svelte/transition"
 let visible = true;
 
 
-var k = 100000000;
+var k  = 100000000;
+$: k;
 var ltTest = x => y => new Filt(x => y < x);
+$: ltTest;
 
 var isOdd = function isOdd (x) {return new Filt(v => v % 2 === 1)};
 var isOddF = function isOddF (x) {return new Filt(v => v % 2 === 1)};
@@ -168,26 +170,15 @@ $: transducerResult;
 
 console.log("blah blah blah");
 
-var ar7b = [...Array(1000)];
-
-var test8 = k => ltTest(k).filt;;
-
-var test9;
-$: test9;
-
-   res4 = ar74
+   dotResult = ar74
    .filter(v => (v % 2 === 1))
    .map(x => x**4)
    .map(x => x+3)
    .map(x => x-3)
    .map(x => Math.sqrt(x))
-
-   console.log("res4 is", res4);
-
-    dotResult = res4.map(v=>v*v)
+   .map(v=>v*v)
    .map(v=>v+1000)
-   // .filter(v => v < k - 3);
-   // res4 = res4;
+   .filter(v => v < k)
    console.log("dotResult is", dotResult);
 
 var td1;
@@ -205,6 +196,14 @@ $: xform;
 var xform2;
 $: xform2;
 
+var xform3;
+$: xform3
+
+
+var test8 = k => ltTest(k).filt;;
+
+var test9;
+$: test9;
 
    td1 = x => Monad([x])(isOdd)(v=>v**4)(v=>v+3)(v=>(v-3)/Math.sqrt(v-3))('stop').pop()
    td2 = y => Monad([y])(v=>v*v)(v=>v+1000)(test8)('stop').pop()
@@ -229,7 +228,18 @@ $: xform2;
       tdFilter(x => x < k)
    );
 
-   transducerResult = ar74.reduce(xform(xform2(concat)),[] );
+   xform3 = compose(
+      tdFilter(x=>x%2===1),
+      tdMap(x => x**4),
+      tdMap(x => x+3),
+      tdMap(x => x-3),
+      tdMap(x => Math.sqrt(x)),
+      tdMap(x=>x*x),
+      tdMap(x=>x+1000),
+      tdFilter(x => x < k)
+   );
+
+   transducerResult = ar74.reduce(xform3(concat),[] );
    console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv")
    console.log("transducerResult is", transducerResult);
    console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv")
@@ -245,8 +255,25 @@ $: xform2;
    console.log("D_D is", D_D)
 
 
+/*
+ <div style = "color: #FFAAAA; font-size: 20px">The traditional dot multiple-traversals result:</div>
+ <br>
+ <div style = "color: #FFFFAA">{dotResult.join(" ")}</div>
+ <br>
+ <br>
+ <div style = "color: #FFAAAA; font-size: 20px">The monad two-traversals result:</div>
+ <br>
+ <div style = "color: #FFFFAA">{res2.join(" ")}</div>
+ <br>
+ <br>
+ <div style = "color: #FFAAAA; font-size: 20px">The monad one-traversal result:</div>
+ <br>
+ <div style = "color: #FFFFAA">{res3.join(" ")}</div>
+ <br>
+*/
+
 function go () {
-  return [dotResult, res2, res3, transducerResult];
+  return "<div style = 'color: #FFAAAA; font-size: 20px'>The traditional dot multiple-traversals result:</div><br><div style = 'color: #FFFFAA'>"+dotResult.join(" ")+"</div><br><br><div style = 'color: #FFAAAA; font-size: 20px'>The monad two-traversals result:</div><br><div style = 'color: #FFFFAA'>"+res2.join(" ")+"</div><br><br><div style = 'color: #FFAAAA; font-size: 20px'>The monad one-traversals result:</div><br><div style = 'color: #FFFFAA'>"+res3.join(" ")+"</div><br>  <br> <div style = 'color: #FFAAAA; font-size: 20px'> Standard transducer one traversal result:</div><br><div style = 'color: #FFFFAA'>"+ transducerResult.join(" ")+"</div>";
 };
 
 go();
@@ -257,36 +284,6 @@ $: dotResult;
 $: res2;
 $: res3;
 $: transducerResult;
-
-function test888 (k) {
-  var ar7 = [...Array(k).keys()];
-  var t1 = x => Monad([x])(isOdd)(v=>v**4)(v=>v+3)(v=>(v-3)/Math.sqrt(v-3))('stop').pop()
-  var t2 = y => Monad([y])(v=>v*v)(v=>v+1000)(test8)('stop').pop()
-
-  res1 = ar7.map(x => td1(x));
-  res2 = ar7.map(y => td2(y));
-  res3 = ar7.map(z => td2(td1(z)));
- res4 = ar7
-   .filter(v => (v % 2 === 1))
-   .map(x => x**4)
-   .map(x => x+3)
-   .map(x => x-3)
-   .map(x => Math.sqrt(x))
-
-   console.log("res4 is", res4);
-
-    dotResult = res4.map(v=>v*v)
-   .map(v=>v+1000)
-   .filter(v => v < k);
-   res4 = res4;
-   console.log("dotResult is", dotResult);
-
-   transducerResult = ar7.reduce(xform(xform2(concat)),[] );
-
-   return [dotResult, res2, res3, transducerResult]
-
-}
-
 
 </script>
 <br><br><br>
@@ -299,41 +296,9 @@ TRANSDUCER SIMULATION
 <p> The tradition JavaScript method of composing functions using mainly map, filter, and reduce dot notation (eg. "array.map(func1).filter(func2).map(func3)") polutes memory with arrays that are used only to compute the next array in a chain. Moreover, each of the soon-to-be useless arrays must be traversed. When arrays are large and numerous functions are involved, this can be a performance bottleneck.</p>
 <p> Transducers provide an ingenious solution to the problem. Any JavaScript developer who hasn't already done so would do well to get a good night's sleep, drink a big cup of coffee, and wrap his or her head around the transducer algorithm.</p>
 <p> Another, more straightforward one-array-traversal solution is to use monads. This post shows the result of an array being traversed only one time and, with the help of a monad, undersoing multiple transformations by a collection of functions. The result is the same result obtained by the dot method and a standard transducer.</p>
-<p> The following results were obtained using a 100-element array and eight functions:</p>
-<div style = "color: #FFAAAA; font-size: 20px">The traditional dot multiple-traversals result:</div>
+<p> The following results were obtained by eight transformations on an array of the first 100 integers:</p>
 <br>
-<div style = "color: #FFFFAA">{dotResult.join(" ")}</div>
-<br>
-<br>
-<div style = "color: #FFAAAA; font-size: 20px">The monad two-traversals result:</div>
-<br>
-<div style = "color: #FFFFAA">{res2.join(" ")}</div>
-<br>
-<br>
-<div style = "color: #FFAAAA; font-size: 20px">The monad one-traversal result:</div>
-<br>
-<div style = "color: #FFFFAA">{res3.join(" ")}</div>
-<br>
-<br>
-<div style = "color: #FFAAAA; font-size: 20px">The standard transducer one-traversal result:</div>
-<br>
-  <div style = "color: #FFFFAA">{transducerResult.join(" ")}</div>
-<br><br>
-
-{A_A.join(" ")}
-<br><br>
-{B_B.join(" ")}
-<br><br>
-{C_C.join(" ")}
-<br><br>
-{D_D.join(" ")}
-<br><br>
-<input bind:value = {size}>
-<br>
-<h2>{size}</h2>
-<br>
-<div> ar74 is {ar74} </div>
-{go().map(v => v.join(" "))}
+{@html go()}
 
 
 
