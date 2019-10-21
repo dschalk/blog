@@ -3279,7 +3279,7 @@ console.log("a is", a)  // a is 900`;
 
     const file$6 = "src/Transducer.svelte";
 
-    // (8:0) {#if visible}
+    // (293:0) {#if visible}
     function create_if_block$6(ctx) {
     	var div, div_transition, current;
 
@@ -3291,7 +3291,7 @@ console.log("a is", a)  // a is 900`;
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file$6, 8, 1, 96);
+    			add_location(div, file$6, 293, 1, 6021);
     		},
 
     		m: function mount(target, anchor) {
@@ -3326,17 +3326,170 @@ console.log("a is", a)  // a is 900`;
     }
 
     function create_fragment$6(ctx) {
-    	var t, p, current;
+    	var br0, br1, br2, t0, t1, br3, br4, t2, p0, t4, p1, t6, p2, t8, p3, t10, div0, t12, br5, t13, div1, t14_value = ctx.dotResult.join(" ") + "", t14, t15, br6, t16, br7, t17, div2, t19, br8, t20, div3, t21_value = ctx.res2.join(" ") + "", t21, t22, br9, t23, br10, t24, div4, t26, br11, t27, div5, t28_value = ctx.res3.join(" ") + "", t28, t29, br12, t30, br13, t31, div6, t33, br14, t34, div7, t35_value = ctx.transducerResult.join(" ") + "", t35, t36, br15, br16, t37, t38_value = ctx.A_A.join(" ") + "", t38, t39, br17, br18, t40, t41_value = ctx.B_B.join(" ") + "", t41, t42, br19, br20, t43, t44_value = ctx.C_C.join(" ") + "", t44, t45, br21, br22, t46, t47_value = ctx.D_D.join(" ") + "", t47, t48, br23, br24, t49, input, t50, br25, t51, h2, t52, t53, br26, t54, div8, t55, t56, t57, t58_value = ctx.go().map(func_1) + "", t58, t59, current, dispose;
 
     	var if_block =  create_if_block$6();
 
     	return {
     		c: function create() {
+    			br0 = element("br");
+    			br1 = element("br");
+    			br2 = element("br");
+    			t0 = space();
     			if (if_block) if_block.c();
-    			t = space();
-    			p = element("p");
-    			p.textContent = "Howdy folks";
-    			add_location(p, file$6, 12, 0, 259);
+    			t1 = space();
+    			br3 = element("br");
+    			br4 = element("br");
+    			t2 = space();
+    			p0 = element("p");
+    			p0.textContent = "The tradition JavaScript method of composing functions using mainly map, filter, and reduce dot notation (eg. \"array.map(func1).filter(func2).map(func3)\") polutes memory with arrays that are used only to compute the next array in a chain. Moreover, each of the soon-to-be useless arrays must be traversed. When arrays are large and numerous functions are involved, this can be a performance bottleneck.";
+    			t4 = space();
+    			p1 = element("p");
+    			p1.textContent = "Transducers provide an ingenious solution to the problem. Any JavaScript developer who hasn't already done so would do well to get a good night's sleep, drink a big cup of coffee, and wrap his or her head around the transducer algorithm.";
+    			t6 = space();
+    			p2 = element("p");
+    			p2.textContent = "Another, more straightforward one-array-traversal solution is to use monads. This post shows the result of an array being traversed only one time and, with the help of a monad, undersoing multiple transformations by a collection of functions. The result is the same result obtained by the dot method and a standard transducer.";
+    			t8 = space();
+    			p3 = element("p");
+    			p3.textContent = "The following results were obtained using a 100-element array and eight functions:";
+    			t10 = space();
+    			div0 = element("div");
+    			div0.textContent = "The traditional dot multiple-traversals result:";
+    			t12 = space();
+    			br5 = element("br");
+    			t13 = space();
+    			div1 = element("div");
+    			t14 = text(t14_value);
+    			t15 = space();
+    			br6 = element("br");
+    			t16 = space();
+    			br7 = element("br");
+    			t17 = space();
+    			div2 = element("div");
+    			div2.textContent = "The monad two-traversals result:";
+    			t19 = space();
+    			br8 = element("br");
+    			t20 = space();
+    			div3 = element("div");
+    			t21 = text(t21_value);
+    			t22 = space();
+    			br9 = element("br");
+    			t23 = space();
+    			br10 = element("br");
+    			t24 = space();
+    			div4 = element("div");
+    			div4.textContent = "The monad one-traversal result:";
+    			t26 = space();
+    			br11 = element("br");
+    			t27 = space();
+    			div5 = element("div");
+    			t28 = text(t28_value);
+    			t29 = space();
+    			br12 = element("br");
+    			t30 = space();
+    			br13 = element("br");
+    			t31 = space();
+    			div6 = element("div");
+    			div6.textContent = "The standard transducer one-traversal result:";
+    			t33 = space();
+    			br14 = element("br");
+    			t34 = space();
+    			div7 = element("div");
+    			t35 = text(t35_value);
+    			t36 = space();
+    			br15 = element("br");
+    			br16 = element("br");
+    			t37 = space();
+    			t38 = text(t38_value);
+    			t39 = space();
+    			br17 = element("br");
+    			br18 = element("br");
+    			t40 = space();
+    			t41 = text(t41_value);
+    			t42 = space();
+    			br19 = element("br");
+    			br20 = element("br");
+    			t43 = space();
+    			t44 = text(t44_value);
+    			t45 = space();
+    			br21 = element("br");
+    			br22 = element("br");
+    			t46 = space();
+    			t47 = text(t47_value);
+    			t48 = space();
+    			br23 = element("br");
+    			br24 = element("br");
+    			t49 = space();
+    			input = element("input");
+    			t50 = space();
+    			br25 = element("br");
+    			t51 = space();
+    			h2 = element("h2");
+    			t52 = text(ctx.size);
+    			t53 = space();
+    			br26 = element("br");
+    			t54 = space();
+    			div8 = element("div");
+    			t55 = text("ar74 is ");
+    			t56 = text(ctx.ar74);
+    			t57 = space();
+    			t58 = text(t58_value);
+    			t59 = text("\n\n\n\n\n\n..");
+    			add_location(br0, file$6, 291, 0, 5993);
+    			add_location(br1, file$6, 291, 4, 5997);
+    			add_location(br2, file$6, 291, 8, 6001);
+    			add_location(br3, file$6, 297, 0, 6184);
+    			add_location(br4, file$6, 297, 4, 6188);
+    			add_location(p0, file$6, 298, 0, 6193);
+    			add_location(p1, file$6, 299, 0, 6604);
+    			add_location(p2, file$6, 300, 0, 6850);
+    			add_location(p3, file$6, 301, 0, 7185);
+    			set_style(div0, "color", "#FFAAAA");
+    			set_style(div0, "font-size", "20px");
+    			add_location(div0, file$6, 302, 0, 7276);
+    			add_location(br5, file$6, 303, 0, 7377);
+    			set_style(div1, "color", "#FFFFAA");
+    			add_location(div1, file$6, 304, 0, 7382);
+    			add_location(br6, file$6, 305, 0, 7440);
+    			add_location(br7, file$6, 306, 0, 7445);
+    			set_style(div2, "color", "#FFAAAA");
+    			set_style(div2, "font-size", "20px");
+    			add_location(div2, file$6, 307, 0, 7450);
+    			add_location(br8, file$6, 308, 0, 7536);
+    			set_style(div3, "color", "#FFFFAA");
+    			add_location(div3, file$6, 309, 0, 7541);
+    			add_location(br9, file$6, 310, 0, 7594);
+    			add_location(br10, file$6, 311, 0, 7599);
+    			set_style(div4, "color", "#FFAAAA");
+    			set_style(div4, "font-size", "20px");
+    			add_location(div4, file$6, 312, 0, 7604);
+    			add_location(br11, file$6, 313, 0, 7689);
+    			set_style(div5, "color", "#FFFFAA");
+    			add_location(div5, file$6, 314, 0, 7694);
+    			add_location(br12, file$6, 315, 0, 7747);
+    			add_location(br13, file$6, 316, 0, 7752);
+    			set_style(div6, "color", "#FFAAAA");
+    			set_style(div6, "font-size", "20px");
+    			add_location(div6, file$6, 317, 0, 7757);
+    			add_location(br14, file$6, 318, 0, 7856);
+    			set_style(div7, "color", "#FFFFAA");
+    			add_location(div7, file$6, 319, 2, 7863);
+    			add_location(br15, file$6, 320, 0, 7928);
+    			add_location(br16, file$6, 320, 4, 7932);
+    			add_location(br17, file$6, 323, 0, 7954);
+    			add_location(br18, file$6, 323, 4, 7958);
+    			add_location(br19, file$6, 325, 0, 7979);
+    			add_location(br20, file$6, 325, 4, 7983);
+    			add_location(br21, file$6, 327, 0, 8004);
+    			add_location(br22, file$6, 327, 4, 8008);
+    			add_location(br23, file$6, 329, 0, 8029);
+    			add_location(br24, file$6, 329, 4, 8033);
+    			add_location(input, file$6, 330, 0, 8038);
+    			add_location(br25, file$6, 331, 0, 8066);
+    			add_location(h2, file$6, 332, 0, 8071);
+    			add_location(br26, file$6, 333, 0, 8087);
+    			add_location(div8, file$6, 334, 0, 8092);
+    			dispose = listen(input, "input", ctx.input_input_handler);
     		},
 
     		l: function claim(nodes) {
@@ -3344,9 +3497,104 @@ console.log("a is", a)  // a is 900`;
     		},
 
     		m: function mount(target, anchor) {
+    			insert(target, br0, anchor);
+    			insert(target, br1, anchor);
+    			insert(target, br2, anchor);
+    			insert(target, t0, anchor);
     			if (if_block) if_block.m(target, anchor);
-    			insert(target, t, anchor);
-    			insert(target, p, anchor);
+    			insert(target, t1, anchor);
+    			insert(target, br3, anchor);
+    			insert(target, br4, anchor);
+    			insert(target, t2, anchor);
+    			insert(target, p0, anchor);
+    			insert(target, t4, anchor);
+    			insert(target, p1, anchor);
+    			insert(target, t6, anchor);
+    			insert(target, p2, anchor);
+    			insert(target, t8, anchor);
+    			insert(target, p3, anchor);
+    			insert(target, t10, anchor);
+    			insert(target, div0, anchor);
+    			insert(target, t12, anchor);
+    			insert(target, br5, anchor);
+    			insert(target, t13, anchor);
+    			insert(target, div1, anchor);
+    			append(div1, t14);
+    			insert(target, t15, anchor);
+    			insert(target, br6, anchor);
+    			insert(target, t16, anchor);
+    			insert(target, br7, anchor);
+    			insert(target, t17, anchor);
+    			insert(target, div2, anchor);
+    			insert(target, t19, anchor);
+    			insert(target, br8, anchor);
+    			insert(target, t20, anchor);
+    			insert(target, div3, anchor);
+    			append(div3, t21);
+    			insert(target, t22, anchor);
+    			insert(target, br9, anchor);
+    			insert(target, t23, anchor);
+    			insert(target, br10, anchor);
+    			insert(target, t24, anchor);
+    			insert(target, div4, anchor);
+    			insert(target, t26, anchor);
+    			insert(target, br11, anchor);
+    			insert(target, t27, anchor);
+    			insert(target, div5, anchor);
+    			append(div5, t28);
+    			insert(target, t29, anchor);
+    			insert(target, br12, anchor);
+    			insert(target, t30, anchor);
+    			insert(target, br13, anchor);
+    			insert(target, t31, anchor);
+    			insert(target, div6, anchor);
+    			insert(target, t33, anchor);
+    			insert(target, br14, anchor);
+    			insert(target, t34, anchor);
+    			insert(target, div7, anchor);
+    			append(div7, t35);
+    			insert(target, t36, anchor);
+    			insert(target, br15, anchor);
+    			insert(target, br16, anchor);
+    			insert(target, t37, anchor);
+    			insert(target, t38, anchor);
+    			insert(target, t39, anchor);
+    			insert(target, br17, anchor);
+    			insert(target, br18, anchor);
+    			insert(target, t40, anchor);
+    			insert(target, t41, anchor);
+    			insert(target, t42, anchor);
+    			insert(target, br19, anchor);
+    			insert(target, br20, anchor);
+    			insert(target, t43, anchor);
+    			insert(target, t44, anchor);
+    			insert(target, t45, anchor);
+    			insert(target, br21, anchor);
+    			insert(target, br22, anchor);
+    			insert(target, t46, anchor);
+    			insert(target, t47, anchor);
+    			insert(target, t48, anchor);
+    			insert(target, br23, anchor);
+    			insert(target, br24, anchor);
+    			insert(target, t49, anchor);
+    			insert(target, input, anchor);
+
+    			set_input_value(input, ctx.size);
+
+    			insert(target, t50, anchor);
+    			insert(target, br25, anchor);
+    			insert(target, t51, anchor);
+    			insert(target, h2, anchor);
+    			append(h2, t52);
+    			insert(target, t53, anchor);
+    			insert(target, br26, anchor);
+    			insert(target, t54, anchor);
+    			insert(target, div8, anchor);
+    			append(div8, t55);
+    			append(div8, t56);
+    			insert(target, t57, anchor);
+    			insert(target, t58, anchor);
+    			insert(target, t59, anchor);
     			current = true;
     		},
 
@@ -3356,10 +3604,48 @@ console.log("a is", a)  // a is 900`;
     					if_block = create_if_block$6();
     					if_block.c();
     					transition_in(if_block, 1);
-    					if_block.m(t.parentNode, t);
+    					if_block.m(t1.parentNode, t1);
     				} else {
     									transition_in(if_block, 1);
     				}
+    			}
+
+    			if ((!current || changed.dotResult) && t14_value !== (t14_value = ctx.dotResult.join(" ") + "")) {
+    				set_data(t14, t14_value);
+    			}
+
+    			if ((!current || changed.res2) && t21_value !== (t21_value = ctx.res2.join(" ") + "")) {
+    				set_data(t21, t21_value);
+    			}
+
+    			if ((!current || changed.res3) && t28_value !== (t28_value = ctx.res3.join(" ") + "")) {
+    				set_data(t28, t28_value);
+    			}
+
+    			if ((!current || changed.transducerResult) && t35_value !== (t35_value = ctx.transducerResult.join(" ") + "")) {
+    				set_data(t35, t35_value);
+    			}
+
+    			if ((!current || changed.A_A) && t38_value !== (t38_value = ctx.A_A.join(" ") + "")) {
+    				set_data(t38, t38_value);
+    			}
+
+    			if ((!current || changed.B_B) && t41_value !== (t41_value = ctx.B_B.join(" ") + "")) {
+    				set_data(t41, t41_value);
+    			}
+
+    			if ((!current || changed.C_C) && t44_value !== (t44_value = ctx.C_C.join(" ") + "")) {
+    				set_data(t44, t44_value);
+    			}
+
+    			if ((!current || changed.D_D) && t47_value !== (t47_value = ctx.D_D.join(" ") + "")) {
+    				set_data(t47, t47_value);
+    			}
+
+    			if (changed.size && (input.value !== ctx.size)) set_input_value(input, ctx.size);
+
+    			if (!current || changed.size) {
+    				set_data(t52, ctx.size);
     			}
     		},
 
@@ -3375,20 +3661,349 @@ console.log("a is", a)  // a is 900`;
     		},
 
     		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(br0);
+    				detach(br1);
+    				detach(br2);
+    				detach(t0);
+    			}
+
     			if (if_block) if_block.d(detaching);
 
     			if (detaching) {
-    				detach(t);
-    				detach(p);
+    				detach(t1);
+    				detach(br3);
+    				detach(br4);
+    				detach(t2);
+    				detach(p0);
+    				detach(t4);
+    				detach(p1);
+    				detach(t6);
+    				detach(p2);
+    				detach(t8);
+    				detach(p3);
+    				detach(t10);
+    				detach(div0);
+    				detach(t12);
+    				detach(br5);
+    				detach(t13);
+    				detach(div1);
+    				detach(t15);
+    				detach(br6);
+    				detach(t16);
+    				detach(br7);
+    				detach(t17);
+    				detach(div2);
+    				detach(t19);
+    				detach(br8);
+    				detach(t20);
+    				detach(div3);
+    				detach(t22);
+    				detach(br9);
+    				detach(t23);
+    				detach(br10);
+    				detach(t24);
+    				detach(div4);
+    				detach(t26);
+    				detach(br11);
+    				detach(t27);
+    				detach(div5);
+    				detach(t29);
+    				detach(br12);
+    				detach(t30);
+    				detach(br13);
+    				detach(t31);
+    				detach(div6);
+    				detach(t33);
+    				detach(br14);
+    				detach(t34);
+    				detach(div7);
+    				detach(t36);
+    				detach(br15);
+    				detach(br16);
+    				detach(t37);
+    				detach(t38);
+    				detach(t39);
+    				detach(br17);
+    				detach(br18);
+    				detach(t40);
+    				detach(t41);
+    				detach(t42);
+    				detach(br19);
+    				detach(br20);
+    				detach(t43);
+    				detach(t44);
+    				detach(t45);
+    				detach(br21);
+    				detach(br22);
+    				detach(t46);
+    				detach(t47);
+    				detach(t48);
+    				detach(br23);
+    				detach(br24);
+    				detach(t49);
+    				detach(input);
+    				detach(t50);
+    				detach(br25);
+    				detach(t51);
+    				detach(h2);
+    				detach(t53);
+    				detach(br26);
+    				detach(t54);
+    				detach(div8);
+    				detach(t57);
+    				detach(t58);
+    				detach(t59);
     			}
+
+    			dispose();
     		}
+    	};
+    }
+
+    var k = 100000000;
+
+    function tdMap(func) {
+    return function(reducingFunction) {
+      return (accumulator, v) => {
+        return reducingFunction(accumulator, func(v));
+      }
+    }
+    }
+
+    function tdFilter(test) {
+    return function(reducingFunction) {
+      return (accumulator, v) => {
+        return (test(v) ? reducingFunction(accumulator, v) : accumulator)
+      };
+    };
+    }
+
+    function Monad$1 ( AR = [] )  {
+    var p, run;
+    var ar = AR.slice();
+    var x = ar.pop();
+    return run = (function run (x) {
+      if (x === null || x === NaN ||
+        x === undefined) x = f_('stop').pop();
+      if (x instanceof Filt) {
+        var z = ar.pop();
+        if (x.filt(z)) x = z; else ar = [];
+      }
+      else if (x instanceof Promise) x.then(y =>
+        {if (y != undefined && typeof y !== "boolean" && y === y &&
+        y.name !== "f_" &&
+        y.name !== "stop" ) {
+        ar.push(y);
+      }});
+      else if (x != undefined && x === x  && x !== false
+        && x.name !== "f_" && x.name !== "stop" ) {
+        ar.push(x);
+      }  function f_ (func) {
+        if (func === 'stop' || func === 'S') return ar;
+        else if (func === 'finish' || func === 'F') return Object.freeze(ar);
+        else if (typeof func !== "function") p = func;
+        else if (x instanceof Promise) p = x.then(v => func(v));
+        else p = func(x);
+        return run(p);
+      }
+      return f_;
+    })(x)
+    }
+
+    function Filt (p) {this.p = p; this.filt = function filt (x) {return p(x)};}
+
+    function concat(xs, val) {return xs.concat(val);}
+
+    function mapping(f) {
+     return function(rf) {
+        return (acc, val) => {
+           return rf(acc, f(val));
+        }
+     }
+    }
+
+    function func_1(v) {
+    	return v.join(" ");
+    }
+
+    function instance$6($$self, $$props, $$invalidate) {
+    	
+    var ltTest = x => y => new Filt(x => y < x);
+
+    var isOdd = function isOdd (x) {return new Filt(v => v % 2 === 1)};
+
+    var ar = "cowgirl";
+
+    var cleanF = function cleanF (arthur = []) {
+      $$invalidate('ar', ar = arthur);
+      return ar.filter(
+        a => a === 0 || a && typeof a !== "boolean" //
+      ).reduce((a,b)=>a.concat(b),[])
+    };
+    var compose = (...fns) =>
+    fns.reduceRight((prevFn, nextFn) =>
+    (...args) => nextFn(prevFn(...args)),
+    value => value
+    );
+    var cube = function cube(v) { return v**3; };
+
+    var size = 100;
+
+    var ar74 = [...Array(size).keys()];
+
+    var mapWRf = mapping(cube);
+    var mapRes = ar74.reduce(mapWRf(concat), []);
+    console.log("mapRes is", mapRes);
+
+    var isEven = x => x % 2 === 0;
+    var not = x => !x;
+    var isOdd2 = compose(not, isEven);
+
+    var A_A = "H";
+
+    var B_B = "s";
+
+    var C_C = "G";
+
+    var D_D = "I";
+
+    var res1;
+
+    var res2;
+
+    var res3;
+
+    var res4;
+
+    var dotResult;
+
+    var transducerResult;
+
+    console.log("blah blah blah");
+
+    var test8 = k => ltTest().filt;
+       $$invalidate('res4', res4 = ar74
+       .filter(v => (v % 2 === 1))
+       .map(x => x**4)
+       .map(x => x+3)
+       .map(x => x-3)
+       .map(x => Math.sqrt(x)));
+
+       console.log("res4 is", res4);
+
+        $$invalidate('dotResult', dotResult = res4.map(v=>v*v)
+       .map(v=>v+1000));
+       // .filter(v => v < k - 3);
+       // res4 = res4;
+       console.log("dotResult is", dotResult);
+
+    var td1;
+
+    var td2;
+
+    var xform;
+
+    var xform2;
+
+
+       $$invalidate('td1', td1 = x => Monad$1([x])(isOdd)(v=>v**4)(v=>v+3)(v=>(v-3)/Math.sqrt(v-3))('stop').pop());
+       $$invalidate('td2', td2 = y => Monad$1([y])(v=>v*v)(v=>v+1000)(test8)('stop').pop());
+
+       $$invalidate('res1', res1 = ar74.map(x => td1(x)));
+       $$invalidate('res2', res2 = res1.map(y => td2(y)));
+       $$invalidate('res3', res3 = ar74.map(z => td2(td1(z))));
+
+       console.log("cleanF(res2) is", cleanF(res2));
+       console.log("cleanF(res3) is", cleanF(res3));
+
+       $$invalidate('xform', xform = compose(
+          tdFilter(x=>x%2===1),
+          tdMap(x => x**4),
+          tdMap(x => x+3),
+          tdMap(x => x-3),
+          tdMap(x => Math.sqrt(x))
+       ));
+       $$invalidate('xform2', xform2 = compose(
+          tdMap(x=>x*x),
+          tdMap(x=>x+1000),
+          tdFilter(x => x < k)
+       ));
+
+       $$invalidate('transducerResult', transducerResult = ar74.reduce(xform(xform2(concat)),[] ));
+       console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
+       console.log("transducerResult is", transducerResult);
+       console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
+
+       $$invalidate('A_A', A_A = dotResult);
+       $$invalidate('B_B', B_B = cleanF(res2));
+       $$invalidate('C_C', C_C = cleanF(res3));
+       $$invalidate('D_D', D_D = transducerResult);
+
+       console.log("A_A is", A_A);
+       console.log("B_B is", B_B);
+       console.log("C_C is", C_C);
+       console.log("D_D is", D_D);
+
+
+    function go () {
+      return [dotResult, res2, res3, transducerResult];
+    }
+    console.log("res4 is", res4);
+
+    	function input_input_handler() {
+    		size = this.value;
+    		$$invalidate('size', size);
+    	}
+
+    	$$self.$$.update = ($$dirty = { ar: 1, cleanF: 1, size: 1, ar74: 1, A_A: 1, B_B: 1, C_C: 1, D_D: 1, res1: 1, res2: 1, res3: 1, res4: 1, dotResult: 1, test9: 1, transducerResult: 1, td1: 1, td2: 1, td3: 1, xform: 1, xform2: 1 }) => {
+    		if ($$dirty.ar) ;
+    		if ($$dirty.cleanF) ;
+    		if ($$dirty.size) ;
+    		if ($$dirty.ar74) ;
+    		if ($$dirty.A_A) ;
+    		if ($$dirty.B_B) ;
+    		if ($$dirty.C_C) ;
+    		if ($$dirty.D_D) ;
+    		if ($$dirty.res1) ;
+    		if ($$dirty.res2) ;
+    		if ($$dirty.res3) ;
+    		if ($$dirty.res4) ;
+    		if ($$dirty.dotResult) ;
+    		if ($$dirty.test9) ;
+    		if ($$dirty.transducerResult) ;
+    		if ($$dirty.test9) ;
+    		if ($$dirty.td1) ;
+    		if ($$dirty.td2) ;
+    		if ($$dirty.td3) ;
+    		if ($$dirty.xform) ;
+    		if ($$dirty.xform2) ;
+    		if ($$dirty.dotResult) ;
+    		if ($$dirty.res2) ;
+    		if ($$dirty.res3) ;
+    		if ($$dirty.transducerResult) ;
+    	};
+
+    	return {
+    		size,
+    		ar74,
+    		A_A,
+    		B_B,
+    		C_C,
+    		D_D,
+    		res2,
+    		res3,
+    		dotResult,
+    		transducerResult,
+    		go,
+    		input_input_handler
     	};
     }
 
     class Transducer extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, null, create_fragment$6, safe_not_equal, []);
+    		init(this, options, instance$6, create_fragment$6, safe_not_equal, []);
     	}
     }
 
@@ -3499,7 +4114,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function instance$6($$self) {
+    function instance$7($$self) {
 
     	return {};
     }
@@ -3507,7 +4122,7 @@ console.log("a is", a)  // a is 900`;
     class Asynchronous_Monad extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$6, create_fragment$7, safe_not_equal, []);
+    		init(this, options, instance$7, create_fragment$7, safe_not_equal, []);
     	}
     }
 
@@ -3604,7 +4219,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function instance$7($$self, $$props, $$invalidate) {
+    function instance$8($$self, $$props, $$invalidate) {
     	let dark = false;
     	const toggleTheme = () => { const $$result = dark = dark === false; $$invalidate('dark', dark); return $$result; };
 
@@ -3614,7 +4229,7 @@ console.log("a is", a)  // a is 900`;
     class ToggleTheme extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$7, create_fragment$8, safe_not_equal, []);
+    		init(this, options, instance$8, create_fragment$8, safe_not_equal, []);
     	}
     }
 
@@ -3783,7 +4398,7 @@ console.log("a is", a)  // a is 900`;
 
     const file$a = "src/Blog.svelte";
 
-    // (112:0) {#if j === 0}
+    // (111:0) {#if j === 0}
     function create_if_block_9(ctx) {
     	var current;
 
@@ -3817,7 +4432,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (115:0) {#if j === 1}
+    // (114:0) {#if j === 1}
     function create_if_block_8(ctx) {
     	var current;
 
@@ -3851,7 +4466,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (118:0) {#if j === 2}
+    // (117:0) {#if j === 2}
     function create_if_block_7(ctx) {
     	var current;
 
@@ -3885,7 +4500,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (121:0) {#if j === 9}
+    // (120:0) {#if j === 9}
     function create_if_block_6(ctx) {
     	var current;
 
@@ -3919,7 +4534,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (124:0) {#if j === 3}
+    // (123:0) {#if j === 3}
     function create_if_block_5(ctx) {
     	var current;
 
@@ -3953,7 +4568,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (127:0) {#if j === 4}
+    // (126:0) {#if j === 4}
     function create_if_block_4(ctx) {
     	var current;
 
@@ -3987,7 +4602,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (130:0) {#if j === 5}
+    // (129:0) {#if j === 5}
     function create_if_block_3(ctx) {
     	var current;
 
@@ -4021,7 +4636,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (133:0) {#if j === 6}
+    // (132:0) {#if j === 6}
     function create_if_block_2(ctx) {
     	var current;
 
@@ -4055,7 +4670,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (136:0) {#if j === 7}
+    // (135:0) {#if j === 7}
     function create_if_block_1(ctx) {
     	var current;
 
@@ -4089,7 +4704,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (139:0) {#if j === 8}
+    // (138:0) {#if j === 8}
     function create_if_block$a(ctx) {
     	var current;
 
@@ -4124,7 +4739,7 @@ console.log("a is", a)  // a is 900`;
     }
 
     function create_fragment$a(ctx) {
-    	var div15, br0, br1, t0, div14, div11, br2, br3, br4, br5, br6, br7, br8, t1, ul, li0, div0, t3, br9, t4, li1, div1, t6, br10, t7, li2, div2, t9, br11, t10, li3, div3, t12, br12, t13, li4, div4, t15, br13, t16, li5, div5, t18, br14, t19, li6, div6, t21, br15, t22, li7, div7, t24, br16, t25, li8, div8, t27, br17, t28, li9, div9, t30, br18, t31, li10, div10, t33, br19, t34, div13, div12, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, br20, br21, br22, t47, br23, br24, current, dispose;
+    	var div11, br0, br1, t0, div10, div7, br2, br3, br4, br5, br6, br7, br8, t1, ul, li0, div0, t3, br9, t4, li1, div1, t6, br10, t7, li2, button0, t9, br11, t10, li3, button1, t12, br12, t13, li4, button2, t15, br13, t16, li5, button3, t18, br14, t19, li6, div2, t21, br15, t22, li7, div3, t24, br16, t25, li8, div4, t27, br17, t28, li9, div5, t30, br18, t31, li10, div6, t33, br19, t34, div9, div8, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, br20, br21, br22, t47, br23, br24, current, dispose;
 
     	var if_block0 = (ctx.j === 0) && create_if_block_9();
 
@@ -4148,12 +4763,12 @@ console.log("a is", a)  // a is 900`;
 
     	return {
     		c: function create() {
-    			div15 = element("div");
+    			div11 = element("div");
     			br0 = element("br");
     			br1 = element("br");
     			t0 = space();
-    			div14 = element("div");
-    			div11 = element("div");
+    			div10 = element("div");
+    			div7 = element("div");
     			br2 = element("br");
     			br3 = element("br");
     			br4 = element("br");
@@ -4176,62 +4791,62 @@ console.log("a is", a)  // a is 900`;
     			br10 = element("br");
     			t7 = space();
     			li2 = element("li");
-    			div2 = element("div");
-    			div2.textContent = "A Simple Monad";
+    			button0 = element("button");
+    			button0.textContent = "A Simple Monad";
     			t9 = space();
     			br11 = element("br");
     			t10 = space();
     			li3 = element("li");
-    			div3 = element("div");
-    			div3.textContent = "Asynchronous Monads";
+    			button1 = element("button");
+    			button1.textContent = "Asynchronous Monads";
     			t12 = space();
     			br12 = element("br");
     			t13 = space();
     			li4 = element("li");
-    			div4 = element("div");
-    			div4.textContent = "Promises Monad";
+    			button2 = element("button");
+    			button2.textContent = "Promises Monad";
     			t15 = space();
     			br13 = element("br");
     			t16 = space();
     			li5 = element("li");
-    			div5 = element("div");
-    			div5.textContent = "Transducer Simulator";
+    			button3 = element("button");
+    			button3.textContent = "Transducer Simulator";
     			t18 = space();
     			br14 = element("br");
     			t19 = space();
     			li6 = element("li");
-    			div6 = element("div");
-    			div6.textContent = "MISCELANEOUS TOPICS";
+    			div2 = element("div");
+    			div2.textContent = "MISCELANEOUS TOPICS";
     			t21 = space();
     			br15 = element("br");
     			t22 = space();
     			li7 = element("li");
-    			div7 = element("div");
-    			div7.textContent = "Hidden Haskell Information";
+    			div3 = element("div");
+    			div3.textContent = "Hidden Haskell Information";
     			t24 = space();
     			br16 = element("br");
     			t25 = space();
     			li8 = element("li");
-    			div8 = element("div");
-    			div8.textContent = "Bed Bug Eradication";
+    			div4 = element("div");
+    			div4.textContent = "Bed Bug Eradication";
     			t27 = space();
     			br17 = element("br");
     			t28 = space();
     			li9 = element("li");
-    			div9 = element("div");
-    			div9.textContent = "Toggle Theme";
+    			div5 = element("div");
+    			div5.textContent = "Toggle Theme";
     			t30 = space();
     			br18 = element("br");
     			t31 = space();
     			li10 = element("li");
-    			div10 = element("div");
-    			div10.textContent = "Home";
+    			div6 = element("div");
+    			div6.textContent = "Home";
     			t33 = space();
     			br19 = element("br");
     			t34 = space();
-    			div13 = element("div");
-    			div12 = element("div");
-    			div12.textContent = "DAVID SCHALK'S BLOG";
+    			div9 = element("div");
+    			div8 = element("div");
+    			div8.textContent = "DAVID SCHALK'S BLOG";
     			t36 = space();
     			if (if_block0) if_block0.c();
     			t37 = space();
@@ -4259,91 +4874,91 @@ console.log("a is", a)  // a is 900`;
     			t47 = space();
     			br23 = element("br");
     			br24 = element("br");
-    			add_location(br0, file$a, 76, 0, 1614);
-    			add_location(br1, file$a, 76, 4, 1618);
-    			add_location(br2, file$a, 81, 24, 1773);
-    			add_location(br3, file$a, 81, 28, 1777);
-    			add_location(br4, file$a, 81, 32, 1781);
-    			add_location(br5, file$a, 81, 36, 1785);
-    			add_location(br6, file$a, 81, 40, 1789);
-    			add_location(br7, file$a, 81, 44, 1793);
-    			add_location(br8, file$a, 81, 48, 1797);
+    			add_location(br0, file$a, 75, 0, 1610);
+    			add_location(br1, file$a, 75, 4, 1614);
+    			add_location(br2, file$a, 80, 24, 1769);
+    			add_location(br3, file$a, 80, 28, 1773);
+    			add_location(br4, file$a, 80, 32, 1777);
+    			add_location(br5, file$a, 80, 36, 1781);
+    			add_location(br6, file$a, 80, 40, 1785);
+    			add_location(br7, file$a, 80, 44, 1789);
+    			add_location(br8, file$a, 80, 48, 1793);
     			attr(div0, "class", "button");
-    			add_location(div0, file$a, 83, 28, 1887);
-    			add_location(li0, file$a, 83, 24, 1883);
-    			add_location(br9, file$a, 84, 24, 1972);
-    			add_location(div1, file$a, 85, 28, 2005);
-    			add_location(li1, file$a, 85, 24, 2001);
-    			add_location(br10, file$a, 86, 24, 2058);
-    			attr(div2, "class", "button");
-    			add_location(div2, file$a, 87, 28, 2091);
-    			add_location(li2, file$a, 87, 24, 2087);
-    			add_location(br11, file$a, 88, 24, 2179);
+    			add_location(div0, file$a, 82, 28, 1883);
+    			add_location(li0, file$a, 82, 24, 1879);
+    			add_location(br9, file$a, 83, 24, 1973);
+    			add_location(div1, file$a, 84, 28, 2006);
+    			add_location(li1, file$a, 84, 24, 2002);
+    			add_location(br10, file$a, 85, 24, 2059);
+    			attr(button0, "class", "svelte-yykb74");
+    			add_location(button0, file$a, 86, 28, 2092);
+    			add_location(li2, file$a, 86, 24, 2088);
+    			add_location(br11, file$a, 87, 24, 2200);
+    			attr(button1, "class", "svelte-yykb74");
+    			add_location(button1, file$a, 88, 28, 2233);
+    			add_location(li3, file$a, 88, 24, 2229);
+    			add_location(br12, file$a, 89, 24, 2345);
+    			attr(button2, "class", "svelte-yykb74");
+    			add_location(button2, file$a, 90, 28, 2378);
+    			add_location(li4, file$a, 90, 24, 2374);
+    			add_location(br13, file$a, 91, 24, 2484);
+    			attr(button3, "class", "svelte-yykb74");
+    			add_location(button3, file$a, 92, 28, 2517);
+    			add_location(li5, file$a, 92, 24, 2513);
+    			add_location(br14, file$a, 93, 24, 2633);
+    			add_location(div2, file$a, 94, 28, 2666);
+    			add_location(li6, file$a, 94, 24, 2662);
+    			add_location(br15, file$a, 95, 24, 2726);
     			attr(div3, "class", "button");
-    			add_location(div3, file$a, 89, 28, 2212);
-    			add_location(li3, file$a, 89, 24, 2208);
-    			add_location(br12, file$a, 90, 24, 2306);
+    			add_location(div3, file$a, 96, 28, 2759);
+    			add_location(li7, file$a, 96, 24, 2755);
+    			add_location(br16, file$a, 97, 24, 2890);
     			attr(div4, "class", "button");
-    			add_location(div4, file$a, 91, 28, 2339);
-    			add_location(li4, file$a, 91, 24, 2335);
-    			add_location(br13, file$a, 92, 24, 2428);
+    			add_location(div4, file$a, 98, 28, 2923);
+    			add_location(li8, file$a, 98, 24, 2919);
+    			add_location(br17, file$a, 99, 24, 3048);
     			attr(div5, "class", "button");
-    			add_location(div5, file$a, 93, 28, 2461);
-    			add_location(li5, file$a, 93, 24, 2457);
-    			add_location(br14, file$a, 94, 24, 2559);
-    			add_location(div6, file$a, 95, 28, 2592);
-    			add_location(li6, file$a, 95, 24, 2588);
-    			add_location(br15, file$a, 96, 24, 2652);
-    			attr(div7, "class", "button");
-    			add_location(div7, file$a, 97, 28, 2685);
-    			add_location(li7, file$a, 97, 24, 2681);
-    			add_location(br16, file$a, 98, 24, 2786);
-    			attr(div8, "class", "button");
-    			add_location(div8, file$a, 99, 28, 2819);
-    			add_location(li8, file$a, 99, 24, 2815);
-    			add_location(br17, file$a, 100, 24, 2911);
-    			attr(div9, "class", "button");
-    			add_location(div9, file$a, 101, 28, 2944);
-    			add_location(li9, file$a, 101, 24, 2940);
-    			add_location(br18, file$a, 102, 24, 3028);
-    			attr(div10, "class", "button");
-    			add_location(div10, file$a, 103, 28, 3061);
-    			add_location(li10, file$a, 103, 24, 3057);
-    			add_location(br19, file$a, 104, 24, 3138);
+    			add_location(div5, file$a, 100, 28, 3081);
+    			add_location(li9, file$a, 100, 24, 3077);
+    			add_location(br18, file$a, 101, 24, 3199);
+    			attr(div6, "class", "button");
+    			add_location(div6, file$a, 102, 28, 3232);
+    			add_location(li10, file$a, 102, 24, 3228);
+    			add_location(br19, file$a, 103, 24, 3342);
     			set_style(ul, "list-style", "none");
-    			attr(ul, "class", "svelte-wv8yxe");
-    			add_location(ul, file$a, 82, 24, 1826);
-    			set_style(div11, "margin-Right", "2%");
-    			set_style(div11, "width", "20%");
-    			add_location(div11, file$a, 80, 24, 1703);
-    			set_style(div12, "font-weight", "900");
-    			set_style(div12, "font-size", "45px");
-    			set_style(div12, "color", "#bbbb00");
-    			set_style(div12, "text-align", "center");
-    			add_location(div12, file$a, 108, 24, 3298);
-    			add_location(br20, file$a, 143, 0, 3743);
-    			add_location(br21, file$a, 143, 4, 3747);
-    			add_location(br22, file$a, 143, 8, 3751);
-    			set_style(div13, "margin-Right", "2%");
-    			set_style(div13, "width", "80%");
-    			add_location(div13, file$a, 107, 24, 3228);
-    			set_style(div14, "display", "flex");
-    			add_location(div14, file$a, 78, 24, 1648);
-    			attr(div15, "class", "content");
-    			add_location(div15, file$a, 75, 0, 1592);
-    			add_location(br23, file$a, 147, 0, 3777);
-    			add_location(br24, file$a, 147, 4, 3781);
+    			attr(ul, "class", "svelte-yykb74");
+    			add_location(ul, file$a, 81, 24, 1822);
+    			set_style(div7, "margin-Right", "2%");
+    			set_style(div7, "width", "20%");
+    			add_location(div7, file$a, 79, 24, 1699);
+    			set_style(div8, "font-weight", "900");
+    			set_style(div8, "font-size", "45px");
+    			set_style(div8, "color", "#bbbb00");
+    			set_style(div8, "text-align", "center");
+    			add_location(div8, file$a, 107, 24, 3502);
+    			add_location(br20, file$a, 142, 0, 3947);
+    			add_location(br21, file$a, 142, 4, 3951);
+    			add_location(br22, file$a, 142, 8, 3955);
+    			set_style(div9, "margin-Right", "2%");
+    			set_style(div9, "width", "80%");
+    			add_location(div9, file$a, 106, 24, 3432);
+    			set_style(div10, "display", "flex");
+    			add_location(div10, file$a, 77, 24, 1644);
+    			attr(div11, "class", "content");
+    			add_location(div11, file$a, 74, 0, 1588);
+    			add_location(br23, file$a, 146, 0, 3981);
+    			add_location(br24, file$a, 146, 4, 3985);
 
     			dispose = [
-    				listen(div0, "click", ctx.matrix),
-    				listen(div2, "click", ctx.monad),
-    				listen(div3, "click", ctx.monad2),
-    				listen(div4, "click", ctx.monad3),
-    				listen(div5, "click", ctx.transduce),
-    				listen(div7, "click", ctx.haskell),
-    				listen(div8, "click", ctx.bugs),
-    				listen(div9, "click", ctx.tog),
-    				listen(div10, "click", ctx.home)
+    				listen(div0, "click", ctx.click_handler),
+    				listen(button0, "click", ctx.click_handler_1),
+    				listen(button1, "click", ctx.click_handler_2),
+    				listen(button2, "click", ctx.click_handler_3),
+    				listen(button3, "click", ctx.click_handler_4),
+    				listen(div3, "click", ctx.click_handler_5),
+    				listen(div4, "click", ctx.click_handler_6),
+    				listen(div5, "click", ctx.click_handler_7),
+    				listen(div6, "click", ctx.click_handler_8)
     			];
     		},
 
@@ -4352,21 +4967,21 @@ console.log("a is", a)  // a is 900`;
     		},
 
     		m: function mount(target, anchor) {
-    			insert(target, div15, anchor);
-    			append(div15, br0);
-    			append(div15, br1);
-    			append(div15, t0);
-    			append(div15, div14);
-    			append(div14, div11);
-    			append(div11, br2);
-    			append(div11, br3);
-    			append(div11, br4);
-    			append(div11, br5);
-    			append(div11, br6);
-    			append(div11, br7);
-    			append(div11, br8);
-    			append(div11, t1);
-    			append(div11, ul);
+    			insert(target, div11, anchor);
+    			append(div11, br0);
+    			append(div11, br1);
+    			append(div11, t0);
+    			append(div11, div10);
+    			append(div10, div7);
+    			append(div7, br2);
+    			append(div7, br3);
+    			append(div7, br4);
+    			append(div7, br5);
+    			append(div7, br6);
+    			append(div7, br7);
+    			append(div7, br8);
+    			append(div7, t1);
+    			append(div7, ul);
     			append(ul, li0);
     			append(li0, div0);
     			append(ul, t3);
@@ -4378,76 +4993,76 @@ console.log("a is", a)  // a is 900`;
     			append(ul, br10);
     			append(ul, t7);
     			append(ul, li2);
-    			append(li2, div2);
+    			append(li2, button0);
     			append(ul, t9);
     			append(ul, br11);
     			append(ul, t10);
     			append(ul, li3);
-    			append(li3, div3);
+    			append(li3, button1);
     			append(ul, t12);
     			append(ul, br12);
     			append(ul, t13);
     			append(ul, li4);
-    			append(li4, div4);
+    			append(li4, button2);
     			append(ul, t15);
     			append(ul, br13);
     			append(ul, t16);
     			append(ul, li5);
-    			append(li5, div5);
+    			append(li5, button3);
     			append(ul, t18);
     			append(ul, br14);
     			append(ul, t19);
     			append(ul, li6);
-    			append(li6, div6);
+    			append(li6, div2);
     			append(ul, t21);
     			append(ul, br15);
     			append(ul, t22);
     			append(ul, li7);
-    			append(li7, div7);
+    			append(li7, div3);
     			append(ul, t24);
     			append(ul, br16);
     			append(ul, t25);
     			append(ul, li8);
-    			append(li8, div8);
+    			append(li8, div4);
     			append(ul, t27);
     			append(ul, br17);
     			append(ul, t28);
     			append(ul, li9);
-    			append(li9, div9);
+    			append(li9, div5);
     			append(ul, t30);
     			append(ul, br18);
     			append(ul, t31);
     			append(ul, li10);
-    			append(li10, div10);
+    			append(li10, div6);
     			append(ul, t33);
     			append(ul, br19);
-    			append(div14, t34);
-    			append(div14, div13);
-    			append(div13, div12);
-    			append(div13, t36);
-    			if (if_block0) if_block0.m(div13, null);
-    			append(div13, t37);
-    			if (if_block1) if_block1.m(div13, null);
-    			append(div13, t38);
-    			if (if_block2) if_block2.m(div13, null);
-    			append(div13, t39);
-    			if (if_block3) if_block3.m(div13, null);
-    			append(div13, t40);
-    			if (if_block4) if_block4.m(div13, null);
-    			append(div13, t41);
-    			if (if_block5) if_block5.m(div13, null);
-    			append(div13, t42);
-    			if (if_block6) if_block6.m(div13, null);
-    			append(div13, t43);
-    			if (if_block7) if_block7.m(div13, null);
-    			append(div13, t44);
-    			if (if_block8) if_block8.m(div13, null);
-    			append(div13, t45);
-    			if (if_block9) if_block9.m(div13, null);
-    			append(div13, t46);
-    			append(div13, br20);
-    			append(div13, br21);
-    			append(div13, br22);
+    			append(div10, t34);
+    			append(div10, div9);
+    			append(div9, div8);
+    			append(div9, t36);
+    			if (if_block0) if_block0.m(div9, null);
+    			append(div9, t37);
+    			if (if_block1) if_block1.m(div9, null);
+    			append(div9, t38);
+    			if (if_block2) if_block2.m(div9, null);
+    			append(div9, t39);
+    			if (if_block3) if_block3.m(div9, null);
+    			append(div9, t40);
+    			if (if_block4) if_block4.m(div9, null);
+    			append(div9, t41);
+    			if (if_block5) if_block5.m(div9, null);
+    			append(div9, t42);
+    			if (if_block6) if_block6.m(div9, null);
+    			append(div9, t43);
+    			if (if_block7) if_block7.m(div9, null);
+    			append(div9, t44);
+    			if (if_block8) if_block8.m(div9, null);
+    			append(div9, t45);
+    			if (if_block9) if_block9.m(div9, null);
+    			append(div9, t46);
+    			append(div9, br20);
+    			append(div9, br21);
+    			append(div9, br22);
     			insert(target, t47, anchor);
     			insert(target, br23, anchor);
     			insert(target, br24, anchor);
@@ -4460,7 +5075,7 @@ console.log("a is", a)  // a is 900`;
     					if_block0 = create_if_block_9();
     					if_block0.c();
     					transition_in(if_block0, 1);
-    					if_block0.m(div13, t37);
+    					if_block0.m(div9, t37);
     				} else {
     									transition_in(if_block0, 1);
     				}
@@ -4477,7 +5092,7 @@ console.log("a is", a)  // a is 900`;
     					if_block1 = create_if_block_8();
     					if_block1.c();
     					transition_in(if_block1, 1);
-    					if_block1.m(div13, t38);
+    					if_block1.m(div9, t38);
     				} else {
     									transition_in(if_block1, 1);
     				}
@@ -4494,7 +5109,7 @@ console.log("a is", a)  // a is 900`;
     					if_block2 = create_if_block_7();
     					if_block2.c();
     					transition_in(if_block2, 1);
-    					if_block2.m(div13, t39);
+    					if_block2.m(div9, t39);
     				} else {
     									transition_in(if_block2, 1);
     				}
@@ -4511,7 +5126,7 @@ console.log("a is", a)  // a is 900`;
     					if_block3 = create_if_block_6();
     					if_block3.c();
     					transition_in(if_block3, 1);
-    					if_block3.m(div13, t40);
+    					if_block3.m(div9, t40);
     				} else {
     									transition_in(if_block3, 1);
     				}
@@ -4528,7 +5143,7 @@ console.log("a is", a)  // a is 900`;
     					if_block4 = create_if_block_5();
     					if_block4.c();
     					transition_in(if_block4, 1);
-    					if_block4.m(div13, t41);
+    					if_block4.m(div9, t41);
     				} else {
     									transition_in(if_block4, 1);
     				}
@@ -4545,7 +5160,7 @@ console.log("a is", a)  // a is 900`;
     					if_block5 = create_if_block_4();
     					if_block5.c();
     					transition_in(if_block5, 1);
-    					if_block5.m(div13, t42);
+    					if_block5.m(div9, t42);
     				} else {
     									transition_in(if_block5, 1);
     				}
@@ -4562,7 +5177,7 @@ console.log("a is", a)  // a is 900`;
     					if_block6 = create_if_block_3();
     					if_block6.c();
     					transition_in(if_block6, 1);
-    					if_block6.m(div13, t43);
+    					if_block6.m(div9, t43);
     				} else {
     									transition_in(if_block6, 1);
     				}
@@ -4579,7 +5194,7 @@ console.log("a is", a)  // a is 900`;
     					if_block7 = create_if_block_2();
     					if_block7.c();
     					transition_in(if_block7, 1);
-    					if_block7.m(div13, t44);
+    					if_block7.m(div9, t44);
     				} else {
     									transition_in(if_block7, 1);
     				}
@@ -4596,7 +5211,7 @@ console.log("a is", a)  // a is 900`;
     					if_block8 = create_if_block_1();
     					if_block8.c();
     					transition_in(if_block8, 1);
-    					if_block8.m(div13, t45);
+    					if_block8.m(div9, t45);
     				} else {
     									transition_in(if_block8, 1);
     				}
@@ -4613,7 +5228,7 @@ console.log("a is", a)  // a is 900`;
     					if_block9 = create_if_block$a();
     					if_block9.c();
     					transition_in(if_block9, 1);
-    					if_block9.m(div13, t46);
+    					if_block9.m(div9, t46);
     				} else {
     									transition_in(if_block9, 1);
     				}
@@ -4657,7 +5272,7 @@ console.log("a is", a)  // a is 900`;
 
     		d: function destroy(detaching) {
     			if (detaching) {
-    				detach(div15);
+    				detach(div11);
     			}
 
     			if (if_block0) if_block0.d();
@@ -4682,14 +5297,35 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function instance$8($$self, $$props, $$invalidate) {
+    function instance$9($$self, $$props, $$invalidate) {
     	
 
         var j = 0;
+     console.log(j);
 
-        function monad () {$$invalidate('j', j = 1); console.log(j);}    function monad2 () {$$invalidate('j', j = 2); console.log(j);}    function monad3 () {$$invalidate('j', j = 9); console.log(j);}    function haskell () {$$invalidate('j', j = 3); console.log(j);}    function bugs () {$$invalidate('j', j = 4); console.log(j);}    function matrix () {$$invalidate('j', j = 5); console.log(j);}    function transduce () {$$invalidate('j', j = 6);} console.log(j);
-        function tog () {$$invalidate('j', j = 8); console.log(j);}    function home () {$$invalidate('j', j = 0); console.log(j);}
         console.log("j is", j);
+
+    	function click_handler() {
+    		const $$result = j = 5;
+    		$$invalidate('j', j);
+    		return $$result;
+    	}
+
+    	function click_handler_1() {j = 1; $$invalidate('j', j); console.log("j is", j);}
+
+    	function click_handler_2() {j=2; $$invalidate('j', j); console.log("j is", j);}
+
+    	function click_handler_3() {j=9; $$invalidate('j', j); console.log("j is", j);}
+
+    	function click_handler_4() {j = 7; $$invalidate('j', j); console.log("j is", j);}
+
+    	function click_handler_5() {j = 3; $$invalidate('j', j); console.log("j is", j);}
+
+    	function click_handler_6() {j = 4; $$invalidate('j', j); console.log("j is", j);}
+
+    	function click_handler_7() {j = 8; $$invalidate('j', j); console.log("j is", j);}
+
+    	function click_handler_8() {j = 0; $$invalidate('j', j); console.log("j is", j);}
 
     	$$self.$$.update = ($$dirty = { j: 1 }) => {
     		if ($$dirty.j) ;
@@ -4697,22 +5333,23 @@ console.log("a is", a)  // a is 900`;
 
     	return {
     		j,
-    		monad,
-    		monad2,
-    		monad3,
-    		haskell,
-    		bugs,
-    		matrix,
-    		transduce,
-    		tog,
-    		home
+    		console,
+    		click_handler,
+    		click_handler_1,
+    		click_handler_2,
+    		click_handler_3,
+    		click_handler_4,
+    		click_handler_5,
+    		click_handler_6,
+    		click_handler_7,
+    		click_handler_8
     	};
     }
 
     class Blog extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$8, create_fragment$a, safe_not_equal, []);
+    		init(this, options, instance$9, create_fragment$a, safe_not_equal, []);
     	}
     }
 
