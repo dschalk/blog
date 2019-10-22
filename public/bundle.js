@@ -3304,7 +3304,7 @@ console.log("a is", a)  // a is 900`;
 
     const file$6 = "src/Transducer.svelte";
 
-    // (290:0) {#if visible}
+    // (323:0) {#if visible}
     function create_if_block$6(ctx) {
     	var div, div_transition, current;
 
@@ -3316,7 +3316,7 @@ console.log("a is", a)  // a is 900`;
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file$6, 290, 1, 6553);
+    			add_location(div, file$6, 323, 1, 7286);
     		},
 
     		m: function mount(target, anchor) {
@@ -3351,7 +3351,7 @@ console.log("a is", a)  // a is 900`;
     }
 
     function create_fragment$6(ctx) {
-    	var br0, br1, br2, t0, t1, br3, br4, t2, p0, t4, p1, t6, p2, t8, p3, t10, br5, t11, html_tag, raw_value = ctx.go() + "", t12, current;
+    	var br0, br1, br2, t0, t1, br3, br4, t2, p0, t4, p1, t6, p2, t8, p3, t10, br5, t11, html_tag, t12, br6, br7, t13, div0, t15, div1, t17, div2, t18_value = ctx.A_A.join(" ") + "", t18, t19, br8, t20, div3, t21_value = ctx.B_B.join(" ") + "", t21, t22, br9, t23, div4, t24_value = ctx.C_C.join(" ") + "", t24, t25, br10, t26, div5, t27_value = ctx.D_D.join(" ") + "", t27, t28, div6, t30, div7, t32, br11, t33, button0, t35, button1, t37_1, br12, t38, div8, t39, t40, div9, t41_value = ctx.ar74.join(" ") + "", t41, t42, current, dispose;
 
     	var if_block =  create_if_block$6();
 
@@ -3380,18 +3380,91 @@ console.log("a is", a)  // a is 900`;
     			t10 = space();
     			br5 = element("br");
     			t11 = space();
-    			t12 = text("\n\n\n\n\n\n..");
-    			add_location(br0, file$6, 288, 0, 6525);
-    			add_location(br1, file$6, 288, 4, 6529);
-    			add_location(br2, file$6, 288, 8, 6533);
-    			add_location(br3, file$6, 294, 0, 6716);
-    			add_location(br4, file$6, 294, 4, 6720);
-    			add_location(p0, file$6, 295, 0, 6725);
-    			add_location(p1, file$6, 296, 0, 7136);
-    			add_location(p2, file$6, 297, 0, 7382);
-    			add_location(p3, file$6, 298, 0, 7717);
-    			add_location(br5, file$6, 299, 0, 7825);
-    			html_tag = new HtmlTag(raw_value, t12);
+    			t12 = space();
+    			br6 = element("br");
+    			br7 = element("br");
+    			t13 = space();
+    			div0 = element("div");
+    			div0.textContent = "******************************************";
+    			t15 = space();
+    			div1 = element("div");
+    			div1.textContent = "******************************************";
+    			t17 = space();
+    			div2 = element("div");
+    			t18 = text(t18_value);
+    			t19 = space();
+    			br8 = element("br");
+    			t20 = space();
+    			div3 = element("div");
+    			t21 = text(t21_value);
+    			t22 = space();
+    			br9 = element("br");
+    			t23 = space();
+    			div4 = element("div");
+    			t24 = text(t24_value);
+    			t25 = space();
+    			br10 = element("br");
+    			t26 = space();
+    			div5 = element("div");
+    			t27 = text(t27_value);
+    			t28 = space();
+    			div6 = element("div");
+    			div6.textContent = "******************************************";
+    			t30 = space();
+    			div7 = element("div");
+    			div7.textContent = "******************************************";
+    			t32 = space();
+    			br11 = element("br");
+    			t33 = space();
+    			button0 = element("button");
+    			button0.textContent = "INCREASE";
+    			t35 = space();
+    			button1 = element("button");
+    			button1.textContent = "DECREASE";
+    			t37_1 = space();
+    			br12 = element("br");
+    			t38 = space();
+    			div8 = element("div");
+    			t39 = text(ctx.size);
+    			t40 = space();
+    			div9 = element("div");
+    			t41 = text(t41_value);
+    			t42 = text("\n\n\n\n..");
+    			add_location(br0, file$6, 321, 0, 7258);
+    			add_location(br1, file$6, 321, 4, 7262);
+    			add_location(br2, file$6, 321, 8, 7266);
+    			add_location(br3, file$6, 327, 0, 7449);
+    			add_location(br4, file$6, 327, 4, 7453);
+    			add_location(p0, file$6, 328, 0, 7458);
+    			add_location(p1, file$6, 329, 0, 7869);
+    			add_location(p2, file$6, 330, 0, 8115);
+    			add_location(p3, file$6, 331, 0, 8450);
+    			add_location(br5, file$6, 332, 0, 8558);
+    			html_tag = new HtmlTag(ctx.gotty, t12);
+    			add_location(br6, file$6, 334, 0, 8577);
+    			add_location(br7, file$6, 334, 4, 8581);
+    			add_location(div0, file$6, 336, 0, 8587);
+    			add_location(div1, file$6, 337, 0, 8641);
+    			add_location(div2, file$6, 338, 0, 8695);
+    			add_location(br8, file$6, 339, 0, 8722);
+    			add_location(div3, file$6, 340, 0, 8727);
+    			add_location(br9, file$6, 341, 0, 8754);
+    			add_location(div4, file$6, 342, 0, 8759);
+    			add_location(br10, file$6, 343, 0, 8786);
+    			add_location(div5, file$6, 344, 0, 8791);
+    			add_location(div6, file$6, 345, 0, 8818);
+    			add_location(div7, file$6, 346, 0, 8872);
+    			add_location(br11, file$6, 347, 0, 8926);
+    			add_location(button0, file$6, 348, 0, 8931);
+    			add_location(button1, file$6, 349, 0, 8979);
+    			add_location(br12, file$6, 350, 0, 9027);
+    			add_location(div8, file$6, 351, 0, 9032);
+    			add_location(div9, file$6, 352, 0, 9050);
+
+    			dispose = [
+    				listen(button0, "click", ctx.increase),
+    				listen(button1, "click", ctx.decrease)
+    			];
     		},
 
     		l: function claim(nodes) {
@@ -3420,6 +3493,49 @@ console.log("a is", a)  // a is 900`;
     			insert(target, t11, anchor);
     			html_tag.m(target, anchor);
     			insert(target, t12, anchor);
+    			insert(target, br6, anchor);
+    			insert(target, br7, anchor);
+    			insert(target, t13, anchor);
+    			insert(target, div0, anchor);
+    			insert(target, t15, anchor);
+    			insert(target, div1, anchor);
+    			insert(target, t17, anchor);
+    			insert(target, div2, anchor);
+    			append(div2, t18);
+    			insert(target, t19, anchor);
+    			insert(target, br8, anchor);
+    			insert(target, t20, anchor);
+    			insert(target, div3, anchor);
+    			append(div3, t21);
+    			insert(target, t22, anchor);
+    			insert(target, br9, anchor);
+    			insert(target, t23, anchor);
+    			insert(target, div4, anchor);
+    			append(div4, t24);
+    			insert(target, t25, anchor);
+    			insert(target, br10, anchor);
+    			insert(target, t26, anchor);
+    			insert(target, div5, anchor);
+    			append(div5, t27);
+    			insert(target, t28, anchor);
+    			insert(target, div6, anchor);
+    			insert(target, t30, anchor);
+    			insert(target, div7, anchor);
+    			insert(target, t32, anchor);
+    			insert(target, br11, anchor);
+    			insert(target, t33, anchor);
+    			insert(target, button0, anchor);
+    			insert(target, t35, anchor);
+    			insert(target, button1, anchor);
+    			insert(target, t37_1, anchor);
+    			insert(target, br12, anchor);
+    			insert(target, t38, anchor);
+    			insert(target, div8, anchor);
+    			append(div8, t39);
+    			insert(target, t40, anchor);
+    			insert(target, div9, anchor);
+    			append(div9, t41);
+    			insert(target, t42, anchor);
     			current = true;
     		},
 
@@ -3433,6 +3549,30 @@ console.log("a is", a)  // a is 900`;
     				} else {
     									transition_in(if_block, 1);
     				}
+    			}
+
+    			if ((!current || changed.A_A) && t18_value !== (t18_value = ctx.A_A.join(" ") + "")) {
+    				set_data(t18, t18_value);
+    			}
+
+    			if ((!current || changed.B_B) && t21_value !== (t21_value = ctx.B_B.join(" ") + "")) {
+    				set_data(t21, t21_value);
+    			}
+
+    			if ((!current || changed.C_C) && t24_value !== (t24_value = ctx.C_C.join(" ") + "")) {
+    				set_data(t24, t24_value);
+    			}
+
+    			if ((!current || changed.D_D) && t27_value !== (t27_value = ctx.D_D.join(" ") + "")) {
+    				set_data(t27, t27_value);
+    			}
+
+    			if (!current || changed.size) {
+    				set_data(t39, ctx.size);
+    			}
+
+    			if ((!current || changed.ar74) && t41_value !== (t41_value = ctx.ar74.join(" ") + "")) {
+    				set_data(t41, t41_value);
     			}
     		},
 
@@ -3474,14 +3614,51 @@ console.log("a is", a)  // a is 900`;
     				detach(t11);
     				html_tag.d();
     				detach(t12);
+    				detach(br6);
+    				detach(br7);
+    				detach(t13);
+    				detach(div0);
+    				detach(t15);
+    				detach(div1);
+    				detach(t17);
+    				detach(div2);
+    				detach(t19);
+    				detach(br8);
+    				detach(t20);
+    				detach(div3);
+    				detach(t22);
+    				detach(br9);
+    				detach(t23);
+    				detach(div4);
+    				detach(t25);
+    				detach(br10);
+    				detach(t26);
+    				detach(div5);
+    				detach(t28);
+    				detach(div6);
+    				detach(t30);
+    				detach(div7);
+    				detach(t32);
+    				detach(br11);
+    				detach(t33);
+    				detach(button0);
+    				detach(t35);
+    				detach(button1);
+    				detach(t37_1);
+    				detach(br12);
+    				detach(t38);
+    				detach(div8);
+    				detach(t40);
+    				detach(div9);
+    				detach(t42);
     			}
+
+    			run_all(dispose);
     		}
     	};
     }
 
     var k  = 100000000;
-
-    var size = 100;
 
     function tdMap(func) {
     return function(reducingFunction) {
@@ -3564,6 +3741,8 @@ console.log("a is", a)  // a is 900`;
     );
     var cube = function cube(v) { return v**3; };
 
+    var size = 100;
+
     var ar74 = [...Array(size).keys()];
 
     var mapWRf = mapping(cube);
@@ -3590,13 +3769,13 @@ console.log("a is", a)  // a is 900`;
 
     var res4;
 
-    var dotResult;
+    var dotResult = [];
 
     var transducerResult;
 
     console.log("blah blah blah");
 
-       $$invalidate('dotResult', dotResult = ar74
+     $$invalidate('A_A', A_A = dotResult = ar74
        .filter(v => (v % 2 === 1))
        .map(x => x**4)
        .map(x => x+3)
@@ -3604,7 +3783,7 @@ console.log("a is", a)  // a is 900`;
        .map(x => Math.sqrt(x))
        .map(v=>v*v)
        .map(v=>v+1000)
-       .filter(v => v < k));
+       .filter(v => v < size)); $$invalidate('dotResult', dotResult);
        console.log("dotResult is", dotResult);
 
     var td1;
@@ -3622,9 +3801,9 @@ console.log("a is", a)  // a is 900`;
        $$invalidate('td1', td1 = x => Monad$1([x])(isOdd)(v=>v**4)(v=>v+3)(v=>(v-3)/Math.sqrt(v-3))('stop').pop());
        $$invalidate('td2', td2 = y => Monad$1([y])(v=>v*v)(v=>v+1000)(test8)('stop').pop());
 
-       $$invalidate('res1', res1 = ar74.map(x => td1(x)));
-       $$invalidate('res2', res2 = res1.map(y => td2(y)));
-       $$invalidate('res3', res3 = ar74.map(z => td2(td1(z))));
+    $$invalidate('res1', res1 = ar74.map(x => td1(x)));
+    $$invalidate('B_B', B_B =  res2 = res1.map(y => td2(y))); $$invalidate('res2', res2);
+    $$invalidate('C_C', C_C = res3 = ar74.map(z => td2(td1(z)))); $$invalidate('res3', res3);
 
        console.log("cleanF(res2) is", cleanF(res2));
        console.log("cleanF(res3) is", cleanF(res3));
@@ -3650,59 +3829,75 @@ console.log("a is", a)  // a is 900`;
           tdMap(x => Math.sqrt(x)),
           tdMap(x=>x*x),
           tdMap(x=>x+1000),
-          tdFilter(x => x < k)
+          tdFilter(x => x < 100000000000000)
        ));
-
-       $$invalidate('transducerResult', transducerResult = ar74.reduce(xform3(concat),[] ));
+       $$invalidate('D_D', D_D = transducerResult = ar74.reduce(xform3(concat),[] )); $$invalidate('transducerResult', transducerResult), $$invalidate('ar74', ar74), $$invalidate('xform3', xform3);
        console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
        console.log("transducerResult is", transducerResult);
        console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
-
-       $$invalidate('A_A', A_A = dotResult);
-       $$invalidate('B_B', B_B = cleanF(res2));
-       $$invalidate('C_C', C_C = cleanF(res3));
-       $$invalidate('D_D', D_D = transducerResult);
 
        console.log("A_A is", A_A);
        console.log("B_B is", B_B);
        console.log("C_C is", C_C);
        console.log("D_D is", D_D);
 
-
-    /*
-     <div style = "color: #FFAAAA; font-size: 20px">The traditional dot multiple-traversals result:</div>
-     <br>
-     <div style = "color: #FFFFAA">{dotResult.join(" ")}</div>
-     <br>
-     <br>
-     <div style = "color: #FFAAAA; font-size: 20px">The monad two-traversals result:</div>
-     <br>
-     <div style = "color: #FFFFAA">{res2.join(" ")}</div>
-     <br>
-     <br>
-     <div style = "color: #FFAAAA; font-size: 20px">The monad one-traversal result:</div>
-     <br>
-     <div style = "color: #FFFFAA">{res3.join(" ")}</div>
-     <br>
-    */
-
-    function go () {
-      return "<div style = 'color: #FFAAAA; font-size: 20px'>The traditional dot multiple-traversals result:</div><br><div style = 'color: #FFFFAA'>"+dotResult.join(" ")+"</div><br><br><div style = 'color: #FFAAAA; font-size: 20px'>The monad two-traversals result:</div><br><div style = 'color: #FFFFAA'>"+res2.join(" ")+"</div><br><br><div style = 'color: #FFAAAA; font-size: 20px'>The monad one-traversals result:</div><br><div style = 'color: #FFFFAA'>"+res3.join(" ")+"</div><br>  <br> <div style = 'color: #FFAAAA; font-size: 20px'> Standard transducer one traversal result:</div><br><div style = 'color: #FFFFAA'>"+ transducerResult.join(" ")+"</div>";
-    }
-    go();
+    var gotty = "<div style = 'color: #FFAAAA; font-size: 20px'>The traditional dot multiple-traversals result:</div><br><div style = 'color: #FFFFAA'>"+dotResult.join(" ")+"</div><br><br><div style = 'color: #FFAAAA; font-size: 20px'>The monad two-traversals result:</div><br><div style = 'color: #FFFFAA'>"+res2.join(" ")+"</div><br><br><div style = 'color: #FFAAAA; font-size: 20px'>The monad one-traversals result:</div><br><div style = 'color: #FFFFAA'>"+res3.join(" ")+"</div><br>  <br> <div style = 'color: #FFAAAA; font-size: 20px'> Standard transducer one traversal result:</div><br><div style = 'color: #FFFFAA'>"+ transducerResult.join(" ")+"</div>";
 
     console.log("res4 is", res4);
 
-    	$$self.$$.update = ($$dirty = { k: 1, ltTest: 1, ar: 1, cleanF: 1, size: 1, ar74: 1, A_A: 1, B_B: 1, C_C: 1, D_D: 1, res1: 1, res2: 1, res3: 1, res4: 1, dotResult: 1, test9: 1, transducerResult: 1, td1: 1, td2: 1, td3: 1, xform: 1, xform2: 1, xform3: 1 }) => {
+    function increase () {
+      $$invalidate('size', size = size + 10);
+      $$invalidate('ar74', ar74 = [...Array(size).keys()]);
+      $$invalidate('res1', res1 = ar74.map(x => td1(x)));
+       $$invalidate('A_A', A_A = dotResult = ar74
+       .filter(v => (v % 2 === 1))
+       .map(x => x**4)
+       .map(x => x+3)
+       .map(x => x-3)
+       .map(x => Math.sqrt(x))
+       .map(v=>v*v)
+       .map(v=>v+1000)
+       .filter(v => v < 100000000000000)); $$invalidate('dotResult', dotResult);
+      $$invalidate('B_B', B_B = res2 = res1.map(y => td2(y))); $$invalidate('res2', res2);
+      $$invalidate('C_C', C_C = res3 = ar74.map(z => td2(td1(z)))); $$invalidate('res3', res3);
+      $$invalidate('D_D', D_D = transducerResult = ar74.reduce(xform3(concat),[] )); $$invalidate('transducerResult', transducerResult), $$invalidate('ar74', ar74), $$invalidate('xform3', xform3);
+    }
+
+    function decrease () {
+      $$invalidate('size', size = size - 10);
+      $$invalidate('ar74', ar74 = [...Array(size).keys()]);
+      $$invalidate('res1', res1 = ar74.map(x => td1(x)));
+       $$invalidate('A_A', A_A = dotResult = ar74
+       .filter(v => (v % 2 === 1))
+       .map(x => x**4)
+       .map(x => x+3)
+       .map(x => x-3)
+       .map(x => Math.sqrt(x))
+       .map(v=>v*v)
+       .map(v=>v+1000)
+       .filter(v => v < 100000000000000)); $$invalidate('dotResult', dotResult);
+      $$invalidate('B_B', B_B = res2 = res1.map(y => td2(y))); $$invalidate('res2', res2);
+      $$invalidate('C_C', C_C = res3 = ar74.map(z => td2(td1(z)))); $$invalidate('res3', res3);
+      $$invalidate('D_D', D_D = transducerResult = ar74.reduce(xform3(concat),[] )); $$invalidate('transducerResult', transducerResult), $$invalidate('ar74', ar74), $$invalidate('xform3', xform3);
+    }
+    increase();
+    decrease();
+
+    	$$self.$$.update = ($$dirty = { k: 1, ltTest: 1, ar: 1, cleanF: 1, size: 1, ar74: 1, dotResult: 1, A_A: 1, res2: 1, B_B: 1, res3: 1, C_C: 1, xform3: 1, transducerResult: 1, D_D: 1, res1: 1, res4: 1, test9: 1, td1: 1, td2: 1, td3: 1, xform: 1, xform2: 1, t37: 1 }) => {
     		if ($$dirty.k) ;
     		if ($$dirty.ltTest) ;
     		if ($$dirty.ar) ;
     		if ($$dirty.cleanF) ;
     		if ($$dirty.size) ;
     		if ($$dirty.ar74) ;
+    		if ($$dirty.dotResult) { $$invalidate('A_A', A_A = dotResult); }
     		if ($$dirty.A_A) ;
+    		if ($$dirty.cleanF || $$dirty.res2) { $$invalidate('B_B', B_B = cleanF(res2)); }
     		if ($$dirty.B_B) ;
+    		if ($$dirty.cleanF || $$dirty.res3) { $$invalidate('C_C', C_C = cleanF(res3)); }
     		if ($$dirty.C_C) ;
+    		if ($$dirty.ar74 || $$dirty.xform3) { $$invalidate('transducerResult', transducerResult = ar74.reduce(xform3(concat),[] )); }
+    		if ($$dirty.transducerResult) { $$invalidate('D_D', D_D = transducerResult); }
     		if ($$dirty.D_D) ;
     		if ($$dirty.res1) ;
     		if ($$dirty.res2) ;
@@ -3718,13 +3913,26 @@ console.log("a is", a)  // a is 900`;
     		if ($$dirty.xform2) ;
     		if ($$dirty.xform3) ;
     		if ($$dirty.test9) ;
+    		if ($$dirty.t37) ;
     		if ($$dirty.dotResult) ;
     		if ($$dirty.res2) ;
     		if ($$dirty.res3) ;
     		if ($$dirty.transducerResult) ;
+    		if ($$dirty.size) ;
+    		if ($$dirty.ar74) ;
     	};
 
-    	return { go };
+    	return {
+    		size,
+    		ar74,
+    		A_A,
+    		B_B,
+    		C_C,
+    		D_D,
+    		gotty,
+    		increase,
+    		decrease
+    	};
     }
 
     class Transducer extends SvelteComponentDev {

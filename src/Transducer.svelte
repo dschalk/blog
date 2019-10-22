@@ -159,7 +159,7 @@ $: res3;
 var res4;
 $: res4;
 
-var dotResult;
+var dotResult = [];
 $: dotResult;
 
 var test9;
@@ -170,7 +170,7 @@ $: transducerResult;
 
 console.log("blah blah blah");
 
-   dotResult = ar74
+ A_A = dotResult = ar74
    .filter(v => (v % 2 === 1))
    .map(x => x**4)
    .map(x => x+3)
@@ -178,7 +178,7 @@ console.log("blah blah blah");
    .map(x => Math.sqrt(x))
    .map(v=>v*v)
    .map(v=>v+1000)
-   .filter(v => v < k)
+   .filter(v => v < size)
    console.log("dotResult is", dotResult);
 
 var td1;
@@ -208,9 +208,9 @@ $: test9;
    td1 = x => Monad([x])(isOdd)(v=>v**4)(v=>v+3)(v=>(v-3)/Math.sqrt(v-3))('stop').pop()
    td2 = y => Monad([y])(v=>v*v)(v=>v+1000)(test8)('stop').pop()
 
-   res1 = ar74.map(x => td1(x));
-   res2 = res1.map(y => td2(y));
-   res3 = ar74.map(z => td2(td1(z)));
+res1 = ar74.map(x => td1(x));
+B_B =  res2 = res1.map(y => td2(y));
+C_C = res3 = ar74.map(z => td2(td1(z)));
 
    console.log("cleanF(res2) is", cleanF(res2));
    console.log("cleanF(res3) is", cleanF(res3));
@@ -236,47 +236,29 @@ $: test9;
       tdMap(x => Math.sqrt(x)),
       tdMap(x=>x*x),
       tdMap(x=>x+1000),
-      tdFilter(x => x < k)
+      tdFilter(x => x < 100000000000000)
    );
-
-   transducerResult = ar74.reduce(xform3(concat),[] );
+   D_D = transducerResult = ar74.reduce(xform3(concat),[] );
+   $: transducerResult = ar74.reduce(xform3(concat),[] );
    console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv")
    console.log("transducerResult is", transducerResult);
    console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv")
 
-   A_A = dotResult;
-   B_B = cleanF(res2);
-   C_C = cleanF(res3);
-   D_D = transducerResult;
+   $: A_A = dotResult;
+   $: B_B = cleanF(res2);
+   $: C_C = cleanF(res3);
+   $: D_D = transducerResult;
 
    console.log("A_A is", A_A)
    console.log("B_B is", B_B)
    console.log("C_C is", C_C)
    console.log("D_D is", D_D)
 
+var gotty = "<div style = 'color: #FFAAAA; font-size: 20px'>The traditional dot multiple-traversals result:</div><br><div style = 'color: #FFFFAA'>"+dotResult.join(" ")+"</div><br><br><div style = 'color: #FFAAAA; font-size: 20px'>The monad two-traversals result:</div><br><div style = 'color: #FFFFAA'>"+res2.join(" ")+"</div><br><br><div style = 'color: #FFAAAA; font-size: 20px'>The monad one-traversals result:</div><br><div style = 'color: #FFFFAA'>"+res3.join(" ")+"</div><br>  <br> <div style = 'color: #FFAAAA; font-size: 20px'> Standard transducer one traversal result:</div><br><div style = 'color: #FFFFAA'>"+ transducerResult.join(" ")+"</div>";
 
-/*
- <div style = "color: #FFAAAA; font-size: 20px">The traditional dot multiple-traversals result:</div>
- <br>
- <div style = "color: #FFFFAA">{dotResult.join(" ")}</div>
- <br>
- <br>
- <div style = "color: #FFAAAA; font-size: 20px">The monad two-traversals result:</div>
- <br>
- <div style = "color: #FFFFAA">{res2.join(" ")}</div>
- <br>
- <br>
- <div style = "color: #FFAAAA; font-size: 20px">The monad one-traversal result:</div>
- <br>
- <div style = "color: #FFFFAA">{res3.join(" ")}</div>
- <br>
-*/
-
-function go () {
-  return "<div style = 'color: #FFAAAA; font-size: 20px'>The traditional dot multiple-traversals result:</div><br><div style = 'color: #FFFFAA'>"+dotResult.join(" ")+"</div><br><br><div style = 'color: #FFAAAA; font-size: 20px'>The monad two-traversals result:</div><br><div style = 'color: #FFFFAA'>"+res2.join(" ")+"</div><br><br><div style = 'color: #FFAAAA; font-size: 20px'>The monad one-traversals result:</div><br><div style = 'color: #FFFFAA'>"+res3.join(" ")+"</div><br>  <br> <div style = 'color: #FFAAAA; font-size: 20px'> Standard transducer one traversal result:</div><br><div style = 'color: #FFFFAA'>"+ transducerResult.join(" ")+"</div>";
-};
-
-go();
+var t37;
+$: t37;
+function test37 (e) {t37 = e; console.log(e)};
 
 console.log("res4 is", res4);
 
@@ -285,7 +267,58 @@ $: res2;
 $: res3;
 $: transducerResult;
 
-</script>
+function increase () {
+  size = size + 10;
+  ar74 = [...Array(size).keys()];
+  res1 = ar74.map(x => td1(x));
+   A_A = dotResult = ar74
+   .filter(v => (v % 2 === 1))
+   .map(x => x**4)
+   .map(x => x+3)
+   .map(x => x-3)
+   .map(x => Math.sqrt(x))
+   .map(v=>v*v)
+   .map(v=>v+1000)
+   .filter(v => v < 100000000000000)
+  B_B = res2 = res1.map(y => td2(y));
+  C_C = res3 = ar74.map(z => td2(td1(z)));
+  D_D = transducerResult = ar74.reduce(xform3(concat),[] );
+}
+
+function decrease () {
+  size = size - 10;
+  ar74 = [...Array(size).keys()];
+  res1 = ar74.map(x => td1(x));
+   A_A = dotResult = ar74
+   .filter(v => (v % 2 === 1))
+   .map(x => x**4)
+   .map(x => x+3)
+   .map(x => x-3)
+   .map(x => Math.sqrt(x))
+   .map(v=>v*v)
+   .map(v=>v+1000)
+   .filter(v => v < 100000000000000)
+  B_B = res2 = res1.map(y => td2(y));
+  C_C = res3 = ar74.map(z => td2(td1(z)));
+  D_D = transducerResult = ar74.reduce(xform3(concat),[] );
+}
+
+$: size;
+$: ar74;
+$: increase;
+$: decrease;
+increase();
+decrease();
+  </script>
+<style>
+.p {
+  color: #FFAAAA;;
+  font-size: 20px;
+}
+.q {
+  color: #FFFFAA;
+}
+</style>
 <br><br><br>
 {#if visible}
  <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
@@ -298,9 +331,26 @@ TRANSDUCER SIMULATION
 <p> Another, more straightforward one-array-traversal solution is to use monads. This post shows the result of an array being traversed only one time and, with the help of a monad, undersoing multiple transformations by a collection of functions. The result is the same result obtained by the dot method and a standard transducer.</p>
 <p> The following results were obtained by eight transformations on an array of the first 100 integers:</p>
 <br>
-{@html go()}
+{@html gotty}
+<br><br>
 
-
+<div>******************************************</div>
+<div>******************************************</div>
+<div>{A_A.join(" ")}</div>
+<br>
+<div>{B_B.join(" ")}</div>
+<br>
+<div>{C_C.join(" ")}</div>
+<br>
+<div>{D_D.join(" ")}</div>
+<div>******************************************</div>
+<div>******************************************</div>
+<br>
+<button on:click = {increase}>INCREASE</button>
+<button on:click = {decrease}>DECREASE</button>
+<br>
+<div>{size}</div>
+<div>{ar74.join(" ")}</div>
 
 
 
