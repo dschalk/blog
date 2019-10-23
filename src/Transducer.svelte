@@ -9,6 +9,12 @@ var ltTest = x => y => new Filt(x => y < x);
 $: ltTest;
 
 var isOdd = function isOdd (x) {return new Filt(v => v % 2 === 1)};
+var fives = function fives (x) {
+ if (typeof x === "number") {return new Filt(v => v % 10 === 5)}
+ else if (typeof x === "string") {return Filt(v = v(v.length - 1))}
+ else {return undefined}''
+}
+
 var isOddF = function isOddF (x) {return new Filt(v => v % 2 === 1)};
 
 function isOd_ (x) {return new Filt(v => v % 2 === 1)};
@@ -84,6 +90,40 @@ function Monad ( AR = [] )  {
     return f_;
   })(x)
 }
+
+var mon44 = `function Monad ( AR = [] )  {
+  var f_, p, run;
+  var ar = AR.slice();
+  var x = ar.pop();
+  return run = (function run (x) {
+    if (x === null || x === NaN ||
+      x === undefined) x = f_('stop').pop();
+    if (x instanceof Filt) {
+      var z = ar.pop();
+      if (x.filt(z)) x = z; else ar = [];
+    }
+    else if (x instanceof Promise) x.then(y =>
+      {if (y != undefined && typeof y !== "boolean" && y === y &&
+      y.name !== "f_" &&
+      y.name !== "stop" ) {
+      ar.push(y);
+    }})
+    else if (x != undefined && x === x  && x !== false
+      && x.name !== "f_" && x.name !== "stop" ) {
+      ar.push(x);
+    };
+    function f_ (func) {
+      if (func === 'stop' || func === 'S') return ar;
+      else if (func === 'finish' || func === 'F') return Object.freeze(ar);
+      else if (typeof func !== "function") p = func;
+      else if (x instanceof Promise) p = x.then(v => func(v));
+      else p = func(x);
+      return run(p);
+    };
+
+    return f_;
+  })(x)
+} `
 
 function Filt (p) {this.p = p; this.filt = function filt (x) {return p(x)}};
 
@@ -178,7 +218,7 @@ console.log("blah blah blah");
    .map(x => Math.sqrt(x))
    .map(v=>v*v)
    .map(v=>v+1000)
-   .filter(v => v < size)
+   .filter(v => v % 10 === 5)
    console.log("dotResult is", dotResult);
 
 var td1;
@@ -202,11 +242,11 @@ $: xform3
 
 var test8 = k => ltTest(k).filt;;
 
-var test9;
+var test9
 $: test9;
 
    td1 = x => Monad([x])(isOdd)(v=>v**4)(v=>v+3)(v=>(v-3)/Math.sqrt(v-3))('stop').pop()
-   td2 = y => Monad([y])(v=>v*v)(v=>v+1000)(test8)('stop').pop()
+   td2 = y => Monad([y])(v=>v*v)(v=>v+1000)(fives)('stop').pop()
 
 res1 = ar74.map(x => td1(x));
 B_B =  res2 = res1.map(y => td2(y));
@@ -225,7 +265,7 @@ C_C = res3 = ar74.map(z => td2(td1(z)));
    xform2 = compose(
       tdMap(x=>x*x),
       tdMap(x=>x+1000),
-      tdFilter(x => x < k)
+      tdFilter(x => x % 10 === 5)
    );
 
    xform3 = compose(
@@ -236,7 +276,7 @@ C_C = res3 = ar74.map(z => td2(td1(z)));
       tdMap(x => Math.sqrt(x)),
       tdMap(x=>x*x),
       tdMap(x=>x+1000),
-      tdFilter(x => x < 100000000000000)
+      tdFilter(x => x % 10 === 5)
    );
    D_D = transducerResult = ar74.reduce(xform3(concat),[] );
    $: transducerResult = ar74.reduce(xform3(concat),[] );
@@ -279,7 +319,7 @@ function increase () {
    .map(x => Math.sqrt(x))
    .map(v=>v*v)
    .map(v=>v+1000)
-   .filter(v => v < 100000000000000)
+   .filter(v => v % 10 === 5)
   B_B = res2 = res1.map(y => td2(y));
   C_C = res3 = ar74.map(z => td2(td1(z)));
   D_D = transducerResult = ar74.reduce(xform3(concat),[] );
@@ -297,7 +337,7 @@ function decrease () {
    .map(x => Math.sqrt(x))
    .map(v=>v*v)
    .map(v=>v+1000)
-   .filter(v => v < 100000000000000)
+   .filter(v => v % 10 === 5)
   B_B = res2 = res1.map(y => td2(y));
   C_C = res3 = ar74.map(z => td2(td1(z)));
   D_D = transducerResult = ar74.reduce(xform3(concat),[] );
@@ -330,28 +370,36 @@ TRANSDUCER SIMULATION
 <p> Transducers provide an ingenious solution to the problem. Any JavaScript developer who hasn't already done so would do well to get a good night's sleep, drink a big cup of coffee, and wrap his or her head around the transducer algorithm.</p>
 <p> Another, more straightforward one-array-traversal solution is to use monads. This post shows the result of an array being traversed only one time and, with the help of a monad, undersoing multiple transformations by a collection of functions. The result is the same result obtained by the dot method and a standard transducer.</p>
 <p> The following results were obtained by eight transformations on an array of the first 100 integers:</p>
-<br>
-{@html gotty}
 <br><br>
-
-<div>******************************************</div>
-<div>******************************************</div>
-<div>{A_A.join(" ")}</div>
+<div class = p> Traditional dot composition </div>
 <br>
-<div>{B_B.join(" ")}</div>
+<div class = q >[{A_A.join(", ")}]</div>
 <br>
-<div>{C_C.join(" ")}</div>
 <br>
-<div>{D_D.join(" ")}</div>
-<div>******************************************</div>
-<div>******************************************</div>
+<div class = p> Composition in two stages using Monad </div>
+<br>
+<div class = q > [{B_B.join(", ")}]</div>
+<br>
+<br>
+<div class = p> Composition in one traversal using Monad </div>
+<br>
+<div class = q > [{C_C.join(", ")}]</div>
+<br>
+<br>
+<div class = p> Composition using a standard transducer </div>
+<br>
+<div class = q > [{D_D.join(", ")}]</div>
+<br>
 <br>
 <button on:click = {increase}>INCREASE</button>
 <button on:click = {decrease}>DECREASE</button>
+<br><br>
+<div>Array length: {size}</div>
 <br>
-<div>{size}</div>
-<div>{ar74.join(" ")}</div>
-
+<div>ar74: [{ar74.join(", ")}]</div>
+<br>
+<div>The modified Monad used in this post could use some refactoring. Here it is:</div>
+<pre>{mon44}</pre>
 
 
 ..
