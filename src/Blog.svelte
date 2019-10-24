@@ -37,7 +37,7 @@
 </script>
 
 <style>
-button {
+div {
    font-size: 18px;
    color: #bccbaa;
 }
@@ -84,27 +84,27 @@ button {
                         <br>
                         <li><div>MONAD SERIES</div></li>
                         <br>
-                        <li><button on:click={()=>{j = 1; console.log("j is", j)}}>A Simple Monad</button></li>
+                        <li><div class='button' on:click={()=>{j = 1; console.log("j is", j)}}>A Simple Monad</div></li>
                         <br>
-                        <li><button  on:click={()=>{j=2; console.log("j is", j)}}>Asynchronous Monads</button></li>
+                        <li><div class='button' on:click={()=>{j=2; console.log("j is", j)}}>Asynchronous Monads</div></li>
                         <br>
-                        <li><button on:click={()=>{j=9; console.log("j is", j)}}>Promises Monad</button></li>
+                        <li><div class='button' on:click={()=>{j=9; console.log("j is", j)}}>Promises Monad</div></li>
                         <br>
-                        <li><button on:click={() => {j = 7; console.log("j is", j)}}>Transducer Simulator</button></li>
+                        <li><div class='button' on:click={() => {j = 7; console.log("j is", j)}}>Transducer Simulator</div></li>
                         <br>
                         <li><div>JAVASCRIPT SERIES</div></li>
                         <br>
-                        <li><button on:click={()=>{j=10; console.log("j is", j)}}>Game of Score</button></li>
+                        <li><div class='button' on:click={()=>{j=10; console.log("j is", j)}}>Game of Score</div></li>
                         <br>
                         <li><div>MISCELANEOUS TOPICS</div></li>
                         <br>
                         <li><div class='button' on:click={() => {j = 3; console.log("j is", j)}}>Hidden Haskell Information</div></li>
                         <br>
-                        <li><div class='button'  on:click={() => {j = 4; console.log("j is", j)}}>Bed Bug Eradication</div></li>
+                        <li><div class='button' on:click={() => {j = 4; console.log("j is", j)}}>Bed Bug Eradication</div></li>
                         <br>
-                        <li><div class='button'  on:click={() => {j = 8; console.log("j is", j)}}>Toggle Theme</div></li>
+                        <li><div class='button' on:click={() => {j = 8; console.log("j is", j)}}>Toggle Theme</div></li>
                         <br>
-                        <li><div class='button'  on:click={() => {j = 0; console.log("j is", j)}}>Home</div></li>
+                        <li><div class='button' on:click={() => {j = 0; console.log("j is", j)}}>Home</div></li>
                         <br>
                         </ul>
                         </div>

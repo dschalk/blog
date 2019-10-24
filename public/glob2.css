@@ -135,6 +135,37 @@ pre {
  }
 
 
+  .but {
+    margin-left: 5%;
+    background-color: #331903;
+    border-width: 2px;
+    border-color: #E8F7C1;
+    border-radius: 10px;
+    color: #00ffdd;
+    font-size: 22px;
+    -webkit-box-shadow: 0px 0px 15px 0px rgb(255, 215, 0);
+    box-shadow:         0px 0px 15px 0px rgb(255, 215, 0);
+    padding: 3px 10px 3px 10px;
+  }
+
+  .but:hover {
+    margin-left: 5%;
+    border-width: 2px;
+    border-radius: 10px;
+    font-size: 24px;
+    -webkit-box-shadow: 0px 0px 15px 0px rgb(255, 215, 0);
+    box-shadow:         0px 0px 15px 0px rgb(255, 215, 0);
+    padding: 3px 10px 3px 10px;
+    color: #000000;
+    background-color: lightblue;
+    border-color: #0000AA;
+    border-radius: 10px;
+  }
+
+  .but:focus {
+    font-size: 24px;
+    color: #FFCCBB;
+  }
 
   button {
     background-color: #361B01;
@@ -147,6 +178,7 @@ pre {
     font-size: 22px;
     color: #BBFFBB;
   }
+
 
   button:focus {
     font-size: 22px;

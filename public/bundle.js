@@ -3279,7 +3279,7 @@ console.log("a is", a)  // a is 900`;
 
     const file$6 = "src/Transducer.svelte";
 
-    // (363:0) {#if visible}
+    // (398:0) {#if visible}
     function create_if_block$6(ctx) {
     	var div, div_transition, current;
 
@@ -3291,7 +3291,7 @@ console.log("a is", a)  // a is 900`;
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file$6, 363, 1, 8465);
+    			add_location(div, file$6, 398, 1, 8910);
     		},
 
     		m: function mount(target, anchor) {
@@ -3326,7 +3326,7 @@ console.log("a is", a)  // a is 900`;
     }
 
     function create_fragment$6(ctx) {
-    	var br0, br1, br2, t0, t1, br3, br4, t2, p0, t4, p1, t6, p2, t8, p3, t10, br5, br6, t11, div0, t13, br7, t14, div1, t15, t16_value = ctx.A_A.join(", ") + "", t16, t17, t18, br8, t19, br9, t20, div2, t22, br10, t23, div3, t24, t25_value = ctx.B_B.join(", ") + "", t25, t26, t27, br11, t28, br12, t29, div4, t31, br13, t32, div5, t33, t34_value = ctx.C_C.join(", ") + "", t34, t35, t36, br14, t37_1, br15, t38, div6, t40, br16, t41, div7, t42, t43_value = ctx.D_D.join(", ") + "", t43, t44, t45, br17, t46, br18, t47, button0, t49, button1, t51, br19, br20, t52, div8, t53, t54, t55, br21, t56, div9, t57, t58_value = ctx.ar74.join(", ") + "", t58, t59, t60, br22, t61, div10, t63, pre, t64, t65, current, dispose;
+    	var br0, br1, br2, t0, t1, br3, br4, t2, p0, t4, p1, t6, p2, t8, p3, t10, br5, br6, t11, div0, t13, br7, t14, div1, t15, t16_value = ctx.A_A.join(", ") + "", t16, t17, t18, br8, t19, br9, t20, div2, t22, br10, t23, div3, t24, t25_value = ctx.B_B.join(", ") + "", t25, t26, t27, br11, t28, br12, t29, div4, t31, br13, t32, div5, t33, t34_value = ctx.C_C.join(", ") + "", t34, t35, t36, br14, t37_1, br15, t38, div6, t40, br16, t41, div7, t42, t43_value = ctx.D_D.join(", ") + "", t43, t44, t45, br17, t46, br18, t47, button0, t49, button1, t51, br19, br20, t52, div8, t53, t54, t55, br21, t56, div9, t57, t58_value = ctx.ar74.join(", ") + "", t58, t59, t60, br22, t61, div10, t63, pre0, t64, t65, p4, t67, div11, t69, pre1, t71, p5, t73, div12, t75, pre2, t77, p6, t79, p7, t81, pre3, t82, t83, p8, t85, pre4, t86, t87, span0, t89, a, t91, span1, current, dispose;
 
     	var if_block =  create_if_block$6();
 
@@ -3435,60 +3435,120 @@ console.log("a is", a)  // a is 900`;
     			br22 = element("br");
     			t61 = space();
     			div10 = element("div");
-    			div10.textContent = "The modified Monad used in this post could use some refactoring. Here it is:";
+    			div10.textContent = "The modified Monad (below) could benefit from some refactoring, but it does what needs to be done for this demo. The point is that a standard transducer and Monad both use one array traversal to accomplish what the built-in dot method does by traversing the original array and seven intermediary arrays.";
     			t63 = space();
-    			pre = element("pre");
+    			pre0 = element("pre");
     			t64 = text(ctx.mon44);
-    			t65 = text("\n\n\n..");
-    			add_location(br0, file$6, 361, 0, 8437);
-    			add_location(br1, file$6, 361, 4, 8441);
-    			add_location(br2, file$6, 361, 8, 8445);
-    			add_location(br3, file$6, 367, 0, 8628);
-    			add_location(br4, file$6, 367, 4, 8632);
-    			add_location(p0, file$6, 368, 0, 8637);
-    			add_location(p1, file$6, 369, 0, 9048);
-    			add_location(p2, file$6, 370, 0, 9294);
-    			add_location(p3, file$6, 371, 0, 9629);
-    			add_location(br5, file$6, 372, 0, 9737);
-    			add_location(br6, file$6, 372, 4, 9741);
+    			t65 = space();
+    			p4 = element("p");
+    			p4.textContent = "On my desktop computer, when ar74.length === 100,000 I got this and similar results:";
+    			t67 = space();
+    			div11 = element("div");
+    			div11.textContent = "ar74.length = 100,000:";
+    			t69 = space();
+    			pre1 = element("pre");
+    			pre1.textContent = "Dot method:: 25 ms\nMonad two traversals: 255 ms\nMonad one traversal: 220 ms\nTransducer: 26 ms";
+    			t71 = space();
+    			p5 = element("p");
+    			p5.textContent = "ar74.length === 1,000,000 was about as far as I could go without crashing the browser. Here are two typical results:";
+    			t73 = space();
+    			div12 = element("div");
+    			div12.textContent = "Two runs with ar74.length = 1,000,000:";
+    			t75 = space();
+    			pre2 = element("pre");
+    			pre2.textContent = "Dot method:: 276\nMonad two traversals: 2140\nMonad one traversal: 2060\nTransducer: 180\n\nDot method:: 312\nMonad two traversals: 2093\nMonad one traversal: 2115\nTransducer: 176";
+    			t77 = space();
+    			p6 = element("p");
+    			p6.textContent = "As you see, the built-in JavaScript dot method and the transducer gave similar results. The Monad methods are much slower. They're just a proof-of-concept hacks showing the versitility of monads spawned by Monad().";
+    			t79 = space();
+    			p7 = element("p");
+    			p7.textContent = "Here's the definition of the increase button's callback function along with the definitions of some assoc some supportingrelated:";
+    			t81 = space();
+    			pre3 = element("pre");
+    			t82 = text(ctx.callback);
+    			t83 = space();
+    			p8 = element("p");
+    			p8.textContent = "And here's some of the code behind the transducer demonstration:";
+    			t85 = space();
+    			pre4 = element("pre");
+    			t86 = text(ctx.call2);
+    			t87 = space();
+    			span0 = element("span");
+    			span0.textContent = "The rest of the code can be found in the";
+    			t89 = space();
+    			a = element("a");
+    			a.textContent = "Github repository";
+    			t91 = space();
+    			span1 = element("span");
+    			span1.textContent = ".";
+    			add_location(br0, file$6, 396, 0, 8882);
+    			add_location(br1, file$6, 396, 4, 8886);
+    			add_location(br2, file$6, 396, 8, 8890);
+    			add_location(br3, file$6, 402, 0, 9073);
+    			add_location(br4, file$6, 402, 4, 9077);
+    			add_location(p0, file$6, 404, 0, 9083);
+    			add_location(p1, file$6, 405, 0, 9494);
+    			add_location(p2, file$6, 406, 0, 9740);
+    			add_location(p3, file$6, 407, 0, 10075);
+    			add_location(br5, file$6, 408, 0, 10183);
+    			add_location(br6, file$6, 408, 4, 10187);
     			attr(div0, "class", "p svelte-1d81q6r");
-    			add_location(div0, file$6, 373, 0, 9746);
-    			add_location(br7, file$6, 374, 0, 9797);
+    			add_location(div0, file$6, 409, 0, 10192);
+    			add_location(br7, file$6, 410, 0, 10243);
     			attr(div1, "class", "q svelte-1d81q6r");
-    			add_location(div1, file$6, 375, 0, 9802);
-    			add_location(br8, file$6, 376, 0, 9843);
-    			add_location(br9, file$6, 377, 0, 9848);
+    			add_location(div1, file$6, 411, 0, 10248);
+    			add_location(br8, file$6, 412, 0, 10289);
+    			add_location(br9, file$6, 413, 0, 10294);
     			attr(div2, "class", "p svelte-1d81q6r");
-    			add_location(div2, file$6, 378, 0, 9853);
-    			add_location(br10, file$6, 379, 0, 9914);
+    			add_location(div2, file$6, 414, 0, 10299);
+    			add_location(br10, file$6, 415, 0, 10360);
     			attr(div3, "class", "q svelte-1d81q6r");
-    			add_location(div3, file$6, 380, 0, 9919);
-    			add_location(br11, file$6, 381, 0, 9961);
-    			add_location(br12, file$6, 382, 0, 9966);
+    			add_location(div3, file$6, 416, 0, 10365);
+    			add_location(br11, file$6, 417, 0, 10407);
+    			add_location(br12, file$6, 418, 0, 10412);
     			attr(div4, "class", "p svelte-1d81q6r");
-    			add_location(div4, file$6, 383, 0, 9971);
-    			add_location(br13, file$6, 384, 0, 10035);
+    			add_location(div4, file$6, 419, 0, 10417);
+    			add_location(br13, file$6, 420, 0, 10481);
     			attr(div5, "class", "q svelte-1d81q6r");
-    			add_location(div5, file$6, 385, 0, 10040);
-    			add_location(br14, file$6, 386, 0, 10082);
-    			add_location(br15, file$6, 387, 0, 10087);
+    			add_location(div5, file$6, 421, 0, 10486);
+    			add_location(br14, file$6, 422, 0, 10528);
+    			add_location(br15, file$6, 423, 0, 10533);
     			attr(div6, "class", "p svelte-1d81q6r");
-    			add_location(div6, file$6, 388, 0, 10092);
-    			add_location(br16, file$6, 389, 0, 10155);
+    			add_location(div6, file$6, 424, 0, 10538);
+    			add_location(br16, file$6, 425, 0, 10601);
     			attr(div7, "class", "q svelte-1d81q6r");
-    			add_location(div7, file$6, 390, 0, 10160);
-    			add_location(br17, file$6, 391, 0, 10202);
-    			add_location(br18, file$6, 392, 0, 10207);
-    			add_location(button0, file$6, 393, 0, 10212);
-    			add_location(button1, file$6, 394, 0, 10260);
-    			add_location(br19, file$6, 395, 0, 10308);
-    			add_location(br20, file$6, 395, 4, 10312);
-    			add_location(div8, file$6, 396, 0, 10317);
-    			add_location(br21, file$6, 397, 0, 10349);
-    			add_location(div9, file$6, 398, 0, 10354);
-    			add_location(br22, file$6, 399, 0, 10391);
-    			add_location(div10, file$6, 400, 0, 10396);
-    			add_location(pre, file$6, 401, 0, 10484);
+    			add_location(div7, file$6, 426, 0, 10606);
+    			add_location(br17, file$6, 427, 0, 10648);
+    			add_location(br18, file$6, 428, 0, 10653);
+    			attr(button0, "class", "but");
+    			add_location(button0, file$6, 429, 0, 10658);
+    			attr(button1, "class", "but");
+    			add_location(button1, file$6, 430, 0, 10718);
+    			add_location(br19, file$6, 431, 0, 10778);
+    			add_location(br20, file$6, 431, 4, 10782);
+    			add_location(div8, file$6, 432, 0, 10787);
+    			add_location(br21, file$6, 433, 0, 10819);
+    			add_location(div9, file$6, 434, 0, 10824);
+    			add_location(br22, file$6, 435, 0, 10861);
+    			add_location(div10, file$6, 436, 0, 10866);
+    			add_location(pre0, file$6, 437, 0, 11182);
+    			add_location(p4, file$6, 438, 0, 11201);
+    			set_style(div11, "color", "#BBFFBB");
+    			add_location(div11, file$6, 439, 0, 11295);
+    			add_location(pre1, file$6, 441, 0, 11355);
+    			add_location(p5, file$6, 445, 0, 11461);
+    			set_style(div12, "color", "#BBFFBB");
+    			add_location(div12, file$6, 447, 0, 11588);
+    			add_location(pre2, file$6, 449, 0, 11664);
+    			add_location(p6, file$6, 458, 0, 11849);
+    			add_location(p7, file$6, 459, 0, 12073);
+    			add_location(pre3, file$6, 460, 0, 12212);
+    			add_location(p8, file$6, 461, 0, 12234);
+    			add_location(pre4, file$6, 462, 0, 12308);
+    			add_location(span0, file$6, 463, 0, 12327);
+    			attr(a, "href", "https://github.com/dschalk/blog");
+    			add_location(a, file$6, 464, 0, 12383);
+    			add_location(span1, file$6, 465, 0, 12449);
 
     			dispose = [
     				listen(button0, "click", ctx.increase),
@@ -3595,9 +3655,38 @@ console.log("a is", a)  // a is 900`;
     			insert(target, t61, anchor);
     			insert(target, div10, anchor);
     			insert(target, t63, anchor);
-    			insert(target, pre, anchor);
-    			append(pre, t64);
+    			insert(target, pre0, anchor);
+    			append(pre0, t64);
     			insert(target, t65, anchor);
+    			insert(target, p4, anchor);
+    			insert(target, t67, anchor);
+    			insert(target, div11, anchor);
+    			insert(target, t69, anchor);
+    			insert(target, pre1, anchor);
+    			insert(target, t71, anchor);
+    			insert(target, p5, anchor);
+    			insert(target, t73, anchor);
+    			insert(target, div12, anchor);
+    			insert(target, t75, anchor);
+    			insert(target, pre2, anchor);
+    			insert(target, t77, anchor);
+    			insert(target, p6, anchor);
+    			insert(target, t79, anchor);
+    			insert(target, p7, anchor);
+    			insert(target, t81, anchor);
+    			insert(target, pre3, anchor);
+    			append(pre3, t82);
+    			insert(target, t83, anchor);
+    			insert(target, p8, anchor);
+    			insert(target, t85, anchor);
+    			insert(target, pre4, anchor);
+    			append(pre4, t86);
+    			insert(target, t87, anchor);
+    			insert(target, span0, anchor);
+    			insert(target, t89, anchor);
+    			insert(target, a, anchor);
+    			insert(target, t91, anchor);
+    			insert(target, span1, anchor);
     			current = true;
     		},
 
@@ -3732,8 +3821,35 @@ console.log("a is", a)  // a is 900`;
     				detach(t61);
     				detach(div10);
     				detach(t63);
-    				detach(pre);
+    				detach(pre0);
     				detach(t65);
+    				detach(p4);
+    				detach(t67);
+    				detach(div11);
+    				detach(t69);
+    				detach(pre1);
+    				detach(t71);
+    				detach(p5);
+    				detach(t73);
+    				detach(div12);
+    				detach(t75);
+    				detach(pre2);
+    				detach(t77);
+    				detach(p6);
+    				detach(t79);
+    				detach(p7);
+    				detach(t81);
+    				detach(pre3);
+    				detach(t83);
+    				detach(p8);
+    				detach(t85);
+    				detach(pre4);
+    				detach(t87);
+    				detach(span0);
+    				detach(t89);
+    				detach(a);
+    				detach(t91);
+    				detach(span1);
     			}
 
     			run_all(dispose);
@@ -3789,8 +3905,6 @@ console.log("a is", a)  // a is 900`;
     })(x)
     }
 
-    function Filt (p) {this.p = p; this.filt = function filt (x) {return p(x)};}
-
     function concat(xs, val) {return xs.concat(val);}
 
     function mapping(f) {
@@ -3801,13 +3915,13 @@ console.log("a is", a)  // a is 900`;
      }
     }
 
+    function Filt (p) {this.p = p; this.filt = function filt (x) {return p(x)};}
+
     function instance$6($$self, $$props, $$invalidate) {
 
     var isOdd = function isOdd (x) {return new Filt(v => v % 2 === 1)};
-    var fives = function fives (x) {
-     if (typeof x === "number") {return new Filt(v => v % 10 === 5)}
-     else if (typeof x === "string") {return Filt(v = v(v.length - 1))}
-     else {return undefined}};
+
+    var fives = function fives (x) {return new Filt(v => v % 10 === 5)};
 
     var ar = "cowgirl";
 
@@ -3865,7 +3979,6 @@ console.log("a is", a)  // a is 900`;
 
     var mapWRf = mapping(cube);
     var mapRes = ar74.reduce(mapWRf(concat), []);
-    console.log("mapRes is", mapRes);
 
     var isEven = x => x % 2 === 0;
     var not = x => !x;
@@ -3880,61 +3993,54 @@ console.log("a is", a)  // a is 900`;
     var D_D = "I";
 
     var res1;
+    // $: res1;
 
     var res2;
+    // $: res2;
 
     var res3;
-
-    var res4;
 
     var dotResult = [];
 
     var transducerResult;
 
-    console.log("blah blah blah");
 
      $$invalidate('A_A', A_A = dotResult = ar74
        .filter(v => (v % 2 === 1))
        .map(x => x**4)
        .map(x => x+3)
        .map(x => x-3)
+       .filter(v => v % 10 === 5)
        .map(x => Math.sqrt(x))
        .map(v=>v*v)
-       .map(v=>v+1000)
-       .filter(v => v % 10 === 5)); $$invalidate('dotResult', dotResult);
-       console.log("dotResult is", dotResult);
-
-    var td1;
-
-    var td2;
+       .map(v=>v+1000)); $$invalidate('dotResult', dotResult);
 
     var xform;
 
     var xform2;
 
     var xform3;
+      var fives = function fives (x) {return new Filt(v => v % 10 === 5)};
 
-       $$invalidate('td1', td1 = x => Monad$1([x])(isOdd)(v=>v**4)(v=>v+3)(v=>(v-3)/Math.sqrt(v-3))('stop').pop());
-       $$invalidate('td2', td2 = y => Monad$1([y])(v=>v*v)(v=>v+1000)(fives)('stop').pop());
+      var td1 = x => Monad$1([x])(isOdd)(v=>v**4)(v=>v+3)(v=>v-3)(fives)(Math.sqrt)('stop').pop();
+      var td2 = y => Monad$1([y])(v=>v*v)(v=>v+1000)('stop').pop();
 
-    $$invalidate('res1', res1 = ar74.map(x => td1(x)));
-    $$invalidate('B_B', B_B =  res2 = res1.map(y => td2(y))); $$invalidate('res2', res2);
+    res1 = ar74.map(x => td1(x));
+    $$invalidate('B_B', B_B = res2 = res1.map(y => td2(y))); $$invalidate('res2', res2);
     $$invalidate('C_C', C_C = res3 = ar74.map(z => td2(td1(z)))); $$invalidate('res3', res3);
 
-       console.log("cleanF(res2) is", cleanF(res2));
-       console.log("cleanF(res3) is", cleanF(res3));
 
        $$invalidate('xform', xform = compose(
           tdFilter(x=>x%2===1),
           tdMap(x => x**4),
           tdMap(x => x+3),
           tdMap(x => x-3),
+          tdFilter(x => x % 10 === 5),
           tdMap(x => Math.sqrt(x))
        ));
        $$invalidate('xform2', xform2 = compose(
           tdMap(x=>x*x),
-          tdMap(x=>x+1000),
-          tdFilter(x => x % 10 === 5)
+          tdMap(x=>x+1000)
        ));
 
        $$invalidate('xform3', xform3 = compose(
@@ -3942,56 +4048,97 @@ console.log("a is", a)  // a is 900`;
           tdMap(x => x**4),
           tdMap(x => x+3),
           tdMap(x => x-3),
+          tdFilter(x => x % 10 === 5),
           tdMap(x => Math.sqrt(x)),
           tdMap(x=>x*x),
-          tdMap(x=>x+1000),
-          tdFilter(x => x % 10 === 5)
+          tdMap(x=>x+1000)
        ));
        $$invalidate('D_D', D_D = transducerResult = ar74.reduce(xform3(concat),[] )); $$invalidate('transducerResult', transducerResult), $$invalidate('ar74', ar74), $$invalidate('xform3', xform3);
-       console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
-       console.log("transducerResult is", transducerResult);
-       console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
 
-       console.log("A_A is", A_A);
-       console.log("B_B is", B_B);
-       console.log("C_C is", C_C);
-       console.log("D_D is", D_D);
+    var callback = `function increase () {
+  size = size + 10;
+  ar74 = [...Array(size).keys()];
+   A_A = dotResult = ar74
+   .filter(v => (v % 2 === 1))
+   .map(x => x**4)
+   .map(x => x+3)
+   .map(x => x-3)
+   .filter(v => v % 10 === 5)
+   .map(x => Math.sqrt(x))
+   .map(v=>v*v)
+  res1 = ar74.map(x => td1(x));
+  B_B = res2 = res1.map(y => td2(y));
+  C_C = res3 = ar74.map(z => td2(td1(z)));
+  D_D = transducerResult = ar74.reduce(xform3(concat),[] );
+}
 
-    var gotty = "<div style = 'color: #FFAAAA; font-size: 20px'>The traditional dot multiple-traversals result:</div><br><div style = 'color: #FFFFAA'>"+dotResult.join(" ")+"</div><br><br><div style = 'color: #FFAAAA; font-size: 20px'>The monad two-traversals result:</div><br><div style = 'color: #FFFFAA'>"+res2.join(" ")+"</div><br><br><div style = 'color: #FFAAAA; font-size: 20px'>The monad one-traversals result:</div><br><div style = 'color: #FFFFAA'>"+res3.join(" ")+"</div><br>  <br> <div style = 'color: #FFAAAA; font-size: 20px'> Standard transducer one traversal result:</div><br><div style = 'color: #FFFFAA'>"+ transducerResult.join(" ")+"</div>";
+  function Filt (p) {this.p = p; this.filt = function filt (x) {return p(x)}};
+  var fives = function fives (x) {return new Filt(v => v % 10 === 5)}
+  var isOdd = function isOdd (x) {return new Filt(v => v % 2 === 1)};
 
-    console.log("res4 is", res4);
+  var td1 = x => Monad([x])(isOdd)(v=>v**4)(v=>v+3)
+    (v=>v-3)(fives)(Math.sqrt)('stop').pop()
+  res1 = ar74.map(x => td1(x));
+  var td2 = y => Monad([y])(v=>v*v)(v=>v+1000)('stop').pop()`;
 
-    function increase () {
-      $$invalidate('size', size = size + 10);
-      $$invalidate('ar74', ar74 = [...Array(size).keys()]);
-      $$invalidate('res1', res1 = ar74.map(x => td1(x)));
-       $$invalidate('A_A', A_A = dotResult = ar74
-       .filter(v => (v % 2 === 1))
-       .map(x => x**4)
-       .map(x => x+3)
-       .map(x => x-3)
-       .map(x => Math.sqrt(x))
-       .map(v=>v*v)
-       .map(v=>v+1000)
-       .filter(v => v % 10 === 5)); $$invalidate('dotResult', dotResult);
-      $$invalidate('B_B', B_B = res2 = res1.map(y => td2(y))); $$invalidate('res2', res2);
-      $$invalidate('C_C', C_C = res3 = ar74.map(z => td2(td1(z)))); $$invalidate('res3', res3);
-      $$invalidate('D_D', D_D = transducerResult = ar74.reduce(xform3(concat),[] )); $$invalidate('transducerResult', transducerResult), $$invalidate('ar74', ar74), $$invalidate('xform3', xform3);
+    var call2 = `xform3 = compose(
+    tdFilter(x=>x%2===1),
+    tdMap(x => x**4),
+    tdMap(x => x+3),
+    tdMap(x => x-3),
+    tdFilter(x => x % 10 === 5),
+    tdMap(x => Math.sqrt(x)),
+    tdMap(x=>x*x),
+    tdMap(x=>x+1000)
+  );
+
+  function tdMap(func) {
+    return function(reducingFunction) {
+      return (accumulator, v) => {
+        return reducingFunction(accumulator, func(v));
+      }
     }
+  }
+
+  function tdFilter(test) {
+    return function(reducingFunction) {
+      return (accumulator, v) => {
+        return (test(v) ? reducingFunction(accumulator, v) : accumulator)
+      };
+    };
+  }; `;
+
+      function increase () {
+        $$invalidate('size', size = size + 10);
+        $$invalidate('ar74', ar74 = [...Array(size).keys()]);
+        res1 = ar74.map(x => td1(x));
+         $$invalidate('A_A', A_A = dotResult = ar74
+         .filter(v => (v % 2 === 1))
+         .map(x => x**4)
+         .map(x => x+3)
+         .map(x => x-3)
+         .filter(v => v % 10 === 5)
+         .map(x => Math.sqrt(x))
+         .map(v=>v*v)
+         .map(v=>v+1000)); $$invalidate('dotResult', dotResult);
+        $$invalidate('B_B', B_B = res2 = res1.map(y => td2(y))); $$invalidate('res2', res2);
+        $$invalidate('C_C', C_C = res3 = ar74.map(z => td2(td1(z)))); $$invalidate('res3', res3);
+        $$invalidate('D_D', D_D = transducerResult = ar74.reduce(xform3(concat),[] )); $$invalidate('transducerResult', transducerResult), $$invalidate('ar74', ar74), $$invalidate('xform3', xform3);
+      }
 
     function decrease () {
       $$invalidate('size', size = size - 10);
       $$invalidate('ar74', ar74 = [...Array(size).keys()]);
-      $$invalidate('res1', res1 = ar74.map(x => td1(x)));
+      res1 = ar74.map(x => td1(x));
        $$invalidate('A_A', A_A = dotResult = ar74
        .filter(v => (v % 2 === 1))
        .map(x => x**4)
        .map(x => x+3)
        .map(x => x-3)
+       .filter(v => v % 10 === 5)
        .map(x => Math.sqrt(x))
        .map(v=>v*v)
-       .map(v=>v+1000)
-       .filter(v => v % 10 === 5)); $$invalidate('dotResult', dotResult);
+       .map(v=>v+1000)); $$invalidate('dotResult', dotResult);
       $$invalidate('B_B', B_B = res2 = res1.map(y => td2(y))); $$invalidate('res2', res2);
       $$invalidate('C_C', C_C = res3 = ar74.map(z => td2(td1(z)))); $$invalidate('res3', res3);
       $$invalidate('D_D', D_D = transducerResult = ar74.reduce(xform3(concat),[] )); $$invalidate('transducerResult', transducerResult), $$invalidate('ar74', ar74), $$invalidate('xform3', xform3);
@@ -3999,7 +4146,7 @@ console.log("a is", a)  // a is 900`;
     increase();
     decrease();
 
-    	$$self.$$.update = ($$dirty = { k: 1, ltTest: 1, ar: 1, cleanF: 1, size: 1, ar74: 1, dotResult: 1, A_A: 1, res2: 1, B_B: 1, res3: 1, C_C: 1, xform3: 1, transducerResult: 1, D_D: 1, res1: 1, res4: 1, test9: 1, td1: 1, td2: 1, td3: 1, xform: 1, xform2: 1, t37: 1 }) => {
+    	$$self.$$.update = ($$dirty = { k: 1, ltTest: 1, ar: 1, cleanF: 1, size: 1, ar74: 1, dotResult: 1, A_A: 1, res2: 1, B_B: 1, res3: 1, C_C: 1, xform3: 1, transducerResult: 1, D_D: 1, res4: 1, test9: 1, td3: 1, xform: 1, xform2: 1, t37: 1 }) => {
     		if ($$dirty.k) ;
     		if ($$dirty.ltTest) ;
     		if ($$dirty.ar) ;
@@ -4015,15 +4162,11 @@ console.log("a is", a)  // a is 900`;
     		if ($$dirty.ar74 || $$dirty.xform3) { $$invalidate('transducerResult', transducerResult = ar74.reduce(xform3(concat),[] )); }
     		if ($$dirty.transducerResult) { $$invalidate('D_D', D_D = transducerResult); }
     		if ($$dirty.D_D) ;
-    		if ($$dirty.res1) ;
-    		if ($$dirty.res2) ;
     		if ($$dirty.res3) ;
     		if ($$dirty.res4) ;
     		if ($$dirty.dotResult) ;
     		if ($$dirty.test9) ;
     		if ($$dirty.transducerResult) ;
-    		if ($$dirty.td1) ;
-    		if ($$dirty.td2) ;
     		if ($$dirty.td3) ;
     		if ($$dirty.xform) ;
     		if ($$dirty.xform2) ;
@@ -4046,6 +4189,8 @@ console.log("a is", a)  // a is 900`;
     		B_B,
     		C_C,
     		D_D,
+    		callback,
+    		call2,
     		increase,
     		decrease
     	};
@@ -5119,7 +5264,7 @@ console.log("a is", a)  // a is 900`;
     }
 
     function create_fragment$b(ctx) {
-    	var div12, br0, br1, t0, div11, div8, br2, br3, br4, br5, br6, br7, br8, t1, ul, li0, div0, t3, br9, t4, li1, div1, t6, br10, t7, li2, button0, t9, br11, t10, li3, button1, t12, br12, t13, li4, button2, t15, br13, t16, li5, button3, t18, br14, t19, li6, div2, t21, br15, t22, li7, button4, t24, br16, t25, li8, div3, t27, br17, t28, li9, div4, t30, br18, t31, li10, div5, t33, br19, t34, li11, div6, t36, br20, t37, li12, div7, t39, br21, t40, div10, div9, t42, t43, t44, t45, t46, t47, t48, t49, t50, t51, t52, t53, br22, br23, br24, t54, br25, br26, current, dispose;
+    	var div17, br0, br1, t0, div16, div13, br2, br3, br4, br5, br6, br7, br8, t1, ul, li0, div0, t3, br9, t4, li1, div1, t6, br10, t7, li2, div2, t9, br11, t10, li3, div3, t12, br12, t13, li4, div4, t15, br13, t16, li5, div5, t18, br14, t19, li6, div6, t21, br15, t22, li7, div7, t24, br16, t25, li8, div8, t27, br17, t28, li9, div9, t30, br18, t31, li10, div10, t33, br19, t34, li11, div11, t36, br20, t37, li12, div12, t39, br21, t40, div15, div14, t42, t43, t44, t45, t46, t47, t48, t49, t50, t51, t52, t53, br22, br23, br24, t54, br25, br26, current, dispose;
 
     	var if_block0 = (ctx.j === 0) && create_if_block_10();
 
@@ -5145,12 +5290,12 @@ console.log("a is", a)  // a is 900`;
 
     	return {
     		c: function create() {
-    			div12 = element("div");
+    			div17 = element("div");
     			br0 = element("br");
     			br1 = element("br");
     			t0 = space();
-    			div11 = element("div");
-    			div8 = element("div");
+    			div16 = element("div");
+    			div13 = element("div");
     			br2 = element("br");
     			br3 = element("br");
     			br4 = element("br");
@@ -5173,74 +5318,74 @@ console.log("a is", a)  // a is 900`;
     			br10 = element("br");
     			t7 = space();
     			li2 = element("li");
-    			button0 = element("button");
-    			button0.textContent = "A Simple Monad";
+    			div2 = element("div");
+    			div2.textContent = "A Simple Monad";
     			t9 = space();
     			br11 = element("br");
     			t10 = space();
     			li3 = element("li");
-    			button1 = element("button");
-    			button1.textContent = "Asynchronous Monads";
+    			div3 = element("div");
+    			div3.textContent = "Asynchronous Monads";
     			t12 = space();
     			br12 = element("br");
     			t13 = space();
     			li4 = element("li");
-    			button2 = element("button");
-    			button2.textContent = "Promises Monad";
+    			div4 = element("div");
+    			div4.textContent = "Promises Monad";
     			t15 = space();
     			br13 = element("br");
     			t16 = space();
     			li5 = element("li");
-    			button3 = element("button");
-    			button3.textContent = "Transducer Simulator";
+    			div5 = element("div");
+    			div5.textContent = "Transducer Simulator";
     			t18 = space();
     			br14 = element("br");
     			t19 = space();
     			li6 = element("li");
-    			div2 = element("div");
-    			div2.textContent = "JAVASCRIPT SERIES";
+    			div6 = element("div");
+    			div6.textContent = "JAVASCRIPT SERIES";
     			t21 = space();
     			br15 = element("br");
     			t22 = space();
     			li7 = element("li");
-    			button4 = element("button");
-    			button4.textContent = "Game of Score";
+    			div7 = element("div");
+    			div7.textContent = "Game of Score";
     			t24 = space();
     			br16 = element("br");
     			t25 = space();
     			li8 = element("li");
-    			div3 = element("div");
-    			div3.textContent = "MISCELANEOUS TOPICS";
+    			div8 = element("div");
+    			div8.textContent = "MISCELANEOUS TOPICS";
     			t27 = space();
     			br17 = element("br");
     			t28 = space();
     			li9 = element("li");
-    			div4 = element("div");
-    			div4.textContent = "Hidden Haskell Information";
+    			div9 = element("div");
+    			div9.textContent = "Hidden Haskell Information";
     			t30 = space();
     			br18 = element("br");
     			t31 = space();
     			li10 = element("li");
-    			div5 = element("div");
-    			div5.textContent = "Bed Bug Eradication";
+    			div10 = element("div");
+    			div10.textContent = "Bed Bug Eradication";
     			t33 = space();
     			br19 = element("br");
     			t34 = space();
     			li11 = element("li");
-    			div6 = element("div");
-    			div6.textContent = "Toggle Theme";
+    			div11 = element("div");
+    			div11.textContent = "Toggle Theme";
     			t36 = space();
     			br20 = element("br");
     			t37 = space();
     			li12 = element("li");
-    			div7 = element("div");
-    			div7.textContent = "Home";
+    			div12 = element("div");
+    			div12.textContent = "Home";
     			t39 = space();
     			br21 = element("br");
     			t40 = space();
-    			div10 = element("div");
-    			div9 = element("div");
-    			div9.textContent = "DAVID SCHALK'S BLOG";
+    			div15 = element("div");
+    			div14 = element("div");
+    			div14.textContent = "DAVID SCHALK'S BLOG";
     			t42 = space();
     			if (if_block0) if_block0.c();
     			t43 = space();
@@ -5270,99 +5415,106 @@ console.log("a is", a)  // a is 900`;
     			t54 = space();
     			br25 = element("br");
     			br26 = element("br");
-    			add_location(br0, file$b, 75, 0, 1695);
-    			add_location(br1, file$b, 75, 4, 1699);
-    			add_location(br2, file$b, 80, 24, 1854);
-    			add_location(br3, file$b, 80, 28, 1858);
-    			add_location(br4, file$b, 80, 32, 1862);
-    			add_location(br5, file$b, 80, 36, 1866);
-    			add_location(br6, file$b, 80, 40, 1870);
-    			add_location(br7, file$b, 80, 44, 1874);
-    			add_location(br8, file$b, 80, 48, 1878);
-    			attr(div0, "class", "button");
-    			add_location(div0, file$b, 82, 28, 1968);
-    			add_location(li0, file$b, 82, 24, 1964);
-    			add_location(br9, file$b, 83, 24, 2058);
-    			add_location(div1, file$b, 84, 28, 2091);
-    			add_location(li1, file$b, 84, 24, 2087);
-    			add_location(br10, file$b, 85, 24, 2144);
-    			attr(button0, "class", "svelte-jwx1hm");
-    			add_location(button0, file$b, 86, 28, 2177);
-    			add_location(li2, file$b, 86, 24, 2173);
-    			add_location(br11, file$b, 87, 24, 2285);
-    			attr(button1, "class", "svelte-jwx1hm");
-    			add_location(button1, file$b, 88, 28, 2318);
-    			add_location(li3, file$b, 88, 24, 2314);
-    			add_location(br12, file$b, 89, 24, 2430);
-    			attr(button2, "class", "svelte-jwx1hm");
-    			add_location(button2, file$b, 90, 28, 2463);
-    			add_location(li4, file$b, 90, 24, 2459);
-    			add_location(br13, file$b, 91, 24, 2569);
-    			attr(button3, "class", "svelte-jwx1hm");
-    			add_location(button3, file$b, 92, 28, 2602);
-    			add_location(li5, file$b, 92, 24, 2598);
-    			add_location(br14, file$b, 93, 24, 2718);
-    			add_location(div2, file$b, 94, 28, 2751);
-    			add_location(li6, file$b, 94, 24, 2747);
-    			add_location(br15, file$b, 95, 24, 2809);
-    			attr(button4, "class", "svelte-jwx1hm");
-    			add_location(button4, file$b, 96, 28, 2842);
-    			add_location(li7, file$b, 96, 24, 2838);
-    			add_location(br16, file$b, 97, 24, 2948);
-    			add_location(div3, file$b, 98, 28, 2981);
-    			add_location(li8, file$b, 98, 24, 2977);
-    			add_location(br17, file$b, 99, 24, 3041);
-    			attr(div4, "class", "button");
-    			add_location(div4, file$b, 100, 28, 3074);
-    			add_location(li9, file$b, 100, 24, 3070);
-    			add_location(br18, file$b, 101, 24, 3205);
-    			attr(div5, "class", "button");
-    			add_location(div5, file$b, 102, 28, 3238);
-    			add_location(li10, file$b, 102, 24, 3234);
-    			add_location(br19, file$b, 103, 24, 3363);
-    			attr(div6, "class", "button");
-    			add_location(div6, file$b, 104, 28, 3396);
-    			add_location(li11, file$b, 104, 24, 3392);
-    			add_location(br20, file$b, 105, 24, 3514);
-    			attr(div7, "class", "button");
-    			add_location(div7, file$b, 106, 28, 3547);
-    			add_location(li12, file$b, 106, 24, 3543);
-    			add_location(br21, file$b, 107, 24, 3657);
+    			add_location(br0, file$b, 75, 0, 1692);
+    			add_location(br1, file$b, 75, 4, 1696);
+    			add_location(br2, file$b, 80, 24, 1851);
+    			add_location(br3, file$b, 80, 28, 1855);
+    			add_location(br4, file$b, 80, 32, 1859);
+    			add_location(br5, file$b, 80, 36, 1863);
+    			add_location(br6, file$b, 80, 40, 1867);
+    			add_location(br7, file$b, 80, 44, 1871);
+    			add_location(br8, file$b, 80, 48, 1875);
+    			attr(div0, "class", "button svelte-eqbi6d");
+    			add_location(div0, file$b, 82, 28, 1965);
+    			add_location(li0, file$b, 82, 24, 1961);
+    			add_location(br9, file$b, 83, 24, 2055);
+    			attr(div1, "class", "svelte-eqbi6d");
+    			add_location(div1, file$b, 84, 28, 2088);
+    			add_location(li1, file$b, 84, 24, 2084);
+    			add_location(br10, file$b, 85, 24, 2141);
+    			attr(div2, "class", "button svelte-eqbi6d");
+    			add_location(div2, file$b, 86, 28, 2174);
+    			add_location(li2, file$b, 86, 24, 2170);
+    			add_location(br11, file$b, 87, 24, 2291);
+    			attr(div3, "class", "button svelte-eqbi6d");
+    			add_location(div3, file$b, 88, 28, 2324);
+    			add_location(li3, file$b, 88, 24, 2320);
+    			add_location(br12, file$b, 89, 24, 2444);
+    			attr(div4, "class", "button svelte-eqbi6d");
+    			add_location(div4, file$b, 90, 28, 2477);
+    			add_location(li4, file$b, 90, 24, 2473);
+    			add_location(br13, file$b, 91, 24, 2592);
+    			attr(div5, "class", "button svelte-eqbi6d");
+    			add_location(div5, file$b, 92, 28, 2625);
+    			add_location(li5, file$b, 92, 24, 2621);
+    			add_location(br14, file$b, 93, 24, 2750);
+    			attr(div6, "class", "svelte-eqbi6d");
+    			add_location(div6, file$b, 94, 28, 2783);
+    			add_location(li6, file$b, 94, 24, 2779);
+    			add_location(br15, file$b, 95, 24, 2841);
+    			attr(div7, "class", "button svelte-eqbi6d");
+    			add_location(div7, file$b, 96, 28, 2874);
+    			add_location(li7, file$b, 96, 24, 2870);
+    			add_location(br16, file$b, 97, 24, 2989);
+    			attr(div8, "class", "svelte-eqbi6d");
+    			add_location(div8, file$b, 98, 28, 3022);
+    			add_location(li8, file$b, 98, 24, 3018);
+    			add_location(br17, file$b, 99, 24, 3082);
+    			attr(div9, "class", "button svelte-eqbi6d");
+    			add_location(div9, file$b, 100, 28, 3115);
+    			add_location(li9, file$b, 100, 24, 3111);
+    			add_location(br18, file$b, 101, 24, 3246);
+    			attr(div10, "class", "button svelte-eqbi6d");
+    			add_location(div10, file$b, 102, 28, 3279);
+    			add_location(li10, file$b, 102, 24, 3275);
+    			add_location(br19, file$b, 103, 24, 3403);
+    			attr(div11, "class", "button svelte-eqbi6d");
+    			add_location(div11, file$b, 104, 28, 3436);
+    			add_location(li11, file$b, 104, 24, 3432);
+    			add_location(br20, file$b, 105, 24, 3553);
+    			attr(div12, "class", "button svelte-eqbi6d");
+    			add_location(div12, file$b, 106, 28, 3586);
+    			add_location(li12, file$b, 106, 24, 3582);
+    			add_location(br21, file$b, 107, 24, 3695);
     			set_style(ul, "list-style", "none");
-    			attr(ul, "class", "svelte-jwx1hm");
-    			add_location(ul, file$b, 81, 24, 1907);
-    			set_style(div8, "margin-Right", "2%");
-    			set_style(div8, "width", "20%");
-    			add_location(div8, file$b, 79, 24, 1784);
-    			set_style(div9, "font-weight", "900");
-    			set_style(div9, "font-size", "45px");
-    			set_style(div9, "color", "#bbbb00");
-    			set_style(div9, "text-align", "center");
-    			add_location(div9, file$b, 111, 24, 3817);
-    			add_location(br22, file$b, 149, 0, 4293);
-    			add_location(br23, file$b, 149, 4, 4297);
-    			add_location(br24, file$b, 149, 8, 4301);
-    			set_style(div10, "margin-Right", "2%");
-    			set_style(div10, "width", "80%");
-    			add_location(div10, file$b, 110, 24, 3747);
-    			set_style(div11, "display", "flex");
-    			add_location(div11, file$b, 77, 24, 1729);
-    			attr(div12, "class", "content");
-    			add_location(div12, file$b, 74, 0, 1673);
-    			add_location(br25, file$b, 153, 0, 4327);
-    			add_location(br26, file$b, 153, 4, 4331);
+    			attr(ul, "class", "svelte-eqbi6d");
+    			add_location(ul, file$b, 81, 24, 1904);
+    			set_style(div13, "margin-Right", "2%");
+    			set_style(div13, "width", "20%");
+    			attr(div13, "class", "svelte-eqbi6d");
+    			add_location(div13, file$b, 79, 24, 1781);
+    			set_style(div14, "font-weight", "900");
+    			set_style(div14, "font-size", "45px");
+    			set_style(div14, "color", "#bbbb00");
+    			set_style(div14, "text-align", "center");
+    			attr(div14, "class", "svelte-eqbi6d");
+    			add_location(div14, file$b, 111, 24, 3855);
+    			add_location(br22, file$b, 149, 0, 4331);
+    			add_location(br23, file$b, 149, 4, 4335);
+    			add_location(br24, file$b, 149, 8, 4339);
+    			set_style(div15, "margin-Right", "2%");
+    			set_style(div15, "width", "80%");
+    			attr(div15, "class", "svelte-eqbi6d");
+    			add_location(div15, file$b, 110, 24, 3785);
+    			set_style(div16, "display", "flex");
+    			attr(div16, "class", "svelte-eqbi6d");
+    			add_location(div16, file$b, 77, 24, 1726);
+    			attr(div17, "class", "content svelte-eqbi6d");
+    			add_location(div17, file$b, 74, 0, 1670);
+    			add_location(br25, file$b, 153, 0, 4365);
+    			add_location(br26, file$b, 153, 4, 4369);
 
     			dispose = [
     				listen(div0, "click", ctx.click_handler),
-    				listen(button0, "click", ctx.click_handler_1),
-    				listen(button1, "click", ctx.click_handler_2),
-    				listen(button2, "click", ctx.click_handler_3),
-    				listen(button3, "click", ctx.click_handler_4),
-    				listen(button4, "click", ctx.click_handler_5),
-    				listen(div4, "click", ctx.click_handler_6),
-    				listen(div5, "click", ctx.click_handler_7),
-    				listen(div6, "click", ctx.click_handler_8),
-    				listen(div7, "click", ctx.click_handler_9)
+    				listen(div2, "click", ctx.click_handler_1),
+    				listen(div3, "click", ctx.click_handler_2),
+    				listen(div4, "click", ctx.click_handler_3),
+    				listen(div5, "click", ctx.click_handler_4),
+    				listen(div7, "click", ctx.click_handler_5),
+    				listen(div9, "click", ctx.click_handler_6),
+    				listen(div10, "click", ctx.click_handler_7),
+    				listen(div11, "click", ctx.click_handler_8),
+    				listen(div12, "click", ctx.click_handler_9)
     			];
     		},
 
@@ -5371,21 +5523,21 @@ console.log("a is", a)  // a is 900`;
     		},
 
     		m: function mount(target, anchor) {
-    			insert(target, div12, anchor);
-    			append(div12, br0);
-    			append(div12, br1);
-    			append(div12, t0);
-    			append(div12, div11);
-    			append(div11, div8);
-    			append(div8, br2);
-    			append(div8, br3);
-    			append(div8, br4);
-    			append(div8, br5);
-    			append(div8, br6);
-    			append(div8, br7);
-    			append(div8, br8);
-    			append(div8, t1);
-    			append(div8, ul);
+    			insert(target, div17, anchor);
+    			append(div17, br0);
+    			append(div17, br1);
+    			append(div17, t0);
+    			append(div17, div16);
+    			append(div16, div13);
+    			append(div13, br2);
+    			append(div13, br3);
+    			append(div13, br4);
+    			append(div13, br5);
+    			append(div13, br6);
+    			append(div13, br7);
+    			append(div13, br8);
+    			append(div13, t1);
+    			append(div13, ul);
     			append(ul, li0);
     			append(li0, div0);
     			append(ul, t3);
@@ -5397,88 +5549,88 @@ console.log("a is", a)  // a is 900`;
     			append(ul, br10);
     			append(ul, t7);
     			append(ul, li2);
-    			append(li2, button0);
+    			append(li2, div2);
     			append(ul, t9);
     			append(ul, br11);
     			append(ul, t10);
     			append(ul, li3);
-    			append(li3, button1);
+    			append(li3, div3);
     			append(ul, t12);
     			append(ul, br12);
     			append(ul, t13);
     			append(ul, li4);
-    			append(li4, button2);
+    			append(li4, div4);
     			append(ul, t15);
     			append(ul, br13);
     			append(ul, t16);
     			append(ul, li5);
-    			append(li5, button3);
+    			append(li5, div5);
     			append(ul, t18);
     			append(ul, br14);
     			append(ul, t19);
     			append(ul, li6);
-    			append(li6, div2);
+    			append(li6, div6);
     			append(ul, t21);
     			append(ul, br15);
     			append(ul, t22);
     			append(ul, li7);
-    			append(li7, button4);
+    			append(li7, div7);
     			append(ul, t24);
     			append(ul, br16);
     			append(ul, t25);
     			append(ul, li8);
-    			append(li8, div3);
+    			append(li8, div8);
     			append(ul, t27);
     			append(ul, br17);
     			append(ul, t28);
     			append(ul, li9);
-    			append(li9, div4);
+    			append(li9, div9);
     			append(ul, t30);
     			append(ul, br18);
     			append(ul, t31);
     			append(ul, li10);
-    			append(li10, div5);
+    			append(li10, div10);
     			append(ul, t33);
     			append(ul, br19);
     			append(ul, t34);
     			append(ul, li11);
-    			append(li11, div6);
+    			append(li11, div11);
     			append(ul, t36);
     			append(ul, br20);
     			append(ul, t37);
     			append(ul, li12);
-    			append(li12, div7);
+    			append(li12, div12);
     			append(ul, t39);
     			append(ul, br21);
-    			append(div11, t40);
-    			append(div11, div10);
-    			append(div10, div9);
-    			append(div10, t42);
-    			if (if_block0) if_block0.m(div10, null);
-    			append(div10, t43);
-    			if (if_block1) if_block1.m(div10, null);
-    			append(div10, t44);
-    			if (if_block2) if_block2.m(div10, null);
-    			append(div10, t45);
-    			if (if_block3) if_block3.m(div10, null);
-    			append(div10, t46);
-    			if (if_block4) if_block4.m(div10, null);
-    			append(div10, t47);
-    			if (if_block5) if_block5.m(div10, null);
-    			append(div10, t48);
-    			if (if_block6) if_block6.m(div10, null);
-    			append(div10, t49);
-    			if (if_block7) if_block7.m(div10, null);
-    			append(div10, t50);
-    			if (if_block8) if_block8.m(div10, null);
-    			append(div10, t51);
-    			if (if_block9) if_block9.m(div10, null);
-    			append(div10, t52);
-    			if (if_block10) if_block10.m(div10, null);
-    			append(div10, t53);
-    			append(div10, br22);
-    			append(div10, br23);
-    			append(div10, br24);
+    			append(div16, t40);
+    			append(div16, div15);
+    			append(div15, div14);
+    			append(div15, t42);
+    			if (if_block0) if_block0.m(div15, null);
+    			append(div15, t43);
+    			if (if_block1) if_block1.m(div15, null);
+    			append(div15, t44);
+    			if (if_block2) if_block2.m(div15, null);
+    			append(div15, t45);
+    			if (if_block3) if_block3.m(div15, null);
+    			append(div15, t46);
+    			if (if_block4) if_block4.m(div15, null);
+    			append(div15, t47);
+    			if (if_block5) if_block5.m(div15, null);
+    			append(div15, t48);
+    			if (if_block6) if_block6.m(div15, null);
+    			append(div15, t49);
+    			if (if_block7) if_block7.m(div15, null);
+    			append(div15, t50);
+    			if (if_block8) if_block8.m(div15, null);
+    			append(div15, t51);
+    			if (if_block9) if_block9.m(div15, null);
+    			append(div15, t52);
+    			if (if_block10) if_block10.m(div15, null);
+    			append(div15, t53);
+    			append(div15, br22);
+    			append(div15, br23);
+    			append(div15, br24);
     			insert(target, t54, anchor);
     			insert(target, br25, anchor);
     			insert(target, br26, anchor);
@@ -5491,7 +5643,7 @@ console.log("a is", a)  // a is 900`;
     					if_block0 = create_if_block_10();
     					if_block0.c();
     					transition_in(if_block0, 1);
-    					if_block0.m(div10, t43);
+    					if_block0.m(div15, t43);
     				} else {
     									transition_in(if_block0, 1);
     				}
@@ -5508,7 +5660,7 @@ console.log("a is", a)  // a is 900`;
     					if_block1 = create_if_block_9();
     					if_block1.c();
     					transition_in(if_block1, 1);
-    					if_block1.m(div10, t44);
+    					if_block1.m(div15, t44);
     				} else {
     									transition_in(if_block1, 1);
     				}
@@ -5525,7 +5677,7 @@ console.log("a is", a)  // a is 900`;
     					if_block2 = create_if_block_8();
     					if_block2.c();
     					transition_in(if_block2, 1);
-    					if_block2.m(div10, t45);
+    					if_block2.m(div15, t45);
     				} else {
     									transition_in(if_block2, 1);
     				}
@@ -5542,7 +5694,7 @@ console.log("a is", a)  // a is 900`;
     					if_block3 = create_if_block_7();
     					if_block3.c();
     					transition_in(if_block3, 1);
-    					if_block3.m(div10, t46);
+    					if_block3.m(div15, t46);
     				} else {
     									transition_in(if_block3, 1);
     				}
@@ -5559,7 +5711,7 @@ console.log("a is", a)  // a is 900`;
     					if_block4 = create_if_block_6();
     					if_block4.c();
     					transition_in(if_block4, 1);
-    					if_block4.m(div10, t47);
+    					if_block4.m(div15, t47);
     				} else {
     									transition_in(if_block4, 1);
     				}
@@ -5576,7 +5728,7 @@ console.log("a is", a)  // a is 900`;
     					if_block5 = create_if_block_5();
     					if_block5.c();
     					transition_in(if_block5, 1);
-    					if_block5.m(div10, t48);
+    					if_block5.m(div15, t48);
     				} else {
     									transition_in(if_block5, 1);
     				}
@@ -5593,7 +5745,7 @@ console.log("a is", a)  // a is 900`;
     					if_block6 = create_if_block_4();
     					if_block6.c();
     					transition_in(if_block6, 1);
-    					if_block6.m(div10, t49);
+    					if_block6.m(div15, t49);
     				} else {
     									transition_in(if_block6, 1);
     				}
@@ -5610,7 +5762,7 @@ console.log("a is", a)  // a is 900`;
     					if_block7 = create_if_block_3();
     					if_block7.c();
     					transition_in(if_block7, 1);
-    					if_block7.m(div10, t50);
+    					if_block7.m(div15, t50);
     				} else {
     									transition_in(if_block7, 1);
     				}
@@ -5627,7 +5779,7 @@ console.log("a is", a)  // a is 900`;
     					if_block8 = create_if_block_2();
     					if_block8.c();
     					transition_in(if_block8, 1);
-    					if_block8.m(div10, t51);
+    					if_block8.m(div15, t51);
     				} else {
     									transition_in(if_block8, 1);
     				}
@@ -5644,7 +5796,7 @@ console.log("a is", a)  // a is 900`;
     					if_block9 = create_if_block_1();
     					if_block9.c();
     					transition_in(if_block9, 1);
-    					if_block9.m(div10, t52);
+    					if_block9.m(div15, t52);
     				} else {
     									transition_in(if_block9, 1);
     				}
@@ -5661,7 +5813,7 @@ console.log("a is", a)  // a is 900`;
     					if_block10 = create_if_block$b();
     					if_block10.c();
     					transition_in(if_block10, 1);
-    					if_block10.m(div10, t53);
+    					if_block10.m(div15, t53);
     				} else {
     									transition_in(if_block10, 1);
     				}
@@ -5707,7 +5859,7 @@ console.log("a is", a)  // a is 900`;
 
     		d: function destroy(detaching) {
     			if (detaching) {
-    				detach(div12);
+    				detach(div17);
     			}
 
     			if (if_block0) if_block0.d();
