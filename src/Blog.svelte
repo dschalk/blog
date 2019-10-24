@@ -14,6 +14,7 @@
     import Asynchronous_Monad from './Asynchronous_Monad.svelte'
     import ToggleTheme from './ToggleTheme.svelte'
     import Home from './Home.svelte'
+    import Score from './Score.svelte'
 
     var j = 0
 
@@ -26,6 +27,7 @@
     function transduce () {j = 6}; console.log(j);
     function async () {j = 7; console.log(j)};
     function tog () {j = 8; console.log(j)};
+    function score () {j = 10; console.log(j)};
     function home () {j = 0; console.log(j)};
 
     $: j
@@ -35,11 +37,9 @@
 </script>
 
 <style>
-
 button {
    font-size: 18px;
    color: #bccbaa;
-
 }
 
 .gamma {
@@ -92,6 +92,10 @@ button {
                         <br>
                         <li><button on:click={() => {j = 7; console.log("j is", j)}}>Transducer Simulator</button></li>
                         <br>
+                        <li><div>JAVASCRIPT SERIES</div></li>
+                        <br>
+                        <li><button on:click={()=>{j=10; console.log("j is", j)}}>Game of Score</button></li>
+                        <br>
                         <li><div>MISCELANEOUS TOPICS</div></li>
                         <br>
                         <li><div class='button' on:click={() => {j = 3; console.log("j is", j)}}>Hidden Haskell Information</div></li>
@@ -137,6 +141,9 @@ button {
 {/if}
 {#if j === 8}
 <ToggleTheme />
+{/if}
+{#if j === 10}
+<Score />
 {/if}
 
 
