@@ -432,7 +432,8 @@ TRANSDUCER SIMULATION
 <br><br>
 <div>Array length: {size}</div>
 <br>
-<div>ar74: [{ar74.join(", ")}]</div>
+<span style = "color: #00ddff">ar74: </span>
+<span> [{ar74.join(", ")}]</span>
 <br>
 <div>The modified Monad (below) could benefit from some refactoring, but it does what needs to be done for this demo. The point is that a standard transducer and Monad both use one array traversal to accomplish what the built-in dot method does by traversing the original array and seven intermediary arrays. </div>
 <pre>{mon44}</pre>
@@ -443,7 +444,7 @@ TRANSDUCER SIMULATION
 Monad two traversals: 255 ms
 Monad one traversal: 220 ms
 Transducer: 26 ms </pre>
-<p> ar74.length === 1,000,000 was about as far as I could go without crashing the browser. Here are two typical results: </p>
+<p> When the array length went very far above one million, the browser crashed. Here are two typical results of transforming a million elements with each of the algorithms.</p>
 
 <div style = "color: #BBFFBB">Two runs with ar74.length = 1,000,000:</div>
 

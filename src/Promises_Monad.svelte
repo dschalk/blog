@@ -104,6 +104,8 @@
 
    var O = new Object();
    $: O;
+   O.test = [];
+   O.test_2 = [];
 
    var M = -1;
    $: M;
@@ -125,13 +127,11 @@
      let x = O[name].pop();
      return run = (function run (x) {
        if (x instanceof Promise) x.then(y => {
-         console.log(x, "is a Promise");
          if (y != undefined && y == y && y.name !== "f_") {
          O[name] = O[name].concat(y)
          }
        })
        if (!(x instanceof Promise)) {
-          console.log(x, "is not a promise");
           if (x != undefined && x == x) {
              O[name] = O[name].concat(x)
           }
@@ -147,15 +147,8 @@
      })(x);
   }
 
-   var branch = function branch (s,s2) {return Monad(O[s].slice(-1)  , s2)}
+   var branch = function branch (s,s2) {return Monad(O[s]  , s2)}
    var resume = function resume (s) {return Monad(O[s], s)}
-
-   Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))
-   (() => branch("test", "test_2")(sqrtP)(cubeP)(()=>addP(O.test_2[2])
-   (O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))
-   (() => resume("test")(multP(4))(addP(6))))
-
-   setTimeout(()=>console.log("O is", O),15000)
 
 var mon = `   var Monad = function Monad ( AR = [], name = "generic"  )  {
      var f_, p, run;
@@ -209,8 +202,11 @@ Handling Promises With Monads
  </div>
 {/if}
 <br>
-<h2>O.test is {O.test}</h2>
-<h2>O.test_2 is {O.test_2}</h2>
+<h1>PISS</h1>
+<div>{O.test}</div>
+<div>{O.test_2}</div>
+<button on:click = {start}>START</button>
+
 <p> Here's the modified monad constructor: </p>
 <pre>{mon}</pre>
 <p> After monads encounter "halt", they can use the function resume() to continue processing data where they left off and (2) they can branch off in new monads created by branch(). Here are the definitions:</p>
@@ -218,10 +214,7 @@ Handling Promises With Monads
 <p> This is the statement that produces the observed results when "START" is clicked. </p>
 <pre>{code}</pre>
 <br>
-<button on:click = {start}>START</button>
 
-<h2>O.test is {O.test}</h2>
-<h2>O.test_2 is {O.test_2}</h2>
 <br>
 <span class = "tao"> Notice the statement: </span>
 <span style = "color: #AAFFAA">()=>addP(O.test_2[2])(O.test_2[1])</span>
