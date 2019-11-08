@@ -183,16 +183,6 @@ label {
     text-align: center;
   }
 
-.content {
-  width: 50%;
-  font-family: monospace;
-  font-size: 22px;
-  margin-left: 3%;
-  margin-right: auto;
-  display: block;
-  text-indent 1.6%;
-}
-
 #content2{ width: 90%;
   font-size: 22px;
   font-family: monospace;
@@ -201,10 +191,21 @@ label {
   text-indent 1.6%;
 }
 
-.content2{ width: 90%;
+.content2{
+  width: 90%;
   font-size: 22px;
   font-family: monospace;
   margin-left: 3%;
+  display: block;
+  text-indent 1.6%;
+}
+
+.content {
+  width: 50%;
+  font-family: monospace;
+  font-size: 22px;
+  margin-left: 3%;
+  margin-right: auto;
   display: block;
   text-indent 1.6%;
 }

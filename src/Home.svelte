@@ -9,10 +9,11 @@ let visible = true;
  FIRST POST
  </div>
 {/if}
-
-<p> This is where I store code snippets, discoveries, and ideas that I don't want to forget, or that might be useful to others. Eventually I might adopt the usual reverse chronology blog format, but for now I am piecing together what I want to salvage from piles of disorganized computer code and a head full of ideas and memories I want to preserve.</p>
-
+<br>
+<p> This is where I store code snippets, discoveries, and ideas that I don't want to forget, or that might be useful to others. Eventually I might adopt the usual reverse chronology blog format, but for now I am piecing together what I want to salvage from piles of disorganized computer code and a head full of ideas and memories I want to preserve. </p>
+<br>
 <div>David Schalk</div>
-<div>October, 2019</div>
+<div>October, 2019 </div>
+
 <br>
 <br>

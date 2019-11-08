@@ -1,9 +1,5 @@
 <script>
     import Blog from './Blog.svelte'
-
-    let lock = false;
-    $: lock
-
 </script>
 
 <style>

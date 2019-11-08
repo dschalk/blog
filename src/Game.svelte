@@ -1,4 +1,4 @@
-
+ 
     // onChange = require('on-change');
     // import ws from 'ws';
     // import {makeHTTPDriver} from '@cycle/http';
@@ -11,7 +11,7 @@
     import {run} from '@cycle/run';
 
     //  socket = new WebSocket("ws://localhost:3055");
-
+    
     // socket = new WebSocket("ws://142.93.205.167:3055");
     socket = new WebSocket("ws://schalk.net:3055");
     // socket = new WebSocket("ws://schalk.site:3055");
@@ -557,7 +557,7 @@ console.log(" END ************************** h and clone ***************** EBD")
       var groupPressAction$ = groupPress$.map(e => {
         if (e.keyCode === 13 && e.target.value) {
           var g = e.target.value.replace(/,/g, '');
-          pMgroup.ret(g);
+          pMgroup.ret(g); 
           send("CO#$42", g);
           gameMonad.run([0, 0, 0, [],
             [0, 0, 0, 0], , g
@@ -1205,12 +1205,12 @@ var clearClick8$ = sources.DOM
   })
 
 var factorsClick8$ = sources.DOM
-  .select('button#factors_R').events('click');
+  .select('button#factors_R').events('click'); 
 
 var factorsAction8$ = factorsClick8$.map(e => {
   var i = 0;
   m43_ = [];
-  var ob = new Bnd3();
+  var ob = new Bnd3(); 
   while (i < 25) {
     ob.run(145)(x => x ** 3)(it4_b)(it6_b)(it7_b)();
     i += 1;
@@ -1512,7 +1512,7 @@ pp4 = () => {
 };
 
 
-      // ***************************** start click
+      // ***************************** start click    
 
       var pingpong$ = sources.DOM
         .select('button.pingpong').events('click')
@@ -1523,12 +1523,12 @@ pp4 = () => {
         });
 
 
-      // ******************************* end click
+      // ******************************* end click    
 
       pingScore = [0, 0];
       pingScore2 = [0, 0];
       pingScore3 = [0, 0];
-      // ***************************** start message from workerI
+      // ***************************** start message from workerI    
 
       const otherP = bool => a => b => c => {
         if (typeof bool !== 'boolean') {
@@ -1561,7 +1561,7 @@ pp4 = () => {
       });
 
 
-      // ***************************** end message from workerI
+      // ***************************** end message from workerI    
 
       var pinpon4$ = sources.DOM
         .select('button.pingpong4').events('click')
@@ -1569,7 +1569,7 @@ pp4 = () => {
       var pingpong4$ = pinpon4$.map(() => {
 
         pp4('ping43')('ping44')('pingScr1');
-        // pp4('ping45')('ping46')('pingScr2');
+        // pp4('ping45')('ping46')('pingScr2'); 
         // pp4('ping47')('ping48')('pingScr3');
       });
 
@@ -1779,10 +1779,10 @@ var trip9 = function (x) {
         if ( typeof f === "number") {
             console.log("Result: ", f);
             f = original_f;
-          }
+          }     
 }
 }
-var foo9 = trip9( (a) =>(b) => (c) => a+b+c )
+var foo9 = trip9( (a) =>(b) => (c) => a+b+c )  
 
 
 foo(4);
@@ -1800,7 +1800,7 @@ foo(9);
     .select('#qF1').events('keypress');
 
   oneAction$ = qF1$.map(e => {
-      if (e.keyCode === 13) {
+      if (e.keyCode === 13) {  
           ann27(e.target.value);
           e.target.value = null;
       }
@@ -1813,8 +1813,8 @@ function ann23 () {
         console.log("In ann23 -- ob is", ob);
         if (ob.ar.length === 3) {
             var a = ob.ar[0];
-            var b = ob.ar[1];
-            var c = ob.ar[2];
+            var b = ob.ar[1];  
+            var c = ob.ar[2];  
             ob.ar = [];
             var aa = (-b - Math.sqrt(b * b - 4 * a * c)) / (2 * a);
             var bb = (-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a);
@@ -1837,7 +1837,7 @@ var ann27 = ann23();
     .select('#qF1x').events('keypress');
 
   twoAction$ = qF1x$.map(e => {
-      if (e.keyCode === 13) {
+      if (e.keyCode === 13) {  
           quadOb.fu(toFloat(e.target.value));
           e.target.value = null;
       }
@@ -1847,7 +1847,7 @@ var ann27 = ann23();
     .select('#qF2x').events('keypress');
 
   threeAction$ = qF2x$.map(e => {
-      if (e.keyCode === 13) {
+      if (e.keyCode === 13) {  
           console.log("798798787657657 (*&(*&(*&(*&(*&(*&(*798798787657657%&%&%&%&%", e.target.value);
           go_6(toFloat(e.target.value));
           e.target.value = null;
@@ -2114,21 +2114,21 @@ var ann27 = ann23();
 h('div.image_3', [
   h('img.image_2', { props: { src: "logo.svg" }}),
   h('span', ' '),
-  h('a', { props: { href: "https://cycle.js.org/", target: "_blank" }}, 'A Cycle.js application')
+  h('a', { props: { href: "https://cycle.js.org/", target: "_blank" }}, 'A Cycle.js application') 
 ]),
 h('div', { style: { textAlign: "center", fontWeight: "bold" }}, [
   h('br'),
-  h('div', {style: { fontSize: "32px", color: "rgb(130,170,18)",
+  h('div', {style: { fontSize: "32px", color: "rgb(130,170,18)", 
     textAlign: "center" }}, 'The interactive game with a '),
 
-  h('div', { style: { fontSize: "32px", color: "rgb(130,170,18)",
+  h('div', { style: { fontSize: "32px", color: "rgb(130,170,18)", 
     textAlign: "center" }},'shared (within groups) textbox and todo list'),
-]),
+]), 
 h('br'),
 h('div', styleFunc(["rgb(180,180,56)",, "23px", "italic", ,"center" ]), 'Small, reusable functions' ),
 h('div', styleFunc(["rgb(180,180,56)",, "23px", "italic", ,"center" ]), 'directed by program-specific functions' ),
 h('br'),
-
+          
                         h('div.content', [ // 2 brackets  main -> content ->
 
 
@@ -2152,7 +2152,7 @@ h('br'),
   h('p', ' Visitors to this site are automatically logged in with pseudo-randomly generated numbers as their user names and passwords. The default "group" is the non-group "solo". '),
   h('p', ' You can select a persistent name and password. These will make it possible for you to return at any time and delete or edit your comments. '),
   h('p#gameIntro', ' The demonstration section also has a text box where you can create or join a group by entering a group name. Changing groups resets your game score and goal tally to zeros. '),
-  h('span.tao', ' The code is at ' ),
+  h('span.tao', ' The code is at ' ), 
   h('a', {props: {href: "http://github.com/dschalk/functional-javascript", target: "_blank"}}, 'Github' ),
   h('span', ' and ' ),
   h('a', {props: {href: "#gameCode" }}, "here" ),
@@ -2315,7 +2315,7 @@ h('div.content', [ // 4
           h('span.tao', ' Reactivity occurs naturally in the Cycle.js framework. Many developers find that Cycle.js has an unusually steep learning curve. It isn\'t so bad if you start with Andrew Staltz\' '),
           h('a', {props: {
               href: "https://egghead.io/courses/cycle-js-fundamentals",
-              target: "_blank"}
+              target: "_blank"} 
           }, ' Overview of Cycle.js.'),
           h('span', ' Its elegance might take your breath away. '),
           h('br'),
@@ -2486,7 +2486,7 @@ h('a', {
               h('h3', ' Preserve Archives By Avoiding Mutation '),
               h('p', ' When you assign a variable to an array, for example "var arr = [1,2,3]", arr points to a location in memory. Suppose you want to preserve a record of previous values of arr. You can\'t do it with an array such as b below: '),
               h('pre', `    var arr = [1,2,3];
-    var c = arr;
+    var c = arr;          
     var b = [arr];
     c.push(4);
     console.log(arr);   // [1,2,3,4]
@@ -2528,8 +2528,8 @@ h('a', {
       h('button#mR12.mR', 12 ),
       h('button#mR13.mR', 13 ),
       h('button#mR14.mR', 14 ),
-      h('button#mR15.mR', 15 ) ]
-
+      h('button#mR15.mR', 15 ) ] 
+                
       var ArrDS = [
         [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
       ];  `),
@@ -2541,7 +2541,7 @@ h('a', {
     .map(e => {
       rADS.push(toInt(e.target.id.slice(2,4)));
       if (rADS.x.length === 2) {
-       rDataDS = rExchange (rADS[0], rADS[1]);
+       rDataDS = rExchange (rADS[0], rADS[1]); 
       }
     }) `),
               h('p', ' Then if you click the bottom right square (var m815), rADS expands to contain "3" and "15". This causes rExchange(3,15) to run and return the updated value of rDataDS. '),
@@ -2556,22 +2556,22 @@ h('a', {
               h('pre', `  function makeRDS (arr) {
       var r = arr.slice();
       return [
-        h('button#mR0.mR', r[0] ),
+        h('button#mR0.mR', r[0] ), 
         h('button#mR1.mR', r[1] ),
-        h('button#mR2.mR', r[2] ),
-        h('button#mR3.mR', r[3] ),
-        h('button#mR4.mR', r[4] ),
+        h('button#mR2.mR', r[2] ), 
+        h('button#mR3.mR', r[3] ), 
+        h('button#mR4.mR', r[4] ), 
         h('button#mR5.mR', r[5] ),
-        h('button#mR6.mR', r[6] ),
-        h('button#mR7.mR', r[7] ),
-        h('button#mR8.mR', r[8] ),
+        h('button#mR6.mR', r[6] ), 
+        h('button#mR7.mR', r[7] ), 
+        h('button#mR8.mR', r[8] ), 
         h('button#mR9.mR', r[9] ),
-        h('button#mR10.mR', r[10] ),
-        h('button#mR11.mR', r[11] ),
-        h('button#mR12.mR', r[12] ),
+        h('button#mR10.mR', r[10] ), 
+        h('button#mR11.mR', r[11] ), 
+        h('button#mR12.mR', r[12] ), 
         h('button#mR13.mR', r[13] ),
-        h('button#mR14.mR', r[14] ),
-        h('button#mR15.mR', r[15] )
+        h('button#mR14.mR', r[14] ), 
+        h('button#mR15.mR', r[15] ) 
       ];
     } `),
 
@@ -2584,7 +2584,7 @@ h('a', {
 h('a', {props: {href: "#proxy2"}}, 'Back to the first demonstration' ),
 h('h2', 'FUN WITH PROXIES' ),
 
-
+  
 h('p', ' Proxies can be useful for debugging, type checking, error handling, and more. Where they really shine is in reactive programming. Modern Firefox and Chrome browsers have supported them for quite some time and it seems inevitable that we will see more and more of them in production code. In this Cycle.js application, the virtual DOM diff & render procedure is provided by MobX, which is beginning the switch to reliance on ES6 Proxies for reactivity. autoRefresh() uses a proxy in conjunction with MobX to update the DOM each time a function composed with Bind(true) and mBnd(true) executes (see Demonstrations 1 and 2). The following demonstration features an empty object that seems to contain an invisible key named "attribute" along with invisible methods for which "attribute" is a parameter.' ),
 h('pre', `   var count = {}
 
@@ -2651,7 +2651,7 @@ h('span', '. Mutating \"count = {}\" into a proxy of itself was for demonstratio
 h('br'),
 h('h3', {style: {color: "#bbee00"}}, 'Function Call Trap' ),
 h('p', ' The behavior of functions can be modified with the "apply" trap. While "get: (a,b,c) =>" in a handler is "get: (target object, key, value) =>", "apply: (a,b,c) =>" is "apply: (target function, single argument, argument list) =>" ' ),
-h('p', ' As initially defined, f17() does nothing more than this: f17(a,b,c,d) -> [a,c,b+c,d]. Re-defined as a proxy of itself, f17 generates arrays of Fibonacci numbers. The default values of b, c, and d are 0, 1, and false respectively, so f17(n) is equivalent to f17(n,0,1,false), returning the Fibonacci numbers under "n". f17(n,0,1,true) returns an array of prime Fibonacci numbers under n. Here\'s the code: ' ),
+h('p', ' As initially defined, f17() does nothing more than this: f17(a,b,c,d) -> [a,c,b+c,d]. Re-defined as a proxy of itself, f17 generates arrays of Fibonacci numbers. The default values of b, c, and d are 0, 1, and false respectively, so f17(n) is equivalent to f17(n,0,1,false), returning the Fibonacci numbers under "n". f17(n,0,1,true) returns an array of prime Fibonacci numbers under n. Here\'s the code: ' ),  
 h('div', {style: {color: "#FFAABB"}}, "f17(x): " + F_17  ),
 
 h('br'),
@@ -2660,7 +2660,7 @@ h('br'),
 h('span', 'Enter a number "x" here: ' ),
 h('input#fibNum', ),
 h('div', ' The floor of the absolute value will be used. ' ),
-h('p', ' Here\'s the code: ' ),
+h('p', ' Here\'s the code: ' ), 
 h('pre', {style: {color: "#00DDDD"}}, `    function primeNums(n) {
       var store  = [], i, j, primes = [];
       for (i = 2; i <= n; ++i) {
@@ -2680,7 +2680,7 @@ h('pre', {style: {color: "#00DDDD"}}, `    function primeNums(n) {
         apply: function(a, b, c) {
              var ax = a(...c)
              var arr = [0];
-            while (ax[2] < ax[0]) {
+            while (ax[2] < ax[0]) { 
                 ax = a(...ax);
                 arr.push(ax[1]);
             }
@@ -2688,7 +2688,7 @@ h('pre', {style: {color: "#00DDDD"}}, `    function primeNums(n) {
                 var prms = primeNums(c[0]);
                 var prmFibs = prms.filter(v => arr.includes(v));
                 return \`The prime Fibonacci numbers up to \${c[0]} are \${prmFibs.join(', ')}\`;
-            }
+            }    
             else return \`The Fibonacci numbers up to \${ax[0]} are \${arr}\`
         }
     }
@@ -2755,19 +2755,19 @@ h('pre', `  const _state = {a: 0, b: 0, sum: 0, prod: 0 }
           else if (b === "subtract_b") subtract_b.apply(_state)
           else if (b === "resetState") resetState.apply(_state)
           else if (b === "resetState") resetState.apply(_state)
-          sum.apply(_state);
+          sum.apply(_state);  
           prod.apply(_state);
           diffRender();
       }
   }
 
-  const _count = new Proxy ({}, handlerUpdate); ` ),
+  const _count = new Proxy ({}, handlerUpdate); ` ), 
 
 
 
 
 
-h('p', ' ' ),
+h('p', ' ' ), 
 h('a', {props: {href: "#proxy2"}}, 'Back to the first demonstration' ),
 
 
@@ -2778,7 +2778,7 @@ h('a', {props: {href: "#proxy2"}}, 'Back to the first demonstration' ),
 
 h('h2', ' MonadEr - An Error-Catching Monad '),
 
-h('p', ' THIS IS A FIRST STAB AT MAKING SOMETHING THAT PERFORMS LIKE HASKELL\'S "Maybe" MONAD. THERE IS LOTS OF ROOM FOR IMPROVEMENT.  ' ),
+h('p', ' THIS IS A FIRST STAB AT MAKING SOMETHING THAT PERFORMS LIKE HASKELL\'S "Maybe" MONAD. THERE IS LOTS OF ROOM FOR IMPROVEMENT.  ' ), 
 h('p', ' Instances of MonadEr function much the same as instances of Monad, but when an instance of MonadEr encounters an error, it ceases to perform any further computations. Instead, it passes through every subsequent stage of a sequence of MonadEr expressions, reporting where it is and repeating the error message. It will continue to do this until it is re-instantiated or until its bnd() method runs on the function clean(). '),
 h('p', 'Functions used as arguments to the MonadEr bnd() method can be placed in quotation marks to prevent the browser engine from throwing reference errors. Arguments can be protected in the same manner. Using MonadEr can prevent the silent proliferation of NaN results in math computations, and can prevent browser crashes due to attempts to evaluate undefined variables. '),
 h('p.tao1b', ' The monad laws hold for MonadEr instances. The following relationships were verified in the Chrome console: '),
@@ -2850,7 +2850,7 @@ h('pre', `function showFunc (name, name2)
     this.ret = function (a) {
       return window[this.id] = new MonadState(this.id, a);
     };
-  }
+  }  
 
   bind2(n)(cubeP)(addP(3))(a=>a+ar[0]+ar[1]-18)(multP(1/3))
     (addP(-11))(()=>ar[1]+ar[2]+ar[3])(terminate) ;
@@ -2912,14 +2912,99 @@ h('pre', `function showFunc (name, name2)
               h('a', { props: { href: '#top' }}, 'Back to the top'),
               h('p', ' *************************************************************************************** '),
 
+h('span.tao', ' The ' ),
+h('a', {props: {href:"https://wiki.haskell.org/Monad_laws", target: "_blank" }}, 'Haskell Monad Laws' ), 
+h('span', ', which aren\'t even mandetory in Haskell, are common sense requirements for robust function composition. If you rely on functions to make programs work, you aren\'t communicating changes of state by mutating global variables. Time travel and undo algorithms naturally use immutable data. Thousands of passes through loops inside the scopes of functions cry out for mutable values, not factories spewing pointers and values into memory. When you program functionally, Things fall into place without enforcing rules. This is doing through inaction, in the spirit of the ' ),
+  
+                           h('a', {props: {href:"https://en.wikipedia.org/wiki/Tao_Te_Ching", target: "_blank" }}, 'Tao Te Ching' ), 
+h('br'),
+h('br'),
 
 
-h('div', " ************************************************"),
-h('br')
-h('div', " ************************************************"),
+h('span.tao', ' The ' ),
+h('a', {props: {href:"https://github.com/fantasyland/fantasy-land", target: "_blank" }}, 'Fantasyland' ),
+h('span', ' algebraic javascript specification is an admirable achievement. People who are familiar with Haskell can jump right in and start coding with familiar monads and functors borrowed from the Haskell ' ),
 
 
+h('a', {props: {href: "http://hackage.haskell.org/package/base-4.12.0.0/docs/Prelude.html", target: "_blank"}}, 'Prelude module' ), 
 
+h('span', '. The '  ),
+
+h('a', {props: {href:"https://github.com/origamitower/folktale", target: "_blank" }}, 'Folktale' ),
+
+h('span', ' library also succeeds in reflecting the Haskell Prelude module. The Folktale "Maybe" monad is being evaluated on this page as a way to catch errors. ' ),
+  
+h('br'),
+              h('pre', `  var rNumsDS = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15] `),
+              h('p', ' feels elegant to me. It is a simple proxy for the sixteen square grid that never needs to be operated upon directly because the placement of its numbers are in one-to-one correspondence with the placement of its (rNumsDS\'s) elements. I could have tucked it away in an object or closure, but I like it so much that I dignified it with the designation "window.rNumsDS". I ignored an important rule. I did it more than once, and it isn\'t the only important rule I ignored. But in every case, there was an advantage (if only in efficiency), and I made sure that no harm could come from my deviations. '),
+              h('p', ' If I were working in a group, or providing something that would be maintained by anyone other than me, I would code by the book. I\'m not getting paid for this work; I\'m just having fun. Dig it! '),
+
+              h('h3', 'Haskell Time'),
+              h('p', ' This page is for front end developers, but in case anyone is interested, here are the server functions responsible for deleting or amending a comment: '),
+              h('pre', `    removeOne _ []                 = []
+    removeOne x (y:ys) | x == y    = ys
+                       | otherwise = y : removeOne x ys
+
+    changeOne :: Text -> Text -> [Text] -> [Text]
+    changeOne _ _ []                 = []
+    changeOne z x (y:ys) | x == y    = z : ys
+                         | otherwise = y : changeOne z x ys `),
+
+              h('a', ' Every message sent to the server is a comma separated string beginning with a prefix, then a group, and then a name. Comma separated items after that are named extra and extra2. '),
+              h('p', ' The code belw is responsible for dealing with comments. As in the browser, WebSocket messages are dealt with according to their six character prefixes. extra and extra2 are the only pertinent data since comments go to all groups '),
+              h('pre', `else if "GZ#$42" \`T.isPrefixOf\` msg
+                    -- FETCH AND BROADCAST ALL COMMENTS ON BROWSER LOAD
+     then
+         do
+             st <- atomically $ readTVar state
+             broadcast ("GZ#$42," \`mappend\` group \`mappend\` ","
+               \`mappend\` sender \`mappend\` "," \`mappend\` comments ) st
+
+  else if "GN#$42" \`T.isPrefixOf\` msg
+                    -- RECEIVE A NEW COMMENT, UPDATE THE FILE AND THE TVAR,
+                    --  AND BROADCAST THE NEW COMMENT
+     then
+         do
+             old <- atomically $ readTVar comms
+             lk <- atomically L.new
+             let c = old \`mappend\` (T.replace (at \`mappend\` at) at extra)
+             let new = T.replace (at \`mappend\` at) at c -- cleanup
+             L.with lk $ TIO.writeFile xcomments new -- lock on writing
+             atomically $ writeTVar comms new
+             st <- atomically $ readTVar state
+             broadcast ("GN#$42," \`mappend\` group \`mappend\` ","
+                 \`mappend\` sender \`mappend\` "," \`mappend\` extra) st
+
+   else if "GD#$42" \`T.isPrefixOf\` msg      -- DELETE A COMMENT
+      then
+          do
+              a <- TIO.readFile xcomments
+              lk <- atomically L.new
+              let b = T.splitOn at a
+              let c = removeOne extra2 b
+              let d = T.intercalate at c
+              L.with lk $ TIO.writeFile xcomments d
+              atomically $ writeTVar comms d
+              st <- atomically $ readTVar state
+              broadcast ("GD#$42," \`mappend\` group \`mappend\` ","
+                \`mappend\` sender \`mappend\` "," \`mappend\` extra) st
+
+   else if "GE#$42" \`T.isPrefixOf\` msg      -- EDIT A COMMENT
+      then
+          do
+              a <- TIO.readFile xcomments
+              lk <- atomically L.new
+              let b = T.splitOn at a
+              let c = changeOne extra3 extra2 b
+              let txt = T.intercalate at c
+              L.with lk $ TIO.writeFile xcomments txt
+              atomically $ writeTVar comms txt
+              st <- atomically $ readTVar state
+              broadcast ("GE#$42," \`mappend\` group \`mappend\` com
+                \`mappend\` sender \`mappend\` com \`mappend\` extra \`mappend\` com
+                   \`mappend\` extra3) st   `),
+       
+              h('div#gameCode', ' '),
               h('h2', 'Appendix A - The Game Code'),
               h('pre', `function MonadState(g, state) {
     this.id = g;
@@ -3021,106 +3106,6 @@ h('div', " ************************************************"),
               }, 'monads-in-JavaScript.'),
               h('p', '.'),
               h('p'),
-
-
-  // ************************** Monad Laws *****************
-
-
-
-
-              h('span.tao', ' The ' ),
-              h('a', {props: {href:"https://wiki.haskell.org/Monad_laws", target: "_blank" }}, 'Haskell Monad Laws' ),
-              h('span', ', which aren\'t even mandetory in Haskell, are common sense requirements for robust function composition. If you rely on functions to make programs work, you aren\'t communicating changes of state by mutating global variables. Time travel and undo algorithms naturally use immutable data. Thousands of passes through loops inside the scopes of functions cry out for mutable values, not factories spewing pointers and values into memory. When you program functionally, Things fall into place without enforcing rules. This is doing through inaction, in the spirit of the ' ),
-
-                                         h('a', {props: {href:"https://en.wikipedia.org/wiki/Tao_Te_Ching", target: "_blank" }}, 'Tao Te Ching' ),
-              h('br'),
-              h('br'),
-
-
-              h('span.tao', ' The ' ),
-              h('a', {props: {href:"https://github.com/fantasyland/fantasy-land", target: "_blank" }}, 'Fantasyland' ),
-              h('span', ' algebraic javascript specification is an admirable achievement. People who are familiar with Haskell can jump right in and start coding with familiar monads and functors borrowed from the Haskell ' ),
-
-
-              h('a', {props: {href: "http://hackage.haskell.org/package/base-4.12.0.0/docs/Prelude.html", target: "_blank"}}, 'Prelude module' ),
-
-              h('span', '. The '  ),
-
-              h('a', {props: {href:"https://github.com/origamitower/folktale", target: "_blank" }}, 'Folktale' ),
-
-              h('span', ' library also succeeds in reflecting the Haskell Prelude module. The Folktale "Maybe" monad is being evaluated on this page as a way to catch errors. ' ),
-
-              h('br'),
-                            h('pre', `  var rNumsDS = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15] `),
-                            h('p', ' feels elegant to me. It is a simple proxy for the sixteen square grid that never needs to be operated upon directly because the placement of its numbers are in one-to-one correspondence with the placement of its (rNumsDS\'s) elements. I could have tucked it away in an object or closure, but I like it so much that I dignified it with the designation "window.rNumsDS". I ignored an important rule. I did it more than once, and it isn\'t the only important rule I ignored. But in every case, there was an advantage (if only in efficiency), and I made sure that no harm could come from my deviations. '),
-                            h('p', ' If I were working in a group, or providing something that would be maintained by anyone other than me, I would code by the book. I\'m not getting paid for this work; I\'m just having fun. Dig it! '),
-
-                            h('h3', 'Haskell Time'),
-                            h('p', ' This page is for front end developers, but in case anyone is interested, here are the server functions responsible for deleting or amending a comment: '),
-                            h('pre', `    removeOne _ []                 = []
-                  removeOne x (y:ys) | x == y    = ys
-                                     | otherwise = y : removeOne x ys
-
-                  changeOne :: Text -> Text -> [Text] -> [Text]
-                  changeOne _ _ []                 = []
-                  changeOne z x (y:ys) | x == y    = z : ys
-                                       | otherwise = y : changeOne z x ys `),
-
-                            h('a', ' Every message sent to the server is a comma separated string beginning with a prefix, then a group, and then a name. Comma separated items after that are named extra and extra2. '),
-                            h('p', ' The code belw is responsible for dealing with comments. As in the browser, WebSocket messages are dealt with according to their six character prefixes. extra and extra2 are the only pertinent data since comments go to all groups '),
-                            h('pre', `else if "GZ#$42" \`T.isPrefixOf\` msg
-                                  -- FETCH AND BROADCAST ALL COMMENTS ON BROWSER LOAD
-                   then
-                       do
-                           st <- atomically $ readTVar state
-                           broadcast ("GZ#$42," \`mappend\` group \`mappend\` ","
-                             \`mappend\` sender \`mappend\` "," \`mappend\` comments ) st
-
-                else if "GN#$42" \`T.isPrefixOf\` msg
-                                  -- RECEIVE A NEW COMMENT, UPDATE THE FILE AND THE TVAR,
-                                  --  AND BROADCAST THE NEW COMMENT
-                   then
-                       do
-                           old <- atomically $ readTVar comms
-                           lk <- atomically L.new
-                           let c = old \`mappend\` (T.replace (at \`mappend\` at) at extra)
-                           let new = T.replace (at \`mappend\` at) at c -- cleanup
-                           L.with lk $ TIO.writeFile xcomments new -- lock on writing
-                           atomically $ writeTVar comms new
-                           st <- atomically $ readTVar state
-                           broadcast ("GN#$42," \`mappend\` group \`mappend\` ","
-                               \`mappend\` sender \`mappend\` "," \`mappend\` extra) st
-
-                 else if "GD#$42" \`T.isPrefixOf\` msg      -- DELETE A COMMENT
-                    then
-                        do
-                            a <- TIO.readFile xcomments
-                            lk <- atomically L.new
-                            let b = T.splitOn at a
-                            let c = removeOne extra2 b
-                            let d = T.intercalate at c
-                            L.with lk $ TIO.writeFile xcomments d
-                            atomically $ writeTVar comms d
-                            st <- atomically $ readTVar state
-                            broadcast ("GD#$42," \`mappend\` group \`mappend\` ","
-                              \`mappend\` sender \`mappend\` "," \`mappend\` extra) st
-
-                 else if "GE#$42" \`T.isPrefixOf\` msg      -- EDIT A COMMENT
-                    then
-                        do
-                            a <- TIO.readFile xcomments
-                            lk <- atomically L.new
-                            let b = T.splitOn at a
-                            let c = changeOne extra3 extra2 b
-                            let txt = T.intercalate at c
-                            L.with lk $ TIO.writeFile xcomments txt
-                            atomically $ writeTVar comms txt
-                            st <- atomically $ readTVar state
-                            broadcast ("GE#$42," \`mappend\` group \`mappend\` com
-                              \`mappend\` sender \`mappend\` com \`mappend\` extra \`mappend\` com
-                                 \`mappend\` extra3) st   `),
-
-                            h('div#gameCode', ' '),
 /*
               h('h3', 'Appendix B - Curried Functions Used In Several Demonstrations'),
 
@@ -3140,7 +3125,7 @@ h('div', " ************************************************"),
   async function cubeP (x) {
     await wait(2000)
     return ret(x*x*x);
-  }
+  } 
 
   const addP = x => async y => {
     await wait(2000)
@@ -3263,12 +3248,12 @@ h('div', " ************************************************"),
               h('a', {props: {href: '#demo2'}}, 'Go to Demonstration 1'),
               h('p', ' This is how Cycle.js handles click events in Demonstrations "1" and "3": '),
               h('pre', `  var factorsClick8$ = sources.DOM
-    .select('button#factors_R').events('click');
+    .select('button#factors_R').events('click'); 
 
   var factorsAction8$ = factorsClick8$.map(e => {
     var i = 0;
     m43_ = [];
-    var bind = new Bnd3().run;
+    var bind = new Bnd3().run; 
     while (i < 25) {
       bind(145)(x => x ** 3)(it4_b)(it6_b)(it7_b)();
       i += 1;
@@ -3278,31 +3263,31 @@ h('div', " ************************************************"),
             h('pre', `  var it4 = x => {
     if (socket.readyState === 1) socket.send(\`BC#$42,${pMgroup.x},${pMname.x},${x}\`);
   }
-
+   
   var it4_b = x => {
     if (socket.readyState === 1) socket.send(\`BD#$42,${pMgroup.x},${pMname.x},${x}\`);
   } `),
             h('p', ' The server complies by generating a pseudo-random number, "z", and broadcasts it to all members of the requestor\'s group. Users can join or create groups in the game section. Here\'s the server code: '),
-            h('pre', `  else if "BC#$42" \`T.isPrefixOf\` msg     -- Generate a random number
-     then
+            h('pre', `  else if "BC#$42" \`T.isPrefixOf\` msg     -- Generate a random number          
+     then                                          
          do
              print "extraNum:"
              print extraNum
-             z <- Fm.rM extraNum
+             z <- Fm.rM extraNum 
              print z
              st <- atomically $ readTVar state
-             broadcast ("BC#$42," \`mappend\` group \`mappend\` ","
+             broadcast ("BC#$42," \`mappend\` group \`mappend\` "," 
                \`mappend\` sender \`mappend\` "," \`mappend\` (pack $ show z) ) st
 
-  else if "BD#$42" \`T.isPrefixOf\` msg     -- Generate a random number
-     then
+  else if "BD#$42" \`T.isPrefixOf\` msg     -- Generate a random number          
+     then                                          
          do
              print "extraNum:"
              print extraNum
-             z <- Fm.rM extraNum
+             z <- Fm.rM extraNum 
              print z
              st <- atomically $ readTVar state
-             broadcast ("BD#$42," \`mappend\` group \`mappend\` ","
+             broadcast ("BD#$42," \`mappend\` group \`mappend\` "," 
                \`mappend\` sender \`mappend\` "," \`mappend\` (pack $ show z) ) st `),
 
             h('p', ' The Cycle.js front end recieves the WebSocket message, triggering the release of mMZ29 (Demonstration 1) or mMZ29 (Demonstration 3). The "mMZ" prefix is reserved for instances of MonadItter. Here the code that was waiting to be released. '),
@@ -3329,7 +3314,7 @@ h('div', " ************************************************"),
             h('pre', bigGold, `  var factorsClick8$ = sources.DOM
         .select('button#factors_R').events('click');
 
-
+            
     const factorsAction8$ = factorsClick8$.map(e => {
         var i = 0;
         m43_ = [];  // Clears the display
@@ -3353,7 +3338,7 @@ h('div', " ************************************************"),
               props: {
                 href: '#backToDem2'
               }
-            }, 'Back to Mars' ),
+            }, 'Back to Mars' ), 
             h('br'),
             h('br'),
 
@@ -3376,7 +3361,7 @@ operator >>= left 11 = (left, right) => {
 
 var a = (ret([3, []]) >>= cube >>= add(3) >>= square).x[1].reduce( (a,b) => a+b );
 
-var b = ( ret([0, []]) >>= add(3) >>= cube >>=
+var b = ( ret([0, []]) >>= add(3) >>= cube >>= 
 (x => add(x[1][1])([x[1][1],x[1]])) >>=
 (x => add(x[0])([-4 * x[1][0], x[1]]))).x[1]
 
@@ -3423,7 +3408,7 @@ h('a', {
   }
 }, 'Discussion'),
 h('span', ' below. They provide a convenient interface for dealing with uncertainty and side effects in a purely functional manner. Adherence to the monad laws ' ),
-
+              
 h('span', ' helps instill confidence that the monads are robust, versatile, and reliable tools for isolating and chaining sequences of javascript functions. '),
             h('h3#symbol', 'More Random Snippits'),
             h('a', {
@@ -3438,7 +3423,7 @@ h('p', ' The safest way to muck around in the global space is to use interact wi
 h('pre',  `      function autoRefresh(obj) {
           const handler = {
               set (obj, prop, value) {
-                  diffRender();  // Forces DOM update
+                  diffRender();  // Forces DOM update 
                   return Reflect.set(obj, prop, value);
               },
           };
@@ -3473,12 +3458,12 @@ h('pre',  `      function autoRefresh(obj) {
 
       var mBnd = (bool = false, val = "mBnd") => {
           var x = Symbol(val)      // "val" can be useful in debugging;
-          var ob = {key: x, run: Bind(x)};
-          arBind[ob.key] = (bool) ? diffR(arBind[ob.key]) : arBind[ob.key];
+          var ob = {key: x, run: Bind(x)}; 
+          arBind[ob.key] = (bool) ? diffR(arBind[ob.key]) : arBind[ob.key]; 
           return ob;
       }; ` ),
 h('p', ' This is of little utility, but I like it: ' ),
-h('pre', {style: {color: " #AADDAA",fontSize: "17px"}}, `  var ar = [x=>x, x=>x**3, x=>x+3, x=>x**2,
+h('pre', {style: {color: " #AADDAA",fontSize: "17px"}}, `  var ar = [x=>x, x=>x**3, x=>x+3, x=>x**2,                      
     x=>x*14, x=>x/1800, x=>x*6];
 
   var f = v => t => t.map(g=>v=g(v)); // repeatedly mutating "v".
