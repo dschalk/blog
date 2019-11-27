@@ -48,7 +48,6 @@ var g = x => {
 }
 
 onmessage = function(m) {
-   console.log("incoming m", m);
   var a = m.data;
   postMessage(g(a));
 }

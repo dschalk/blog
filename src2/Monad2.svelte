@@ -1,7 +1,43 @@
 
-
-
 <script>
+/*
+{#if countKeys(O) > 30}
+
+     {N = -1}
+     {M = -1}
+     {setTimeout(() => {
+        O = new Object
+        factors()
+     },500)}
+ {/if}
+
+var arr = [1,2,3];
+$: arr;
+
+function Bonad (z = [1,2,3]) {
+  arr = z;
+  let x = arr.slice(-1)[0];
+  let stop = "stop";
+  let foo = function foo (func) {
+     let x = arr.slice(-1)[0];
+    if (x instanceof Promise) {
+      x.then(y => arr = arr.concat(func(y)));
+      return foo;
+   }
+    else if (func.name === "stop") return arr
+    else if (typeof func === "function") {
+      arr = arr.concat(func(x));
+      return foo;
+    }
+    else if (typeof func !== "undefined") {
+      arr = arr.concat(func);
+      return foo;
+    }
+  }
+  return foo;
+}
+*/
+
 import {fade} from "svelte/transition"
 let visible = true;
 
@@ -142,15 +178,13 @@ let visible = true;
      (add(3))(square)(div(100))
      (sqrt)(()=>this)(halt); */
 
-   // var socket = new WebSocket("ws://localhost:3055")
-   var socket = new WebSocket("ws://167.71.168.53:3055")
+   var socket = new WebSocket("ws://167.71.168.53:3055");
 
    socket.onclose = function (event) {
      console.log('<><><> ALERT - socket is closing. <><><> ', event);
    };
 
    socket.onmessage = function(e) {
-     // console.log("WebSocket message is", e);
      var v = e.data.split(',');
      if (v[0] === "BE#$42") {
        Q = Q + 1;
@@ -159,7 +193,7 @@ let visible = true;
      }
    }
 
-  login();
+   login();
 
    function login() {
      console.log('00000000000000000000000000000000 Entering login', socket.readyState);
@@ -170,6 +204,8 @@ let visible = true;
          var v2 = v.toString().substring(2);
          var combo = v + '<o>' + v2;
          socket.send('CC#$42' + combo);
+         factors();
+         factors();
          // socket.send(`GZ#$42,solo,${v}`);
        } else {
          login();
@@ -218,21 +254,21 @@ let visible = true;
    }
 
    var fact = function fact () {
-      socket.send("BE#$42,solo,name,10000")
-      socket.send("BE#$42,solo,name,1000")
-      socket.send("BE#$42,solo,name,100000")
-      socket.send("BE#$42,solo,name,100000")
-      socket.send("BE#$42,solo,name,10000")
-      socket.send("BE#$42,solo,name,100000")
-      socket.send("BE#$42,solo,name,1000")
-      socket.send("BE#$42,solo,name,1000")
-      socket.send("BE#$42,solo,name,100000")
-      socket.send("BE#$42,solo,name,10000")
-      socket.send("BE#$42,solo,name,100000")
-      socket.send("BE#$42,solo,name,100")
-      socket.send("BE#$42,solo,name,100000")
-      socket.send("BE#$42,solo,name,10000")
-      socket.send("BE#$42,solo,name,100000")
+      socket.send("BE#$42,solo,3032896499791,10000")
+      socket.send("BE#$42,solo,3032896499791,1000")
+      socket.send("BE#$42,solo,3032896499791,100000")
+      socket.send("BE#$42,solo,3032896499791,100000")
+      socket.send("BE#$42,solo,3032896499791,10000")
+      socket.send("BE#$42,solo,3032896499791,100000")
+      socket.send("BE#$42,solo,3032896499791,1000")
+      socket.send("BE#$42,solo,3032896499791,1000")
+      socket.send("BE#$42,solo,3032896499791,100000")
+      socket.send("BE#$42,solo,3032896499791,10000")
+      socket.send("BE#$42,solo,3032896499791,100000")
+      socket.send("BE#$42,solo,3032896499791,100")
+      socket.send("BE#$42,solo,3032896499791,100000")
+      socket.send("BE#$42,solo,3032896499791,10000")
+      socket.send("BE#$42,solo,3032896499791,100000")
 
    }
 
@@ -258,19 +294,19 @@ let visible = true;
      }
    }
 
-  var mon = `   var Monad = function Monad ( AR = [], name, = "generic"  )  {
+  var mon = `   var Monad = function Monad ( AR = [], name = "generic"  )  {
        var f_, p, run;
        var ar = AR.slice();
-       var name, = name,;
-       O[name,] = ar;y-value pairs on O out of each monad's monad's name, and array
-       let x = O[name,].pop();
+       var name = name;
+       O[name] = ar;y-value pairs on O out of each monad's monad's name and array
+       let x = O[name].pop();
        return run = (function run (x) {
        if (x != undefined && x === x  && x !== false
-         && x.name, !== "f_" && x.name, !== "halt" ) {
-           O[name,] = O[name,].concat(x)
+         && x.name !== "f_" && x.name !== "halt" ) {
+           O[name] = O[name].concat(x)
          };
          function f_ (func) {
-           if (func === 'halt' || func === 'S') return O[name,];
+           if (func === 'halt' || func === 'S') return O[name];
            else if (typeof func !== "function") p = func;
            else if (x instanceof Promise) p = x.then(v => func(v));
            else p = func(x);
@@ -302,21 +338,21 @@ let visible = true;
   }`
 
 var fac = `  var fact = function fact () {
-   socket.send("BE#$42,solo,name,10000")
-   socket.send("BE#$42,solo,name,1000")
-   socket.send("BE#$42,solo,name,100000")
-   socket.send("BE#$42,solo,name,100000")
-   socket.send("BE#$42,solo,name,10000")
-   socket.send("BE#$42,solo,name,100000")
-   socket.send("BE#$42,solo,name,1000000")
-   socket.send("BE#$42,solo,name,1000")
-   socket.send("BE#$42,solo,name,1000000")
-   socket.send("BE#$42,solo,name,10000")
-   socket.send("BE#$42,solo,name,100000")
-   socket.send("BE#$42,solo,name,100000")
-   socket.send("BE#$42,solo,name,100000")
-   socket.send("BE#$42,solo,name,10000")
-   socket.send("BE#$42,solo,name,100000")
+   socket.send("BE#$42,solo,3032896499791,10000")
+   socket.send("BE#$42,solo,3032896499791,1000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+   socket.send("BE#$42,solo,3032896499791,10000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+   socket.send("BE#$42,solo,3032896499791,1000000")
+   socket.send("BE#$42,solo,3032896499791,1000")
+   socket.send("BE#$42,solo,3032896499791,1000000")
+   socket.send("BE#$42,solo,3032896499791,10000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+   socket.send("BE#$42,solo,3032896499791,100000")
+   socket.send("BE#$42,solo,3032896499791,10000")
+   socket.send("BE#$42,solo,3032896499791,100000")
 
 }`
 
@@ -387,7 +423,7 @@ ASYNCHRONOUS MONAD
 <br>
 </div>
 <br>
-<p> There are many ways to display the behavior of monads returned by Monad(). For this demonstration, a simple object name,d "O" was created and Monad was modified to make the name,s of monads attributes pointing to the monads'internal arrays. Here's the revised definition of Monad.</p>
+<p> There are many ways to display the behavior of monads returned by Monad(). For this demonstration, a simple object named "O" was created and Monad was modified to make the names of monads attributes pointing to the monads'internal arrays. Here's the revised definition of Monad.</p>
 <pre>{mon}</pre>
 The statement "Monad(['value"], 'key")(x => 'This is the ' + x)(x => x + '.')(halt)" attaches the the resulting monad to O as follows:
 <pre>{statement}</pre>

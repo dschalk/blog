@@ -23,58 +23,58 @@
     }
 
     async function squareP (x) {
-      await wait(500)
+      await wait(1200)
       return x*x;
     }
 
     var divPinverse = a => async b => {
-      await wait (500)
+      await wait (1000)
       return a/b;
     }
 
     var divP = a => async b => {
-      await wait (500)
+      await wait (1000)
       return b/a;
     }
 
     var doubleP = async a => {
-      await wait (500)
+      await wait (1000)
       return a+a;
     }
 
     var toInt = a => pareseInt(a, 10);
 
     var addP_toInt = x => async y => {
-      await wait(500)
+      await wait(1000)
       return toInt(x) + toInt(y);
     }
 
     var addP = x => async y => {
-      await wait(500)
+      await wait(1000)
       return x + y;
     }
 
     var multP = x => async y => {
-      await wait(500)
+      await wait(1200)
       return x * y;
     }
 
     var powP = x => async y => {
-      await wait(500)
+      await wait(1200)
       return y**x;
     }
 
     async function cubeP (x) {
-      await wait(500)
+      await wait(1200)
       return x*x*x;
     }
 
     async function idP (x) {
-      await wait(500)
+      await wait(1200)
       return x;
     }
     async function sqrtP (x) {
-      await wait(500)
+      await wait(1200)
       return x**(1/2)
     }
 
@@ -187,20 +187,12 @@ var mon = `   var Monad = function Monad ( AR = [], name = "generic"  )  {
      })(x);
   }`
 
-  var lok = false;
-
   var start = function start () {
-     if (!lok) {
-       lok = true;
-       setTimeout(() => lok = false,6000 );
-       O = {};
-       Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))
-       (() => branch("test", "test_2")(sqrtP)(cubeP)(()=>addP(O.test_2[2])
-       (O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))
-       (() => resume("test")(multP(4))(addP(6)))) }
-     else {
-       setTimeout(() => start(),1500);
-     }
+     O = {};
+     Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))
+     (() => branch("test", "test_2")(sqrtP)(cubeP)(()=>addP(O.test_2[2])
+     (O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))
+     (() => resume("test")(multP(4))(addP(6))))
   }
 
 var fs = `   var branch = function branch (s,s2) {return Monad(O[s].slice(-1)  , s2)}
@@ -219,9 +211,6 @@ Handling Promises With Monads
 <br>
 <h2>O.test is {O.test}</h2>
 <h2>O.test_2 is {O.test_2}</h2>
-<br>
-<button on:click = {start}>START</button>
-<br>
 <p> Here's the modified monad constructor: </p>
 <pre>{mon}</pre>
 <p> After monads encounter "halt", they can use the function resume() to continue processing data where they left off and (2) they can branch off in new monads created by branch(). Here are the definitions:</p>

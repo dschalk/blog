@@ -18,9 +18,9 @@ let visible = true;
 {/if}
 <br>
 
-<p> Score is an elaborate React project with a Haskell Wai WebSockets server on the back end. Users can form or join groups that play, exchange text messages, and maintain a todo list among themselves.</p>
+<p> Score is an elaborate React project with a Haskell Wai WebSockets server on the back end. Users can form or join groups that play the among themselves, chat with one another, and share a group todo list.</p>
 
-<p> You will be in the default group "solo" until you join or create a group with another name. You can change the user name assigned to you by entering a new name and password, separated by a comma (name,password). </p>
+<p> Here you can play the game in the default group "solo" or you can create a group with another name. You can change the user name assigned to you by entering a new name and password, separated by a comma. If you join an existing group or if people join a group you created, you can compete among yourselves. </p>
 
 <p> Game rules are available at the game site, which runs online here:</p>
 <a href = "http://game.schalk.site" target = "_blank">Online game of Score></a>

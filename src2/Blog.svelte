@@ -11,51 +11,18 @@
     import Bugs from './Bugs.svelte'
     import Matrix from './Matrix.svelte'
     import Transducer from './Transducer.svelte'
+    import Asynchronous_Monad from './Asynchronous_Monad.svelte'
     import ToggleTheme from './ToggleTheme.svelte'
     import Home from './Home.svelte'
     import Score from './Score.svelte'
 
-    let j = 0;
-    $: j;
+    export let j = 0
+    $: j
 
-    var oldj = false;
-
-    function monad () {
-      if (oldj) {
-      j = oldj;
-      j = 1;
-      oldj = false;
-      console.log("j and oldj", j, oldj)
-    }
-    };
-    function monad2 () {
-      j = 2;
-      oldj = true;
-      console.log(j)
-    };
-    function monad3 () {
-      if (oldj) {
-        j = 2;
-        j = 3;
-        oldj = false;
-        console.log("j and oldj", j, oldj)
-      }
-    };
-    function transducer () {
-      if (oldj) {
-      j = oldj;
-      j = 3;
-      oldj = false;
-      console.log("j and oldj", j, oldj)
-    }
-    };
-
-
-
-
-
-  //  function monad3 () {j = 9; console.log(j)};
-    function haskell () {j = 3; console.log(j)};
+    function monad () {j = 1; console.log(j)};
+    function monad2 () {j = 2; console.log(j)};
+    function monad3 () {j = 3; console.log(j)};
+    function haskell () {j = 9; console.log(j)};
     function bugs () {j = 4; console.log(j)};
     function matrix () {j = 5; console.log(j)};
     function transduce () {j = 6}; console.log(j);
@@ -63,6 +30,15 @@
     function tog () {j = 8; console.log(j)};
     function score () {j = 10; console.log(j)};
     function home () {j = 0; console.log(j)};
+	function foo(Monad2) {
+		// the node has been mounted in the DOM
+
+		return {
+			destroy() {
+				// the node has been removed from the DOM
+			}
+		};
+	}
 
     console.log("j is", j)
 
@@ -106,6 +82,8 @@ div {
 </style>
 <div class="content">
 <br><br>
+<div use:foo></div>
+<br><br>
 
                         <div style = "display: flex">
 
@@ -118,9 +96,9 @@ div {
                         <br>
                         <li><div class='button' on:click={()=>{j = 1; console.log("j is", j)}}>A Simple Monad</div></li>
                         <br>
-                        <li><div class='button' on:click={()=>{j=2; console.log("j is", j)}}>Asynchronous Monad</div></li>
+                        <li><div class='button' on:click={()=>{j=2; console.log("j is", j)}}>Asynchronous Monads</div></li>
                         <br>
-                        <li><div class='button' on:click={()=>{j=9; console.log("j is", j)}}>Promises Monad</div></li>
+                        <li><div class='button' on:click={()=>{j=3; console.log("j is", j)}}>Promises Monad</div></li>
                         <br>
                         <li><div class='button' on:click={() => {j = 7; console.log("j is", j)}}>Transducer Simulator</div></li>
                         <br>
@@ -128,7 +106,7 @@ div {
                         <br>
                         <li><div>MISCELANEOUS TOPICS</div></li>
                         <br>
-                        <li><div class='button' on:click={() => {j = 3; console.log("j is", j)}}>Hidden Haskell Information</div></li>
+                        <li><div class='button' on:click={() => {j = 9; console.log("j is", j)}}>Hidden Haskell Information</div></li>
                         <br>
                         <li><div class='button' on:click={() => {j = 4; console.log("j is", j)}}>Bed Bug Eradication</div></li>
                         <br>
@@ -151,10 +129,10 @@ div {
 {#if j === 2}
 <Monad2 />
 {/if}
-{#if j === 9}
+{#if j === 3}
 <Monad3 />
 {/if}
-{#if j === 3}
+{#if j === 9}
 <Haskell />
 {/if}
 {#if j === 4}
@@ -162,6 +140,9 @@ div {
 {/if}
 {#if j === 5}
 <Matrix />
+{/if}
+{#if j === 6}
+<Asynchronous_Monad />
 {/if}
 {#if j === 7}
 <Transducer />
