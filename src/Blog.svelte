@@ -50,17 +50,13 @@
     }
     };
 
-
-
-
-
-  //  function monad3 () {j = 9; console.log(j)};
     function haskell () {j = 3; console.log(j)};
     function bugs () {j = 4; console.log(j)};
     function matrix () {j = 5; console.log(j)};
     function transduce () {j = 6}; console.log(j);
     function async () {j = 7; console.log(j)};
     function tog () {j = 8; console.log(j)};
+    function promises () {j = 9; console.log(j)};
     function score () {j = 10; console.log(j)};
     function home () {j = 0; console.log(j)};
 
@@ -110,7 +106,7 @@ div {
                         <div style = "display: flex">
 
                         <div style = "margin-Right: 2%; width: 20%" >
-                        <br><br><br><br><h1>j is {j}></h1><br><br><br>
+                        <br><br><br><br><br><br><br>
                         <ul style = "list-style: none;">
                         <li><div class='button'  on:click={() => j = 5}>Why Svelte</div></li>
                         <br>

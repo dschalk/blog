@@ -1,5 +1,7 @@
 <script>
-import {fade} from "svelte/transition"
+import {fade, fly} from "svelte/transition"
+import {j, lok} from "./App"
+
 let visible = true;
 
   var cache = [[1,2,3,4,5,6,7,8,9]];
@@ -32,15 +34,7 @@ let visible = true;
    var forward = function forward () {
       if (j+1 < cache.length) j = j+=1;
       else j = j;
-    }
-
-    $: j
-
-     var cache = [[1,2,3,4,5,6,7,8,9]];
-     var j = 0;
-     $: j
-     var ob = {x: [], push: function push (e) {
-        ob.x.push(parseInt(e.target.id.slice(1,2), 10));
+    }of having(1,2), 10));
         if (ob.x.length >1) {
             var d = exchange(ob.x[0], ob.x[1]);
             cache.splice(j+1,0,d);
@@ -110,7 +104,6 @@ var html = `{#if visible}
                         <div style = "display: flex">
                         <div style = "margin-Left: 2%; width: 50%" >
 
-<p> If you click any two numbers (below), they switch locations and a "BACK" button appears. If you go back and click two numbers, the result gets inserted  at your location.</p>
 <br>	<button on:click={back}>
 		BACK
 	</button>
@@ -138,45 +131,48 @@ var html = `{#if visible}
 <br>
 <button id = m6  on:click = {ob.push} >{cache[j][6]}</button>
 <button id = m7  on:click = {ob.push} >{cache[j]
-   [7]}</button>
+   [7]}</button>r
 <button id = m8  on:click = {ob.push} >{cache[j][8]}</button>
 </div>
-</div>
-<p> This is the JavaScript code inside of the script tags except for the definitions of the variables "code" and "html", which are just the code and html cut and pasted inside of back quotes: </p>
-<pre>{code}</pre>
-<p> And here is the HTML code: </p>
-<pre>{html}</pre>
-<p> Is Svelte awesome, or what? </p> `
+</div> `
 </script>
-{#if visible}
- <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
+<style>
+.fade {
+   font-family: Times New Roman;
+   text-align: center; color: rgb(210, 90%, 90%);
+   font-size: 32px;
+}
+</style>
+
+{#if j === 5} 
+ <div class = fade  in:fade = {{duration: 1000}} out:fly = {{y: -40, duration: 1000}}  >
  <br><br>
  A LITTLE SVELTE MODULE
  </div>
+ console.log("Fuck her real hard and long.")
 {/if}
+<p> If you click any two numbers (below), they switch locations and a "BACK" button appears. If you go back and click two numbers, the result gets inserted  at the current location.</p>
+<p> Each topic in this blog is a small module. Global variables are only global relative to their containing modules, so name clashes, unexpected state changes, and bugs stemming from mutations are easily avoided. </p>
+<br>
+<br>
                         <div style = "display: flex">
-                        <div style = "margin-Left: 2%; width: 50%" >
+                        <div style = "text-align: right">
 
-<p> If you click any two numbers (below), they switch locations and a "BACK" button appears. If you go back and click two numbers, the result gets inserted  at your location.</p>
-<p> I can use simple variables knowing they will never clash with a similarly named variable in a differenct module. Svelte code is consise and efficient. Coding in Svelte is so relaxing. </p>
 
+	  <button on:click={back}>
+		  BACK
+  	</button>
 <br>
 <br>
-	<button on:click={back}>
-		BACK
-	</button>
-<br>
-<br>
-   <div style="text-indent:20px"><button>{ j }</button></div>
+   <div>Index: { j }</div>
 <br>
 	<button on:click={forward}>
-		FORWARD
+		  FORWARD
 	</button>
  <br>
  <br>
                         </div>
-                     <div style = "marginRight: 2%; width: 50%;">
-<br><br><br><br><br><br><br><br><br><br>
+                     <div style = "margin-left: 5%; width: 50%;">
 <button id = m0  on:click = {ob.push} >{cache[j][0]}</button>
 <button id = m1  on:click = {ob.push} >{cache[j][1]}</button>
 <button id = m2  on:click = {ob.push} >{cache[j][2]}</button>
@@ -192,8 +188,8 @@ var html = `{#if visible}
 <button id = m8  on:click = {ob.push} >{cache[j][8]}</button>
 </div>
 </div>
-<p> This is the JavaScript code inside of the script tags except for the definitions of the variables "code" and "html", which are just the code and html cut and pasted inside of back quotes: </p>
+<p> This is the essential JavaScript code inside of the script tags; </p>
 <pre>{code}</pre>
-<p> And here is the HTML code: </p>
+<p> And here's the HTML code (commentary omitted): </p>
 <pre>{html}</pre>
-<p> I'm new to Svelte and so far I am very impressed. </p>
+<p> Svelte still has some quirks and rough edges, but the ease with which it handles reactivity is so impressive that I'm sticking with it for this little application and more to come.   </p>

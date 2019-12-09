@@ -101,6 +101,7 @@ h3 {
     font-style: italic;
 }
 </style>
+<div style = "margin-left: 12%; margin-right: 12%;">
 <br><br><br>
  {#if visible}
  	<div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
@@ -108,7 +109,7 @@ A SIMPLE LITTLE MONAD
  	</div>
  {/if}
  <br>
-<span class="tao"> The word "monad" has been around for centuries. Gottfried Leibniz published </span>
+ <span class="tao"> The word "monad" has been around for centuries. Gottfried Leibniz published </span>
 <span style = "font-style: italic"> Monadology </span>
 <span> in 1714. The precursor to the familiar symbol of yin-yang, taijitu (太極圖), has a version with two dots added, has been given the august designation: "The Great Monad". A single note in music theory is called a monad. All of this is too tangential to warrant references. I Googled around a little to get it and you can too if the word "monad" interests you.</span>
 <p> Monads in the Haskell Programming Language were inspired by Category Theory monads. In order to be Category Theory monads, function must exist in a mathematically rigorous "category". Haskells objects and functions are not the objects and morphisms of Category Theory. Making a category out of most of Haskell's functions and types is an amusing pasttime for some people, but I doubt that it has any practical value. </p>
@@ -133,3 +134,4 @@ A SIMPLE LITTLE MONAD
 
 <p> One reason Svelte is so fast and efficient is that it mutates variables and the attributes and methods of objects. Each module in a discrete global space.  When modules are small, applications are easy to organize and mutations don't have unforseen effects in other parts of applications. Svelte shook off the bonds of current conventional "wisdom" advocating immutability, virtual DOM, and assigning types to functions. </p>
 <p> The next entry in the monad series defines a variation of Monad that maintains and array of primitive data, function return values, and Promise resolution values. Functions have access to everything in the array when they execute. </p>
+</div>

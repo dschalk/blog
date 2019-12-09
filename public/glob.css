@@ -27,6 +27,16 @@
   text-indent: 1.6%;
 }
 
+.left {
+   width: 40%;
+}
+
+.right {
+   width: 60%;
+   margin left:3%;
+   margin-right:3%;
+}
+
 .abs {
   position: absolute;
   top: 500px;
@@ -247,7 +257,7 @@ label {
 }
 
 .content {
-  width: 50%;
+  width: 80%;
   font-family: monospace;
   font-size: 22px;
   margin-left: 3%;

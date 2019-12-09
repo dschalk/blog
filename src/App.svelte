@@ -1,11 +1,11 @@
 <script>
     import Blog from './Blog.svelte'
-</script>
-
+    
+    console.log("j from App.svelte is", "car");;
+  
 <style>
   h1 {
     text-align: center;
   }
 </style>
-
 <Blog />

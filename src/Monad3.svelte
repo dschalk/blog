@@ -3,6 +3,9 @@
     import {fade} from "svelte/transition"
     let visible = true;
 
+    let j;
+    $: j;
+
     async function pause (x) {
       await wait(1000)
       return x;
@@ -23,58 +26,58 @@
     }
 
     async function squareP (x) {
-      await wait(500)
+      await wait(100)
       return x*x;
     }
 
     var divPinverse = a => async b => {
-      await wait (500)
+      await wait (300)
       return a/b;
     }
 
     var divP = a => async b => {
-      await wait (500)
+      await wait (300)
       return b/a;
     }
 
     var doubleP = async a => {
-      await wait (500)
+      await wait (300)
       return a+a;
     }
 
     var toInt = a => pareseInt(a, 10);
 
     var addP_toInt = x => async y => {
-      await wait(500)
+      await wait(300)
       return toInt(x) + toInt(y);
     }
 
     var addP = x => async y => {
-      await wait(500)
+      await wait(300)
       return x + y;
     }
 
     var multP = x => async y => {
-      await wait(500)
+      await wait(300)
       return x * y;
     }
 
     var powP = x => async y => {
-      await wait(500)
+      await wait(300)
       return y**x;
     }
 
     async function cubeP (x) {
-      await wait(500)
+      await wait(300)
       return x*x*x;
     }
 
     async function idP (x) {
-      await wait(500)
+      await wait(300)
       return x;
     }
     async function sqrtP (x) {
-      await wait(500)
+      await wait(300)
       return x**(1/2)
     }
 
@@ -155,7 +158,7 @@
    (O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))
    (() => resume("test")(multP(4))(addP(6))))
 
-   setTimeout(()=>console.log("O is", O),15000)
+   setTimeout(()=>console.log("O is", O),11000)
 
 var mon = `   var Monad = function Monad ( AR = [], name = "generic"  )  {
      var f_, p, run;
@@ -192,14 +195,14 @@ var mon = `   var Monad = function Monad ( AR = [], name = "generic"  )  {
   var start = function start () {
      if (!lok) {
        lok = true;
-       setTimeout(() => lok = false,6000 );
+       setTimeout(() => lok = false,3000 );
        O = {};
        Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))
        (() => branch("test", "test_2")(sqrtP)(cubeP)(()=>addP(O.test_2[2])
        (O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))
        (() => resume("test")(multP(4))(addP(6)))) }
      else {
-       setTimeout(() => start(),1500);
+       setTimeout(() => start(),300);
      }
   }
 
@@ -210,7 +213,8 @@ var code = `    Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))
      (O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))
      (() => resume("test")(multP(4))(addP(6))))`
 </script>
-{#if visible}
+
+{#if j === 9}
  <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
  <br><br>
 Handling Promises With Monads
@@ -218,7 +222,7 @@ Handling Promises With Monads
 {/if}
 <br>
 <h2>O.test is {O.test}</h2>
-<h2>O.test_2 is {O.test_2}</h2>
+<h2>O is {O}</h2>
 <br>
 <button on:click = {start}>START</button>
 <br>
@@ -231,8 +235,7 @@ Handling Promises With Monads
 <br>
 <button on:click = {start}>START</button>
 
-<h2>O.test is {O.test}</h2>
-<h2>O.test_2 is {O.test_2}</h2>
+
 <br>
 <span class = "tao"> Notice the statement: </span>
 <span style = "color: #AAFFAA">()=>addP(O.test_2[2])(O.test_2[1])</span>
