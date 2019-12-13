@@ -284,124 +284,6 @@ var app = (function () {
         }
     }
     const null_transition = { duration: 0 };
-    function create_in_transition(node, fn, params) {
-        let config = fn(node, params);
-        let running = false;
-        let animation_name;
-        let task;
-        let uid = 0;
-        function cleanup() {
-            if (animation_name)
-                delete_rule(node, animation_name);
-        }
-        function go() {
-            const { delay = 0, duration = 300, easing = identity, tick = noop, css } = config || null_transition;
-            if (css)
-                animation_name = create_rule(node, 0, 1, duration, delay, easing, css, uid++);
-            tick(0, 1);
-            const start_time = now() + delay;
-            const end_time = start_time + duration;
-            if (task)
-                task.abort();
-            running = true;
-            add_render_callback(() => dispatch(node, true, 'start'));
-            task = loop(now => {
-                if (running) {
-                    if (now >= end_time) {
-                        tick(1, 0);
-                        dispatch(node, true, 'end');
-                        cleanup();
-                        return running = false;
-                    }
-                    if (now >= start_time) {
-                        const t = easing((now - start_time) / duration);
-                        tick(t, 1 - t);
-                    }
-                }
-                return running;
-            });
-        }
-        let started = false;
-        return {
-            start() {
-                if (started)
-                    return;
-                delete_rule(node);
-                if (is_function(config)) {
-                    config = config();
-                    wait().then(go);
-                }
-                else {
-                    go();
-                }
-            },
-            invalidate() {
-                started = false;
-            },
-            end() {
-                if (running) {
-                    cleanup();
-                    running = false;
-                }
-            }
-        };
-    }
-    function create_out_transition(node, fn, params) {
-        let config = fn(node, params);
-        let running = true;
-        let animation_name;
-        const group = outros;
-        group.r += 1;
-        function go() {
-            const { delay = 0, duration = 300, easing = identity, tick = noop, css } = config || null_transition;
-            if (css)
-                animation_name = create_rule(node, 1, 0, duration, delay, easing, css);
-            const start_time = now() + delay;
-            const end_time = start_time + duration;
-            add_render_callback(() => dispatch(node, false, 'start'));
-            loop(now => {
-                if (running) {
-                    if (now >= end_time) {
-                        tick(0, 1);
-                        dispatch(node, false, 'end');
-                        if (!--group.r) {
-                            // this will result in `end()` being called,
-                            // so we don't need to clean up here
-                            run_all(group.c);
-                        }
-                        return false;
-                    }
-                    if (now >= start_time) {
-                        const t = easing((now - start_time) / duration);
-                        tick(1 - t, t);
-                    }
-                }
-                return running;
-            });
-        }
-        if (is_function(config)) {
-            wait().then(() => {
-                // @ts-ignore
-                config = config();
-                go();
-            });
-        }
-        else {
-            go();
-        }
-        return {
-            end(reset) {
-                if (reset && config.tick) {
-                    config.tick(1, 0);
-                }
-                if (running) {
-                    if (animation_name)
-                        delete_rule(node, animation_name);
-                    running = false;
-                }
-            }
-        };
-    }
     function create_bidirectional_transition(node, fn, params, intro) {
         let config = fn(node, params);
         let t = intro ? 0 : 1;
@@ -507,8 +389,6 @@ var app = (function () {
             }
         };
     }
-
-    const globals = (typeof window !== 'undefined' ? window : global);
     function mount_component(component, target, anchor) {
         const { fragment, on_mount, on_destroy, after_update } = component.$$;
         fragment.m(target, anchor);
@@ -631,11 +511,6 @@ var app = (function () {
         }
     }
 
-    function cubicOut(t) {
-        const f = t - 1.0;
-        return f * f * f + 1.0;
-    }
-
     function fade(node, { delay = 0, duration = 400 }) {
         const o = +getComputedStyle(node).opacity;
         return {
@@ -644,24 +519,60 @@ var app = (function () {
             css: t => `opacity: ${t * o}`
         };
     }
-    function fly(node, { delay = 0, duration = 400, easing = cubicOut, x = 0, y = 0, opacity = 0 }) {
-        const style = getComputedStyle(node);
-        const target_opacity = +style.opacity;
-        const transform = style.transform === 'none' ? '' : style.transform;
-        const od = target_opacity * (1 - opacity);
-        return {
-            delay,
-            duration,
-            easing,
-            css: (t, u) => `
-			transform: ${transform} translate(${(1 - t) * x}px, ${(1 - t) * y}px);
-			opacity: ${target_opacity - (od * u)}`
-        };
+
+    /* src/Cow.svelte generated by Svelte v3.9.1 */
+
+    const file = "src/Cow.svelte";
+
+    function create_fragment(ctx) {
+    	var div, t0, t1, t2;
+
+    	return {
+    		c: function create() {
+    			div = element("div");
+    			t0 = text(name);
+    			t1 = text(" says ");
+    			t2 = text(statement);
+    			add_location(div, file, 5, 0, 62);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert(target, div, anchor);
+    			append(div, t0);
+    			append(div, t1);
+    			append(div, t2);
+    		},
+
+    		p: noop,
+    		i: noop,
+    		o: noop,
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(div);
+    			}
+    		}
+    	};
+    }
+
+    let name = "Cow";
+
+    let statement = '"Moo."';
+
+    class Cow extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, null, create_fragment, safe_not_equal, []);
+    	}
     }
 
     /* src/Monad.svelte generated by Svelte v3.9.1 */
 
-    const file = "src/Monad.svelte";
+    const file$1 = "src/Monad.svelte";
 
     // (106:1) {#if visible}
     function create_if_block(ctx) {
@@ -675,7 +586,7 @@ var app = (function () {
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file, 106, 2, 2332);
+    			add_location(div, file$1, 106, 2, 2332);
     		},
 
     		m: function mount(target, anchor) {
@@ -709,7 +620,7 @@ var app = (function () {
     	};
     }
 
-    function create_fragment(ctx) {
+    function create_fragment$1(ctx) {
     	var div, br0, br1, br2, t0, t1, br3, t2, span0, t4, span1, t6, span2, t8, p0, t10, p1, t12, p2, t14, pre0, t15, t16, p3, t18, pre1, t20, p4, t22, t23, t24, input, t25, p5, t26, t27, t28, t29_value = ctx.bonads(ctx.num) + "", t29, t30, span3, t32, pre2, t33, t34, p6, t36, p7, t38, p8, t40, p9, current, dispose;
 
     	var if_block =  create_if_block();
@@ -782,36 +693,36 @@ var app = (function () {
     			t40 = space();
     			p9 = element("p");
     			p9.textContent = "The next entry in the monad series defines a variation of Monad that maintains and array of primitive data, function return values, and Promise resolution values. Functions have access to everything in the array when they execute.";
-    			add_location(br0, file, 104, 0, 2302);
-    			add_location(br1, file, 104, 4, 2306);
-    			add_location(br2, file, 104, 8, 2310);
-    			add_location(br3, file, 110, 1, 2498);
+    			add_location(br0, file$1, 104, 0, 2302);
+    			add_location(br1, file$1, 104, 4, 2306);
+    			add_location(br2, file$1, 104, 8, 2310);
+    			add_location(br3, file$1, 110, 1, 2498);
     			attr(span0, "class", "tao svelte-1dr4x6t");
-    			add_location(span0, file, 111, 1, 2504);
+    			add_location(span0, file$1, 111, 1, 2504);
     			set_style(span1, "font-style", "italic");
-    			add_location(span1, file, 112, 0, 2607);
-    			add_location(span2, file, 113, 0, 2662);
-    			add_location(p0, file, 114, 0, 3032);
-    			add_location(p1, file, 115, 0, 3458);
-    			add_location(p2, file, 116, 0, 3928);
-    			add_location(pre0, file, 117, 0, 3980);
-    			add_location(p3, file, 118, 0, 4006);
-    			add_location(pre1, file, 119, 0, 4088);
-    			add_location(p4, file, 120, 0, 4148);
+    			add_location(span1, file$1, 112, 0, 2607);
+    			add_location(span2, file$1, 113, 0, 2662);
+    			add_location(p0, file$1, 114, 0, 3032);
+    			add_location(p1, file$1, 115, 0, 3458);
+    			add_location(p2, file$1, 116, 0, 3928);
+    			add_location(pre0, file$1, 117, 0, 3980);
+    			add_location(p3, file$1, 118, 0, 4006);
+    			add_location(pre1, file$1, 119, 0, 4088);
+    			add_location(p4, file$1, 120, 0, 4148);
     			attr(input, "id", "one");
     			attr(input, "type", "number");
-    			add_location(input, file, 122, 0, 4348);
-    			add_location(p5, file, 123, 0, 4421);
+    			add_location(input, file$1, 122, 0, 4348);
+    			add_location(p5, file$1, 123, 0, 4421);
     			attr(span3, "class", "tao svelte-1dr4x6t");
-    			add_location(span3, file, 125, 0, 4481);
-    			add_location(pre2, file, 126, 0, 4668);
-    			add_location(p6, file, 130, 0, 4688);
-    			add_location(p7, file, 132, 0, 4776);
-    			add_location(p8, file, 134, 0, 4989);
-    			add_location(p9, file, 135, 0, 5419);
+    			add_location(span3, file$1, 125, 0, 4481);
+    			add_location(pre2, file$1, 126, 0, 4668);
+    			add_location(p6, file$1, 130, 0, 4688);
+    			add_location(p7, file$1, 132, 0, 4776);
+    			add_location(p8, file$1, 134, 0, 4989);
+    			add_location(p9, file$1, 135, 0, 5419);
     			set_style(div, "margin-left", "12%");
     			set_style(div, "margin-right", "12%");
-    			add_location(div, file, 103, 0, 2249);
+    			add_location(div, file$1, 103, 0, 2249);
 
     			dispose = [
     				listen(input, "input", ctx.input_input_handler),
@@ -1015,15 +926,15 @@ console.log("a is", a)  // a is 900`;
     class Monad_1 extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance, create_fragment, safe_not_equal, []);
+    		init(this, options, instance, create_fragment$1, safe_not_equal, []);
     	}
     }
 
     /* src/Monad2.svelte generated by Svelte v3.9.1 */
 
-    const file$1 = "src/Monad2.svelte";
+    const file$2 = "src/Monad2.svelte";
 
-    // (343:0) {#if visible}
+    // (351:0) {#if j === 2}
     function create_if_block$1(ctx) {
     	var div_1, div_1_transition, current;
 
@@ -1035,7 +946,7 @@ console.log("a is", a)  // a is 900`;
     			set_style(div_1, "text-align", "center");
     			set_style(div_1, "color", "hsl(210, 90%, 90%)");
     			set_style(div_1, "font-size", "32px");
-    			add_location(div_1, file$1, 343, 1, 7990);
+    			add_location(div_1, file$2, 351, 1, 8136);
     		},
 
     		m: function mount(target, anchor) {
@@ -1069,10 +980,10 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function create_fragment$1(ctx) {
+    function create_fragment$2(ctx) {
     	var br0, br1, br2, t0, t1, br3, br4, t2, p0, t4, br5, br6, t5, button, t7, br7, br8, t8, span0, t10, span1, t11_value = ctx.O.c0 + "", t11, t12, t13_value = ctx.O.c1 + "", t13, t14, t15_value = ctx.O.c2 + "", t15, t16, t17_value = ctx.O.c3 + "", t17, t18, t19_value = ctx.O.c4 + "", t19, t20, t21_value = ctx.O.c5 + "", t21, t22, t23_value = ctx.O.c6 + "", t23, t24, t25_value = ctx.O.c7 + "", t25, t26, t27_value = ctx.O.c8 + "", t27, t28, t29_value = ctx.O.c9 + "", t29, t30, t31_value = ctx.O.c10 + "", t31, t32, t33_value = ctx.O.c11 + "", t33, t34, t35_value = ctx.O.c12 + "", t35, t36, t37_value = ctx.O.c13 + "", t37, t38, t39_value = ctx.O.c14 + "", t39, t40, br9, br10, t41, div0, t43, div1, t44_value = ctx.O.d0 + "", t44, t45, br11, t46, t47_value = ctx.O.d1 + "", t47, t48, br12, t49, t50_value = ctx.O.d2 + "", t50, t51, br13, t52, t53_value = ctx.O.d3 + "", t53, t54, br14, t55, t56_value = ctx.O.d4 + "", t56, t57, br15, t58, t59_value = ctx.O.d5 + "", t59, t60, br16, t61, t62_value = ctx.O.d6 + "", t62, t63, br17, t64, t65_value = ctx.O.d7 + "", t65, t66, br18, t67, t68_value = ctx.O.d8 + "", t68, t69, br19, t70, t71_value = ctx.O.d9 + "", t71, t72, br20, t73, t74_value = ctx.O.d10 + "", t74, t75, br21, t76, t77_value = ctx.O.d11 + "", t77, t78, br22, t79, t80_value = ctx.O.d12 + "", t80, t81, br23, t82, t83_value = ctx.O.d13 + "", t83, t84, br24, t85, t86_value = ctx.O.d14 + "", t86, t87, br25, t88, br26, t89, p1, t91, pre0, t92, t93, pre1, t94, t95, p2, pre2, t97, t98, p3, t100, pre3, t101, t102, p4, pre4, t104, t105, p5, pre5, t107, t108, p6, t110, br27, t111, span2, t113, a, current, dispose;
 
-    	var if_block =  create_if_block$1();
+    	var if_block = (ctx.j === 2) && create_if_block$1();
 
     	return {
     		c: function create() {
@@ -1092,7 +1003,7 @@ console.log("a is", a)  // a is 900`;
     			br6 = element("br");
     			t5 = space();
     			button = element("button");
-    			button.textContent = "EXECUTE factors()";
+    			button.textContent = "Run Monad([2], \"test\")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))\n     (() => branch(\"test\", \"test_2\")(sqrtP)(cubeP)(()=>addP(O.test_2[2])\n     (O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))\n     (() => resume(\"test\")(multP(4))(addP(6))))";
     			t7 = space();
     			br7 = element("br");
     			br8 = element("br");
@@ -1240,58 +1151,58 @@ console.log("a is", a)  // a is 900`;
     			t113 = space();
     			a = element("a");
     			a.textContent = "GitHub repository";
-    			add_location(br0, file$1, 341, 0, 7962);
-    			add_location(br1, file$1, 341, 4, 7966);
-    			add_location(br2, file$1, 341, 8, 7970);
-    			add_location(br3, file$1, 347, 0, 8150);
-    			add_location(br4, file$1, 347, 4, 8154);
-    			add_location(p0, file$1, 348, 0, 8159);
-    			add_location(br5, file$1, 349, 0, 8358);
-    			add_location(br6, file$1, 349, 4, 8362);
-    			add_location(button, file$1, 350, 0, 8367);
-    			add_location(br7, file$1, 351, 0, 8423);
-    			add_location(br8, file$1, 351, 4, 8427);
+    			add_location(br0, file$2, 349, 0, 8108);
+    			add_location(br1, file$2, 349, 4, 8112);
+    			add_location(br2, file$2, 349, 8, 8116);
+    			add_location(br3, file$2, 355, 0, 8296);
+    			add_location(br4, file$2, 355, 4, 8300);
+    			add_location(p0, file$2, 356, 0, 8305);
+    			add_location(br5, file$2, 357, 0, 8504);
+    			add_location(br6, file$2, 357, 4, 8508);
+    			add_location(button, file$2, 358, 0, 8513);
+    			add_location(br7, file$2, 362, 0, 8799);
+    			add_location(br8, file$2, 362, 4, 8803);
     			set_style(span0, "color", "#EEBBBB");
-    			add_location(span0, file$1, 352, 0, 8432);
-    			add_location(span1, file$1, 353, 0, 8528);
-    			add_location(br9, file$1, 354, 0, 8666);
-    			add_location(br10, file$1, 354, 4, 8670);
+    			add_location(span0, file$2, 363, 0, 8808);
+    			add_location(span1, file$2, 364, 0, 8904);
+    			add_location(br9, file$2, 365, 0, 9042);
+    			add_location(br10, file$2, 365, 4, 9046);
     			set_style(div0, "color", "#EEBBBB");
-    			add_location(div0, file$1, 355, 0, 8675);
-    			add_location(br11, file$1, 358, 0, 8761);
-    			add_location(br12, file$1, 360, 0, 8773);
-    			add_location(br13, file$1, 362, 0, 8785);
-    			add_location(br14, file$1, 364, 0, 8797);
-    			add_location(br15, file$1, 366, 0, 8809);
-    			add_location(br16, file$1, 368, 0, 8821);
-    			add_location(br17, file$1, 370, 0, 8833);
-    			add_location(br18, file$1, 372, 0, 8845);
-    			add_location(br19, file$1, 374, 0, 8857);
-    			add_location(br20, file$1, 376, 0, 8869);
-    			add_location(br21, file$1, 378, 0, 8882);
-    			add_location(br22, file$1, 380, 0, 8895);
-    			add_location(br23, file$1, 382, 0, 8908);
-    			add_location(br24, file$1, 384, 0, 8921);
-    			add_location(br25, file$1, 386, 0, 8934);
-    			add_location(div1, file$1, 356, 0, 8748);
-    			add_location(br26, file$1, 388, 0, 8946);
-    			add_location(p1, file$1, 389, 0, 8951);
-    			add_location(pre0, file$1, 390, 0, 9240);
-    			add_location(pre1, file$1, 392, 0, 9392);
-    			add_location(p2, file$1, 393, 0, 9415);
-    			add_location(pre2, file$1, 394, 0, 9482);
-    			add_location(p3, file$1, 395, 0, 9498);
-    			add_location(pre3, file$1, 396, 0, 9716);
-    			add_location(p4, file$1, 397, 0, 9733);
-    			add_location(pre4, file$1, 398, 0, 10131);
-    			add_location(p5, file$1, 399, 0, 10157);
-    			add_location(pre5, file$1, 400, 0, 10226);
-    			add_location(p6, file$1, 401, 0, 10252);
-    			add_location(br27, file$1, 402, 0, 10407);
-    			add_location(span2, file$1, 403, 0, 10412);
+    			add_location(div0, file$2, 366, 0, 9051);
+    			add_location(br11, file$2, 369, 0, 9137);
+    			add_location(br12, file$2, 371, 0, 9149);
+    			add_location(br13, file$2, 373, 0, 9161);
+    			add_location(br14, file$2, 375, 0, 9173);
+    			add_location(br15, file$2, 377, 0, 9185);
+    			add_location(br16, file$2, 379, 0, 9197);
+    			add_location(br17, file$2, 381, 0, 9209);
+    			add_location(br18, file$2, 383, 0, 9221);
+    			add_location(br19, file$2, 385, 0, 9233);
+    			add_location(br20, file$2, 387, 0, 9245);
+    			add_location(br21, file$2, 389, 0, 9258);
+    			add_location(br22, file$2, 391, 0, 9271);
+    			add_location(br23, file$2, 393, 0, 9284);
+    			add_location(br24, file$2, 395, 0, 9297);
+    			add_location(br25, file$2, 397, 0, 9310);
+    			add_location(div1, file$2, 367, 0, 9124);
+    			add_location(br26, file$2, 399, 0, 9322);
+    			add_location(p1, file$2, 400, 0, 9327);
+    			add_location(pre0, file$2, 401, 0, 9616);
+    			add_location(pre1, file$2, 403, 0, 9768);
+    			add_location(p2, file$2, 404, 0, 9791);
+    			add_location(pre2, file$2, 405, 0, 9858);
+    			add_location(p3, file$2, 406, 0, 9874);
+    			add_location(pre3, file$2, 407, 0, 10092);
+    			add_location(p4, file$2, 408, 0, 10109);
+    			add_location(pre4, file$2, 409, 0, 10507);
+    			add_location(p5, file$2, 410, 0, 10533);
+    			add_location(pre5, file$2, 411, 0, 10602);
+    			add_location(p6, file$2, 412, 0, 10628);
+    			add_location(br27, file$2, 413, 0, 10783);
+    			add_location(span2, file$2, 414, 0, 10788);
     			attr(a, "href", "https://github.com/dschalk/blog/");
     			attr(a, "target", "_blank");
-    			add_location(a, file$1, 404, 0, 10470);
+    			add_location(a, file$2, 415, 0, 10846);
     			dispose = listen(button, "click", ctx.factors);
     		},
 
@@ -1456,7 +1367,7 @@ console.log("a is", a)  // a is 900`;
     		},
 
     		p: function update(changed, ctx) {
-    			{
+    			if (ctx.j === 2) {
     				if (!if_block) {
     					if_block = create_if_block$1();
     					if_block.c();
@@ -1465,6 +1376,12 @@ console.log("a is", a)  // a is 900`;
     				} else {
     									transition_in(if_block, 1);
     				}
+    			} else if (if_block) {
+    				group_outros();
+    				transition_out(if_block, 1, 1, () => {
+    					if_block = null;
+    				});
+    				check_outros();
     			}
 
     			if ((!current || changed.O) && t11_value !== (t11_value = ctx.O.c0 + "")) {
@@ -1671,6 +1588,9 @@ console.log("a is", a)  // a is 900`;
     }
 
     function instance$1($$self, $$props, $$invalidate) {
+    	
+
+        let j;
 
        var O = new Object();
 
@@ -1731,6 +1651,9 @@ console.log("a is", a)  // a is 900`;
              var combo = v + '<o>' + v2;
              socket.send('CC#$42' + combo);
              // socket.send(`GZ#$42,solo,${v}`);
+             factors();
+             factors();
+             factors();
            } else {
              login();
            }
@@ -1879,10 +1802,14 @@ console.log("a is", a)  // a is 900`;
         M = -1;
         N = -1;
        lock = false;
-     }
+     }<br>
+<h2>O.test is {O.test}</h2>
+<h2>O.test_2 is {O.test_2}</h2>
+<br>
    } `;
 
-    	$$self.$$.update = ($$dirty = { O: 1, M: 1, N: 1, T: 1, Q: 1, lock: 1 }) => {
+    	$$self.$$.update = ($$dirty = { j: 1, O: 1, M: 1, N: 1, T: 1, Q: 1, lock: 1 }) => {
+    		if ($$dirty.j) ;
     		if ($$dirty.O) ;
     		if ($$dirty.M) ;
     		if ($$dirty.N) ;
@@ -1892,6 +1819,7 @@ console.log("a is", a)  // a is 900`;
     	};
 
     	return {
+    		j,
     		O,
     		factors,
     		mon,
@@ -1906,39 +1834,207 @@ console.log("a is", a)  // a is 900`;
     class Monad2 extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$1, create_fragment$1, safe_not_equal, []);
+    		init(this, options, instance$1, create_fragment$2, safe_not_equal, []);
     	}
     }
 
     /* src/Monad3.svelte generated by Svelte v3.9.1 */
 
-    const file$2 = "src/Monad3.svelte";
+    const file$3 = "src/Monad3.svelte";
 
-    // (217:0) {#if j === 9}
-    function create_if_block$2(ctx) {
-    	var div_1, br0, br1, t, div_1_transition, current;
+    function create_fragment$3(ctx) {
+    	var div_1, br0, br1, t0, div_1_transition, t1, br2, t2, h20, t3, t4_value = ctx.O.test + "", t4, t5, h21, t6, t7_value = ctx.O.test_2 + "", t7, t8, br3, t9, button0, t11, br4, t12, p0, t14, pre0, t15, t16, p1, t18, pre1, t19, t20, p2, t22, pre2, t23, t24, br5, t25, button1, t27, br6, t28, h22, t29, t30_value = ctx.O.test + "", t30, t31, h23, t32, t33_value = ctx.O.test_2 + "", t33, t34, br7, t35, br8, t36, span0, t38, span1, t40, span2, current, dispose;
 
     	return {
     		c: function create() {
     			div_1 = element("div");
     			br0 = element("br");
     			br1 = element("br");
-    			t = text("\nHandling Promises With Monads");
-    			add_location(br0, file$2, 218, 1, 5384);
-    			add_location(br1, file$2, 218, 5, 5388);
+    			t0 = text("\nHandling Promises With Monads");
+    			t1 = space();
+    			br2 = element("br");
+    			t2 = space();
+    			h20 = element("h2");
+    			t3 = text("O.test is ");
+    			t4 = text(t4_value);
+    			t5 = space();
+    			h21 = element("h2");
+    			t6 = text("O.test_2 is ");
+    			t7 = text(t7_value);
+    			t8 = space();
+    			br3 = element("br");
+    			t9 = space();
+    			button0 = element("button");
+    			button0.textContent = "START";
+    			t11 = space();
+    			br4 = element("br");
+    			t12 = space();
+    			p0 = element("p");
+    			p0.textContent = "Here's the modified monad constructor:";
+    			t14 = space();
+    			pre0 = element("pre");
+    			t15 = text(ctx.mon);
+    			t16 = space();
+    			p1 = element("p");
+    			p1.textContent = "After monads encounter \"halt\", they can use the function resume() to continue processing data where they left off and (2) they can branch off in new monads created by branch(). Here are the definitions:";
+    			t18 = space();
+    			pre1 = element("pre");
+    			t19 = text(ctx.fs);
+    			t20 = space();
+    			p2 = element("p");
+    			p2.textContent = "This is the statement that produces the observed results when \"START\" is clicked.";
+    			t22 = space();
+    			pre2 = element("pre");
+    			t23 = text(ctx.code);
+    			t24 = space();
+    			br5 = element("br");
+    			t25 = space();
+    			button1 = element("button");
+    			button1.textContent = "START";
+    			t27 = space();
+    			br6 = element("br");
+    			t28 = space();
+    			h22 = element("h2");
+    			t29 = text("O.test is ");
+    			t30 = text(t30_value);
+    			t31 = space();
+    			h23 = element("h2");
+    			t32 = text("O.test_2 is ");
+    			t33 = text(t33_value);
+    			t34 = space();
+    			br7 = element("br");
+    			t35 = space();
+    			br8 = element("br");
+    			t36 = space();
+    			span0 = element("span");
+    			span0.textContent = "Notice the statement:";
+    			t38 = space();
+    			span1 = element("span");
+    			span1.textContent = "()=>addP(O.test_2[2])(O.test_2[1])";
+    			t40 = space();
+    			span2 = element("span");
+    			span2.textContent = ". Promises in chains of ES6 Promises can't access previous Promise resolution values. One way to get access to prior resolution values is to encapsulate Promise chains in Monad(). This also makes it convenient to resume or branch from terminated computation chains; and this can be accomplished without naming the chains.";
+    			add_location(br0, file$3, 209, 1, 5074);
+    			add_location(br1, file$3, 209, 5, 5078);
     			set_style(div_1, "font-family", "Times New Roman");
     			set_style(div_1, "text-align", "center");
     			set_style(div_1, "color", "hsl(210, 90%, 90%)");
     			set_style(div_1, "font-size", "32px");
-    			add_location(div_1, file$2, 217, 1, 5256);
+    			add_location(div_1, file$3, 208, 1, 4946);
+    			add_location(br2, file$3, 211, 44, 5157);
+    			add_location(h20, file$3, 212, 0, 5162);
+    			add_location(h21, file$3, 213, 0, 5190);
+    			add_location(br3, file$3, 213, 44, 5234);
+    			add_location(button0, file$3, 214, 0, 5239);
+    			add_location(br4, file$3, 214, 44, 5283);
+    			add_location(p0, file$3, 215, 0, 5288);
+    			add_location(pre0, file$3, 216, 0, 5336);
+    			add_location(p1, file$3, 217, 0, 5353);
+    			add_location(pre1, file$3, 218, 0, 5564);
+    			add_location(p2, file$3, 219, 0, 5580);
+    			add_location(pre2, file$3, 220, 0, 5671);
+    			add_location(br5, file$3, 220, 44, 5715);
+    			add_location(button1, file$3, 221, 0, 5720);
+    			add_location(br6, file$3, 224, 0, 5764);
+    			add_location(h22, file$3, 225, 0, 5769);
+    			add_location(h23, file$3, 226, 0, 5797);
+    			add_location(br7, file$3, 227, 0, 5829);
+    			add_location(br8, file$3, 229, 0, 5835);
+    			attr(span0, "class", "tao");
+    			add_location(span0, file$3, 230, 0, 5840);
+    			set_style(span1, "color", "#AAFFAA");
+    			add_location(span1, file$3, 231, 0, 5891);
+    			add_location(span2, file$3, 232, 0, 5964);
+
+    			dispose = [
+    				listen(button0, "click", ctx.start),
+    				listen(button1, "click", ctx.start)
+    			];
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
 
     		m: function mount(target, anchor) {
     			insert(target, div_1, anchor);
     			append(div_1, br0);
     			append(div_1, br1);
-    			append(div_1, t);
+    			append(div_1, t0);
+    			insert(target, t1, anchor);
+    			insert(target, br2, anchor);
+    			insert(target, t2, anchor);
+    			insert(target, h20, anchor);
+    			append(h20, t3);
+    			append(h20, t4);
+    			insert(target, t5, anchor);
+    			insert(target, h21, anchor);
+    			append(h21, t6);
+    			append(h21, t7);
+    			insert(target, t8, anchor);
+    			insert(target, br3, anchor);
+    			insert(target, t9, anchor);
+    			insert(target, button0, anchor);
+    			insert(target, t11, anchor);
+    			insert(target, br4, anchor);
+    			insert(target, t12, anchor);
+    			insert(target, p0, anchor);
+    			insert(target, t14, anchor);
+    			insert(target, pre0, anchor);
+    			append(pre0, t15);
+    			insert(target, t16, anchor);
+    			insert(target, p1, anchor);
+    			insert(target, t18, anchor);
+    			insert(target, pre1, anchor);
+    			append(pre1, t19);
+    			insert(target, t20, anchor);
+    			insert(target, p2, anchor);
+    			insert(target, t22, anchor);
+    			insert(target, pre2, anchor);
+    			append(pre2, t23);
+    			insert(target, t24, anchor);
+    			insert(target, br5, anchor);
+    			insert(target, t25, anchor);
+    			insert(target, button1, anchor);
+    			insert(target, t27, anchor);
+    			insert(target, br6, anchor);
+    			insert(target, t28, anchor);
+    			insert(target, h22, anchor);
+    			append(h22, t29);
+    			append(h22, t30);
+    			insert(target, t31, anchor);
+    			insert(target, h23, anchor);
+    			append(h23, t32);
+    			append(h23, t33);
+    			insert(target, t34, anchor);
+    			insert(target, br7, anchor);
+    			insert(target, t35, anchor);
+    			insert(target, br8, anchor);
+    			insert(target, t36, anchor);
+    			insert(target, span0, anchor);
+    			insert(target, t38, anchor);
+    			insert(target, span1, anchor);
+    			insert(target, t40, anchor);
+    			insert(target, span2, anchor);
     			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			if ((!current || changed.O) && t4_value !== (t4_value = ctx.O.test + "")) {
+    				set_data(t4, t4_value);
+    			}
+
+    			if ((!current || changed.O) && t7_value !== (t7_value = ctx.O.test_2 + "")) {
+    				set_data(t7, t7_value);
+    			}
+
+    			if ((!current || changed.O) && t30_value !== (t30_value = ctx.O.test + "")) {
+    				set_data(t30, t30_value);
+    			}
+
+    			if ((!current || changed.O) && t33_value !== (t33_value = ctx.O.test_2 + "")) {
+    				set_data(t33, t33_value);
+    			}
     		},
 
     		i: function intro(local) {
@@ -1962,232 +2058,59 @@ console.log("a is", a)  // a is 900`;
     			if (detaching) {
     				detach(div_1);
     				if (div_1_transition) div_1_transition.end();
-    			}
-    		}
-    	};
-    }
-
-    function create_fragment$2(ctx) {
-    	var t0, br0, t1, h20, t2, t3_value = ctx.O.test + "", t3, t4, h21, t5, t6, t7, br1, t8, button0, t10, br2, t11, p0, t13, pre0, t14, t15, p1, t17, pre1, t18, t19, p2, t21, pre2, t22, t23, br3, t24, button1, t26, br4, t27, span0, t29, span1, t31, span2, current, dispose;
-
-    	var if_block = (ctx.j === 9) && create_if_block$2();
-
-    	return {
-    		c: function create() {
-    			if (if_block) if_block.c();
-    			t0 = space();
-    			br0 = element("br");
-    			t1 = space();
-    			h20 = element("h2");
-    			t2 = text("O.test is ");
-    			t3 = text(t3_value);
-    			t4 = space();
-    			h21 = element("h2");
-    			t5 = text("O is ");
-    			t6 = text(ctx.O);
-    			t7 = space();
-    			br1 = element("br");
-    			t8 = space();
-    			button0 = element("button");
-    			button0.textContent = "START";
-    			t10 = space();
-    			br2 = element("br");
-    			t11 = space();
-    			p0 = element("p");
-    			p0.textContent = "Here's the modified monad constructor:";
-    			t13 = space();
-    			pre0 = element("pre");
-    			t14 = text(ctx.mon);
-    			t15 = space();
-    			p1 = element("p");
-    			p1.textContent = "After monads encounter \"halt\", they can use the function resume() to continue processing data where they left off and (2) they can branch off in new monads created by branch(). Here are the definitions:";
-    			t17 = space();
-    			pre1 = element("pre");
-    			t18 = text(ctx.fs);
-    			t19 = space();
-    			p2 = element("p");
-    			p2.textContent = "This is the statement that produces the observed results when \"START\" is clicked.";
-    			t21 = space();
-    			pre2 = element("pre");
-    			t22 = text(ctx.code);
-    			t23 = space();
-    			br3 = element("br");
-    			t24 = space();
-    			button1 = element("button");
-    			button1.textContent = "START";
-    			t26 = space();
-    			br4 = element("br");
-    			t27 = space();
-    			span0 = element("span");
-    			span0.textContent = "Notice the statement:";
-    			t29 = space();
-    			span1 = element("span");
-    			span1.textContent = "()=>addP(O.test_2[2])(O.test_2[1])";
-    			t31 = space();
-    			span2 = element("span");
-    			span2.textContent = ". Promises in chains of ES6 Promises can't access previous Promise resolution values. One way to get access to prior resolution values is to encapsulate Promise chains in Monad(). This also makes it convenient to resume or branch from terminated computation chains; and this can be accomplished without naming the chains.";
-    			add_location(br0, file$2, 222, 0, 5437);
-    			add_location(h20, file$2, 223, 0, 5442);
-    			add_location(h21, file$2, 224, 0, 5470);
-    			add_location(br1, file$2, 225, 0, 5488);
-    			add_location(button0, file$2, 226, 0, 5493);
-    			add_location(br2, file$2, 227, 0, 5535);
-    			add_location(p0, file$2, 228, 0, 5540);
-    			add_location(pre0, file$2, 229, 0, 5588);
-    			add_location(p1, file$2, 230, 0, 5605);
-    			add_location(pre1, file$2, 231, 0, 5816);
-    			add_location(p2, file$2, 232, 0, 5832);
-    			add_location(pre2, file$2, 233, 0, 5923);
-    			add_location(br3, file$2, 234, 0, 5941);
-    			add_location(button1, file$2, 235, 0, 5946);
-    			add_location(br4, file$2, 238, 0, 5990);
-    			attr(span0, "class", "tao");
-    			add_location(span0, file$2, 239, 0, 5995);
-    			set_style(span1, "color", "#AAFFAA");
-    			add_location(span1, file$2, 240, 0, 6046);
-    			add_location(span2, file$2, 241, 0, 6119);
-
-    			dispose = [
-    				listen(button0, "click", ctx.start),
-    				listen(button1, "click", ctx.start)
-    			];
-    		},
-
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-    		},
-
-    		m: function mount(target, anchor) {
-    			if (if_block) if_block.m(target, anchor);
-    			insert(target, t0, anchor);
-    			insert(target, br0, anchor);
-    			insert(target, t1, anchor);
-    			insert(target, h20, anchor);
-    			append(h20, t2);
-    			append(h20, t3);
-    			insert(target, t4, anchor);
-    			insert(target, h21, anchor);
-    			append(h21, t5);
-    			append(h21, t6);
-    			insert(target, t7, anchor);
-    			insert(target, br1, anchor);
-    			insert(target, t8, anchor);
-    			insert(target, button0, anchor);
-    			insert(target, t10, anchor);
-    			insert(target, br2, anchor);
-    			insert(target, t11, anchor);
-    			insert(target, p0, anchor);
-    			insert(target, t13, anchor);
-    			insert(target, pre0, anchor);
-    			append(pre0, t14);
-    			insert(target, t15, anchor);
-    			insert(target, p1, anchor);
-    			insert(target, t17, anchor);
-    			insert(target, pre1, anchor);
-    			append(pre1, t18);
-    			insert(target, t19, anchor);
-    			insert(target, p2, anchor);
-    			insert(target, t21, anchor);
-    			insert(target, pre2, anchor);
-    			append(pre2, t22);
-    			insert(target, t23, anchor);
-    			insert(target, br3, anchor);
-    			insert(target, t24, anchor);
-    			insert(target, button1, anchor);
-    			insert(target, t26, anchor);
-    			insert(target, br4, anchor);
-    			insert(target, t27, anchor);
-    			insert(target, span0, anchor);
-    			insert(target, t29, anchor);
-    			insert(target, span1, anchor);
-    			insert(target, t31, anchor);
-    			insert(target, span2, anchor);
-    			current = true;
-    		},
-
-    		p: function update(changed, ctx) {
-    			if (ctx.j === 9) {
-    				if (!if_block) {
-    					if_block = create_if_block$2();
-    					if_block.c();
-    					transition_in(if_block, 1);
-    					if_block.m(t0.parentNode, t0);
-    				} else {
-    									transition_in(if_block, 1);
-    				}
-    			} else if (if_block) {
-    				group_outros();
-    				transition_out(if_block, 1, 1, () => {
-    					if_block = null;
-    				});
-    				check_outros();
-    			}
-
-    			if ((!current || changed.O) && t3_value !== (t3_value = ctx.O.test + "")) {
-    				set_data(t3, t3_value);
-    			}
-
-    			if (!current || changed.O) {
-    				set_data(t6, ctx.O);
-    			}
-    		},
-
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(if_block);
-    			current = true;
-    		},
-
-    		o: function outro(local) {
-    			transition_out(if_block);
-    			current = false;
-    		},
-
-    		d: function destroy(detaching) {
-    			if (if_block) if_block.d(detaching);
-
-    			if (detaching) {
-    				detach(t0);
-    				detach(br0);
     				detach(t1);
-    				detach(h20);
-    				detach(t4);
-    				detach(h21);
-    				detach(t7);
-    				detach(br1);
-    				detach(t8);
-    				detach(button0);
-    				detach(t10);
     				detach(br2);
-    				detach(t11);
-    				detach(p0);
-    				detach(t13);
-    				detach(pre0);
-    				detach(t15);
-    				detach(p1);
-    				detach(t17);
-    				detach(pre1);
-    				detach(t19);
-    				detach(p2);
-    				detach(t21);
-    				detach(pre2);
-    				detach(t23);
+    				detach(t2);
+    				detach(h20);
+    				detach(t5);
+    				detach(h21);
+    				detach(t8);
     				detach(br3);
-    				detach(t24);
-    				detach(button1);
-    				detach(t26);
+    				detach(t9);
+    				detach(button0);
+    				detach(t11);
     				detach(br4);
+    				detach(t12);
+    				detach(p0);
+    				detach(t14);
+    				detach(pre0);
+    				detach(t16);
+    				detach(p1);
+    				detach(t18);
+    				detach(pre1);
+    				detach(t20);
+    				detach(p2);
+    				detach(t22);
+    				detach(pre2);
+    				detach(t24);
+    				detach(br5);
+    				detach(t25);
+    				detach(button1);
     				detach(t27);
-    				detach(span0);
-    				detach(t29);
-    				detach(span1);
+    				detach(br6);
+    				detach(t28);
+    				detach(h22);
     				detach(t31);
+    				detach(h23);
+    				detach(t34);
+    				detach(br7);
+    				detach(t35);
+    				detach(br8);
+    				detach(t36);
+    				detach(span0);
+    				detach(t38);
+    				detach(span1);
+    				detach(t40);
     				detach(span2);
     			}
 
     			run_all(dispose);
     		}
     	};
+    }
+
+    function wait$1(ms) {
+      return new Promise(r => setTimeout(r, ms));
     }
 
     async function squareP (x) {
@@ -2201,18 +2124,11 @@ console.log("a is", a)  // a is 900`;
       }
 
     async function sqrtP (x) {
-        await wait$1(300);
+        await wait$1(900);
         return x**(1/2)
       }
 
-    function wait$1(ms) {
-         return new Promise(r => setTimeout(r, ms));
-      }
-
     function instance$2($$self, $$props, $$invalidate) {
-    	
-
-        let j;
 
         var divP = a => async b => {
           await wait$1 (300);
@@ -2220,7 +2136,7 @@ console.log("a is", a)  // a is 900`;
         };
 
         var addP = x => async y => {
-          await wait$1(300);
+          await wait$1(900);
           return x + y;
         };
 
@@ -2239,13 +2155,11 @@ console.log("a is", a)  // a is 900`;
          let x = O[name].pop();
          return run = (function run (x) {
            if (x instanceof Promise) x.then(y => {
-             console.log(x, "is a Promise");
              if (y != undefined && y == y && y.name !== "f_") {
              O[name] = O[name].concat(y); $$invalidate('O', O);
              }
            });
            if (!(x instanceof Promise)) {
-              console.log(x, "is not a promise");
               if (x != undefined && x == x) {
                  O[name] = O[name].concat(x); $$invalidate('O', O);
               }
@@ -2260,7 +2174,7 @@ console.log("a is", a)  // a is 900`;
          })(x);
       };
 
-       var branch = function branch (s,s2) {return Monad(O[s].slice(-1)  , s2)};
+       var branch = function branch (s,s2) {return Monad(O[s].slice()  , s2)};
        var resume = function resume (s) {return Monad(O[s], s)};
 
        Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))
@@ -2268,7 +2182,6 @@ console.log("a is", a)  // a is 900`;
        (O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))
        (() => resume("test")(multP(4))(addP(6))));
 
-       setTimeout(()=>console.log("O is", O),11000);
 
     var mon = `   var Monad = function Monad ( AR = [], name = "generic"  )  {
      var f_, p, run;
@@ -2278,13 +2191,11 @@ console.log("a is", a)  // a is 900`;
      let x = O[name].pop();
      return run = (function run (x) {
        if (x instanceof Promise) x.then(y => {
-         console.log(x, "is a Promise");
          if (y != undefined && y == y && y.name !== "f_") {
          O[name] = O[name].concat(y)
          }
        })
        if (!(x instanceof Promise)) {
-          console.log(x, "is not a promise");
           if (x != undefined && x == x) {
              O[name] = O[name].concat(x)
           }
@@ -2333,22 +2244,22 @@ console.log("a is", a)  // a is 900`;
     		if ($$dirty.lock) ;
     	};
 
-    	return { j, O, mon, start, fs, code };
+    	return { O, mon, start, fs, code };
     }
 
     class Monad3 extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$2, create_fragment$2, safe_not_equal, []);
+    		init(this, options, instance$2, create_fragment$3, safe_not_equal, []);
     	}
     }
 
     /* src/Haskell.svelte generated by Svelte v3.9.1 */
 
-    const file$3 = "src/Haskell.svelte";
+    const file$4 = "src/Haskell.svelte";
 
     // (30:0) {#if visible}
-    function create_if_block$3(ctx) {
+    function create_if_block$2(ctx) {
     	var div, br0, br1, t, div_transition, current;
 
     	return {
@@ -2357,13 +2268,13 @@ console.log("a is", a)  // a is 900`;
     			br0 = element("br");
     			br1 = element("br");
     			t = text("\nHASKELL TUTORIAL SUPPLEMENT");
-    			add_location(br0, file$3, 31, 1, 721);
-    			add_location(br1, file$3, 31, 5, 725);
+    			add_location(br0, file$4, 31, 1, 721);
+    			add_location(br1, file$4, 31, 5, 725);
     			set_style(div, "font-family", "Times New Roman");
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file$3, 30, 1, 594);
+    			add_location(div, file$4, 30, 1, 594);
     		},
 
     		m: function mount(target, anchor) {
@@ -2400,10 +2311,10 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function create_fragment$3(ctx) {
+    function create_fragment$4(ctx) {
     	var t0, p0, t2, p1, t4, p2, t6, p3, t8, span0, t10, a0, t12, br0, t13, pre, t15, p4, t17, span1, t19, a1, t21, br1, t22, br2, t23, span2, t25, a2, t27, span3, t29, a3, current;
 
-    	var if_block =  create_if_block$3();
+    	var if_block =  create_if_block$2();
 
     	return {
     		c: function create() {
@@ -2456,36 +2367,36 @@ console.log("a is", a)  // a is 900`;
     			t29 = space();
     			a3 = element("a");
     			a3.textContent = "Top level mutable state";
-    			add_location(p0, file$3, 36, 0, 773);
-    			add_location(p1, file$3, 37, 0, 1156);
+    			add_location(p0, file$4, 36, 0, 773);
+    			add_location(p1, file$4, 37, 0, 1156);
     			attr(p2, "id", "large");
     			attr(p2, "class", "svelte-hw6ke3");
-    			add_location(p2, file$3, 38, 0, 1603);
-    			add_location(p3, file$3, 39, 0, 1637);
+    			add_location(p2, file$4, 38, 0, 1603);
+    			add_location(p3, file$4, 39, 0, 1637);
     			attr(span0, "class", "tao");
-    			add_location(span0, file$3, 40, 0, 1924);
+    			add_location(span0, file$4, 40, 0, 1924);
     			attr(a0, "href", "http://hackage.haskell.org/package/base-4.12.0.0/docs/Unsafe-Coerce.html");
     			attr(a0, "target", "_blank");
-    			add_location(a0, file$3, 41, 0, 2042);
-    			add_location(br0, file$3, 42, 0, 2163);
-    			add_location(pre, file$3, 43, 0, 2170);
-    			add_location(p4, file$3, 44, 0, 2197);
+    			add_location(a0, file$4, 41, 0, 2042);
+    			add_location(br0, file$4, 42, 0, 2163);
+    			add_location(pre, file$4, 43, 0, 2170);
+    			add_location(p4, file$4, 44, 0, 2197);
     			attr(span1, "class", "tao");
-    			add_location(span1, file$3, 45, 0, 2759);
+    			add_location(span1, file$4, 45, 0, 2759);
     			attr(a1, "href", "http://hackage.haskell.org/package/base-4.12.0.0/docs/src/GHC.IO.Unsafe.html");
     			attr(a1, "target", "_blank");
-    			add_location(a1, file$3, 46, 0, 2815);
-    			add_location(br1, file$3, 47, 0, 2942);
-    			add_location(br2, file$3, 48, 0, 2949);
+    			add_location(a1, file$4, 46, 0, 2815);
+    			add_location(br1, file$4, 47, 0, 2942);
+    			add_location(br2, file$4, 48, 0, 2949);
     			attr(span2, "class", "tao");
-    			add_location(span2, file$3, 49, 0, 2956);
+    			add_location(span2, file$4, 49, 0, 2956);
     			attr(a2, "href", "https://wiki.haskell.org/Unsafe_functions");
     			attr(a2, "target", "_blank");
-    			add_location(a2, file$3, 50, 0, 3065);
-    			add_location(span3, file$3, 51, 0, 3166);
+    			add_location(a2, file$4, 50, 0, 3065);
+    			add_location(span3, file$4, 51, 0, 3166);
     			attr(a3, "href", "https://wiki.haskell.org/Top_level_mutable_state");
     			attr(a3, "target", "_blank");
-    			add_location(a3, file$3, 52, 0, 3254);
+    			add_location(a3, file$4, 52, 0, 3254);
     		},
 
     		l: function claim(nodes) {
@@ -2534,7 +2445,7 @@ console.log("a is", a)  // a is 900`;
     		p: function update(changed, ctx) {
     			{
     				if (!if_block) {
-    					if_block = create_if_block$3();
+    					if_block = create_if_block$2();
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(t0.parentNode, t0);
@@ -2606,16 +2517,16 @@ console.log("a is", a)  // a is 900`;
     class Haskell extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$3, create_fragment$3, safe_not_equal, []);
+    		init(this, options, instance$3, create_fragment$4, safe_not_equal, []);
     	}
     }
 
     /* src/Bugs.svelte generated by Svelte v3.9.1 */
 
-    const file$4 = "src/Bugs.svelte";
+    const file$5 = "src/Bugs.svelte";
 
     // (12:0) {#if visible}
-    function create_if_block$4(ctx) {
+    function create_if_block$3(ctx) {
     	var div, br0, br1, t, div_transition, current;
 
     	return {
@@ -2624,13 +2535,13 @@ console.log("a is", a)  // a is 900`;
     			br0 = element("br");
     			br1 = element("br");
     			t = text("\nCOMPLETE ERADICATION OF BED BUGS");
-    			add_location(br0, file$4, 13, 1, 522);
-    			add_location(br1, file$4, 13, 5, 526);
+    			add_location(br0, file$5, 13, 1, 522);
+    			add_location(br1, file$5, 13, 5, 526);
     			set_style(div, "font-family", "Times New Roman");
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file$4, 12, 1, 394);
+    			add_location(div, file$5, 12, 1, 394);
     		},
 
     		m: function mount(target, anchor) {
@@ -2667,65 +2578,98 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function create_fragment$4(ctx) {
-    	var t0, div, p0, t2, p1, t4, p2, t6, p3, t8, p4, t10, p5, t12, p6, t14, p7, t16, p8, t18, p9, t20, p10, t22, p11, current;
+    function create_fragment$5(ctx) {
+    	var t0, p0, t2, span0, t4, span1, t6, h3, t8, ul, li0, t10, li1, t12, li2, t14, li3, t16, li4, t18, li5, t20, li6, t22, li7, t24, li8, t26, p1, t28, p2, t30, p3, t32, p4, t34, p5, t36, p6, t38, p7, current;
 
-    	var if_block =  create_if_block$4();
+    	var if_block =  create_if_block$3();
 
     	return {
     		c: function create() {
     			if (if_block) if_block.c();
     			t0 = space();
-    			div = element("div");
     			p0 = element("p");
-    			p0.textContent = "I had a massive bed bug infestation in my rented condominium before I knew what hit me. My box springs were on the floor, making it easy for bed bugs to climb onto my mattress and feast while I slept.";
+    			p0.textContent = "It is widely believed that the only reliable way to eraacate a bed bug infestation is to pay thousands of dollars for a thorough heat treatment; one that sends deadly heat through drywall and insullation all the way to the exterior walls. I had a massive bed bug infestation in my rented condominium. My box springs were on the floor, making it easy for bed bugs to climb onto my mattress and feast on me -- and increase in numbers exponentially.";
     			t2 = space();
-    			p1 = element("p");
-    			p1.textContent = "When I realized what was happening, I saw that large numbers of bed bugs were clustered at numerous locations on on the walls near the head of my bed. They were seeking the source of the carbon dioxide I exhaled as I slept. I squashed them and washed the walls. Many others were hiding in my mattress. I encased the mattress and those bugs are now dead.";
+    			span0 = element("span");
+    			span0.textContent = "As I researched the life cycle of bed bugs, it became clear that bed bugs are far easier to eradicate than termites or cock roaches:";
     			t4 = space();
-    			p2 = element("p");
-    			p2.textContent = "I know the procedure I am about to describe works because I used it and eradication proceeded quickly to completion. Over the past two years there has been no sign of a bedbug being in my home. My strategy was to put my box springs on a metal frame, encase my mattress, and apply fluffed up silica gel on the floor under and around my bed.";
+    			span1 = element("span");
+    			span1.textContent = "BED BUG INFESTATIONS ARE EXTREMELY FRAGILE!";
     			t6 = space();
-    			p3 = element("p");
-    			p3.textContent = "I bought five pounds of silica gel on Ebay and a large yellow puff dispenser on Amazon.com. I dedicated my coffee grinder to the fluffing process. You should wear a dust mask while dispensing silica gel with a puffer, or else hold your breath and rush into an adjacent room when you need air.";
+    			h3 = element("h3");
+    			h3.textContent = "Pertinent Facts About Bed Bugs";
     			t8 = space();
-    			p4 = element("p");
-    			p4.textContent = "Professional eradicators don't leave visible residues on floors. That is why they get poor results with silica gel, results comparable to the ones they get with toxic pesticides. Professional exterminators have been known to apply silica gel dissolved in water, which seems absurd in light of the fact that silica gel kills bed bugs by drying them up.";
+    			ul = element("ul");
+    			li0 = element("li");
+    			li0.textContent = "Blood is the only substance that nourishes them.";
     			t10 = space();
-    			p5 = element("p");
-    			p5.textContent = "Silica gel is found in little packets in over the counter medications. The FDA allows up to two percent as a food additive. Lung irritation during application can be avoided by using a dust mask or ducking into an adjacent room to catch your breath.";
+    			li1 = element("li");
+    			li1.textContent = "After emerging from eggs, bed bug nymphs molt five times.";
     			t12 = space();
-    			p6 = element("p");
-    			p6.textContent = "Newly hatched bed bugs don\\'t survive as long as mature ones without blood, so get your bed up on a frame and encase the box springs and mattress. Eggs hatch within ten days. The hatchlings need blood before each molting, so they don't mature without blood. Put the legs of the frame into traps for extra protection. Then, at least, you can sleep without being bitten and know that the mature bed bug population can no longer increase.";
+    			li2 = element("li");
+    			li2.textContent = "Stage one nymphs can't survive beyond two months at room temperature without blood.";
     			t14 = space();
-    			p7 = element("p");
-    			p7.textContent = "You have to be willing to live with visible white powder on your floor for a while. As I said, puff the silica gel you fluffed in the coffee grinder all around and under your bed. You can also apply along base boards and in crawl spaces. When I tried sleeping in a room down the hall, bed bugs quickly found me. I removed a panel in the middle bedroom and saw the bathtub and a bed bug. Bed bugs were traveling under the floor and behind the walls.";
+    			li3 = element("li");
+    			li3.textContent = "Mature bed bugs don't survive more than six months at room temperature.";
     			t16 = space();
-    			p8 = element("p");
-    			p8.textContent = "Bed bugs can remain dormant in a vacant building for up to one year, but if they sense someone breathing, they go to the site of the exhaled carbon dioxide. Bed bugs can\\'t nourish themselves with anything but blood. When they go after yours, they will step into silica gel, start drying up, and die within two days.";
+    			li4 = element("li");
+    			li4.textContent = "Nymphs must have blood before each of their five moltings.";
     			t18 = space();
-    			p9 = element("p");
-    			p9.textContent = "Bed bugs can feast on you when you sit on upholstered furniture. The simplest thing to do is discard all upholstered furniture. That's what I did.";
+    			li5 = element("li");
+    			li5.textContent = "Bed bugs will go to the source of exhaled carbon dioxide.";
     			t20 = space();
-    			p10 = element("p");
-    			p10.textContent = "We think my infestation started when bed bugs migrated away from my neighbor's adjoining condo. Bed bugs like to cluster but pregnant females stray off to avoid more traumatic insemination. They don't have vaginas and male bed bugs have spear penises that punch through female bed bugs\\'s abdomens causing serious injury. These are, by any standard, truly disgusting creatures.";
+    			li6 = element("li");
+    			li6.textContent = "After sufficient (not much) contact with silica gel, bed bugs dry up and die within three days.";
     			t22 = space();
-    			p11 = element("p");
-    			p11.textContent = "Heat treatment is the current state of the art. It costs thousands of dollars and sometimes doesn't work. Google searches result in nothing but misinformation so I felt obliged to publish this. I urge the reader to spread the word wherever it might be noticed by a bed bug victim.";
-    			add_location(p0, file$4, 18, 0, 607);
-    			add_location(p1, file$4, 19, 0, 816);
-    			add_location(p2, file$4, 20, 0, 1179);
-    			add_location(p3, file$4, 21, 0, 1527);
-    			add_location(p4, file$4, 22, 0, 1828);
-    			add_location(p5, file$4, 23, 0, 2188);
-    			add_location(p6, file$4, 24, 0, 2447);
-    			add_location(p7, file$4, 25, 0, 2891);
-    			add_location(p8, file$4, 26, 0, 3349);
-    			add_location(p9, file$4, 27, 0, 3675);
-    			add_location(p10, file$4, 28, 0, 3831);
-    			add_location(p11, file$4, 29, 0, 4218);
-    			set_style(div, "font-size", "22px");
-    			add_location(div, file$4, 17, 0, 578);
+    			li7 = element("li");
+    			li7.textContent = "Silica gel is not systemically toxic, but it is a respiratory tract irritant.";
+    			t24 = space();
+    			li8 = element("li");
+    			li8.textContent = "Cimex® silica gel is very expensive but a five-pound bag from Ebay is pretty cheap.";
+    			t26 = space();
+    			p1 = element("p");
+    			p1.textContent = "I put the box spring on a metal frame with each leg in a bed bug trap. I encased the mattress but not the box spring because I could see through the mesh on the bottom that no bugs had entered.";
+    			t28 = space();
+    			p2 = element("p");
+    			p2.textContent = "A coffee grinder was used to Fluff the silica gel (obtained from Ebay) which was then applied (with a big yellow puffer from Amazon.com) under and around my bed and between the box spring and matterss.";
+    			t30 = space();
+    			p3 = element("p");
+    			p3.textContent = "I knew bed bugs would not lay dormant in furnature, walls, and rugs when they sensed a source of carbon dioxide. I was confident that failing to find a route to my bed around the silica gel they would give up and walk through silica gel in an effort to obtain blood. Their life expectancy was then a couple of days, at most.";
+    			t32 = space();
+    			p4 = element("p");
+    			p4.textContent = "I puffed silica gel into light sockets and anywhere a wall panel could be removed. Soon, the only bed bugs I could find were located in upholstered furniture. I could have killed them, but I decided to throw the invested furnitue away.";
+    			t34 = space();
+    			p5 = element("p");
+    			p5.textContent = "Professional exterminators get unsatisfactory results with silica gel because they won't leave a site that has visible white powder on the floor. They tried applying silica gel in water, which seems absurd since silica gel kills bed bugs by drying them out.";
+    			t36 = space();
+    			p6 = element("p");
+    			p6.textContent = "The little packets of drying agent found in jars and bags of commercial consumer goods usually contain silica gel. USDA regulations allow up to two percent silica gel in food. You should wear a dust mask while dispensing silica gel with a puffer, or else hold your breath and rush into an adjacent room when you need air.";
+    			t38 = space();
+    			p7 = element("p");
+    			p7.textContent = "Professional eradicators don't leave visible residues on floors. That is why they get poor results with silica gel; results comparable to the ones they get with toxic pesticides. Professional exterminators have been known to apply silica gel dissolved in water, which seems absurd in light of the fact that silica gel kills bed bugs by drying them up.";
+    			add_location(p0, file$5, 17, 0, 578);
+    			add_location(span0, file$5, 18, 0, 1032);
+    			set_style(span1, "font-weight", "900");
+    			set_style(span1, "color", "#ddff00");
+    			add_location(span1, file$5, 19, 0, 1180);
+    			add_location(h3, file$5, 20, 0, 1280);
+    			add_location(li0, file$5, 22, 0, 1325);
+    			add_location(li1, file$5, 23, 0, 1384);
+    			add_location(li2, file$5, 24, 0, 1451);
+    			add_location(li3, file$5, 25, 0, 1544);
+    			add_location(li4, file$5, 26, 0, 1625);
+    			add_location(li5, file$5, 27, 0, 1693);
+    			add_location(li6, file$5, 28, 0, 1760);
+    			add_location(li7, file$5, 29, 0, 1865);
+    			add_location(li8, file$5, 30, 0, 1953);
+    			add_location(ul, file$5, 21, 0, 1320);
+    			add_location(p1, file$5, 32, 0, 2052);
+    			add_location(p2, file$5, 33, 0, 2255);
+    			add_location(p3, file$5, 34, 0, 2466);
+    			add_location(p4, file$5, 35, 0, 2799);
+    			add_location(p5, file$5, 38, 0, 3046);
+    			add_location(p6, file$5, 39, 0, 3312);
+    			add_location(p7, file$5, 40, 0, 3642);
     		},
 
     		l: function claim(nodes) {
@@ -2735,37 +2679,53 @@ console.log("a is", a)  // a is 900`;
     		m: function mount(target, anchor) {
     			if (if_block) if_block.m(target, anchor);
     			insert(target, t0, anchor);
-    			insert(target, div, anchor);
-    			append(div, p0);
-    			append(div, t2);
-    			append(div, p1);
-    			append(div, t4);
-    			append(div, p2);
-    			append(div, t6);
-    			append(div, p3);
-    			append(div, t8);
-    			append(div, p4);
-    			append(div, t10);
-    			append(div, p5);
-    			append(div, t12);
-    			append(div, p6);
-    			append(div, t14);
-    			append(div, p7);
-    			append(div, t16);
-    			append(div, p8);
-    			append(div, t18);
-    			append(div, p9);
-    			append(div, t20);
-    			append(div, p10);
-    			append(div, t22);
-    			append(div, p11);
+    			insert(target, p0, anchor);
+    			insert(target, t2, anchor);
+    			insert(target, span0, anchor);
+    			insert(target, t4, anchor);
+    			insert(target, span1, anchor);
+    			insert(target, t6, anchor);
+    			insert(target, h3, anchor);
+    			insert(target, t8, anchor);
+    			insert(target, ul, anchor);
+    			append(ul, li0);
+    			append(ul, t10);
+    			append(ul, li1);
+    			append(ul, t12);
+    			append(ul, li2);
+    			append(ul, t14);
+    			append(ul, li3);
+    			append(ul, t16);
+    			append(ul, li4);
+    			append(ul, t18);
+    			append(ul, li5);
+    			append(ul, t20);
+    			append(ul, li6);
+    			append(ul, t22);
+    			append(ul, li7);
+    			append(ul, t24);
+    			append(ul, li8);
+    			insert(target, t26, anchor);
+    			insert(target, p1, anchor);
+    			insert(target, t28, anchor);
+    			insert(target, p2, anchor);
+    			insert(target, t30, anchor);
+    			insert(target, p3, anchor);
+    			insert(target, t32, anchor);
+    			insert(target, p4, anchor);
+    			insert(target, t34, anchor);
+    			insert(target, p5, anchor);
+    			insert(target, t36, anchor);
+    			insert(target, p6, anchor);
+    			insert(target, t38, anchor);
+    			insert(target, p7, anchor);
     			current = true;
     		},
 
     		p: function update(changed, ctx) {
     			{
     				if (!if_block) {
-    					if_block = create_if_block$4();
+    					if_block = create_if_block$3();
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(t0.parentNode, t0);
@@ -2791,7 +2751,29 @@ console.log("a is", a)  // a is 900`;
 
     			if (detaching) {
     				detach(t0);
-    				detach(div);
+    				detach(p0);
+    				detach(t2);
+    				detach(span0);
+    				detach(t4);
+    				detach(span1);
+    				detach(t6);
+    				detach(h3);
+    				detach(t8);
+    				detach(ul);
+    				detach(t26);
+    				detach(p1);
+    				detach(t28);
+    				detach(p2);
+    				detach(t30);
+    				detach(p3);
+    				detach(t32);
+    				detach(p4);
+    				detach(t34);
+    				detach(p5);
+    				detach(t36);
+    				detach(p6);
+    				detach(t38);
+    				detach(p7);
     			}
     		}
     	};
@@ -2805,55 +2787,54 @@ console.log("a is", a)  // a is 900`;
     class Bugs extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$4, create_fragment$4, safe_not_equal, []);
+    		init(this, options, instance$4, create_fragment$5, safe_not_equal, []);
     	}
     }
 
     /* src/Matrix.svelte generated by Svelte v3.9.1 */
 
-    const file$5 = "src/Matrix.svelte";
+    const file$6 = "src/Matrix.svelte";
 
-    // (152:0) {#if j === 5}
-    function create_if_block$5(ctx) {
-    	var div, br0, br1, t0, div_intro, div_outro, t1, current;
+    // (151:0) {#if visible}
+    function create_if_block$4(ctx) {
+    	var div, br0, br1, t, div_transition, current;
 
     	return {
     		c: function create() {
     			div = element("div");
     			br0 = element("br");
     			br1 = element("br");
-    			t0 = text("\n A LITTLE SVELTE MODULE");
-    			t1 = text("\n console.log(\"Fuck her real hard and long.\")");
-    			add_location(br0, file$5, 153, 1, 3728);
-    			add_location(br1, file$5, 153, 5, 3732);
-    			attr(div, "class", "fade svelte-1yqwhho");
-    			add_location(div, file$5, 152, 1, 3639);
+    			t = text("\n A LITTLE SVELTE MODULE");
+    			add_location(br0, file$6, 152, 1, 4115);
+    			add_location(br1, file$6, 152, 5, 4119);
+    			set_style(div, "font-family", "Times New Roman");
+    			set_style(div, "text-align", "center");
+    			set_style(div, "color", "hsl(210, 90%, 90%)");
+    			set_style(div, "font-size", "32px");
+    			add_location(div, file$6, 151, 1, 3987);
     		},
 
     		m: function mount(target, anchor) {
     			insert(target, div, anchor);
     			append(div, br0);
     			append(div, br1);
-    			append(div, t0);
-    			insert(target, t1, anchor);
+    			append(div, t);
     			current = true;
     		},
 
     		i: function intro(local) {
     			if (current) return;
     			add_render_callback(() => {
-    				if (div_outro) div_outro.end(1);
-    				if (!div_intro) div_intro = create_in_transition(div, fade, {duration: 1000});
-    				div_intro.start();
+    				if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, true);
+    				div_transition.run(1);
     			});
 
     			current = true;
     		},
 
     		o: function outro(local) {
-    			if (div_intro) div_intro.invalidate();
-
-    			div_outro = create_out_transition(div, fly, {y: -40, duration: 1000});
+    			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
+    			div_transition.run(0);
 
     			current = false;
     		},
@@ -2861,34 +2842,33 @@ console.log("a is", a)  // a is 900`;
     		d: function destroy(detaching) {
     			if (detaching) {
     				detach(div);
-    				if (div_outro) div_outro.end();
-    				detach(t1);
+    				if (div_transition) div_transition.end();
     			}
     		}
     	};
     }
 
-    function create_fragment$5(ctx) {
-    	var t0, p0, t2, p1, t4, br0, t5, br1, t6, div3, div1, button0, t8, br2, t9, br3, t10, div0, t11, t12, t13, br4, t14, button1, t16, br5, t17, br6, t18, div2, button2, t19_value = ctx.cache[ctx.j][0] + "", t19, t20, button3, t21_value = ctx.cache[ctx.j][1] + "", t21, t22, button4, t23_value = ctx.cache[ctx.j][2] + "", t23, t24, br7, t25, br8, t26, button5, t27_value = ctx.cache[ctx.j][3] + "", t27, t28, button6, t29_value = ctx.cache[ctx.j][4] + "", t29, t30, button7, t31_value = ctx.cache[ctx.j][5] + "", t31, t32, br9, t33, br10, t34, button8, t35_value = ctx.cache[ctx.j][6] + "", t35, t36, button9, t37_value = ctx.cache[ctx.j][7] + "", t37, t38, button10, t39_value = ctx.cache[ctx.j][8] + "", t39, t40, p2, t42, pre0, t43, t44, p3, t46, pre1, t47, t48, p4, current, dispose;
+    function create_fragment$6(ctx) {
+    	var t0, div3, div1, p0, t2, p1, t4, br0, t5, br1, t6, button0, t8, br2, t9, br3, t10, div0, button1, t11, t12, br4, t13, button2, t15, br5, t16, br6, t17, div2, br7, br8, br9, br10, br11, br12, br13, br14, br15, br16, t18, button3, t19_value = ctx.cache[ctx.j][0] + "", t19, t20, button4, t21_value = ctx.cache[ctx.j][1] + "", t21, t22, button5, t23_value = ctx.cache[ctx.j][2] + "", t23, t24, br17, t25, br18, t26, button6, t27_value = ctx.cache[ctx.j][3] + "", t27, t28, button7, t29_value = ctx.cache[ctx.j][4] + "", t29, t30, button8, t31_value = ctx.cache[ctx.j][5] + "", t31, t32, br19, t33, br20, t34, button9, t35_value = ctx.cache[ctx.j][6] + "", t35, t36, button10, t37_value = ctx.cache[ctx.j][7] + "", t37, t38, button11, t39_value = ctx.cache[ctx.j][8] + "", t39, t40, p2, t42, pre0, t43, t44, p3, t46, pre1, t47, t48, p4, current, dispose;
 
-    	var if_block = (ctx.j === 5) && create_if_block$5();
+    	var if_block =  create_if_block$4();
 
     	return {
     		c: function create() {
     			if (if_block) if_block.c();
     			t0 = space();
+    			div3 = element("div");
+    			div1 = element("div");
     			p0 = element("p");
-    			p0.textContent = "If you click any two numbers (below), they switch locations and a \"BACK\" button appears. If you go back and click two numbers, the result gets inserted  at the current location.";
+    			p0.textContent = "If you click any two numbers (below), they switch locations and a \"BACK\" button appears. If you go back and click two numbers, the result gets inserted  at your location.";
     			t2 = space();
     			p1 = element("p");
-    			p1.textContent = "Each topic in this blog is a small module. Global variables are only global relative to their containing modules, so name clashes, unexpected state changes, and bugs stemming from mutations are easily avoided.";
+    			p1.textContent = "I can use simple variables knowing they will never clash with a similarly named variable in a differenct module. Svelte code is consise and efficient. Coding in Svelte is so relaxing.";
     			t4 = space();
     			br0 = element("br");
     			t5 = space();
     			br1 = element("br");
     			t6 = space();
-    			div3 = element("div");
-    			div1 = element("div");
     			button0 = element("button");
     			button0.textContent = "BACK";
     			t8 = space();
@@ -2897,119 +2877,142 @@ console.log("a is", a)  // a is 900`;
     			br3 = element("br");
     			t10 = space();
     			div0 = element("div");
-    			t11 = text("Index: ");
-    			t12 = text(ctx.j);
-    			t13 = space();
-    			br4 = element("br");
-    			t14 = space();
     			button1 = element("button");
-    			button1.textContent = "FORWARD";
-    			t16 = space();
-    			br5 = element("br");
-    			t17 = space();
-    			br6 = element("br");
-    			t18 = space();
-    			div2 = element("div");
+    			t11 = text(ctx.j);
+    			t12 = space();
+    			br4 = element("br");
+    			t13 = space();
     			button2 = element("button");
+    			button2.textContent = "FORWARD";
+    			t15 = space();
+    			br5 = element("br");
+    			t16 = space();
+    			br6 = element("br");
+    			t17 = space();
+    			div2 = element("div");
+    			br7 = element("br");
+    			br8 = element("br");
+    			br9 = element("br");
+    			br10 = element("br");
+    			br11 = element("br");
+    			br12 = element("br");
+    			br13 = element("br");
+    			br14 = element("br");
+    			br15 = element("br");
+    			br16 = element("br");
+    			t18 = space();
+    			button3 = element("button");
     			t19 = text(t19_value);
     			t20 = space();
-    			button3 = element("button");
+    			button4 = element("button");
     			t21 = text(t21_value);
     			t22 = space();
-    			button4 = element("button");
+    			button5 = element("button");
     			t23 = text(t23_value);
     			t24 = space();
-    			br7 = element("br");
+    			br17 = element("br");
     			t25 = space();
-    			br8 = element("br");
+    			br18 = element("br");
     			t26 = space();
-    			button5 = element("button");
+    			button6 = element("button");
     			t27 = text(t27_value);
     			t28 = space();
-    			button6 = element("button");
+    			button7 = element("button");
     			t29 = text(t29_value);
     			t30 = space();
-    			button7 = element("button");
+    			button8 = element("button");
     			t31 = text(t31_value);
     			t32 = space();
-    			br9 = element("br");
+    			br19 = element("br");
     			t33 = space();
-    			br10 = element("br");
+    			br20 = element("br");
     			t34 = space();
-    			button8 = element("button");
+    			button9 = element("button");
     			t35 = text(t35_value);
     			t36 = space();
-    			button9 = element("button");
+    			button10 = element("button");
     			t37 = text(t37_value);
     			t38 = space();
-    			button10 = element("button");
+    			button11 = element("button");
     			t39 = text(t39_value);
     			t40 = space();
     			p2 = element("p");
-    			p2.textContent = "This is the essential JavaScript code inside of the script tags;";
+    			p2.textContent = "This is the JavaScript code inside of the script tags except for the definitions of the variables \"code\" and \"html\", which are just the code and html cut and pasted inside of back quotes:";
     			t42 = space();
     			pre0 = element("pre");
     			t43 = text(ctx.code);
     			t44 = space();
     			p3 = element("p");
-    			p3.textContent = "And here's the HTML code (commentary omitted):";
+    			p3.textContent = "And here is the HTML code:";
     			t46 = space();
     			pre1 = element("pre");
     			t47 = text(ctx.html);
     			t48 = space();
     			p4 = element("p");
-    			p4.textContent = "Svelte still has some quirks and rough edges, but the ease with which it handles reactivity is so impressive that I'm sticking with it for this little application and more to come.";
-    			add_location(p0, file$5, 158, 0, 3820);
-    			add_location(p1, file$5, 159, 0, 4006);
-    			add_location(br0, file$5, 160, 0, 4225);
-    			add_location(br1, file$5, 161, 0, 4230);
-    			add_location(button0, file$5, 166, 3, 4352);
-    			add_location(br2, file$5, 169, 0, 4399);
-    			add_location(br3, file$5, 170, 0, 4404);
-    			add_location(div0, file$5, 171, 3, 4412);
-    			add_location(br4, file$5, 172, 0, 4436);
-    			add_location(button1, file$5, 173, 1, 4442);
-    			add_location(br5, file$5, 176, 1, 4494);
-    			add_location(br6, file$5, 177, 1, 4500);
-    			set_style(div1, "text-align", "right");
-    			add_location(div1, file$5, 163, 24, 4313);
-    			attr(button2, "id", "m0");
-    			add_location(button2, file$5, 180, 0, 4602);
-    			attr(button3, "id", "m1");
-    			add_location(button3, file$5, 181, 0, 4664);
-    			attr(button4, "id", "m2");
-    			add_location(button4, file$5, 182, 0, 4726);
-    			add_location(br7, file$5, 183, 0, 4788);
-    			add_location(br8, file$5, 184, 0, 4793);
-    			attr(button5, "id", "m3");
-    			add_location(button5, file$5, 185, 0, 4798);
-    			attr(button6, "id", "m4");
-    			add_location(button6, file$5, 186, 0, 4860);
-    			attr(button7, "id", "m5");
-    			add_location(button7, file$5, 187, 0, 4922);
-    			add_location(br9, file$5, 188, 0, 4984);
-    			add_location(br10, file$5, 189, 0, 4989);
-    			attr(button8, "id", "m6");
-    			add_location(button8, file$5, 190, 0, 4994);
-    			attr(button9, "id", "m7");
-    			add_location(button9, file$5, 191, 0, 5056);
-    			attr(button10, "id", "m8");
-    			add_location(button10, file$5, 192, 0, 5118);
-    			set_style(div2, "margin-left", "5%");
+    			p4.textContent = "I'm new to Svelte and so far I am very impressed.";
+    			add_location(p0, file$6, 159, 0, 4286);
+    			add_location(p1, file$6, 160, 0, 4465);
+    			add_location(br0, file$6, 162, 0, 4659);
+    			add_location(br1, file$6, 163, 0, 4664);
+    			add_location(button0, file$6, 164, 1, 4670);
+    			add_location(br2, file$6, 167, 0, 4713);
+    			add_location(br3, file$6, 168, 0, 4718);
+    			add_location(button1, file$6, 169, 33, 4756);
+    			set_style(div0, "text-indent", "20px");
+    			add_location(div0, file$6, 169, 3, 4726);
+    			add_location(br4, file$6, 170, 0, 4785);
+    			add_location(button2, file$6, 171, 1, 4791);
+    			add_location(br5, file$6, 174, 1, 4841);
+    			add_location(br6, file$6, 175, 1, 4847);
+    			set_style(div1, "margin-Left", "2%");
+    			set_style(div1, "width", "50%");
+    			add_location(div1, file$6, 157, 24, 4240);
+    			add_location(br7, file$6, 178, 0, 4949);
+    			add_location(br8, file$6, 178, 4, 4953);
+    			add_location(br9, file$6, 178, 8, 4957);
+    			add_location(br10, file$6, 178, 12, 4961);
+    			add_location(br11, file$6, 178, 16, 4965);
+    			add_location(br12, file$6, 178, 20, 4969);
+    			add_location(br13, file$6, 178, 24, 4973);
+    			add_location(br14, file$6, 178, 28, 4977);
+    			add_location(br15, file$6, 178, 32, 4981);
+    			add_location(br16, file$6, 178, 36, 4985);
+    			attr(button3, "id", "m0");
+    			add_location(button3, file$6, 179, 0, 4990);
+    			attr(button4, "id", "m1");
+    			add_location(button4, file$6, 180, 0, 5052);
+    			attr(button5, "id", "m2");
+    			add_location(button5, file$6, 181, 0, 5114);
+    			add_location(br17, file$6, 182, 0, 5176);
+    			add_location(br18, file$6, 183, 0, 5181);
+    			attr(button6, "id", "m3");
+    			add_location(button6, file$6, 184, 0, 5186);
+    			attr(button7, "id", "m4");
+    			add_location(button7, file$6, 185, 0, 5248);
+    			attr(button8, "id", "m5");
+    			add_location(button8, file$6, 186, 0, 5310);
+    			add_location(br19, file$6, 187, 0, 5372);
+    			add_location(br20, file$6, 188, 0, 5377);
+    			attr(button9, "id", "m6");
+    			add_location(button9, file$6, 189, 0, 5382);
+    			attr(button10, "id", "m7");
+    			add_location(button10, file$6, 190, 0, 5444);
+    			attr(button11, "id", "m8");
+    			add_location(button11, file$6, 191, 0, 5506);
+    			set_style(div2, "marginRight", "2%");
     			set_style(div2, "width", "50%");
-    			add_location(div2, file$5, 179, 21, 4557);
+    			add_location(div2, file$6, 177, 21, 4904);
     			set_style(div3, "display", "flex");
-    			add_location(div3, file$5, 162, 24, 4259);
-    			add_location(p2, file$5, 195, 0, 5194);
-    			add_location(pre0, file$5, 196, 0, 5268);
-    			add_location(p3, file$5, 197, 0, 5286);
-    			add_location(pre1, file$5, 198, 0, 5342);
-    			add_location(p4, file$5, 199, 0, 5360);
+    			add_location(div3, file$6, 156, 24, 4186);
+    			add_location(p2, file$6, 194, 0, 5582);
+    			add_location(pre0, file$6, 195, 0, 5779);
+    			add_location(p3, file$6, 196, 0, 5797);
+    			add_location(pre1, file$6, 197, 0, 5833);
+    			add_location(p4, file$6, 198, 0, 5851);
 
     			dispose = [
     				listen(button0, "click", ctx.back),
-    				listen(button1, "click", ctx.forward),
-    				listen(button2, "click", ctx.ob.push),
+    				listen(button2, "click", ctx.forward),
     				listen(button3, "click", ctx.ob.push),
     				listen(button4, "click", ctx.ob.push),
     				listen(button5, "click", ctx.ob.push),
@@ -3017,7 +3020,8 @@ console.log("a is", a)  // a is 900`;
     				listen(button7, "click", ctx.ob.push),
     				listen(button8, "click", ctx.ob.push),
     				listen(button9, "click", ctx.ob.push),
-    				listen(button10, "click", ctx.ob.push)
+    				listen(button10, "click", ctx.ob.push),
+    				listen(button11, "click", ctx.ob.push)
     			];
     		},
 
@@ -3028,16 +3032,16 @@ console.log("a is", a)  // a is 900`;
     		m: function mount(target, anchor) {
     			if (if_block) if_block.m(target, anchor);
     			insert(target, t0, anchor);
-    			insert(target, p0, anchor);
-    			insert(target, t2, anchor);
-    			insert(target, p1, anchor);
-    			insert(target, t4, anchor);
-    			insert(target, br0, anchor);
-    			insert(target, t5, anchor);
-    			insert(target, br1, anchor);
-    			insert(target, t6, anchor);
     			insert(target, div3, anchor);
     			append(div3, div1);
+    			append(div1, p0);
+    			append(div1, t2);
+    			append(div1, p1);
+    			append(div1, t4);
+    			append(div1, br0);
+    			append(div1, t5);
+    			append(div1, br1);
+    			append(div1, t6);
     			append(div1, button0);
     			append(div1, t8);
     			append(div1, br2);
@@ -3045,52 +3049,63 @@ console.log("a is", a)  // a is 900`;
     			append(div1, br3);
     			append(div1, t10);
     			append(div1, div0);
-    			append(div0, t11);
-    			append(div0, t12);
-    			append(div1, t13);
+    			append(div0, button1);
+    			append(button1, t11);
+    			append(div1, t12);
     			append(div1, br4);
-    			append(div1, t14);
-    			append(div1, button1);
-    			append(div1, t16);
+    			append(div1, t13);
+    			append(div1, button2);
+    			append(div1, t15);
     			append(div1, br5);
-    			append(div1, t17);
+    			append(div1, t16);
     			append(div1, br6);
-    			append(div3, t18);
+    			append(div3, t17);
     			append(div3, div2);
-    			append(div2, button2);
-    			append(button2, t19);
-    			append(div2, t20);
-    			append(div2, button3);
-    			append(button3, t21);
-    			append(div2, t22);
-    			append(div2, button4);
-    			append(button4, t23);
-    			append(div2, t24);
     			append(div2, br7);
-    			append(div2, t25);
     			append(div2, br8);
-    			append(div2, t26);
-    			append(div2, button5);
-    			append(button5, t27);
-    			append(div2, t28);
-    			append(div2, button6);
-    			append(button6, t29);
-    			append(div2, t30);
-    			append(div2, button7);
-    			append(button7, t31);
-    			append(div2, t32);
     			append(div2, br9);
-    			append(div2, t33);
     			append(div2, br10);
-    			append(div2, t34);
+    			append(div2, br11);
+    			append(div2, br12);
+    			append(div2, br13);
+    			append(div2, br14);
+    			append(div2, br15);
+    			append(div2, br16);
+    			append(div2, t18);
+    			append(div2, button3);
+    			append(button3, t19);
+    			append(div2, t20);
+    			append(div2, button4);
+    			append(button4, t21);
+    			append(div2, t22);
+    			append(div2, button5);
+    			append(button5, t23);
+    			append(div2, t24);
+    			append(div2, br17);
+    			append(div2, t25);
+    			append(div2, br18);
+    			append(div2, t26);
+    			append(div2, button6);
+    			append(button6, t27);
+    			append(div2, t28);
+    			append(div2, button7);
+    			append(button7, t29);
+    			append(div2, t30);
     			append(div2, button8);
-    			append(button8, t35);
-    			append(div2, t36);
+    			append(button8, t31);
+    			append(div2, t32);
+    			append(div2, br19);
+    			append(div2, t33);
+    			append(div2, br20);
+    			append(div2, t34);
     			append(div2, button9);
-    			append(button9, t37);
-    			append(div2, t38);
+    			append(button9, t35);
+    			append(div2, t36);
     			append(div2, button10);
-    			append(button10, t39);
+    			append(button10, t37);
+    			append(div2, t38);
+    			append(div2, button11);
+    			append(button11, t39);
     			insert(target, t40, anchor);
     			insert(target, p2, anchor);
     			insert(target, t42, anchor);
@@ -3107,25 +3122,19 @@ console.log("a is", a)  // a is 900`;
     		},
 
     		p: function update(changed, ctx) {
-    			if (ctx.j === 5) {
+    			{
     				if (!if_block) {
-    					if_block = create_if_block$5();
+    					if_block = create_if_block$4();
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(t0.parentNode, t0);
     				} else {
     									transition_in(if_block, 1);
     				}
-    			} else if (if_block) {
-    				group_outros();
-    				transition_out(if_block, 1, 1, () => {
-    					if_block = null;
-    				});
-    				check_outros();
     			}
 
     			if (!current || changed.j) {
-    				set_data(t12, ctx.j);
+    				set_data(t11, ctx.j);
     			}
 
     			if ((!current || changed.j) && t19_value !== (t19_value = ctx.cache[ctx.j][0] + "")) {
@@ -3181,14 +3190,6 @@ console.log("a is", a)  // a is 900`;
 
     			if (detaching) {
     				detach(t0);
-    				detach(p0);
-    				detach(t2);
-    				detach(p1);
-    				detach(t4);
-    				detach(br0);
-    				detach(t5);
-    				detach(br1);
-    				detach(t6);
     				detach(div3);
     				detach(t40);
     				detach(p2);
@@ -3315,6 +3316,7 @@ console.log("a is", a)  // a is 900`;
                         <div style = "display: flex">
                         <div style = "margin-Left: 2%; width: 50%" >
 
+<p> If you click any two numbers (below), they switch locations and a "BACK" button appears. If you go back and click two numbers, the result gets inserted  at your location.</p>
 <br>	<button on:click={back}>
 		BACK
 	</button>
@@ -3342,10 +3344,15 @@ console.log("a is", a)  // a is 900`;
 <br>
 <button id = m6  on:click = {ob.push} >{cache[j][6]}</button>
 <button id = m7  on:click = {ob.push} >{cache[j]
-   [7]}</button>r
+   [7]}</button>
 <button id = m8  on:click = {ob.push} >{cache[j][8]}</button>
 </div>
-</div> `;
+</div>
+<p> This is the JavaScript code inside of the script tags except for the definitions of the variables "code" and "html", which are just the code and html cut and pasted inside of back quotes: </p>
+<pre>{code}</pre>
+<p> And here is the HTML code: </p>
+<pre>{html}</pre>
+<p> Is Svelte awesome, or what? </p> `;
 
     	$$self.$$.update = ($$dirty = { j: 1 }) => {
     		if ($$dirty.j) ;
@@ -3358,16 +3365,16 @@ console.log("a is", a)  // a is 900`;
     class Matrix extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$5, create_fragment$5, safe_not_equal, []);
+    		init(this, options, instance$5, create_fragment$6, safe_not_equal, []);
     	}
     }
 
     /* src/Transducer.svelte generated by Svelte v3.9.1 */
 
-    const file$6 = "src/Transducer.svelte";
+    const file$7 = "src/Transducer.svelte";
 
     // (398:0) {#if visible}
-    function create_if_block$6(ctx) {
+    function create_if_block$5(ctx) {
     	var div, div_transition, current;
 
     	return {
@@ -3378,7 +3385,7 @@ console.log("a is", a)  // a is 900`;
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file$6, 398, 1, 8910);
+    			add_location(div, file$7, 398, 1, 8910);
     		},
 
     		m: function mount(target, anchor) {
@@ -3412,10 +3419,10 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function create_fragment$6(ctx) {
-    	var br0, br1, br2, t0, t1, br3, br4, t2, p0, t4, p1, t6, p2, t8, p3, t10, br5, br6, t11, div0, t13, br7, t14, div1, t15, t16_value = ctx.A_A.join(", ") + "", t16, t17, t18, br8, t19, br9, t20, div2, t22, br10, t23, div3, t24, t25_value = ctx.B_B.join(", ") + "", t25, t26, t27, br11, t28, br12, t29, div4, t31, br13, t32, div5, t33, t34_value = ctx.C_C.join(", ") + "", t34, t35, t36, br14, t37_1, br15, t38, div6, t40, br16, t41, div7, t42, t43_value = ctx.D_D.join(", ") + "", t43, t44, t45, br17, t46, br18, t47, button0, t49, button1, t51, br19, br20, t52, div8, t53, t54, t55, br21, t56, div9, t57, t58_value = ctx.ar74.join(", ") + "", t58, t59, t60, br22, t61, div10, t63, pre0, t64, t65, p4, t67, div11, t69, pre1, t71, p5, t73, div12, t75, pre2, t77, p6, t79, p7, t81, pre3, t82, t83, p8, t85, pre4, t86, t87, span0, t89, a, t91, span1, current, dispose;
+    function create_fragment$7(ctx) {
+    	var br0, br1, br2, t0, t1, br3, br4, t2, p0, t4, p1, t6, p2, t8, p3, t10, br5, br6, t11, div0, t12, t13_value = ctx.transducerResult.length + "", t13, t14, br7, br8, t15, div1, t17, br9, t18, div2, t19, t20_value = ctx.A_A.join(", ") + "", t20, t21, t22, br10, t23, br11, t24, div3, t26, br12, t27, div4, t28, t29_value = ctx.B_B.join(", ") + "", t29, t30, t31, br13, t32, br14, t33, div5, t35, br15, t36, div6, t37_1, t38_value = ctx.C_C.join(", ") + "", t38, t39, t40, br16, t41, br17, t42, div7, t44, br18, t45, div8, t46, t47_value = ctx.D_D.join(", ") + "", t47, t48, t49, br19, t50, br20, t51, button0, t53, button1, t55, br21, br22, t56, div9, t57, t58, t59, br23, t60, div10, t61, t62_value = ctx.ar74.join(", ") + "", t62, t63, t64, br24, t65, div11, t67, pre0, t68, t69, p4, t71, div12, t73, pre1, t75, p5, t77, div13, t79, pre2, t81, p6, t83, p7, t85, pre3, t86, t87, p8, t89, pre4, t90, t91, span0, t93, a, t95, span1, current, dispose;
 
-    	var if_block =  create_if_block$6();
+    	var if_block =  create_if_block$5();
 
     	return {
     		c: function create() {
@@ -3444,198 +3451,208 @@ console.log("a is", a)  // a is 900`;
     			br6 = element("br");
     			t11 = space();
     			div0 = element("div");
-    			div0.textContent = "Traditional dot composition";
-    			t13 = space();
-    			br7 = element("br");
+    			t12 = text("Result length is ");
+    			t13 = text(t13_value);
     			t14 = space();
-    			div1 = element("div");
-    			t15 = text("[");
-    			t16 = text(t16_value);
-    			t17 = text("]");
-    			t18 = space();
+    			br7 = element("br");
     			br8 = element("br");
-    			t19 = space();
+    			t15 = space();
+    			div1 = element("div");
+    			div1.textContent = "Traditional dot composition";
+    			t17 = space();
     			br9 = element("br");
-    			t20 = space();
+    			t18 = space();
     			div2 = element("div");
-    			div2.textContent = "Composition in two stages using Monad";
+    			t19 = text("[");
+    			t20 = text(t20_value);
+    			t21 = text("]");
     			t22 = space();
     			br10 = element("br");
     			t23 = space();
-    			div3 = element("div");
-    			t24 = text("[");
-    			t25 = text(t25_value);
-    			t26 = text("]");
-    			t27 = space();
     			br11 = element("br");
-    			t28 = space();
+    			t24 = space();
+    			div3 = element("div");
+    			div3.textContent = "Composition in two stages using Monad";
+    			t26 = space();
     			br12 = element("br");
-    			t29 = space();
+    			t27 = space();
     			div4 = element("div");
-    			div4.textContent = "Composition in one traversal using Monad";
+    			t28 = text("[");
+    			t29 = text(t29_value);
+    			t30 = text("]");
     			t31 = space();
     			br13 = element("br");
     			t32 = space();
-    			div5 = element("div");
-    			t33 = text("[");
-    			t34 = text(t34_value);
-    			t35 = text("]");
-    			t36 = space();
     			br14 = element("br");
-    			t37_1 = space();
+    			t33 = space();
+    			div5 = element("div");
+    			div5.textContent = "Composition in one traversal using Monad";
+    			t35 = space();
     			br15 = element("br");
-    			t38 = space();
+    			t36 = space();
     			div6 = element("div");
-    			div6.textContent = "Composition using a standard transducer";
+    			t37_1 = text("[");
+    			t38 = text(t38_value);
+    			t39 = text("]");
     			t40 = space();
     			br16 = element("br");
     			t41 = space();
-    			div7 = element("div");
-    			t42 = text("[");
-    			t43 = text(t43_value);
-    			t44 = text("]");
-    			t45 = space();
     			br17 = element("br");
-    			t46 = space();
+    			t42 = space();
+    			div7 = element("div");
+    			div7.textContent = "Composition using a standard transducer";
+    			t44 = space();
     			br18 = element("br");
-    			t47 = space();
+    			t45 = space();
+    			div8 = element("div");
+    			t46 = text("[");
+    			t47 = text(t47_value);
+    			t48 = text("]");
+    			t49 = space();
+    			br19 = element("br");
+    			t50 = space();
+    			br20 = element("br");
+    			t51 = space();
     			button0 = element("button");
     			button0.textContent = "INCREASE";
-    			t49 = space();
+    			t53 = space();
     			button1 = element("button");
     			button1.textContent = "DECREASE";
-    			t51 = space();
-    			br19 = element("br");
-    			br20 = element("br");
-    			t52 = space();
-    			div8 = element("div");
-    			t53 = text("Array length: ");
-    			t54 = text(ctx.size);
     			t55 = space();
     			br21 = element("br");
+    			br22 = element("br");
     			t56 = space();
     			div9 = element("div");
-    			t57 = text("ar74: [");
-    			t58 = text(t58_value);
-    			t59 = text("]");
+    			t57 = text("Array length: ");
+    			t58 = text(ctx.size);
+    			t59 = space();
+    			br23 = element("br");
     			t60 = space();
-    			br22 = element("br");
-    			t61 = space();
     			div10 = element("div");
-    			div10.textContent = "The modified Monad (below) could benefit from some refactoring, but it does what needs to be done for this demo. The point is that a standard transducer and Monad both use one array traversal to accomplish what the built-in dot method does by traversing the original array and seven intermediary arrays.";
-    			t63 = space();
-    			pre0 = element("pre");
-    			t64 = text(ctx.mon44);
+    			t61 = text("ar74: [");
+    			t62 = text(t62_value);
+    			t63 = text("]");
+    			t64 = space();
+    			br24 = element("br");
     			t65 = space();
+    			div11 = element("div");
+    			div11.textContent = "The modified Monad (below) could benefit from some refactoring, but it does what needs to be done for this demo. The point is that a standard transducer and Monad both use one array traversal to accomplish what the built-in dot method does by traversing the original array and seven intermediary arrays.";
+    			t67 = space();
+    			pre0 = element("pre");
+    			t68 = text(ctx.mon44);
+    			t69 = space();
     			p4 = element("p");
     			p4.textContent = "On my desktop computer, when ar74.length === 100,000 I got this and similar results:";
-    			t67 = space();
-    			div11 = element("div");
-    			div11.textContent = "ar74.length = 100,000:";
-    			t69 = space();
+    			t71 = space();
+    			div12 = element("div");
+    			div12.textContent = "ar74.length = 100,000:";
+    			t73 = space();
     			pre1 = element("pre");
     			pre1.textContent = "Dot method:: 25 ms\nMonad two traversals: 255 ms\nMonad one traversal: 220 ms\nTransducer: 26 ms";
-    			t71 = space();
+    			t75 = space();
     			p5 = element("p");
     			p5.textContent = "ar74.length === 1,000,000 was about as far as I could go without crashing the browser. Here are two typical results:";
-    			t73 = space();
-    			div12 = element("div");
-    			div12.textContent = "Two runs with ar74.length = 1,000,000:";
-    			t75 = space();
+    			t77 = space();
+    			div13 = element("div");
+    			div13.textContent = "Two runs with ar74.length = 1,000,000:";
+    			t79 = space();
     			pre2 = element("pre");
     			pre2.textContent = "Dot method:: 276\nMonad two traversals: 2140\nMonad one traversal: 2060\nTransducer: 180\n\nDot method:: 312\nMonad two traversals: 2093\nMonad one traversal: 2115\nTransducer: 176";
-    			t77 = space();
+    			t81 = space();
     			p6 = element("p");
     			p6.textContent = "As you see, the built-in JavaScript dot method and the transducer gave similar results. The Monad methods are much slower. They're just a proof-of-concept hacks showing the versitility of monads spawned by Monad().";
-    			t79 = space();
+    			t83 = space();
     			p7 = element("p");
     			p7.textContent = "Here's the definition of the increase button's callback function along with the definitions of some assoc some supportingrelated:";
-    			t81 = space();
+    			t85 = space();
     			pre3 = element("pre");
-    			t82 = text(ctx.callback);
-    			t83 = space();
+    			t86 = text(ctx.callback);
+    			t87 = space();
     			p8 = element("p");
     			p8.textContent = "And here's some of the code behind the transducer demonstration:";
-    			t85 = space();
+    			t89 = space();
     			pre4 = element("pre");
-    			t86 = text(ctx.call2);
-    			t87 = space();
+    			t90 = text(ctx.call2);
+    			t91 = space();
     			span0 = element("span");
     			span0.textContent = "The rest of the code can be found in the";
-    			t89 = space();
+    			t93 = space();
     			a = element("a");
     			a.textContent = "Github repository";
-    			t91 = space();
+    			t95 = space();
     			span1 = element("span");
     			span1.textContent = ".";
-    			add_location(br0, file$6, 396, 0, 8882);
-    			add_location(br1, file$6, 396, 4, 8886);
-    			add_location(br2, file$6, 396, 8, 8890);
-    			add_location(br3, file$6, 402, 0, 9073);
-    			add_location(br4, file$6, 402, 4, 9077);
-    			add_location(p0, file$6, 404, 0, 9083);
-    			add_location(p1, file$6, 405, 0, 9494);
-    			add_location(p2, file$6, 406, 0, 9740);
-    			add_location(p3, file$6, 407, 0, 10075);
-    			add_location(br5, file$6, 408, 0, 10183);
-    			add_location(br6, file$6, 408, 4, 10187);
-    			attr(div0, "class", "p svelte-1d81q6r");
-    			add_location(div0, file$6, 409, 0, 10192);
-    			add_location(br7, file$6, 410, 0, 10243);
-    			attr(div1, "class", "q svelte-1d81q6r");
-    			add_location(div1, file$6, 411, 0, 10248);
-    			add_location(br8, file$6, 412, 0, 10289);
-    			add_location(br9, file$6, 413, 0, 10294);
-    			attr(div2, "class", "p svelte-1d81q6r");
-    			add_location(div2, file$6, 414, 0, 10299);
-    			add_location(br10, file$6, 415, 0, 10360);
-    			attr(div3, "class", "q svelte-1d81q6r");
-    			add_location(div3, file$6, 416, 0, 10365);
-    			add_location(br11, file$6, 417, 0, 10407);
-    			add_location(br12, file$6, 418, 0, 10412);
-    			attr(div4, "class", "p svelte-1d81q6r");
-    			add_location(div4, file$6, 419, 0, 10417);
-    			add_location(br13, file$6, 420, 0, 10481);
-    			attr(div5, "class", "q svelte-1d81q6r");
-    			add_location(div5, file$6, 421, 0, 10486);
-    			add_location(br14, file$6, 422, 0, 10528);
-    			add_location(br15, file$6, 423, 0, 10533);
-    			attr(div6, "class", "p svelte-1d81q6r");
-    			add_location(div6, file$6, 424, 0, 10538);
-    			add_location(br16, file$6, 425, 0, 10601);
-    			attr(div7, "class", "q svelte-1d81q6r");
-    			add_location(div7, file$6, 426, 0, 10606);
-    			add_location(br17, file$6, 427, 0, 10648);
-    			add_location(br18, file$6, 428, 0, 10653);
+    			add_location(br0, file$7, 396, 0, 8882);
+    			add_location(br1, file$7, 396, 4, 8886);
+    			add_location(br2, file$7, 396, 8, 8890);
+    			add_location(br3, file$7, 402, 0, 9073);
+    			add_location(br4, file$7, 402, 4, 9077);
+    			add_location(p0, file$7, 404, 0, 9083);
+    			add_location(p1, file$7, 405, 0, 9494);
+    			add_location(p2, file$7, 406, 0, 9740);
+    			add_location(p3, file$7, 407, 0, 10075);
+    			add_location(br5, file$7, 408, 0, 10183);
+    			add_location(br6, file$7, 408, 4, 10187);
+    			add_location(div0, file$7, 409, 0, 10192);
+    			add_location(br7, file$7, 410, 0, 10246);
+    			add_location(br8, file$7, 410, 4, 10250);
+    			attr(div1, "class", "p svelte-1d81q6r");
+    			add_location(div1, file$7, 411, 0, 10255);
+    			add_location(br9, file$7, 412, 0, 10306);
+    			attr(div2, "class", "q svelte-1d81q6r");
+    			add_location(div2, file$7, 413, 0, 10311);
+    			add_location(br10, file$7, 414, 0, 10352);
+    			add_location(br11, file$7, 415, 0, 10357);
+    			attr(div3, "class", "p svelte-1d81q6r");
+    			add_location(div3, file$7, 416, 0, 10362);
+    			add_location(br12, file$7, 417, 0, 10423);
+    			attr(div4, "class", "q svelte-1d81q6r");
+    			add_location(div4, file$7, 418, 0, 10428);
+    			add_location(br13, file$7, 419, 0, 10470);
+    			add_location(br14, file$7, 420, 0, 10475);
+    			attr(div5, "class", "p svelte-1d81q6r");
+    			add_location(div5, file$7, 421, 0, 10480);
+    			add_location(br15, file$7, 422, 0, 10544);
+    			attr(div6, "class", "q svelte-1d81q6r");
+    			add_location(div6, file$7, 423, 0, 10549);
+    			add_location(br16, file$7, 424, 0, 10591);
+    			add_location(br17, file$7, 425, 0, 10596);
+    			attr(div7, "class", "p svelte-1d81q6r");
+    			add_location(div7, file$7, 426, 0, 10601);
+    			add_location(br18, file$7, 427, 0, 10664);
+    			attr(div8, "class", "q svelte-1d81q6r");
+    			add_location(div8, file$7, 428, 0, 10669);
+    			add_location(br19, file$7, 429, 0, 10711);
+    			add_location(br20, file$7, 430, 0, 10716);
     			attr(button0, "class", "but");
-    			add_location(button0, file$6, 429, 0, 10658);
+    			add_location(button0, file$7, 431, 0, 10721);
     			attr(button1, "class", "but");
-    			add_location(button1, file$6, 430, 0, 10718);
-    			add_location(br19, file$6, 431, 0, 10778);
-    			add_location(br20, file$6, 431, 4, 10782);
-    			add_location(div8, file$6, 432, 0, 10787);
-    			add_location(br21, file$6, 433, 0, 10819);
-    			add_location(div9, file$6, 434, 0, 10824);
-    			add_location(br22, file$6, 435, 0, 10861);
-    			add_location(div10, file$6, 436, 0, 10866);
-    			add_location(pre0, file$6, 437, 0, 11182);
-    			add_location(p4, file$6, 438, 0, 11201);
-    			set_style(div11, "color", "#BBFFBB");
-    			add_location(div11, file$6, 439, 0, 11295);
-    			add_location(pre1, file$6, 441, 0, 11355);
-    			add_location(p5, file$6, 445, 0, 11461);
+    			add_location(button1, file$7, 432, 0, 10781);
+    			add_location(br21, file$7, 433, 0, 10841);
+    			add_location(br22, file$7, 433, 4, 10845);
+    			add_location(div9, file$7, 434, 0, 10850);
+    			add_location(br23, file$7, 435, 0, 10882);
+    			add_location(div10, file$7, 436, 0, 10887);
+    			add_location(br24, file$7, 437, 0, 10924);
+    			add_location(div11, file$7, 438, 0, 10929);
+    			add_location(pre0, file$7, 439, 0, 11245);
+    			add_location(p4, file$7, 440, 0, 11264);
     			set_style(div12, "color", "#BBFFBB");
-    			add_location(div12, file$6, 447, 0, 11588);
-    			add_location(pre2, file$6, 449, 0, 11664);
-    			add_location(p6, file$6, 458, 0, 11849);
-    			add_location(p7, file$6, 459, 0, 12073);
-    			add_location(pre3, file$6, 460, 0, 12212);
-    			add_location(p8, file$6, 461, 0, 12234);
-    			add_location(pre4, file$6, 462, 0, 12308);
-    			add_location(span0, file$6, 463, 0, 12327);
+    			add_location(div12, file$7, 441, 0, 11358);
+    			add_location(pre1, file$7, 443, 0, 11418);
+    			add_location(p5, file$7, 447, 0, 11524);
+    			set_style(div13, "color", "#BBFFBB");
+    			add_location(div13, file$7, 449, 0, 11651);
+    			add_location(pre2, file$7, 451, 0, 11727);
+    			add_location(p6, file$7, 460, 0, 11912);
+    			add_location(p7, file$7, 461, 0, 12136);
+    			add_location(pre3, file$7, 462, 0, 12275);
+    			add_location(p8, file$7, 463, 0, 12297);
+    			add_location(pre4, file$7, 464, 0, 12371);
+    			add_location(span0, file$7, 465, 0, 12390);
     			attr(a, "href", "https://github.com/dschalk/blog");
-    			add_location(a, file$6, 464, 0, 12383);
-    			add_location(span1, file$6, 465, 0, 12449);
+    			add_location(a, file$7, 466, 0, 12446);
+    			add_location(span1, file$7, 467, 0, 12512);
 
     			dispose = [
     				listen(button0, "click", ctx.increase),
@@ -3669,110 +3686,117 @@ console.log("a is", a)  // a is 900`;
     			insert(target, br6, anchor);
     			insert(target, t11, anchor);
     			insert(target, div0, anchor);
-    			insert(target, t13, anchor);
-    			insert(target, br7, anchor);
+    			append(div0, t12);
+    			append(div0, t13);
     			insert(target, t14, anchor);
-    			insert(target, div1, anchor);
-    			append(div1, t15);
-    			append(div1, t16);
-    			append(div1, t17);
-    			insert(target, t18, anchor);
+    			insert(target, br7, anchor);
     			insert(target, br8, anchor);
-    			insert(target, t19, anchor);
+    			insert(target, t15, anchor);
+    			insert(target, div1, anchor);
+    			insert(target, t17, anchor);
     			insert(target, br9, anchor);
-    			insert(target, t20, anchor);
+    			insert(target, t18, anchor);
     			insert(target, div2, anchor);
+    			append(div2, t19);
+    			append(div2, t20);
+    			append(div2, t21);
     			insert(target, t22, anchor);
     			insert(target, br10, anchor);
     			insert(target, t23, anchor);
-    			insert(target, div3, anchor);
-    			append(div3, t24);
-    			append(div3, t25);
-    			append(div3, t26);
-    			insert(target, t27, anchor);
     			insert(target, br11, anchor);
-    			insert(target, t28, anchor);
+    			insert(target, t24, anchor);
+    			insert(target, div3, anchor);
+    			insert(target, t26, anchor);
     			insert(target, br12, anchor);
-    			insert(target, t29, anchor);
+    			insert(target, t27, anchor);
     			insert(target, div4, anchor);
+    			append(div4, t28);
+    			append(div4, t29);
+    			append(div4, t30);
     			insert(target, t31, anchor);
     			insert(target, br13, anchor);
     			insert(target, t32, anchor);
-    			insert(target, div5, anchor);
-    			append(div5, t33);
-    			append(div5, t34);
-    			append(div5, t35);
-    			insert(target, t36, anchor);
     			insert(target, br14, anchor);
-    			insert(target, t37_1, anchor);
+    			insert(target, t33, anchor);
+    			insert(target, div5, anchor);
+    			insert(target, t35, anchor);
     			insert(target, br15, anchor);
-    			insert(target, t38, anchor);
+    			insert(target, t36, anchor);
     			insert(target, div6, anchor);
+    			append(div6, t37_1);
+    			append(div6, t38);
+    			append(div6, t39);
     			insert(target, t40, anchor);
     			insert(target, br16, anchor);
     			insert(target, t41, anchor);
-    			insert(target, div7, anchor);
-    			append(div7, t42);
-    			append(div7, t43);
-    			append(div7, t44);
-    			insert(target, t45, anchor);
     			insert(target, br17, anchor);
-    			insert(target, t46, anchor);
+    			insert(target, t42, anchor);
+    			insert(target, div7, anchor);
+    			insert(target, t44, anchor);
     			insert(target, br18, anchor);
-    			insert(target, t47, anchor);
-    			insert(target, button0, anchor);
-    			insert(target, t49, anchor);
-    			insert(target, button1, anchor);
-    			insert(target, t51, anchor);
-    			insert(target, br19, anchor);
-    			insert(target, br20, anchor);
-    			insert(target, t52, anchor);
+    			insert(target, t45, anchor);
     			insert(target, div8, anchor);
-    			append(div8, t53);
-    			append(div8, t54);
+    			append(div8, t46);
+    			append(div8, t47);
+    			append(div8, t48);
+    			insert(target, t49, anchor);
+    			insert(target, br19, anchor);
+    			insert(target, t50, anchor);
+    			insert(target, br20, anchor);
+    			insert(target, t51, anchor);
+    			insert(target, button0, anchor);
+    			insert(target, t53, anchor);
+    			insert(target, button1, anchor);
     			insert(target, t55, anchor);
     			insert(target, br21, anchor);
+    			insert(target, br22, anchor);
     			insert(target, t56, anchor);
     			insert(target, div9, anchor);
     			append(div9, t57);
     			append(div9, t58);
-    			append(div9, t59);
+    			insert(target, t59, anchor);
+    			insert(target, br23, anchor);
     			insert(target, t60, anchor);
-    			insert(target, br22, anchor);
-    			insert(target, t61, anchor);
     			insert(target, div10, anchor);
-    			insert(target, t63, anchor);
-    			insert(target, pre0, anchor);
-    			append(pre0, t64);
+    			append(div10, t61);
+    			append(div10, t62);
+    			append(div10, t63);
+    			insert(target, t64, anchor);
+    			insert(target, br24, anchor);
     			insert(target, t65, anchor);
-    			insert(target, p4, anchor);
-    			insert(target, t67, anchor);
     			insert(target, div11, anchor);
+    			insert(target, t67, anchor);
+    			insert(target, pre0, anchor);
+    			append(pre0, t68);
     			insert(target, t69, anchor);
-    			insert(target, pre1, anchor);
+    			insert(target, p4, anchor);
     			insert(target, t71, anchor);
-    			insert(target, p5, anchor);
-    			insert(target, t73, anchor);
     			insert(target, div12, anchor);
+    			insert(target, t73, anchor);
+    			insert(target, pre1, anchor);
     			insert(target, t75, anchor);
-    			insert(target, pre2, anchor);
+    			insert(target, p5, anchor);
     			insert(target, t77, anchor);
-    			insert(target, p6, anchor);
+    			insert(target, div13, anchor);
     			insert(target, t79, anchor);
-    			insert(target, p7, anchor);
+    			insert(target, pre2, anchor);
     			insert(target, t81, anchor);
-    			insert(target, pre3, anchor);
-    			append(pre3, t82);
+    			insert(target, p6, anchor);
     			insert(target, t83, anchor);
-    			insert(target, p8, anchor);
+    			insert(target, p7, anchor);
     			insert(target, t85, anchor);
-    			insert(target, pre4, anchor);
-    			append(pre4, t86);
+    			insert(target, pre3, anchor);
+    			append(pre3, t86);
     			insert(target, t87, anchor);
-    			insert(target, span0, anchor);
+    			insert(target, p8, anchor);
     			insert(target, t89, anchor);
-    			insert(target, a, anchor);
+    			insert(target, pre4, anchor);
+    			append(pre4, t90);
     			insert(target, t91, anchor);
+    			insert(target, span0, anchor);
+    			insert(target, t93, anchor);
+    			insert(target, a, anchor);
+    			insert(target, t95, anchor);
     			insert(target, span1, anchor);
     			current = true;
     		},
@@ -3780,7 +3804,7 @@ console.log("a is", a)  // a is 900`;
     		p: function update(changed, ctx) {
     			{
     				if (!if_block) {
-    					if_block = create_if_block$6();
+    					if_block = create_if_block$5();
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(t1.parentNode, t1);
@@ -3789,28 +3813,32 @@ console.log("a is", a)  // a is 900`;
     				}
     			}
 
-    			if ((!current || changed.A_A) && t16_value !== (t16_value = ctx.A_A.join(", ") + "")) {
-    				set_data(t16, t16_value);
+    			if ((!current || changed.transducerResult) && t13_value !== (t13_value = ctx.transducerResult.length + "")) {
+    				set_data(t13, t13_value);
     			}
 
-    			if ((!current || changed.B_B) && t25_value !== (t25_value = ctx.B_B.join(", ") + "")) {
-    				set_data(t25, t25_value);
+    			if ((!current || changed.A_A) && t20_value !== (t20_value = ctx.A_A.join(", ") + "")) {
+    				set_data(t20, t20_value);
     			}
 
-    			if ((!current || changed.C_C) && t34_value !== (t34_value = ctx.C_C.join(", ") + "")) {
-    				set_data(t34, t34_value);
+    			if ((!current || changed.B_B) && t29_value !== (t29_value = ctx.B_B.join(", ") + "")) {
+    				set_data(t29, t29_value);
     			}
 
-    			if ((!current || changed.D_D) && t43_value !== (t43_value = ctx.D_D.join(", ") + "")) {
-    				set_data(t43, t43_value);
+    			if ((!current || changed.C_C) && t38_value !== (t38_value = ctx.C_C.join(", ") + "")) {
+    				set_data(t38, t38_value);
+    			}
+
+    			if ((!current || changed.D_D) && t47_value !== (t47_value = ctx.D_D.join(", ") + "")) {
+    				set_data(t47, t47_value);
     			}
 
     			if (!current || changed.size) {
-    				set_data(t54, ctx.size);
+    				set_data(t58, ctx.size);
     			}
 
-    			if ((!current || changed.ar74) && t58_value !== (t58_value = ctx.ar74.join(", ") + "")) {
-    				set_data(t58, t58_value);
+    			if ((!current || changed.ar74) && t62_value !== (t62_value = ctx.ar74.join(", ") + "")) {
+    				set_data(t62, t62_value);
     			}
     		},
 
@@ -3852,90 +3880,95 @@ console.log("a is", a)  // a is 900`;
     				detach(br6);
     				detach(t11);
     				detach(div0);
-    				detach(t13);
-    				detach(br7);
     				detach(t14);
-    				detach(div1);
-    				detach(t18);
+    				detach(br7);
     				detach(br8);
-    				detach(t19);
+    				detach(t15);
+    				detach(div1);
+    				detach(t17);
     				detach(br9);
-    				detach(t20);
+    				detach(t18);
     				detach(div2);
     				detach(t22);
     				detach(br10);
     				detach(t23);
-    				detach(div3);
-    				detach(t27);
     				detach(br11);
-    				detach(t28);
+    				detach(t24);
+    				detach(div3);
+    				detach(t26);
     				detach(br12);
-    				detach(t29);
+    				detach(t27);
     				detach(div4);
     				detach(t31);
     				detach(br13);
     				detach(t32);
-    				detach(div5);
-    				detach(t36);
     				detach(br14);
-    				detach(t37_1);
+    				detach(t33);
+    				detach(div5);
+    				detach(t35);
     				detach(br15);
-    				detach(t38);
+    				detach(t36);
     				detach(div6);
     				detach(t40);
     				detach(br16);
     				detach(t41);
-    				detach(div7);
-    				detach(t45);
     				detach(br17);
-    				detach(t46);
+    				detach(t42);
+    				detach(div7);
+    				detach(t44);
     				detach(br18);
-    				detach(t47);
-    				detach(button0);
-    				detach(t49);
-    				detach(button1);
-    				detach(t51);
-    				detach(br19);
-    				detach(br20);
-    				detach(t52);
+    				detach(t45);
     				detach(div8);
+    				detach(t49);
+    				detach(br19);
+    				detach(t50);
+    				detach(br20);
+    				detach(t51);
+    				detach(button0);
+    				detach(t53);
+    				detach(button1);
     				detach(t55);
     				detach(br21);
+    				detach(br22);
     				detach(t56);
     				detach(div9);
+    				detach(t59);
+    				detach(br23);
     				detach(t60);
-    				detach(br22);
-    				detach(t61);
     				detach(div10);
-    				detach(t63);
-    				detach(pre0);
+    				detach(t64);
+    				detach(br24);
     				detach(t65);
-    				detach(p4);
-    				detach(t67);
     				detach(div11);
+    				detach(t67);
+    				detach(pre0);
     				detach(t69);
-    				detach(pre1);
+    				detach(p4);
     				detach(t71);
-    				detach(p5);
-    				detach(t73);
     				detach(div12);
+    				detach(t73);
+    				detach(pre1);
     				detach(t75);
-    				detach(pre2);
+    				detach(p5);
     				detach(t77);
-    				detach(p6);
+    				detach(div13);
     				detach(t79);
-    				detach(p7);
+    				detach(pre2);
     				detach(t81);
-    				detach(pre3);
+    				detach(p6);
     				detach(t83);
-    				detach(p8);
+    				detach(p7);
     				detach(t85);
-    				detach(pre4);
+    				detach(pre3);
     				detach(t87);
-    				detach(span0);
+    				detach(p8);
     				detach(t89);
-    				detach(a);
+    				detach(pre4);
     				detach(t91);
+    				detach(span0);
+    				detach(t93);
+    				detach(a);
+    				detach(t95);
     				detach(span1);
     			}
 
@@ -4060,7 +4093,7 @@ console.log("a is", a)  // a is 900`;
     );
     var cube = function cube(v) { return v**3; };
 
-    var size = 100;
+    var size = 400;
 
     var ar74 = [...Array(size).keys()];
 
@@ -4276,6 +4309,7 @@ console.log("a is", a)  // a is 900`;
     		B_B,
     		C_C,
     		D_D,
+    		transducerResult,
     		callback,
     		call2,
     		increase,
@@ -4286,16 +4320,16 @@ console.log("a is", a)  // a is 900`;
     class Transducer extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$6, create_fragment$6, safe_not_equal, []);
+    		init(this, options, instance$6, create_fragment$7, safe_not_equal, []);
     	}
     }
 
     /* src/ToggleTheme.svelte generated by Svelte v3.9.1 */
 
-    const file$7 = "src/ToggleTheme.svelte";
+    const file$8 = "src/ToggleTheme.svelte";
 
     // (7:1) {#if dark}
-    function create_if_block$7(ctx) {
+    function create_if_block$6(ctx) {
     	var link;
 
     	return {
@@ -4303,7 +4337,7 @@ console.log("a is", a)  // a is 900`;
     			link = element("link");
     			attr(link, "rel", "stylesheet");
     			attr(link, "href", "style.css");
-    			add_location(link, file$7, 7, 1, 115);
+    			add_location(link, file$8, 7, 1, 115);
     		},
 
     		m: function mount(target, anchor) {
@@ -4318,10 +4352,10 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function create_fragment$7(ctx) {
+    function create_fragment$8(ctx) {
     	var if_block_anchor, t0, h1, t2, button, dispose;
 
-    	var if_block = (ctx.dark) && create_if_block$7();
+    	var if_block = (ctx.dark) && create_if_block$6();
 
     	return {
     		c: function create() {
@@ -4333,8 +4367,8 @@ console.log("a is", a)  // a is 900`;
     			t2 = space();
     			button = element("button");
     			button.textContent = "toggle theme";
-    			add_location(h1, file$7, 11, 0, 179);
-    			add_location(button, file$7, 13, 0, 202);
+    			add_location(h1, file$8, 11, 0, 179);
+    			add_location(button, file$8, 13, 0, 202);
     			dispose = listen(button, "click", ctx.toggleTheme);
     		},
 
@@ -4354,7 +4388,7 @@ console.log("a is", a)  // a is 900`;
     		p: function update(changed, ctx) {
     			if (ctx.dark) {
     				if (!if_block) {
-    					if_block = create_if_block$7();
+    					if_block = create_if_block$6();
     					if_block.c();
     					if_block.m(if_block_anchor.parentNode, if_block_anchor);
     				}
@@ -4393,16 +4427,16 @@ console.log("a is", a)  // a is 900`;
     class ToggleTheme extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$7, create_fragment$7, safe_not_equal, []);
+    		init(this, options, instance$7, create_fragment$8, safe_not_equal, []);
     	}
     }
 
     /* src/Home.svelte generated by Svelte v3.9.1 */
 
-    const file$8 = "src/Home.svelte";
+    const file$9 = "src/Home.svelte";
 
-    // (8:0) {#if visible}
-    function create_if_block$8(ctx) {
+    // (61:0) {#if visible}
+    function create_if_block$7(ctx) {
     	var div, br0, br1, t, div_transition, current;
 
     	return {
@@ -4410,182 +4444,14 @@ console.log("a is", a)  // a is 900`;
     			div = element("div");
     			br0 = element("br");
     			br1 = element("br");
-    			t = text("\n FIRST POST");
-    			add_location(br0, file$8, 9, 1, 224);
-    			add_location(br1, file$8, 9, 5, 228);
+    			t = text("\nINTRODUCTION");
+    			add_location(br0, file$9, 62, 0, 1113);
+    			add_location(br1, file$9, 62, 4, 1117);
     			set_style(div, "font-family", "Times New Roman");
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file$8, 8, 1, 96);
-    		},
-
-    		m: function mount(target, anchor) {
-    			insert(target, div, anchor);
-    			append(div, br0);
-    			append(div, br1);
-    			append(div, t);
-    			current = true;
-    		},
-
-    		i: function intro(local) {
-    			if (current) return;
-    			add_render_callback(() => {
-    				if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, true);
-    				div_transition.run(1);
-    			});
-
-    			current = true;
-    		},
-
-    		o: function outro(local) {
-    			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
-    			div_transition.run(0);
-
-    			current = false;
-    		},
-
-    		d: function destroy(detaching) {
-    			if (detaching) {
-    				detach(div);
-    				if (div_transition) div_transition.end();
-    			}
-    		}
-    	};
-    }
-
-    function create_fragment$8(ctx) {
-    	var t0, br0, t1, p, t3, br1, t4, div0, t6, div1, t8, br2, t9, br3, current;
-
-    	var if_block =  create_if_block$8();
-
-    	return {
-    		c: function create() {
-    			if (if_block) if_block.c();
-    			t0 = space();
-    			br0 = element("br");
-    			t1 = space();
-    			p = element("p");
-    			p.textContent = "This is where I store code snippets, discoveries, and ideas that I don't want to forget, or that might be useful to others. Eventually I might adopt the usual reverse chronology blog format, but for now I am piecing together what I want to salvage from piles of disorganized computer code and a head full of ideas and memories I want to preserve.";
-    			t3 = space();
-    			br1 = element("br");
-    			t4 = space();
-    			div0 = element("div");
-    			div0.textContent = "David Schalk";
-    			t6 = space();
-    			div1 = element("div");
-    			div1.textContent = "October, 2019";
-    			t8 = space();
-    			br2 = element("br");
-    			t9 = space();
-    			br3 = element("br");
-    			add_location(br0, file$8, 13, 0, 259);
-    			add_location(p, file$8, 14, 0, 264);
-    			add_location(br1, file$8, 15, 0, 620);
-    			add_location(div0, file$8, 16, 0, 625);
-    			add_location(div1, file$8, 17, 0, 649);
-    			add_location(br2, file$8, 18, 0, 675);
-    			add_location(br3, file$8, 19, 0, 680);
-    		},
-
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-    		},
-
-    		m: function mount(target, anchor) {
-    			if (if_block) if_block.m(target, anchor);
-    			insert(target, t0, anchor);
-    			insert(target, br0, anchor);
-    			insert(target, t1, anchor);
-    			insert(target, p, anchor);
-    			insert(target, t3, anchor);
-    			insert(target, br1, anchor);
-    			insert(target, t4, anchor);
-    			insert(target, div0, anchor);
-    			insert(target, t6, anchor);
-    			insert(target, div1, anchor);
-    			insert(target, t8, anchor);
-    			insert(target, br2, anchor);
-    			insert(target, t9, anchor);
-    			insert(target, br3, anchor);
-    			current = true;
-    		},
-
-    		p: function update(changed, ctx) {
-    			{
-    				if (!if_block) {
-    					if_block = create_if_block$8();
-    					if_block.c();
-    					transition_in(if_block, 1);
-    					if_block.m(t0.parentNode, t0);
-    				} else {
-    									transition_in(if_block, 1);
-    				}
-    			}
-    		},
-
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(if_block);
-    			current = true;
-    		},
-
-    		o: function outro(local) {
-    			transition_out(if_block);
-    			current = false;
-    		},
-
-    		d: function destroy(detaching) {
-    			if (if_block) if_block.d(detaching);
-
-    			if (detaching) {
-    				detach(t0);
-    				detach(br0);
-    				detach(t1);
-    				detach(p);
-    				detach(t3);
-    				detach(br1);
-    				detach(t4);
-    				detach(div0);
-    				detach(t6);
-    				detach(div1);
-    				detach(t8);
-    				detach(br2);
-    				detach(t9);
-    				detach(br3);
-    			}
-    		}
-    	};
-    }
-
-    class Home extends SvelteComponentDev {
-    	constructor(options) {
-    		super(options);
-    		init(this, options, null, create_fragment$8, safe_not_equal, []);
-    	}
-    }
-
-    /* src/Score.svelte generated by Svelte v3.9.1 */
-
-    const file$9 = "src/Score.svelte";
-
-    // (13:0) {#if visible}
-    function create_if_block$9(ctx) {
-    	var div, br0, br1, t, div_transition, current;
-
-    	return {
-    		c: function create() {
-    			div = element("div");
-    			br0 = element("br");
-    			br1 = element("br");
-    			t = text("\n GAME OF SCORE");
-    			add_location(br0, file$9, 14, 1, 229);
-    			add_location(br1, file$9, 14, 5, 233);
-    			set_style(div, "font-family", "Times New Roman");
-    			set_style(div, "text-align", "center");
-    			set_style(div, "color", "hsl(210, 90%, 90%)");
-    			set_style(div, "font-size", "32px");
-    			add_location(div, file$9, 13, 1, 101);
+    			add_location(div, file$9, 61, 0, 986);
     		},
 
     		m: function mount(target, anchor) {
@@ -4623,9 +4489,597 @@ console.log("a is", a)  // a is 900`;
     }
 
     function create_fragment$9(ctx) {
+    	var t0, br0, t1, p0, t3, h20, t5, p1, t7, p2, t9, p3, t11, p4, t13, p5, t15, h3, t17, div0, t18, div1, t20, h21, t22, p6, t24, p7, t26, p8, t28, br1, t29, br2, t30, div5, div3, button0, t32, br3, t33, br4, t34, div2, button1, t35, t36, br5, t37, button2, t39, br6, t40, br7, t41, div4, button3, t42_value = ctx.cache[ctx.j][0] + "", t42, t43, button4, t44_value = ctx.cache[ctx.j][1] + "", t44, t45, button5, t46_value = ctx.cache[ctx.j][2] + "", t46, t47, br8, t48, br9, t49, button6, t50_value = ctx.cache[ctx.j][3] + "", t50, t51, button7, t52_value = ctx.cache[ctx.j][4] + "", t52, t53, button8, t54_value = ctx.cache[ctx.j][5] + "", t54, t55, br10, t56, br11, t57, button9, t58_value = ctx.cache[ctx.j][6] + "", t58, t59, button10, t60_value = ctx.cache[ctx.j][7] + "", t60, t61, button11, t62_value = ctx.cache[ctx.j][8] + "", t62, t63, br12, t64, p9, t66, t67, br13, br14, t68, div6, t70, div7, t72, br15, t73, br16, current, dispose;
+
+    	var if_block =  create_if_block$7();
+
+    	var cow = new Cow({ $$inline: true });
+
+    	return {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			t0 = space();
+    			br0 = element("br");
+    			t1 = space();
+    			p0 = element("p");
+    			p0.textContent = "Posts are placed either in the \"Functional JavaScript\" section or else in the section named \"Miscellaneous\". The functional JavaScript section includes a React application named \"Game of Score\"; a Cycle.js application named \"Frunctional Web Applications\"; and functional JavaScript examples each presented in a small Svelte module. \"Game of Score\", \"Functional Web AookuxRUIBA\", abd the \"Asychronous Monad\" Svelte module all use the same modified Haskell Wai WebSockets server.";
+    			t3 = space();
+    			h20 = element("h2");
+    			h20.textContent = "Functional JavaScript";
+    			t5 = space();
+    			p1 = element("p");
+    			p1.textContent = "My functional JavaScript ideas will raise eyebrows and cause some immediate consternation among functional Javascript enthusiasts. My Haskell WebSockets server is coded in a pure functional style. It works like a charm and is exceedingly easy to maintain as new requirements emerge.";
+    			t7 = space();
+    			p2 = element("p");
+    			p2.textContent = "The Haskell language in combination with the Glorious Haskell Compiler (a/k/a \"Glaskow Haskell Compiler\") is so wonderful that, if I weren't so inclined to think about what I am doing and so skeptical of authority, I might be persuaded by the many blog posts and video presentations advocating Cargo Cult functional JavaScript. I might be advocating Cargo Cult JavaScript here.";
+    			t9 = space();
+    			p3 = element("p");
+    			p3.textContent = "Functional-cargo-cult developers will weigh down their code with universal type checking, even when there is no rational reason to do so. If they have a million cycle recursive expression inside of a function, they will spew 999,999 useless creations into RAM rather than mutate an attribute of the function a million times.";
+    			t11 = space();
+    			p4 = element("p");
+    			p4.textContent = "Cargo-cult JavaScript practitioners \"think\" something like this: Lisp ML, Haskell, and other functional programming languages avoid mutation have strict type requirements, so the wonderfully hybrid and dynamic JavaScript programming language should be fettered, constricted, and weighed down with univeral immutability and type checking because that will magically bring the benifits inherent in the functional languages.";
+    			t13 = space();
+    			p5 = element("p");
+    			p5.textContent = "I urge everyone involved in creating JavaScript applications to at least take a look at my examples of what funtions returned by modifications of Monad() can do. \"Functional JavaScript\" means various things to different people. I like meanings that stress getting the most out of JavaScripts first-class functions";
+    			t15 = space();
+    			h3 = element("h3");
+    			h3.textContent = "References";
+    			t17 = space();
+    			div0 = element("div");
+    			t18 = space();
+    			div1 = element("div");
+    			div1.textContent = "Cargo Cult Science http://calteches.library.caltech.edu/51/2/CargoCult.pdf";
+    			t20 = space();
+    			h21 = element("h2");
+    			h21.textContent = "Miscellaneous Section";
+    			t22 = space();
+    			p6 = element("p");
+    			p6.textContent = "The \"Misclaneous\" is for discoveries that seem worth sharing, and ideas of minimal general interest that I don't want to forget";
+    			t24 = space();
+    			p7 = element("p");
+    			p7.textContent = "If you click any two numbers (below), they switch locations and a \"BACK\" button appears. If you go back and click two numbers, the result gets inserted  at your location.";
+    			t26 = space();
+    			p8 = element("p");
+    			p8.textContent = "I can use simple variables knowing they will never clash with a similarly named variable in a differenct module. Svelte code is consise and efficient. Coding in Svelte is so relaxing.";
+    			t28 = space();
+    			br1 = element("br");
+    			t29 = space();
+    			br2 = element("br");
+    			t30 = space();
+    			div5 = element("div");
+    			div3 = element("div");
+    			button0 = element("button");
+    			button0.textContent = "BACK";
+    			t32 = space();
+    			br3 = element("br");
+    			t33 = space();
+    			br4 = element("br");
+    			t34 = space();
+    			div2 = element("div");
+    			button1 = element("button");
+    			t35 = text(ctx.j);
+    			t36 = space();
+    			br5 = element("br");
+    			t37 = space();
+    			button2 = element("button");
+    			button2.textContent = "FORWARD";
+    			t39 = space();
+    			br6 = element("br");
+    			t40 = space();
+    			br7 = element("br");
+    			t41 = space();
+    			div4 = element("div");
+    			button3 = element("button");
+    			t42 = text(t42_value);
+    			t43 = space();
+    			button4 = element("button");
+    			t44 = text(t44_value);
+    			t45 = space();
+    			button5 = element("button");
+    			t46 = text(t46_value);
+    			t47 = space();
+    			br8 = element("br");
+    			t48 = space();
+    			br9 = element("br");
+    			t49 = space();
+    			button6 = element("button");
+    			t50 = text(t50_value);
+    			t51 = space();
+    			button7 = element("button");
+    			t52 = text(t52_value);
+    			t53 = space();
+    			button8 = element("button");
+    			t54 = text(t54_value);
+    			t55 = space();
+    			br10 = element("br");
+    			t56 = space();
+    			br11 = element("br");
+    			t57 = space();
+    			button9 = element("button");
+    			t58 = text(t58_value);
+    			t59 = space();
+    			button10 = element("button");
+    			t60 = text(t60_value);
+    			t61 = space();
+    			button11 = element("button");
+    			t62 = text(t62_value);
+    			t63 = space();
+    			br12 = element("br");
+    			t64 = space();
+    			p9 = element("p");
+    			p9.textContent = "An example of an imbedded module that I will explain later:";
+    			t66 = space();
+    			cow.$$.fragment.c();
+    			t67 = space();
+    			br13 = element("br");
+    			br14 = element("br");
+    			t68 = space();
+    			div6 = element("div");
+    			div6.textContent = "David Schalk";
+    			t70 = space();
+    			div7 = element("div");
+    			div7.textContent = "October, 2019";
+    			t72 = space();
+    			br15 = element("br");
+    			t73 = space();
+    			br16 = element("br");
+    			add_location(br0, file$9, 66, 0, 1149);
+    			add_location(p0, file$9, 67, 0, 1154);
+    			add_location(h20, file$9, 70, 0, 1643);
+    			add_location(p1, file$9, 71, 0, 1674);
+    			add_location(p2, file$9, 72, 0, 1965);
+    			add_location(p3, file$9, 73, 0, 2352);
+    			add_location(p4, file$9, 74, 0, 2685);
+    			add_location(p5, file$9, 75, 0, 3118);
+    			add_location(h3, file$9, 76, 0, 3440);
+    			add_location(div0, file$9, 78, 0, 3461);
+    			add_location(div1, file$9, 79, 0, 3473);
+    			add_location(h21, file$9, 83, 0, 3564);
+    			add_location(p6, file$9, 84, 0, 3595);
+    			add_location(p7, file$9, 85, 0, 3734);
+    			add_location(p8, file$9, 86, 0, 3913);
+    			add_location(br1, file$9, 88, 0, 4107);
+    			add_location(br2, file$9, 89, 0, 4112);
+    			add_location(button0, file$9, 94, 0, 4254);
+    			add_location(br3, file$9, 97, 0, 4294);
+    			add_location(br4, file$9, 98, 0, 4299);
+    			add_location(button1, file$9, 99, 30, 4334);
+    			set_style(div2, "text-indent", "20px");
+    			add_location(div2, file$9, 99, 0, 4304);
+    			add_location(br5, file$9, 100, 0, 4363);
+    			add_location(button2, file$9, 101, 0, 4368);
+    			add_location(br6, file$9, 104, 0, 4414);
+    			add_location(br7, file$9, 105, 0, 4419);
+    			set_style(div3, "text-align", "right");
+    			set_style(div3, "margin-right", "2%");
+    			set_style(div3, "width", "20%");
+    			add_location(div3, file$9, 92, 20, 4188);
+    			attr(button3, "id", "m0");
+    			add_location(button3, file$9, 110, 0, 4518);
+    			attr(button4, "id", "m1");
+    			add_location(button4, file$9, 111, 0, 4580);
+    			attr(button5, "id", "m2");
+    			add_location(button5, file$9, 112, 0, 4642);
+    			add_location(br8, file$9, 113, 0, 4704);
+    			add_location(br9, file$9, 114, 0, 4709);
+    			attr(button6, "id", "m3");
+    			add_location(button6, file$9, 115, 0, 4714);
+    			attr(button7, "id", "m4");
+    			add_location(button7, file$9, 116, 0, 4776);
+    			attr(button8, "id", "m5");
+    			add_location(button8, file$9, 117, 0, 4838);
+    			add_location(br10, file$9, 118, 0, 4900);
+    			add_location(br11, file$9, 119, 0, 4905);
+    			attr(button9, "id", "m6");
+    			add_location(button9, file$9, 120, 0, 4910);
+    			attr(button10, "id", "m7");
+    			add_location(button10, file$9, 121, 0, 4972);
+    			attr(button11, "id", "m8");
+    			add_location(button11, file$9, 122, 0, 5034);
+    			set_style(div4, "marginRight", "0%");
+    			set_style(div4, "width", "80%");
+    			add_location(div4, file$9, 108, 12, 4472);
+    			set_style(div5, "display", "flex");
+    			add_location(div5, file$9, 91, 20, 4138);
+    			add_location(br12, file$9, 125, 0, 5110);
+    			add_location(p9, file$9, 126, 0, 5115);
+    			add_location(br13, file$9, 128, 0, 5194);
+    			add_location(br14, file$9, 128, 4, 5198);
+    			add_location(div6, file$9, 129, 0, 5203);
+    			add_location(div7, file$9, 130, 0, 5227);
+    			add_location(br15, file$9, 131, 0, 5253);
+    			add_location(br16, file$9, 132, 0, 5258);
+
+    			dispose = [
+    				listen(button0, "click", ctx.back),
+    				listen(button2, "click", ctx.forward),
+    				listen(button3, "click", ctx.ob.push),
+    				listen(button4, "click", ctx.ob.push),
+    				listen(button5, "click", ctx.ob.push),
+    				listen(button6, "click", ctx.ob.push),
+    				listen(button7, "click", ctx.ob.push),
+    				listen(button8, "click", ctx.ob.push),
+    				listen(button9, "click", ctx.ob.push),
+    				listen(button10, "click", ctx.ob.push),
+    				listen(button11, "click", ctx.ob.push)
+    			];
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert(target, t0, anchor);
+    			insert(target, br0, anchor);
+    			insert(target, t1, anchor);
+    			insert(target, p0, anchor);
+    			insert(target, t3, anchor);
+    			insert(target, h20, anchor);
+    			insert(target, t5, anchor);
+    			insert(target, p1, anchor);
+    			insert(target, t7, anchor);
+    			insert(target, p2, anchor);
+    			insert(target, t9, anchor);
+    			insert(target, p3, anchor);
+    			insert(target, t11, anchor);
+    			insert(target, p4, anchor);
+    			insert(target, t13, anchor);
+    			insert(target, p5, anchor);
+    			insert(target, t15, anchor);
+    			insert(target, h3, anchor);
+    			insert(target, t17, anchor);
+    			insert(target, div0, anchor);
+    			insert(target, t18, anchor);
+    			insert(target, div1, anchor);
+    			insert(target, t20, anchor);
+    			insert(target, h21, anchor);
+    			insert(target, t22, anchor);
+    			insert(target, p6, anchor);
+    			insert(target, t24, anchor);
+    			insert(target, p7, anchor);
+    			insert(target, t26, anchor);
+    			insert(target, p8, anchor);
+    			insert(target, t28, anchor);
+    			insert(target, br1, anchor);
+    			insert(target, t29, anchor);
+    			insert(target, br2, anchor);
+    			insert(target, t30, anchor);
+    			insert(target, div5, anchor);
+    			append(div5, div3);
+    			append(div3, button0);
+    			append(div3, t32);
+    			append(div3, br3);
+    			append(div3, t33);
+    			append(div3, br4);
+    			append(div3, t34);
+    			append(div3, div2);
+    			append(div2, button1);
+    			append(button1, t35);
+    			append(div3, t36);
+    			append(div3, br5);
+    			append(div3, t37);
+    			append(div3, button2);
+    			append(div3, t39);
+    			append(div3, br6);
+    			append(div3, t40);
+    			append(div3, br7);
+    			append(div5, t41);
+    			append(div5, div4);
+    			append(div4, button3);
+    			append(button3, t42);
+    			append(div4, t43);
+    			append(div4, button4);
+    			append(button4, t44);
+    			append(div4, t45);
+    			append(div4, button5);
+    			append(button5, t46);
+    			append(div4, t47);
+    			append(div4, br8);
+    			append(div4, t48);
+    			append(div4, br9);
+    			append(div4, t49);
+    			append(div4, button6);
+    			append(button6, t50);
+    			append(div4, t51);
+    			append(div4, button7);
+    			append(button7, t52);
+    			append(div4, t53);
+    			append(div4, button8);
+    			append(button8, t54);
+    			append(div4, t55);
+    			append(div4, br10);
+    			append(div4, t56);
+    			append(div4, br11);
+    			append(div4, t57);
+    			append(div4, button9);
+    			append(button9, t58);
+    			append(div4, t59);
+    			append(div4, button10);
+    			append(button10, t60);
+    			append(div4, t61);
+    			append(div4, button11);
+    			append(button11, t62);
+    			insert(target, t63, anchor);
+    			insert(target, br12, anchor);
+    			insert(target, t64, anchor);
+    			insert(target, p9, anchor);
+    			insert(target, t66, anchor);
+    			mount_component(cow, target, anchor);
+    			insert(target, t67, anchor);
+    			insert(target, br13, anchor);
+    			insert(target, br14, anchor);
+    			insert(target, t68, anchor);
+    			insert(target, div6, anchor);
+    			insert(target, t70, anchor);
+    			insert(target, div7, anchor);
+    			insert(target, t72, anchor);
+    			insert(target, br15, anchor);
+    			insert(target, t73, anchor);
+    			insert(target, br16, anchor);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			{
+    				if (!if_block) {
+    					if_block = create_if_block$7();
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(t0.parentNode, t0);
+    				} else {
+    									transition_in(if_block, 1);
+    				}
+    			}
+
+    			if (!current || changed.j) {
+    				set_data(t35, ctx.j);
+    			}
+
+    			if ((!current || changed.j) && t42_value !== (t42_value = ctx.cache[ctx.j][0] + "")) {
+    				set_data(t42, t42_value);
+    			}
+
+    			if ((!current || changed.j) && t44_value !== (t44_value = ctx.cache[ctx.j][1] + "")) {
+    				set_data(t44, t44_value);
+    			}
+
+    			if ((!current || changed.j) && t46_value !== (t46_value = ctx.cache[ctx.j][2] + "")) {
+    				set_data(t46, t46_value);
+    			}
+
+    			if ((!current || changed.j) && t50_value !== (t50_value = ctx.cache[ctx.j][3] + "")) {
+    				set_data(t50, t50_value);
+    			}
+
+    			if ((!current || changed.j) && t52_value !== (t52_value = ctx.cache[ctx.j][4] + "")) {
+    				set_data(t52, t52_value);
+    			}
+
+    			if ((!current || changed.j) && t54_value !== (t54_value = ctx.cache[ctx.j][5] + "")) {
+    				set_data(t54, t54_value);
+    			}
+
+    			if ((!current || changed.j) && t58_value !== (t58_value = ctx.cache[ctx.j][6] + "")) {
+    				set_data(t58, t58_value);
+    			}
+
+    			if ((!current || changed.j) && t60_value !== (t60_value = ctx.cache[ctx.j][7] + "")) {
+    				set_data(t60, t60_value);
+    			}
+
+    			if ((!current || changed.j) && t62_value !== (t62_value = ctx.cache[ctx.j][8] + "")) {
+    				set_data(t62, t62_value);
+    			}
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block);
+
+    			transition_in(cow.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(if_block);
+    			transition_out(cow.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (if_block) if_block.d(detaching);
+
+    			if (detaching) {
+    				detach(t0);
+    				detach(br0);
+    				detach(t1);
+    				detach(p0);
+    				detach(t3);
+    				detach(h20);
+    				detach(t5);
+    				detach(p1);
+    				detach(t7);
+    				detach(p2);
+    				detach(t9);
+    				detach(p3);
+    				detach(t11);
+    				detach(p4);
+    				detach(t13);
+    				detach(p5);
+    				detach(t15);
+    				detach(h3);
+    				detach(t17);
+    				detach(div0);
+    				detach(t18);
+    				detach(div1);
+    				detach(t20);
+    				detach(h21);
+    				detach(t22);
+    				detach(p6);
+    				detach(t24);
+    				detach(p7);
+    				detach(t26);
+    				detach(p8);
+    				detach(t28);
+    				detach(br1);
+    				detach(t29);
+    				detach(br2);
+    				detach(t30);
+    				detach(div5);
+    				detach(t63);
+    				detach(br12);
+    				detach(t64);
+    				detach(p9);
+    				detach(t66);
+    			}
+
+    			destroy_component(cow, detaching);
+
+    			if (detaching) {
+    				detach(t67);
+    				detach(br13);
+    				detach(br14);
+    				detach(t68);
+    				detach(div6);
+    				detach(t70);
+    				detach(div7);
+    				detach(t72);
+    				detach(br15);
+    				detach(t73);
+    				detach(br16);
+    			}
+
+    			run_all(dispose);
+    		}
+    	};
+    }
+
+    function instance$8($$self, $$props, $$invalidate) {
+    	var cache = [[1,2,3,4,5,6,7,8,9]];
+    var j = 0;
+    var ob = {x: [], push: function push (e) {
+    ob.x.push(parseInt(e.target.id.slice(1,2), 10));
+    if (ob.x.length >1) {
+    var d = exchange(ob.x[0], ob.x[1]);
+    cache.splice(j+1,0,d);
+    ob.x = []; $$invalidate('ob', ob);
+    j+=1;
+    return cache;   var j = 0;
+    }
+    }
+    };
+
+    function exchange (k,n) {
+    var ar = cache[j].slice();
+    var a = ar[k];
+    ar[k] = ar[n];
+    ar[n] = a;
+    return ar;
+    }
+
+    var back = function back () {
+    if (j > 0) { $$invalidate('j', j = j-=1); $$invalidate('j', j); }
+    else $$invalidate('j', j);
+    };
+
+    var forward = function forward () {
+    if (j+1 < cache.length) { $$invalidate('j', j = j+=1); $$invalidate('j', j); }
+    else $$invalidate('j', j);
+    };
+
+    var cache = [[1,2,3,4,5,6,7,8,9]];
+    var j = 0;
+    var ob = {x: [], push: function push (e) {
+    ob.x.push(parseInt(e.target.id.slice(1,2), 10));
+    if (ob.x.length >1) {
+    var d = exchange(ob.x[0], ob.x[1]);
+    cache.splice(j+1,0,d);
+    ob.x = []; $$invalidate('ob', ob);
+    $$invalidate('j', j+=1);
+    return cache;
+    }
+    }
+    };
+
+    	$$self.$$.update = ($$dirty = { j: 1 }) => {
+    		if ($$dirty.j) ;
+    		if ($$dirty.j) ;
+    	};
+
+    	return { cache, j, ob, back, forward };
+    }
+
+    class Home extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$8, create_fragment$9, safe_not_equal, []);
+    	}
+    }
+
+    /* src/Score.svelte generated by Svelte v3.9.1 */
+
+    const file$a = "src/Score.svelte";
+
+    // (5:0) {#if visible}
+    function create_if_block$8(ctx) {
+    	var div, br0, br1, t, div_transition, current;
+
+    	return {
+    		c: function create() {
+    			div = element("div");
+    			br0 = element("br");
+    			br1 = element("br");
+    			t = text("\n GAME OF SCORE");
+    			add_location(br0, file$a, 6, 1, 221);
+    			add_location(br1, file$a, 6, 5, 225);
+    			set_style(div, "font-family", "Times New Roman");
+    			set_style(div, "text-align", "center");
+    			set_style(div, "color", "hsl(210, 90%, 90%)");
+    			set_style(div, "font-size", "32px");
+    			add_location(div, file$a, 5, 1, 93);
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert(target, div, anchor);
+    			append(div, br0);
+    			append(div, br1);
+    			append(div, t);
+    			current = true;
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			add_render_callback(() => {
+    				if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, true);
+    				div_transition.run(1);
+    			});
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
+    			div_transition.run(0);
+
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(div);
+    				if (div_transition) div_transition.end();
+    			}
+    		}
+    	};
+    }
+
+    function create_fragment$a(ctx) {
     	var t0, br0, t1, p0, t3, p1, t5, p2, t7, a0, t9, br1, br2, t10, span0, t12, a1, t14, br3, br4, t15, span1, t17, a2, t19, span2, t21, a3, t23, span3, t25, a4, t27, span4, t29, a5, t31, span5, t33, a6, t35, span6, current;
 
-    	var if_block =  create_if_block$9();
+    	var if_block =  create_if_block$8();
 
     	return {
     		c: function create() {
@@ -4689,42 +5143,42 @@ console.log("a is", a)  // a is 900`;
     			t35 = space();
     			span6 = element("span");
     			span6.textContent = ". I'm impressed.";
-    			add_location(br0, file$9, 18, 0, 267);
-    			add_location(p0, file$9, 20, 0, 273);
-    			add_location(p1, file$9, 22, 0, 480);
-    			add_location(p2, file$9, 24, 0, 702);
+    			add_location(br0, file$a, 10, 0, 259);
+    			add_location(p0, file$a, 12, 0, 265);
+    			add_location(p1, file$a, 14, 0, 472);
+    			add_location(p2, file$a, 16, 0, 694);
     			attr(a0, "href", "http://game.schalk.site");
     			attr(a0, "target", "_blank");
-    			add_location(a0, file$9, 25, 0, 777);
-    			add_location(br1, file$9, 26, 0, 857);
-    			add_location(br2, file$9, 26, 4, 861);
-    			add_location(span0, file$9, 27, 0, 866);
+    			add_location(a0, file$a, 17, 0, 769);
+    			add_location(br1, file$a, 18, 0, 849);
+    			add_location(br2, file$a, 18, 4, 853);
+    			add_location(span0, file$a, 19, 0, 858);
     			attr(a1, "href", "https://github.com/dschalk/score2");
     			attr(a1, "target", "_blank");
-    			add_location(a1, file$9, 28, 0, 899);
-    			add_location(br3, file$9, 29, 0, 991);
-    			add_location(br4, file$9, 29, 4, 995);
-    			add_location(span1, file$9, 30, 0, 1000);
+    			add_location(a1, file$a, 20, 0, 891);
+    			add_location(br3, file$a, 21, 0, 983);
+    			add_location(br4, file$a, 21, 4, 987);
+    			add_location(span1, file$a, 22, 0, 992);
     			attr(a2, "href", "https://nodejs.org/en/about/");
     			attr(a2, "target", "_blank");
-    			add_location(a2, file$9, 31, 0, 1031);
-    			add_location(span2, file$9, 32, 0, 1099);
+    			add_location(a2, file$a, 23, 0, 1023);
+    			add_location(span2, file$a, 24, 0, 1091);
     			attr(a3, "href", "https://reactjs.org/");
     			attr(a3, "target", "_blank");
-    			add_location(a3, file$9, 33, 0, 1117);
-    			add_location(span3, file$9, 34, 0, 1178);
+    			add_location(a3, file$a, 25, 0, 1109);
+    			add_location(span3, file$a, 26, 0, 1170);
     			attr(a4, "href", "https://cycle.js.org");
     			attr(a4, "target", "_blank");
-    			add_location(a4, file$9, 35, 0, 1234);
-    			add_location(span4, file$9, 36, 0, 1299);
+    			add_location(a4, file$a, 27, 0, 1226);
+    			add_location(span4, file$a, 28, 0, 1291);
     			attr(a5, "href", "https://svelte.dev/");
     			attr(a5, "target", "_blank");
-    			add_location(a5, file$9, 37, 0, 1341);
-    			add_location(span5, file$9, 38, 0, 1402);
+    			add_location(a5, file$a, 29, 0, 1333);
+    			add_location(span5, file$a, 30, 0, 1394);
     			attr(a6, "href", "https://www.freecodecamp.org/news/a-realworld-comparison-of-front-end-frameworks-with-benchmarks-2019-update-4be0d3c78075/");
     			attr(a6, "target", "_blank");
-    			add_location(a6, file$9, 39, 0, 1568);
-    			add_location(span6, file$9, 40, 0, 1782);
+    			add_location(a6, file$a, 31, 0, 1560);
+    			add_location(span6, file$a, 32, 0, 1774);
     		},
 
     		l: function claim(nodes) {
@@ -4781,7 +5235,7 @@ console.log("a is", a)  // a is 900`;
     		p: function update(changed, ctx) {
     			{
     				if (!if_block) {
-    					if_block = create_if_block$9();
+    					if_block = create_if_block$8();
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(t0.parentNode, t0);
@@ -4856,16 +5310,16 @@ console.log("a is", a)  // a is 900`;
     class Score extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, null, create_fragment$9, safe_not_equal, []);
+    		init(this, options, null, create_fragment$a, safe_not_equal, []);
     	}
     }
 
     /* src/Blog.svelte generated by Svelte v3.9.1 */
 
-    const file$a = "src/Blog.svelte";
+    const file$b = "src/Blog.svelte";
 
-    // (146:0) {#if j === 0}
-    function create_if_block_9(ctx) {
+    // (145:0) {#if j === 0}
+    function create_if_block_10(ctx) {
     	var current;
 
     	var home_1 = new Home({ $$inline: true });
@@ -4898,8 +5352,8 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (149:0) {#if j === 1}
-    function create_if_block_8(ctx) {
+    // (148:0) {#if j === 1}
+    function create_if_block_9(ctx) {
     	var current;
 
     	var monad_1 = new Monad_1({ $$inline: true });
@@ -4932,8 +5386,8 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (152:0) {#if j === 2}
-    function create_if_block_7(ctx) {
+    // (151:0) {#if j === 2}
+    function create_if_block_8(ctx) {
     	var current;
 
     	var monad2_1 = new Monad2({ $$inline: true });
@@ -4966,42 +5420,8 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (155:0) {#if j === 9}
-    function create_if_block_6(ctx) {
-    	var current;
-
-    	var monad3_1 = new Monad3({ $$inline: true });
-
-    	return {
-    		c: function create() {
-    			monad3_1.$$.fragment.c();
-    		},
-
-    		m: function mount(target, anchor) {
-    			mount_component(monad3_1, target, anchor);
-    			current = true;
-    		},
-
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(monad3_1.$$.fragment, local);
-
-    			current = true;
-    		},
-
-    		o: function outro(local) {
-    			transition_out(monad3_1.$$.fragment, local);
-    			current = false;
-    		},
-
-    		d: function destroy(detaching) {
-    			destroy_component(monad3_1, detaching);
-    		}
-    	};
-    }
-
-    // (158:0) {#if j === 3}
-    function create_if_block_5(ctx) {
+    // (154:0) {#if j === 3}
+    function create_if_block_7(ctx) {
     	var current;
 
     	var haskell_1 = new Haskell({ $$inline: true });
@@ -5034,8 +5454,8 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (161:0) {#if j === 4}
-    function create_if_block_4(ctx) {
+    // (157:0) {#if j === 4}
+    function create_if_block_6(ctx) {
     	var current;
 
     	var bugs_1 = new Bugs({ $$inline: true });
@@ -5068,8 +5488,8 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (164:0) {#if j === 5}
-    function create_if_block_3(ctx) {
+    // (160:0) {#if j === 5}
+    function create_if_block_5(ctx) {
     	var current;
 
     	var matrix_1 = new Matrix({ $$inline: true });
@@ -5102,8 +5522,8 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (167:0) {#if j === 7}
-    function create_if_block_2(ctx) {
+    // (163:0) {#if j === 7}
+    function create_if_block_4(ctx) {
     	var current;
 
     	var transducer_1 = new Transducer({ $$inline: true });
@@ -5136,8 +5556,8 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (170:0) {#if j === 8}
-    function create_if_block_1(ctx) {
+    // (166:0) {#if j === 8}
+    function create_if_block_3(ctx) {
     	var current;
 
     	var toggletheme = new ToggleTheme({ $$inline: true });
@@ -5170,8 +5590,42 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    // (173:0) {#if j === 10}
-    function create_if_block$a(ctx) {
+    // (169:0) {#if j === 9}
+    function create_if_block_2(ctx) {
+    	var current;
+
+    	var monad3_1 = new Monad3({ $$inline: true });
+
+    	return {
+    		c: function create() {
+    			monad3_1.$$.fragment.c();
+    		},
+
+    		m: function mount(target, anchor) {
+    			mount_component(monad3_1, target, anchor);
+    			current = true;
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(monad3_1.$$.fragment, local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(monad3_1.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			destroy_component(monad3_1, detaching);
+    		}
+    	};
+    }
+
+    // (172:0) {#if j === 10}
+    function create_if_block_1(ctx) {
     	var current;
 
     	var score_1 = new Score({ $$inline: true });
@@ -5204,245 +5658,273 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function create_fragment$a(ctx) {
-    	var div16, br0, br1, t0, div15, div12, br2, br3, br4, br5, h1, t1, t2, t3, br6, br7, br8, t4, ul, li0, div0, t6, br9, t7, li1, div1, t9, br10, t10, li2, div2, t12, br11, t13, li3, div3, t15, br12, t16, li4, div4, t18, br13, t19, li5, div5, t21, br14, t22, li6, div6, t24, br15, t25, li7, div7, t27, br16, t28, li8, div8, t30, br17, t31, li9, div9, t33, br18, t34, li10, div10, t36, br19, t37, li11, div11, t39, br20, t40, div14, div13, t42, t43, t44, t45, t46, t47, t48, t49, t50, t51, t52, br21, br22, br23, t53, br24, br25, current, dispose;
+    // (175:0) {#if j === 20}
+    function create_if_block$9(ctx) {
+    	var current;
 
-    	var if_block0 = (ctx.j === 0) && create_if_block_9();
+    	var cow = new Cow({ $$inline: true });
 
-    	var if_block1 = (ctx.j === 1) && create_if_block_8();
+    	return {
+    		c: function create() {
+    			cow.$$.fragment.c();
+    		},
 
-    	var if_block2 = (ctx.j === 2) && create_if_block_7();
+    		m: function mount(target, anchor) {
+    			mount_component(cow, target, anchor);
+    			current = true;
+    		},
 
-    	var if_block3 = (ctx.j === 9) && create_if_block_6();
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(cow.$$.fragment, local);
 
-    	var if_block4 = (ctx.j === 3) && create_if_block_5();
+    			current = true;
+    		},
 
-    	var if_block5 = (ctx.j === 4) && create_if_block_4();
+    		o: function outro(local) {
+    			transition_out(cow.$$.fragment, local);
+    			current = false;
+    		},
 
-    	var if_block6 = (ctx.j === 5) && create_if_block_3();
+    		d: function destroy(detaching) {
+    			destroy_component(cow, detaching);
+    		}
+    	};
+    }
 
-    	var if_block7 = (ctx.j === 7) && create_if_block_2();
+    function create_fragment$b(ctx) {
+    	var div16, div15, div12, br0, br1, br2, br3, br4, br5, br6, t0, ul, li0, div0, t2, br7, t3, li1, div1, t5, br8, t6, li2, div2, t8, br9, t9, li3, div3, t11, br10, t12, li4, div4, t14, br11, t15, li5, div5, t17, br12, t18, li6, div6, t20, br13, t21, li7, div7, t23, br14, t24, li8, div8, t26, br15, t27, li9, div9, t29, br16, t30, li10, div10, t32, br17, t33, li11, div11, t35, br18, t36, div14, div13, t38, t39, t40, t41, t42, t43, t44, t45, t46, t47, t48, t49, br19, br20, br21, t50, br22, br23, current, dispose;
 
-    	var if_block8 = (ctx.j === 8) && create_if_block_1();
+    	var if_block0 = (ctx.j === 0) && create_if_block_10();
 
-    	var if_block9 = (ctx.j === 10) && create_if_block$a();
+    	var if_block1 = (ctx.j === 1) && create_if_block_9();
+
+    	var if_block2 = (ctx.j === 2) && create_if_block_8();
+
+    	var if_block3 = (ctx.j === 3) && create_if_block_7();
+
+    	var if_block4 = (ctx.j === 4) && create_if_block_6();
+
+    	var if_block5 = (ctx.j === 5) && create_if_block_5();
+
+    	var if_block6 = (ctx.j === 7) && create_if_block_4();
+
+    	var if_block7 = (ctx.j === 8) && create_if_block_3();
+
+    	var if_block8 = (ctx.j === 9) && create_if_block_2();
+
+    	var if_block9 = (ctx.j === 10) && create_if_block_1();
+
+    	var if_block10 = (ctx.j === 20) && create_if_block$9();
 
     	return {
     		c: function create() {
     			div16 = element("div");
-    			br0 = element("br");
-    			br1 = element("br");
-    			t0 = space();
     			div15 = element("div");
     			div12 = element("div");
+    			br0 = element("br");
+    			br1 = element("br");
     			br2 = element("br");
     			br3 = element("br");
     			br4 = element("br");
     			br5 = element("br");
-    			h1 = element("h1");
-    			t1 = text("j is ");
-    			t2 = text(ctx.j);
-    			t3 = text(">");
     			br6 = element("br");
-    			br7 = element("br");
-    			br8 = element("br");
-    			t4 = space();
+    			t0 = space();
     			ul = element("ul");
     			li0 = element("li");
     			div0 = element("div");
-    			div0.textContent = "Why Svelte";
-    			t6 = space();
-    			br9 = element("br");
-    			t7 = space();
+    			div0.textContent = "MONAD SERIES";
+    			t2 = space();
+    			br7 = element("br");
+    			t3 = space();
     			li1 = element("li");
     			div1 = element("div");
-    			div1.textContent = "MONAD SERIES";
-    			t9 = space();
-    			br10 = element("br");
-    			t10 = space();
+    			div1.textContent = "A Simple Monad";
+    			t5 = space();
+    			br8 = element("br");
+    			t6 = space();
     			li2 = element("li");
     			div2 = element("div");
-    			div2.textContent = "A Simple Monad";
-    			t12 = space();
-    			br11 = element("br");
-    			t13 = space();
+    			div2.textContent = "Asynchronous Monad";
+    			t8 = space();
+    			br9 = element("br");
+    			t9 = space();
     			li3 = element("li");
     			div3 = element("div");
-    			div3.textContent = "Asynchronous Monad";
-    			t15 = space();
-    			br12 = element("br");
-    			t16 = space();
+    			div3.textContent = "Promises Monad";
+    			t11 = space();
+    			br10 = element("br");
+    			t12 = space();
     			li4 = element("li");
     			div4 = element("div");
-    			div4.textContent = "Promises Monad";
-    			t18 = space();
-    			br13 = element("br");
-    			t19 = space();
+    			div4.textContent = "Transducer Simulator";
+    			t14 = space();
+    			br11 = element("br");
+    			t15 = space();
     			li5 = element("li");
     			div5 = element("div");
-    			div5.textContent = "Transducer Simulator";
-    			t21 = space();
-    			br14 = element("br");
-    			t22 = space();
+    			div5.textContent = "Game of Score";
+    			t17 = space();
+    			br12 = element("br");
+    			t18 = space();
     			li6 = element("li");
     			div6 = element("div");
-    			div6.textContent = "Game of Score";
-    			t24 = space();
-    			br15 = element("br");
-    			t25 = space();
+    			div6.textContent = "MISCELANEOUS TOPICS";
+    			t20 = space();
+    			br13 = element("br");
+    			t21 = space();
     			li7 = element("li");
     			div7 = element("div");
-    			div7.textContent = "MISCELANEOUS TOPICS";
-    			t27 = space();
-    			br16 = element("br");
-    			t28 = space();
+    			div7.textContent = "Why Svelte";
+    			t23 = space();
+    			br14 = element("br");
+    			t24 = space();
     			li8 = element("li");
     			div8 = element("div");
     			div8.textContent = "Hidden Haskell Information";
-    			t30 = space();
-    			br17 = element("br");
-    			t31 = space();
+    			t26 = space();
+    			br15 = element("br");
+    			t27 = space();
     			li9 = element("li");
     			div9 = element("div");
     			div9.textContent = "Bed Bug Eradication";
-    			t33 = space();
-    			br18 = element("br");
-    			t34 = space();
+    			t29 = space();
+    			br16 = element("br");
+    			t30 = space();
     			li10 = element("li");
     			div10 = element("div");
     			div10.textContent = "Toggle Theme";
-    			t36 = space();
-    			br19 = element("br");
-    			t37 = space();
+    			t32 = space();
+    			br17 = element("br");
+    			t33 = space();
     			li11 = element("li");
     			div11 = element("div");
     			div11.textContent = "Home";
-    			t39 = space();
-    			br20 = element("br");
-    			t40 = space();
+    			t35 = space();
+    			br18 = element("br");
+    			t36 = space();
     			div14 = element("div");
     			div13 = element("div");
     			div13.textContent = "DAVID SCHALK'S BLOG";
-    			t42 = space();
+    			t38 = space();
     			if (if_block0) if_block0.c();
-    			t43 = space();
+    			t39 = space();
     			if (if_block1) if_block1.c();
-    			t44 = space();
+    			t40 = space();
     			if (if_block2) if_block2.c();
-    			t45 = space();
+    			t41 = space();
     			if (if_block3) if_block3.c();
-    			t46 = space();
+    			t42 = space();
     			if (if_block4) if_block4.c();
-    			t47 = space();
+    			t43 = space();
     			if (if_block5) if_block5.c();
-    			t48 = space();
+    			t44 = space();
     			if (if_block6) if_block6.c();
-    			t49 = space();
+    			t45 = space();
     			if (if_block7) if_block7.c();
-    			t50 = space();
+    			t46 = space();
     			if (if_block8) if_block8.c();
-    			t51 = space();
+    			t47 = space();
     			if (if_block9) if_block9.c();
-    			t52 = space();
+    			t48 = space();
+    			if (if_block10) if_block10.c();
+    			t49 = space();
+    			br19 = element("br");
+    			br20 = element("br");
     			br21 = element("br");
+    			t50 = space();
     			br22 = element("br");
     			br23 = element("br");
-    			t53 = space();
-    			br24 = element("br");
-    			br25 = element("br");
-    			add_location(br0, file$a, 108, 0, 2146);
-    			add_location(br1, file$a, 108, 4, 2150);
-    			add_location(br2, file$a, 113, 24, 2305);
-    			add_location(br3, file$a, 113, 28, 2309);
-    			add_location(br4, file$a, 113, 32, 2313);
-    			add_location(br5, file$a, 113, 36, 2317);
-    			add_location(h1, file$a, 113, 40, 2321);
-    			add_location(br6, file$a, 113, 58, 2339);
-    			add_location(br7, file$a, 113, 62, 2343);
-    			add_location(br8, file$a, 113, 66, 2347);
-    			attr(div0, "class", "button svelte-eqbi6d");
-    			add_location(div0, file$a, 115, 28, 2437);
-    			add_location(li0, file$a, 115, 24, 2433);
-    			add_location(br9, file$a, 116, 24, 2527);
-    			attr(div1, "class", "svelte-eqbi6d");
-    			add_location(div1, file$a, 117, 28, 2560);
-    			add_location(li1, file$a, 117, 24, 2556);
-    			add_location(br10, file$a, 118, 24, 2613);
+    			add_location(br0, file$b, 112, 24, 2281);
+    			add_location(br1, file$b, 112, 28, 2285);
+    			add_location(br2, file$b, 112, 32, 2289);
+    			add_location(br3, file$b, 112, 36, 2293);
+    			add_location(br4, file$b, 112, 40, 2297);
+    			add_location(br5, file$b, 112, 44, 2301);
+    			add_location(br6, file$b, 112, 48, 2305);
+    			attr(div0, "class", "svelte-eqbi6d");
+    			add_location(div0, file$b, 114, 28, 2395);
+    			add_location(li0, file$b, 114, 24, 2391);
+    			add_location(br7, file$b, 115, 24, 2448);
+    			attr(div1, "class", "button svelte-eqbi6d");
+    			add_location(div1, file$b, 116, 28, 2481);
+    			add_location(li1, file$b, 116, 24, 2477);
+    			add_location(br8, file$b, 117, 24, 2598);
     			attr(div2, "class", "button svelte-eqbi6d");
-    			add_location(div2, file$a, 119, 28, 2646);
-    			add_location(li2, file$a, 119, 24, 2642);
-    			add_location(br11, file$a, 120, 24, 2763);
+    			add_location(div2, file$b, 118, 28, 2631);
+    			add_location(li2, file$b, 118, 24, 2627);
+    			add_location(br9, file$b, 119, 24, 2750);
     			attr(div3, "class", "button svelte-eqbi6d");
-    			add_location(div3, file$a, 121, 28, 2796);
-    			add_location(li3, file$a, 121, 24, 2792);
-    			add_location(br12, file$a, 122, 24, 2915);
+    			add_location(div3, file$b, 120, 28, 2783);
+    			add_location(li3, file$b, 120, 24, 2779);
+    			add_location(br10, file$b, 121, 24, 2898);
     			attr(div4, "class", "button svelte-eqbi6d");
-    			add_location(div4, file$a, 123, 28, 2948);
-    			add_location(li4, file$a, 123, 24, 2944);
-    			add_location(br13, file$a, 124, 24, 3063);
+    			add_location(div4, file$b, 122, 28, 2931);
+    			add_location(li4, file$b, 122, 24, 2927);
+    			add_location(br11, file$b, 123, 24, 3056);
     			attr(div5, "class", "button svelte-eqbi6d");
-    			add_location(div5, file$a, 125, 28, 3096);
-    			add_location(li5, file$a, 125, 24, 3092);
-    			add_location(br14, file$a, 126, 24, 3221);
-    			attr(div6, "class", "button svelte-eqbi6d");
-    			add_location(div6, file$a, 127, 28, 3254);
-    			add_location(li6, file$a, 127, 24, 3250);
-    			add_location(br15, file$a, 128, 24, 3369);
-    			attr(div7, "class", "svelte-eqbi6d");
-    			add_location(div7, file$a, 129, 28, 3402);
-    			add_location(li7, file$a, 129, 24, 3398);
-    			add_location(br16, file$a, 130, 24, 3462);
+    			add_location(div5, file$b, 124, 28, 3089);
+    			add_location(li5, file$b, 124, 24, 3085);
+    			add_location(br12, file$b, 125, 24, 3204);
+    			attr(div6, "class", "svelte-eqbi6d");
+    			add_location(div6, file$b, 126, 28, 3237);
+    			add_location(li6, file$b, 126, 24, 3233);
+    			add_location(br13, file$b, 127, 24, 3297);
+    			attr(div7, "class", "button svelte-eqbi6d");
+    			add_location(div7, file$b, 128, 28, 3330);
+    			add_location(li7, file$b, 128, 24, 3326);
+    			add_location(br14, file$b, 129, 24, 3420);
     			attr(div8, "class", "button svelte-eqbi6d");
-    			add_location(div8, file$a, 131, 28, 3495);
-    			add_location(li8, file$a, 131, 24, 3491);
-    			add_location(br17, file$a, 132, 24, 3626);
+    			add_location(div8, file$b, 130, 28, 3453);
+    			add_location(li8, file$b, 130, 24, 3449);
+    			add_location(br15, file$b, 131, 24, 3584);
     			attr(div9, "class", "button svelte-eqbi6d");
-    			add_location(div9, file$a, 133, 28, 3659);
-    			add_location(li9, file$a, 133, 24, 3655);
-    			add_location(br18, file$a, 134, 24, 3783);
+    			add_location(div9, file$b, 132, 28, 3617);
+    			add_location(li9, file$b, 132, 24, 3613);
+    			add_location(br16, file$b, 133, 24, 3741);
     			attr(div10, "class", "button svelte-eqbi6d");
-    			add_location(div10, file$a, 135, 28, 3816);
-    			add_location(li10, file$a, 135, 24, 3812);
-    			add_location(br19, file$a, 136, 24, 3933);
+    			add_location(div10, file$b, 134, 28, 3774);
+    			add_location(li10, file$b, 134, 24, 3770);
+    			add_location(br17, file$b, 135, 24, 3891);
     			attr(div11, "class", "button svelte-eqbi6d");
-    			add_location(div11, file$a, 137, 28, 3966);
-    			add_location(li11, file$a, 137, 24, 3962);
-    			add_location(br20, file$a, 138, 24, 4075);
+    			add_location(div11, file$b, 136, 28, 3924);
+    			add_location(li11, file$b, 136, 24, 3920);
+    			add_location(br18, file$b, 138, 24, 4057);
     			set_style(ul, "list-style", "none");
     			attr(ul, "class", "svelte-eqbi6d");
-    			add_location(ul, file$a, 114, 24, 2376);
+    			add_location(ul, file$b, 113, 24, 2334);
     			set_style(div12, "margin-Right", "2%");
     			set_style(div12, "width", "20%");
     			attr(div12, "class", "svelte-eqbi6d");
-    			add_location(div12, file$a, 112, 24, 2235);
+    			add_location(div12, file$b, 111, 24, 2211);
     			set_style(div13, "font-weight", "900");
     			set_style(div13, "font-size", "45px");
     			set_style(div13, "color", "#bbbb00");
     			set_style(div13, "text-align", "center");
     			attr(div13, "class", "svelte-eqbi6d");
-    			add_location(div13, file$a, 142, 24, 4235);
-    			add_location(br21, file$a, 177, 0, 4668);
-    			add_location(br22, file$a, 177, 4, 4672);
-    			add_location(br23, file$a, 177, 8, 4676);
+    			add_location(div13, file$b, 142, 24, 4217);
+    			add_location(br19, file$b, 179, 0, 4678);
+    			add_location(br20, file$b, 179, 4, 4682);
+    			add_location(br21, file$b, 179, 8, 4686);
     			set_style(div14, "margin-Right", "2%");
     			set_style(div14, "width", "80%");
     			attr(div14, "class", "svelte-eqbi6d");
-    			add_location(div14, file$a, 141, 24, 4165);
+    			add_location(div14, file$b, 141, 24, 4147);
     			set_style(div15, "display", "flex");
     			attr(div15, "class", "svelte-eqbi6d");
-    			add_location(div15, file$a, 110, 24, 2180);
+    			add_location(div15, file$b, 109, 24, 2156);
     			attr(div16, "class", "content svelte-eqbi6d");
-    			add_location(div16, file$a, 107, 0, 2124);
-    			add_location(br24, file$a, 181, 0, 4702);
-    			add_location(br25, file$a, 181, 4, 4706);
+    			add_location(div16, file$b, 108, 0, 2110);
+    			add_location(br22, file$b, 183, 0, 4712);
+    			add_location(br23, file$b, 183, 4, 4716);
 
     			dispose = [
-    				listen(div0, "click", ctx.click_handler),
+    				listen(div1, "click", ctx.click_handler),
     				listen(div2, "click", ctx.click_handler_1),
     				listen(div3, "click", ctx.click_handler_2),
     				listen(div4, "click", ctx.click_handler_3),
     				listen(div5, "click", ctx.click_handler_4),
-    				listen(div6, "click", ctx.click_handler_5),
+    				listen(div7, "click", ctx.click_handler_5),
     				listen(div8, "click", ctx.click_handler_6),
     				listen(div9, "click", ctx.click_handler_7),
     				listen(div10, "click", ctx.click_handler_8),
@@ -5456,127 +5938,118 @@ console.log("a is", a)  // a is 900`;
 
     		m: function mount(target, anchor) {
     			insert(target, div16, anchor);
-    			append(div16, br0);
-    			append(div16, br1);
-    			append(div16, t0);
     			append(div16, div15);
     			append(div15, div12);
+    			append(div12, br0);
+    			append(div12, br1);
     			append(div12, br2);
     			append(div12, br3);
     			append(div12, br4);
     			append(div12, br5);
-    			append(div12, h1);
-    			append(h1, t1);
-    			append(h1, t2);
-    			append(h1, t3);
     			append(div12, br6);
-    			append(div12, br7);
-    			append(div12, br8);
-    			append(div12, t4);
+    			append(div12, t0);
     			append(div12, ul);
     			append(ul, li0);
     			append(li0, div0);
-    			append(ul, t6);
-    			append(ul, br9);
-    			append(ul, t7);
+    			append(ul, t2);
+    			append(ul, br7);
+    			append(ul, t3);
     			append(ul, li1);
     			append(li1, div1);
-    			append(ul, t9);
-    			append(ul, br10);
-    			append(ul, t10);
+    			append(ul, t5);
+    			append(ul, br8);
+    			append(ul, t6);
     			append(ul, li2);
     			append(li2, div2);
-    			append(ul, t12);
-    			append(ul, br11);
-    			append(ul, t13);
+    			append(ul, t8);
+    			append(ul, br9);
+    			append(ul, t9);
     			append(ul, li3);
     			append(li3, div3);
-    			append(ul, t15);
-    			append(ul, br12);
-    			append(ul, t16);
+    			append(ul, t11);
+    			append(ul, br10);
+    			append(ul, t12);
     			append(ul, li4);
     			append(li4, div4);
-    			append(ul, t18);
-    			append(ul, br13);
-    			append(ul, t19);
+    			append(ul, t14);
+    			append(ul, br11);
+    			append(ul, t15);
     			append(ul, li5);
     			append(li5, div5);
-    			append(ul, t21);
-    			append(ul, br14);
-    			append(ul, t22);
+    			append(ul, t17);
+    			append(ul, br12);
+    			append(ul, t18);
     			append(ul, li6);
     			append(li6, div6);
-    			append(ul, t24);
-    			append(ul, br15);
-    			append(ul, t25);
+    			append(ul, t20);
+    			append(ul, br13);
+    			append(ul, t21);
     			append(ul, li7);
     			append(li7, div7);
-    			append(ul, t27);
-    			append(ul, br16);
-    			append(ul, t28);
+    			append(ul, t23);
+    			append(ul, br14);
+    			append(ul, t24);
     			append(ul, li8);
     			append(li8, div8);
-    			append(ul, t30);
-    			append(ul, br17);
-    			append(ul, t31);
+    			append(ul, t26);
+    			append(ul, br15);
+    			append(ul, t27);
     			append(ul, li9);
     			append(li9, div9);
-    			append(ul, t33);
-    			append(ul, br18);
-    			append(ul, t34);
+    			append(ul, t29);
+    			append(ul, br16);
+    			append(ul, t30);
     			append(ul, li10);
     			append(li10, div10);
-    			append(ul, t36);
-    			append(ul, br19);
-    			append(ul, t37);
+    			append(ul, t32);
+    			append(ul, br17);
+    			append(ul, t33);
     			append(ul, li11);
     			append(li11, div11);
-    			append(ul, t39);
-    			append(ul, br20);
-    			append(div15, t40);
+    			append(ul, t35);
+    			append(ul, br18);
+    			append(div15, t36);
     			append(div15, div14);
     			append(div14, div13);
-    			append(div14, t42);
+    			append(div14, t38);
     			if (if_block0) if_block0.m(div14, null);
-    			append(div14, t43);
+    			append(div14, t39);
     			if (if_block1) if_block1.m(div14, null);
-    			append(div14, t44);
+    			append(div14, t40);
     			if (if_block2) if_block2.m(div14, null);
-    			append(div14, t45);
+    			append(div14, t41);
     			if (if_block3) if_block3.m(div14, null);
-    			append(div14, t46);
+    			append(div14, t42);
     			if (if_block4) if_block4.m(div14, null);
-    			append(div14, t47);
+    			append(div14, t43);
     			if (if_block5) if_block5.m(div14, null);
-    			append(div14, t48);
+    			append(div14, t44);
     			if (if_block6) if_block6.m(div14, null);
-    			append(div14, t49);
+    			append(div14, t45);
     			if (if_block7) if_block7.m(div14, null);
-    			append(div14, t50);
+    			append(div14, t46);
     			if (if_block8) if_block8.m(div14, null);
-    			append(div14, t51);
+    			append(div14, t47);
     			if (if_block9) if_block9.m(div14, null);
-    			append(div14, t52);
+    			append(div14, t48);
+    			if (if_block10) if_block10.m(div14, null);
+    			append(div14, t49);
+    			append(div14, br19);
+    			append(div14, br20);
     			append(div14, br21);
-    			append(div14, br22);
-    			append(div14, br23);
-    			insert(target, t53, anchor);
-    			insert(target, br24, anchor);
-    			insert(target, br25, anchor);
+    			insert(target, t50, anchor);
+    			insert(target, br22, anchor);
+    			insert(target, br23, anchor);
     			current = true;
     		},
 
     		p: function update(changed, ctx) {
-    			if (!current || changed.j) {
-    				set_data(t2, ctx.j);
-    			}
-
     			if (ctx.j === 0) {
     				if (!if_block0) {
-    					if_block0 = create_if_block_9();
+    					if_block0 = create_if_block_10();
     					if_block0.c();
     					transition_in(if_block0, 1);
-    					if_block0.m(div14, t43);
+    					if_block0.m(div14, t39);
     				} else {
     									transition_in(if_block0, 1);
     				}
@@ -5590,10 +6063,10 @@ console.log("a is", a)  // a is 900`;
 
     			if (ctx.j === 1) {
     				if (!if_block1) {
-    					if_block1 = create_if_block_8();
+    					if_block1 = create_if_block_9();
     					if_block1.c();
     					transition_in(if_block1, 1);
-    					if_block1.m(div14, t44);
+    					if_block1.m(div14, t40);
     				} else {
     									transition_in(if_block1, 1);
     				}
@@ -5607,10 +6080,10 @@ console.log("a is", a)  // a is 900`;
 
     			if (ctx.j === 2) {
     				if (!if_block2) {
-    					if_block2 = create_if_block_7();
+    					if_block2 = create_if_block_8();
     					if_block2.c();
     					transition_in(if_block2, 1);
-    					if_block2.m(div14, t45);
+    					if_block2.m(div14, t41);
     				} else {
     									transition_in(if_block2, 1);
     				}
@@ -5622,12 +6095,12 @@ console.log("a is", a)  // a is 900`;
     				check_outros();
     			}
 
-    			if (ctx.j === 9) {
+    			if (ctx.j === 3) {
     				if (!if_block3) {
-    					if_block3 = create_if_block_6();
+    					if_block3 = create_if_block_7();
     					if_block3.c();
     					transition_in(if_block3, 1);
-    					if_block3.m(div14, t46);
+    					if_block3.m(div14, t42);
     				} else {
     									transition_in(if_block3, 1);
     				}
@@ -5639,12 +6112,12 @@ console.log("a is", a)  // a is 900`;
     				check_outros();
     			}
 
-    			if (ctx.j === 3) {
+    			if (ctx.j === 4) {
     				if (!if_block4) {
-    					if_block4 = create_if_block_5();
+    					if_block4 = create_if_block_6();
     					if_block4.c();
     					transition_in(if_block4, 1);
-    					if_block4.m(div14, t47);
+    					if_block4.m(div14, t43);
     				} else {
     									transition_in(if_block4, 1);
     				}
@@ -5656,12 +6129,12 @@ console.log("a is", a)  // a is 900`;
     				check_outros();
     			}
 
-    			if (ctx.j === 4) {
+    			if (ctx.j === 5) {
     				if (!if_block5) {
-    					if_block5 = create_if_block_4();
+    					if_block5 = create_if_block_5();
     					if_block5.c();
     					transition_in(if_block5, 1);
-    					if_block5.m(div14, t48);
+    					if_block5.m(div14, t44);
     				} else {
     									transition_in(if_block5, 1);
     				}
@@ -5673,12 +6146,12 @@ console.log("a is", a)  // a is 900`;
     				check_outros();
     			}
 
-    			if (ctx.j === 5) {
+    			if (ctx.j === 7) {
     				if (!if_block6) {
-    					if_block6 = create_if_block_3();
+    					if_block6 = create_if_block_4();
     					if_block6.c();
     					transition_in(if_block6, 1);
-    					if_block6.m(div14, t49);
+    					if_block6.m(div14, t45);
     				} else {
     									transition_in(if_block6, 1);
     				}
@@ -5690,12 +6163,12 @@ console.log("a is", a)  // a is 900`;
     				check_outros();
     			}
 
-    			if (ctx.j === 7) {
+    			if (ctx.j === 8) {
     				if (!if_block7) {
-    					if_block7 = create_if_block_2();
+    					if_block7 = create_if_block_3();
     					if_block7.c();
     					transition_in(if_block7, 1);
-    					if_block7.m(div14, t50);
+    					if_block7.m(div14, t46);
     				} else {
     									transition_in(if_block7, 1);
     				}
@@ -5707,12 +6180,12 @@ console.log("a is", a)  // a is 900`;
     				check_outros();
     			}
 
-    			if (ctx.j === 8) {
+    			if (ctx.j === 9) {
     				if (!if_block8) {
-    					if_block8 = create_if_block_1();
+    					if_block8 = create_if_block_2();
     					if_block8.c();
     					transition_in(if_block8, 1);
-    					if_block8.m(div14, t51);
+    					if_block8.m(div14, t47);
     				} else {
     									transition_in(if_block8, 1);
     				}
@@ -5726,10 +6199,10 @@ console.log("a is", a)  // a is 900`;
 
     			if (ctx.j === 10) {
     				if (!if_block9) {
-    					if_block9 = create_if_block$a();
+    					if_block9 = create_if_block_1();
     					if_block9.c();
     					transition_in(if_block9, 1);
-    					if_block9.m(div14, t52);
+    					if_block9.m(div14, t48);
     				} else {
     									transition_in(if_block9, 1);
     				}
@@ -5737,6 +6210,23 @@ console.log("a is", a)  // a is 900`;
     				group_outros();
     				transition_out(if_block9, 1, 1, () => {
     					if_block9 = null;
+    				});
+    				check_outros();
+    			}
+
+    			if (ctx.j === 20) {
+    				if (!if_block10) {
+    					if_block10 = create_if_block$9();
+    					if_block10.c();
+    					transition_in(if_block10, 1);
+    					if_block10.m(div14, t49);
+    				} else {
+    									transition_in(if_block10, 1);
+    				}
+    			} else if (if_block10) {
+    				group_outros();
+    				transition_out(if_block10, 1, 1, () => {
+    					if_block10 = null;
     				});
     				check_outros();
     			}
@@ -5754,6 +6244,7 @@ console.log("a is", a)  // a is 900`;
     			transition_in(if_block7);
     			transition_in(if_block8);
     			transition_in(if_block9);
+    			transition_in(if_block10);
     			current = true;
     		},
 
@@ -5768,6 +6259,7 @@ console.log("a is", a)  // a is 900`;
     			transition_out(if_block7);
     			transition_out(if_block8);
     			transition_out(if_block9);
+    			transition_out(if_block10);
     			current = false;
     		},
 
@@ -5786,11 +6278,12 @@ console.log("a is", a)  // a is 900`;
     			if (if_block7) if_block7.d();
     			if (if_block8) if_block8.d();
     			if (if_block9) if_block9.d();
+    			if (if_block10) if_block10.d();
 
     			if (detaching) {
-    				detach(t53);
-    				detach(br24);
-    				detach(br25);
+    				detach(t50);
+    				detach(br22);
+    				detach(br23);
     			}
 
     			run_all(dispose);
@@ -5798,7 +6291,7 @@ console.log("a is", a)  // a is 900`;
     	};
     }
 
-    function instance$8($$self, $$props, $$invalidate) {
+    function instance$9($$self, $$props, $$invalidate) {
     	
 
         let j = 0;
@@ -5806,21 +6299,21 @@ console.log("a is", a)  // a is 900`;
 
         console.log("j is", j);
 
-    	function click_handler() {
+    	function click_handler() {j = 1; $$invalidate('j', j); console.log("j is", j);}
+
+    	function click_handler_1() {j=2; $$invalidate('j', j); console.log("j is", j);}
+
+    	function click_handler_2() {j=9; $$invalidate('j', j); console.log("j is", j);}
+
+    	function click_handler_3() {j = 7; $$invalidate('j', j); console.log("j is", j);}
+
+    	function click_handler_4() {j=10; $$invalidate('j', j); console.log("j is", j);}
+
+    	function click_handler_5() {
     		const $$result = j = 5;
     		$$invalidate('j', j);
     		return $$result;
     	}
-
-    	function click_handler_1() {j = 1; $$invalidate('j', j); console.log("j is", j);}
-
-    	function click_handler_2() {j=2; $$invalidate('j', j); console.log("j is", j);}
-
-    	function click_handler_3() {j=9; $$invalidate('j', j); console.log("j is", j);}
-
-    	function click_handler_4() {j = 7; $$invalidate('j', j); console.log("j is", j);}
-
-    	function click_handler_5() {j=10; $$invalidate('j', j); console.log("j is", j);}
 
     	function click_handler_6() {j = 3; $$invalidate('j', j); console.log("j is", j);}
 
@@ -5853,29 +6346,20 @@ console.log("a is", a)  // a is 900`;
     class Blog extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$8, create_fragment$a, safe_not_equal, []);
+    		init(this, options, instance$9, create_fragment$b, safe_not_equal, []);
     	}
     }
 
     /* src/App.svelte generated by Svelte v3.9.1 */
-    const { console: console_1 } = globals;
 
-    const file$b = "src/App.svelte";
-
-    function create_fragment$b(ctx) {
-    	var h1, t0, t1, t2, current;
+    function create_fragment$c(ctx) {
+    	var current;
 
     	var blog = new Blog({ $$inline: true });
 
     	return {
     		c: function create() {
-    			h1 = element("h1");
-    			t0 = text("j is ");
-    			t1 = text(ctx.j);
-    			t2 = space();
     			blog.$$.fragment.c();
-    			attr(h1, "class", "svelte-1cka3hv");
-    			add_location(h1, file$b, 14, 0, 226);
     		},
 
     		l: function claim(nodes) {
@@ -5883,19 +6367,11 @@ console.log("a is", a)  // a is 900`;
     		},
 
     		m: function mount(target, anchor) {
-    			insert(target, h1, anchor);
-    			append(h1, t0);
-    			append(h1, t1);
-    			insert(target, t2, anchor);
     			mount_component(blog, target, anchor);
     			current = true;
     		},
 
-    		p: function update(changed, ctx) {
-    			if (!current || changed.j) {
-    				set_data(t1, ctx.j);
-    			}
-    		},
+    		p: noop,
 
     		i: function intro(local) {
     			if (current) return;
@@ -5910,55 +6386,15 @@ console.log("a is", a)  // a is 900`;
     		},
 
     		d: function destroy(detaching) {
-    			if (detaching) {
-    				detach(h1);
-    				detach(t2);
-    			}
-
     			destroy_component(blog, detaching);
     		}
     	};
     }
 
-    function instance$9($$self, $$props, $$invalidate) {
-    	let { lok = false, j = 0 } = $$props;
-        
-        console.log("j is", j);
-        console.log("lok is", lok);
-
-    	const writable_props = ['lok', 'j'];
-    	Object.keys($$props).forEach(key => {
-    		if (!writable_props.includes(key) && !key.startsWith('$$')) console_1.warn(`<App> was created with unknown prop '${key}'`);
-    	});
-
-    	$$self.$set = $$props => {
-    		if ('lok' in $$props) $$invalidate('lok', lok = $$props.lok);
-    		if ('j' in $$props) $$invalidate('j', j = $$props.j);
-    	};
-
-    	return { lok, j };
-    }
-
     class App extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$9, create_fragment$b, safe_not_equal, ["lok", "j"]);
-    	}
-
-    	get lok() {
-    		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set lok(value) {
-    		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get j() {
-    		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set j(value) {
-    		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		init(this, options, null, create_fragment$c, safe_not_equal, []);
     	}
     }
 

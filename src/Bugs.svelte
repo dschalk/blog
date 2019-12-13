@@ -15,17 +15,27 @@ var axe = `var mon = Monad(3);var a = mon(x=>x**3)(x=>x+3)(x=>x**2)(stop)console
 COMPLETE ERADICATION OF BED BUGS
  </div>
 {/if}
-<div style="font-size:22px">
-<p> I had a massive bed bug infestation in my rented condominium before I knew what hit me. My box springs were on the floor, making it easy for bed bugs to climb onto my mattress and feast while I slept.</p>
-<p> When I realized what was happening, I saw that large numbers of bed bugs were clustered at numerous locations on on the walls near the head of my bed. They were seeking the source of the carbon dioxide I exhaled as I slept. I squashed them and washed the walls. Many others were hiding in my mattress. I encased the mattress and those bugs are now dead. </p>
-<p> I know the procedure I am about to describe works because I used it and eradication proceeded quickly to completion. Over the past two years there has been no sign of a bedbug being in my home. My strategy was to put my box springs on a metal frame, encase my mattress, and apply fluffed up silica gel on the floor under and around my bed.</p>
-<p> I bought five pounds of silica gel on Ebay and a large yellow puff dispenser on Amazon.com. I dedicated my coffee grinder to the fluffing process. You should wear a dust mask while dispensing silica gel with a puffer, or else hold your breath and rush into an adjacent room when you need air.</p>
-<p> Professional eradicators don't leave visible residues on floors. That is why they get poor results with silica gel, results comparable to the ones they get with toxic pesticides. Professional exterminators have been known to apply silica gel dissolved in water, which seems absurd in light of the fact that silica gel kills bed bugs by drying them up.</p>
-<p> Silica gel is found in little packets in over the counter medications. The FDA allows up to two percent as a food additive. Lung irritation during application can be avoided by using a dust mask or ducking into an adjacent room to catch your breath. </p>
-<p> Newly hatched bed bugs don\'t survive as long as mature ones without blood, so get your bed up on a frame and encase the box springs and mattress. Eggs hatch within ten days. The hatchlings need blood before each molting, so they don't mature without blood. Put the legs of the frame into traps for extra protection. Then, at least, you can sleep without being bitten and know that the mature bed bug population can no longer increase.</p>
-<p> You have to be willing to live with visible white powder on your floor for a while. As I said, puff the silica gel you fluffed in the coffee grinder all around and under your bed. You can also apply along base boards and in crawl spaces. When I tried sleeping in a room down the hall, bed bugs quickly found me. I removed a panel in the middle bedroom and saw the bathtub and a bed bug. Bed bugs were traveling under the floor and behind the walls. </p>
-<p> Bed bugs can remain dormant in a vacant building for up to one year, but if they sense someone breathing, they go to the site of the exhaled carbon dioxide. Bed bugs can\'t nourish themselves with anything but blood. When they go after yours, they will step into silica gel, start drying up, and die within two days. </p>
-<p> Bed bugs can feast on you when you sit on upholstered furniture. The simplest thing to do is discard all upholstered furniture. That's what I did. </p>
-<p> We think my infestation started when bed bugs migrated away from my neighbor's adjoining condo. Bed bugs like to cluster but pregnant females stray off to avoid more traumatic insemination. They don't have vaginas and male bed bugs have spear penises that punch through female bed bugs\'s abdomens causing serious injury. These are, by any standard, truly disgusting creatures. </p>
-<p> Heat treatment is the current state of the art. It costs thousands of dollars and sometimes doesn't work. Google searches result in nothing but misinformation so I felt obliged to publish this. I urge the reader to spread the word wherever it might be noticed by a bed bug victim. </p>
-</div>
+<p>It is widely believed that the only reliable way to eraacate a bed bug infestation is to pay thousands of dollars for a thorough heat treatment; one that sends deadly heat through drywall and insullation all the way to the exterior walls. I had a massive bed bug infestation in my rented condominium. My box springs were on the floor, making it easy for bed bugs to climb onto my mattress and feast on me -- and increase in numbers exponentially.</p>
+<span> As I researched the life cycle of bed bugs, it became clear that bed bugs are far easier to eradicate than termites or cock roaches: </span>
+<span style="font-weight: 900; color: #ddff00;"> BED BUG INFESTATIONS ARE EXTREMELY FRAGILE!</span>
+<h3>Pertinent Facts About Bed Bugs</h3>
+<ul>
+<li>Blood is the only substance that nourishes them. </li>
+<li>After emerging from eggs, bed bug nymphs molt five times.</li>
+<li>Stage one nymphs can't survive beyond two months at room temperature without blood.</li>
+<li>Mature bed bugs don't survive more than six months at room temperature.</li>
+<li>Nymphs must have blood before each of their five moltings.</li>
+<li>Bed bugs will go to the source of exhaled carbon dioxide.</li>
+<li>After sufficient (not much) contact with silica gel, bed bugs dry up and die within three days.</li>
+<li>Silica gel is not systemically toxic, but it is a respiratory tract irritant. </li>
+<li>Cimex® silica gel is very expensive but a five-pound bag from Ebay is pretty cheap.</li>
+</ul>
+<p> I put the box spring on a metal frame with each leg in a bed bug trap. I encased the mattress but not the box spring because I could see through the mesh on the bottom that no bugs had entered.</p> 
+<p>A coffee grinder was used to Fluff the silica gel (obtained from Ebay) which was then applied (with a big yellow puffer from Amazon.com) under and around my bed and between the box spring and matterss. </p> 
+<p> I knew bed bugs would not lay dormant in furnature, walls, and rugs when they sensed a source of carbon dioxide. I was confident that failing to find a route to my bed around the silica gel they would give up and walk through silica gel in an effort to obtain blood. Their life expectancy was then a couple of days, at most.</p>
+<p> I puffed silica gel into light sockets and anywhere a wall panel could be removed. Soon, the only bed bugs I could find were located in upholstered furniture. I could have killed them, but I decided to throw the invested furnitue away. </p>
+
+
+<p> Professional exterminators get unsatisfactory results with silica gel because they won't leave a site that has visible white powder on the floor. They tried applying silica gel in water, which seems absurd since silica gel kills bed bugs by drying them out.</p>
+<p> The little packets of drying agent found in jars and bags of commercial consumer goods usually contain silica gel. USDA regulations allow up to two percent silica gel in food. You should wear a dust mask while dispensing silica gel with a puffer, or else hold your breath and rush into an adjacent room when you need air.</p>
+<p> Professional eradicators don't leave visible residues on floors. That is why they get poor results with silica gel; results comparable to the ones they get with toxic pesticides. Professional exterminators have been known to apply silica gel dissolved in water, which seems absurd in light of the fact that silica gel kills bed bugs by drying them up.</p>

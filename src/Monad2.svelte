@@ -1,9 +1,14 @@
-
-
-
 <script>
 import {fade} from "svelte/transition"
 let visible = true;
+
+
+  function wait(ms) {
+    return new Promise(r => setTimeout(r, ms));
+  }
+
+    let j;
+    $: j;
 
    async function pause (x) {
       await wait(1000)
@@ -82,10 +87,6 @@ let visible = true;
 
     function intArray (n) {
       return [...Array(n).keys()];
-    }
-
-    function wait(ms) {
-       return new Promise(r => setTimeout(r, ms));
     }
 
     var cube = x => x**3;
@@ -171,6 +172,9 @@ let visible = true;
          var combo = v + '<o>' + v2;
          socket.send('CC#$42' + combo);
          // socket.send(`GZ#$42,solo,${v}`);
+         factors();
+         factors();
+         factors();
        } else {
          login();
        }
@@ -335,12 +339,16 @@ var fac = `  var fact = function fact () {
         M = -1;
         N = -1;
        lock = false;
-     }
+     }<br>
+<h2>O.test is {O.test}</h2>
+<h2>O.test_2 is {O.test_2}</h2>
+<br>
    } `
+   
 </script>
 
 <br><br><br>
-{#if visible}
+{#if j === 2}
 	<div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
 ASYNCHRONOUS MONAD
 	</div>
@@ -348,7 +356,10 @@ ASYNCHRONOUS MONAD
 <br><br>
 <p> If you click execute multiple times in rapid succession, you will see that execution waits until previous runs have completed. This feature was implemented with the Boolean variable "lock". </p>
 <br><br>
-<button on:click = {factors}>EXECUTE factors()</button>
+<button on:click = {factors}>Run Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))
+     (() => branch("test", "test_2")(sqrtP)(cubeP)(()=>addP(O.test_2[2])
+     (O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))
+     (() => resume("test")(multP(4))(addP(6)))) </button>
 <br><br>
 <span style = "color: #EEBBBB"> The WebSockets server sent these pseudo-random numbers: </span>
 <span> {O.c0}, {O.c1}, {O.c2}, {O.c3}, {O.c4}, {O.c5}, {O.c6}, {O.c7}, {O.c8}, {O.c9}, {O.c10}, {O.c11}, {O.c12}, {O.c13}, {O.c14}</span>

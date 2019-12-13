@@ -137,7 +137,7 @@ var add1 = function add1(v) { return v + 1; };
 var sum = function sum(total,v) { return total + v; };
 var cube = function cube(v) { return v**3; };
 
-var size = 100;
+var size = 400;
 $: size;
 
 var ar74 = [...Array(size).keys()];
@@ -406,6 +406,8 @@ TRANSDUCER SIMULATION
 <p> Transducers provide an ingenious solution to the problem. Any JavaScript developer who hasn't already done so would do well to get a good night's sleep, drink a big cup of coffee, and wrap his or her head around the transducer algorithm.</p>
 <p> Another, more straightforward one-array-traversal solution is to use monads. This post shows the result of an array being traversed only one time and, with the help of a monad, undersoing multiple transformations by a collection of functions. The result is the same result obtained by the dot method and a standard transducer.</p>
 <p> The following results were obtained by eight transformations on an array of the first 100 integers:</p>
+<br><br>
+<div>Result length is {transducerResult.length}</div>
 <br><br>
 <div class = p> Traditional dot composition </div>
 <br>

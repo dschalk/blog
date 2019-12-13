@@ -4,6 +4,7 @@
    import {fade} from "svelte/transition"
    let visible = true;
 
+    import Cow from './Cow.svelte'
     import Monad from './Monad.svelte'
     import Monad2 from './Monad2.svelte'
     import Monad3 from './Monad3.svelte'
@@ -100,16 +101,17 @@ div {
     text-indent: 1.6%;
   }
 </style>
-<div class="content">
-<br><br>
 
+
+
+
+
+<div class="content">
                         <div style = "display: flex">
 
                         <div style = "margin-Right: 2%; width: 20%" >
                         <br><br><br><br><br><br><br>
                         <ul style = "list-style: none;">
-                        <li><div class='button'  on:click={() => j = 5}>Why Svelte</div></li>
-                        <br>
                         <li><div>MONAD SERIES</div></li>
                         <br>
                         <li><div class='button' on:click={()=>{j = 1; console.log("j is", j)}}>A Simple Monad</div></li>
@@ -124,6 +126,8 @@ div {
                         <br>
                         <li><div>MISCELANEOUS TOPICS</div></li>
                         <br>
+                        <li><div class='button'  on:click={() => j = 5}>Why Svelte</div></li>
+                        <br>
                         <li><div class='button' on:click={() => {j = 3; console.log("j is", j)}}>Hidden Haskell Information</div></li>
                         <br>
                         <li><div class='button' on:click={() => {j = 4; console.log("j is", j)}}>Bed Bug Eradication</div></li>
@@ -131,12 +135,12 @@ div {
                         <li><div class='button' on:click={() => {j = 8; console.log("j is", j)}}>Toggle Theme</div></li>
                         <br>
                         <li><div class='button' on:click={() => {j = 0; console.log("j is", j)}}>Home</div></li>
+                       
                         <br>
                         </ul>
                         </div>
                         <div style = "margin-Right: 2%; width: 80%" >
                         <div style=" font-weight: 900; font-size: 45px; color: #bbbb00; text-align: center; ">DAVID SCHALK'S BLOG</div>
-
 
 {#if j === 0}
 		<Home />
@@ -146,9 +150,6 @@ div {
 {/if}
 {#if j === 2}
 <Monad2 />
-{/if}
-{#if j === 9}
-<Monad3 />
 {/if}
 {#if j === 3}
 <Haskell />
@@ -165,8 +166,14 @@ div {
 {#if j === 8}
 <ToggleTheme />
 {/if}
+{#if j === 9}
+<Monad3 />
+{/if}
 {#if j === 10}
 <Score />
+{/if}
+{#if j === 20}
+<Cow />
 {/if}
 
 
