@@ -1,13 +1,13 @@
+
 <script>
 import {fade} from "svelte/transition"
 let visible = true;
-
 
   function wait(ms) {
     return new Promise(r => setTimeout(r, ms));
   }
 
-    let j;
+    let j = 2;
     $: j;
 
    async function pause (x) {
@@ -172,9 +172,6 @@ let visible = true;
          var combo = v + '<o>' + v2;
          socket.send('CC#$42' + combo);
          // socket.send(`GZ#$42,solo,${v}`);
-         factors();
-         factors();
-         factors();
        } else {
          login();
        }
@@ -203,62 +200,21 @@ let visible = true;
       for (var x in ob) delete ob[x]
    }
 
-   function factors () {
-      if (lock === false) {
-         lock = true;
-         clearOb(O);
-         N = -1;
-         M = -1;
-         Q = -1;
-         groupDelete(O, "c");
-         groupDelete(O, "d");
-         fact();
-      }
-      else {
-         setTimeout(()=> {
-         factors()
-      },1000)
-      }
+   const factors = function factors () {
+     socket.send("BE#$42,solo,name,10000")
+     socket.send("BE#$42,solo,name,100000")
+     socket.send("BE#$42,solo,name,1000")
    }
-
-   var fact = function fact () {
-      socket.send("BE#$42,solo,name,10000")
-      socket.send("BE#$42,solo,name,1000")
-      socket.send("BE#$42,solo,name,100000")
-      socket.send("BE#$42,solo,name,100000")
-      socket.send("BE#$42,solo,name,10000")
-      socket.send("BE#$42,solo,name,100000")
-      socket.send("BE#$42,solo,name,1000")
-      socket.send("BE#$42,solo,name,1000")
-      socket.send("BE#$42,solo,name,100000")
-      socket.send("BE#$42,solo,name,10000")
-      socket.send("BE#$42,solo,name,100000")
-      socket.send("BE#$42,solo,name,100")
-      socket.send("BE#$42,solo,name,100000")
-      socket.send("BE#$42,solo,name,10000")
-      socket.send("BE#$42,solo,name,100000")
-
-   }
-
-   /*   if (countKeys(O) > 34) {
-           setTimeout( () => {
-           N = -1;
-           M = -1;
-           Q = -1;
-           clearOb(O);
-           factors();
-       },700)
-   } */
 
    var worker_O = new Worker('worker_O.js');
 
    worker_O.onmessage = e => {
-     M = M = M + 1;
-     Monad([e.data], "d"+M);
-     if (M === 14) {
+     M = M + 1;
+        console.log("N and M are", N, M);
+        Monad([e.data], "d"+M);
+     if (M === 2) {
         M = -1;
         N = -1;
-       lock = false;
      }
    }
 
@@ -288,7 +244,7 @@ let visible = true;
     O.key   // ["value", "This is the value", "This is the value."]`
 
   var fa = `    function factors () {
-     if (lock === false) {
+     if (lock === false && j === 2) {
         lock = true;
         clearOb(O);
         N = -1;
@@ -298,31 +254,13 @@ let visible = true;
         groupDelete(O, "d");
         fact();
      }
+     else if (j !== 2) {return}
      else {
         setTimeout(()=> {
         factors()
      },1000)
      }
   }`
-
-var fac = `  var fact = function fact () {
-   socket.send("BE#$42,solo,name,10000")
-   socket.send("BE#$42,solo,name,1000")
-   socket.send("BE#$42,solo,name,100000")
-   socket.send("BE#$42,solo,name,100000")
-   socket.send("BE#$42,solo,name,10000")
-   socket.send("BE#$42,solo,name,100000")
-   socket.send("BE#$42,solo,name,1000000")
-   socket.send("BE#$42,solo,name,1000")
-   socket.send("BE#$42,solo,name,1000000")
-   socket.send("BE#$42,solo,name,10000")
-   socket.send("BE#$42,solo,name,100000")
-   socket.send("BE#$42,solo,name,100000")
-   socket.send("BE#$42,solo,name,100000")
-   socket.send("BE#$42,solo,name,10000")
-   socket.send("BE#$42,solo,name,100000")
-
-}`
 
   var onmessServer = `  ar v = e.data.split(',');
   if (v[0] === "BE#$42") {
@@ -344,69 +282,81 @@ var fac = `  var fact = function fact () {
 <h2>O.test_2 is {O.test_2}</h2>
 <br>
    } `
-   
+
+let candle = ` socket.send(\"BE#$42,solo,name,10000\")    
+  socket.send('\BE#$42,solo,name,100000\")    
+socket.send(\"BE#$42,solo,name,1000\")    `    
+
 </script>
 
-<br><br><br>
+<style>
+ button {
+    margin-left: 5%;
+    background-color: #331903;
+    border-width: 2px;
+    border-color: #E8F7C1;
+    border-radius: 70px;
+    color: #ABABFF;
+    font-size: 20px;
+    -webkit-box-shadow: 0px 0px 15px 0px rgb(255, 215, 0);
+    box-shadow:         0px 0px 15px 0px rgb(255, 215, 0);
+    padding: 3px 10px 3px 10px;
+  }
+
+  button:hover {
+    margin-left: 5%;
+    background-color: #0B0B0C;
+    border-width: 2px;
+    font-size: 22px;
+    -webkit-box-shadow: 0px 0px 15px 0px rgb(255, 215, 0);
+    box-shadow:         0px 0px 15px 0px rgb(255, 215, 0);
+    padding: 3px 10px 3px 10px;
+    color: #FFABAB;
+    border-color: #0000AA;
+    border-radius: 10px;
+  }
+
+</style>
+
 {#if j === 2}
 	<div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
 ASYNCHRONOUS MONAD
 	</div>
 {/if}
-<br><br>
-<p> If you click execute multiple times in rapid succession, you will see that execution waits until previous runs have completed. This feature was implemented with the Boolean variable "lock". </p>
-<br><br>
-<button on:click = {factors}>Run Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))
-     (() => branch("test", "test_2")(sqrtP)(cubeP)(()=>addP(O.test_2[2])
-     (O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))
-     (() => resume("test")(multP(4))(addP(6)))) </button>
-<br><br>
-<span style = "color: #EEBBBB"> The WebSockets server sent these pseudo-random numbers: </span>
+
+<br>
+<p> Clicking the big button below sends three requests to the Haskell WebSockets server asking for quasi-random integers. As the numbers come in from the server, they are forwarded to a web worker which returns the prime decompositions of numbers it receives.</p>
+<br>
+<button on:click = {factors}>
+
+<pre>{candle}</pre>
+  
+  </button>
+<br><br><br>
+
+<!-- <span style = "color: #EEBBBB"> The WebSockets server sent these pseudo-random numbers: </span>
 <span> {O.c0}, {O.c1}, {O.c2}, {O.c3}, {O.c4}, {O.c5}, {O.c6}, {O.c7}, {O.c8}, {O.c9}, {O.c10}, {O.c11}, {O.c12}, {O.c13}, {O.c14}</span>
-<br><br>
-<div style = "color: #EEBBBB"> The web worker sent these results: </div>
-<div>
+<br><br> -->
+
+<div style = "color: #CDCDFF"> The web worker sent these results: </div>
+<div style = "color: #FFFFCD; font-size: 20px; margin-left:  10%">
+<br>
 {O.d0}
 <br>
 {O.d1}
 <br>
 {O.d2}
 <br>
-{O.d3}
-<br>
-{O.d4}
-<br>
-{O.d5}
-<br>
-{O.d6}
-<br>
-{O.d7}
-<br>
-{O.d8}
-<br>
-{O.d9}
-<br>
-{O.d10}
-<br>
-{O.d11}
-<br>
-{O.d12}
-<br>
-{O.d13}
-<br>
-{O.d14}
+
+
 <br>
 </div>
 <br>
-<p> There are many ways to display the behavior of monads returned by Monad(). For this demonstration, a simple object name,d "O" was created and Monad was modified to make the name,s of monads attributes pointing to the monads'internal arrays. Here's the revised definition of Monad.</p>
+<p> In this demonstration, each monad's array of computed values is preserved as an attribute of an object named O. Here's the revised definition of Monad.</p>
+
 <pre>{mon}</pre>
-The statement "Monad(['value"], 'key")(x => 'This is the ' + x)(x => x + '.')(halt)" attaches the the resulting monad to O as follows:
-<pre>{statement}</pre>
-<p> The demonstration procedure is initiated by calling factors().
-<pre>{fa}</pre>
-<p> factor() is called once every second until lock === false; then, lock is set to true and fact() is called. The lock assures that the procedures initiated by fact() will complete before fact() is called again. </p>
-<pre>{fac}</pre>
-<p> Messages are sent to the Haskell WebSockets server requesting random numbers between 1 and the integer specified at the end of the request. randomR from the System.Random library produces a number which is sent back to the browser with prefix "BE#$42". Messages from the server are parsed and processed in socket.onmessage, which requests the random number's prime decomposition from worker_O.
+
+<p> Messages are sent to the Haskell WebSockets server requesting pseudo-random numbers between 1 and the integer specified at the end of the request. On the server, randomR from the System.Random library produces a number which is sent to the browser with prefix "BE#$42". Messages from the server are parsed in socket.onmessage. If the prefix is "BE#$42", the payload (a number) is sent to worker_O, which sends back the number's prime decomposition.
 <pre>{onmessServer}</pre>
 <p> Messages from the web worker are processed in worker_O.onmessage
 <pre>{onmessWorker}</pre>

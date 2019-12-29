@@ -1,8 +1,21 @@
-
 <script>
+    import { count } from './stores.js';
+	import Inc from './Inc.svelte';
+	import Dec from './Dec.svelte';
+	import Reset from './Reset.svelte';
+    import { createEventDispatcher } from 'svelte';
 
-   import {fade} from "svelte/transition"
-   let visible = true;
+	let count_value;
+    let j = 0;
+    $: j = count_value;
+
+	const unsubscribe = count.subscribe(value => {
+		count_value = value;
+    });
+    
+    const dispatch = createEventDispatcher();
+
+
 
     import Cow from './Cow.svelte'
     import Monad from './Monad.svelte'
@@ -12,135 +25,65 @@
     import Bugs from './Bugs.svelte'
     import Matrix from './Matrix.svelte'
     import Transducer from './Transducer.svelte'
+    import ToggleClass from './ToggleClass.svelte'
     import ToggleTheme from './ToggleTheme.svelte'
     import Home from './Home.svelte'
     import Score from './Score.svelte'
+    import Stor from './Stor.svelte'
+    import Snack from './Snack.svelte'
+    
 
-    let j = 0;
-    $: j;
-
-    var oldj = false;
-
-    function monad () {
-      if (oldj) {
-      j = oldj;
-      j = 1;
-      oldj = false;
-      console.log("j and oldj", j, oldj)
-    }
-    };
-    function monad2 () {
-      j = 2;
-      oldj = true;
-      console.log(j)
-    };
-    function monad3 () {
-      if (oldj) {
-        j = 2;
-        j = 3;
-        oldj = false;
-        console.log("j and oldj", j, oldj)
-      }
-    };
-    function transducer () {
-      if (oldj) {
-      j = oldj;
-      j = 3;
-      oldj = false;
-      console.log("j and oldj", j, oldj)
-    }
-    };
-
-    function haskell () {j = 3; console.log(j)};
+    function monad () {j = 1; console.log(j)};
+    function monad2 () {j = 2; console.log(j)};
+    function monad3 () {j = 3; console.log(j)};
     function bugs () {j = 4; console.log(j)};
     function matrix () {j = 5; console.log(j)};
-    function transduce () {j = 6}; console.log(j);
+    function transduce () {j = 6; console.log(j)};
     function async () {j = 7; console.log(j)};
     function tog () {j = 8; console.log(j)};
-    function promises () {j = 9; console.log(j)};
+    function haskell () {j = 9; console.log(j)};
     function score () {j = 10; console.log(j)};
     function home () {j = 0; console.log(j)};
+    function stor () {j = 21; console.log(j)};
+    function snack () {j = 22; console.log(j)};
 
-    console.log("j is", j)
 
 </script>
 
-<style>
-div {
-   font-size: 18px;
-   color: #bccbaa;
-}
-
-.gamma {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-}
-
-  ul {  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-  list-style: none;
-  }
-
-  tao {
-    margin-left: 3%;
-  }
-
-  .narrow {
-    font-family: monospace;
-    font-size: 22px;
-    margin-left: auto;  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-    margin-right: auto;
-    display: block;
-    text-indent: 1.6%;
-  }
-</style>
-
-
-
-
-
 <div class="content">
-                        <div style = "display: flex">
 
-                        <div style = "margin-Right: 2%; width: 20%" >
                         <br><br><br><br><br><br><br>
-                        <ul style = "list-style: none;">
-                        <li><div>MONAD SERIES</div></li>
-                        <br>
-                        <li><div class='button' on:click={()=>{j = 1; console.log("j is", j)}}>A Simple Monad</div></li>
-                        <br>
-                        <li><div class='button' on:click={()=>{j=2; console.log("j is", j)}}>Asynchronous Monad</div></li>
-                        <br>
-                        <li><div class='button' on:click={()=>{j=9; console.log("j is", j)}}>Promises Monad</div></li>
-                        <br>
-                        <li><div class='button' on:click={() => {j = 7; console.log("j is", j)}}>Transducer Simulator</div></li>
-                        <br>
-                        <li><div class='button' on:click={()=>{j=10; console.log("j is", j)}}>Game of Score</div></li>
-                        <br>
-                        <li><div>MISCELANEOUS TOPICS</div></li>
-                        <br>
-                        <li><div class='button'  on:click={() => j = 5}>Why Svelte</div></li>
-                        <br>
-                        <li><div class='button' on:click={() => {j = 3; console.log("j is", j)}}>Hidden Haskell Information</div></li>
-                        <br>
-                        <li><div class='button' on:click={() => {j = 4; console.log("j is", j)}}>Bed Bug Eradication</div></li>
-                        <br>
-                        <li><div class='button' on:click={() => {j = 8; console.log("j is", j)}}>Toggle Theme</div></li>
-                        <br>
-                        <li><div class='button' on:click={() => {j = 0; console.log("j is", j)}}>Home</div></li>
-                       
+                        <div style=" font-weight: 900; font-size: 45px; color: #bbbb00; text-align: center; ">DAVID SCHALK'S BLOG</div>
+                        <br><br>
+
+                        <ul >
+                          <li><div>MONAD SERIES</div></li>
+                          <li class='button' on:click={monad}  >A Simple Monad</li>
+                          <li class='button' on:click={monad2}>Asynchronous Monad</li>
+                          <li class='button' on:click={monad3}>Promises Monad</li>
+                          <li class='button' on:click={() => {j = 7; console.log("j is", j)}}>Transducer Simulator</li>
+                          <li class='button' on:click={()=>{j=10; console.log("j is", j)}}>Game of Score</li>
+                        </ul>
+                        
+                        <ul>
+
+                        <li><div>MISCELLANEOUS TOPICS</div></li>
+                        <li class='button'  on:click={() => j = 5}> Why Svelte</li>
+                        <li class='button' on:click={() => {j = 9; console.log("j is", j)}}>Hidden Haskell Informationx</li>
+                        <li class='button' on:click={() => {j = 4; console.log("j is", j)}}>Bed Bugs</li>
+                        <li class='button' on:click={() => {j = 0; console.log("j is", j)}}>Home</li>
+                        <li class='button' on:click={() => {j = 23; console.log("j is", j)}}>StoreDemo</li>
+                        </ul>
+                        <ul>
+                        <li><div>SVELTE SNIPPETS</div></li>
+                        <li class='button' on:click={() => {j = 8; console.log("j is", j)}}>Toggle Theme</li>
+                        <li class='button' on:click={() => {j = 11; console.log("j is", j)}}>Toggle Class</li>
+                        <li class='button' on:click={stor}>Stor</li>
+                        <li class='button' on:click={snack}>Snack</li>
                         <br>
                         </ul>
                         </div>
-                        <div style = "margin-Right: 2%; width: 80%" >
-                        <div style=" font-weight: 900; font-size: 45px; color: #bbbb00; text-align: center; ">DAVID SCHALK'S BLOG</div>
+                        <div class = margins>
 
 {#if j === 0}
 		<Home />
@@ -152,7 +95,7 @@ div {
 <Monad2 />
 {/if}
 {#if j === 3}
-<Haskell />
+<Monad3 />
 {/if}
 {#if j === 4}
 <Bugs />
@@ -167,18 +110,40 @@ div {
 <ToggleTheme />
 {/if}
 {#if j === 9}
-<Monad3 />
+<Haskell />
 {/if}
 {#if j === 10}
 <Score />
 {/if}
+{#if j === 11}
+<ToggleClass />
+{/if}
 {#if j === 20}
 <Cow />
 {/if}
-
-
-<br><br><br>
-</div>
-</div>
+{#if j === 21}
+<Stor />
+{/if}
+{#if j === 22}
+<Snack />
+{/if}
 </div>
 <br><br>
+<slot />
+
+
+
+
+
+<h1>The count is {count_value}</h1>
+
+<Inc/>
+<Dec/>
+<Reset/>
+<br><br>
+
+
+
+<button on:click="{() => dispatch('notify', 'detail value')}">Fire Event</button>
+
+

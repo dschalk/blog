@@ -3,7 +3,7 @@
     import {fade} from "svelte/transition"
     let visible = true;
 
-    let j = 2;
+    let j = 3;
     $: j;
 
 
@@ -206,20 +206,40 @@ var code = `    Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))
      (() => resume("test")(multP(4))(addP(6))))`
 </script>
 
- <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
- <br><br>
-Handling Promises With Monads
- </div>                                     <br>
+{#if j === 3}
+	<div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
+PROMISES MONAD
+	</div>
+{/if}
+
+
+{#if j === 9}
+	<div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
+  MONAD VARIATION THAT HANDLES PROMISES
+	</div>
+{/if}
+
 <h2>O.test is {O.test}</h2>
 <h2>O.test_2 is {O.test_2}</h2>             <br>
-<button on:click = {start}>START</button>   <br>
+<span class=tao> To see branch() and resume() in action, click the verbose butt6n (below). To see the boolean "lok" protecting the integrity of the data, click the verbose button (below) several times in rapid succession:</span>
+<br><br>
+<button style = "text-align: left" on:click = {start}>Run Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))
+     (() => branch("test", "test_2")(sqrtP)(cubeP)(()=>addP(O.test_2[2])
+     (O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))
+     (() => resume("test")(multP(4))(addP(6))))</button>
+
+
+<br>
 <p> Here's the modified monad constructor: </p>
 <pre>{mon}</pre>
 <p> After monads encounter "halt", they can use the function resume() to continue processing data where they left off and (2) they can branch off in new monads created by branch(). Here are the definitions:</p>
 <pre>{fs}</pre>
 <p> This is the statement that produces the observed results when "START" is clicked. </p>
 <pre>{code}</pre>                           <br>
-<button on:click = {start}>START</button>
+<button on:click = {start}>Run Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))
+     (() => branch("test", "test_2")(sqrtP)(cubeP)(()=>addP(O.test_2[2])
+     (O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))
+     (() => resume("test")(multP(4))(addP(6))))</button>
 
 
 <br>

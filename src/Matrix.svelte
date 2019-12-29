@@ -2,6 +2,8 @@
 import {fade} from "svelte/transition"
 let visible = true;
 
+import Cow from './Cow.svelte';
+
   var cache = [[1,2,3,4,5,6,7,8,9]];
   var j = 0;
   var ob = {x: [], push: function push (e) {
@@ -34,11 +36,8 @@ let visible = true;
       else j = j;
     }
 
-    $: j
-
      var cache = [[1,2,3,4,5,6,7,8,9]];
      var j = 0;
-     $: j
      var ob = {x: [], push: function push (e) {
         ob.x.push(parseInt(e.target.id.slice(1,2), 10));
         if (ob.x.length >1) {
@@ -73,21 +72,18 @@ var code = `
       return ar;
    }
 
-   var back = function back () {
+   function back () {
       if (j > 0) j = j-=1;
       else j = j;
    }
 
-   var forward = function forward () {
+   function forward () {
       if (j+1 < cache.length) j = j+=1;
       else j = j;
     }
 
-    $: j
-
      var cache = [[1,2,3,4,5,6,7,8,9]];
      var j = 0;
-     $: j
      var ob = {x: [], push: function push (e) {
         ob.x.push(parseInt(e.target.id.slice(1,2), 10));
         if (ob.x.length >1) {
@@ -154,29 +150,28 @@ var html = `{#if visible}
  A LITTLE SVELTE MODULE
  </div>
 {/if}
-                        <div style = "display: flex">
-                        <div style = "margin-Left: 2%; width: 50%" >
-
-<p> If you click any two numbers (below), they switch locations and a "BACK" button appears. If you go back and click two numbers, the result gets inserted  at your location.</p>
-<p> I can use simple variables knowing they will never clash with a similarly named variable in a differenct module. Svelte code is consise and efficient. Coding in Svelte is so relaxing. </p>
 
 <br>
 <br>
-	<button on:click={back}>
-		BACK
-	</button>
+                    <div style = "display: flex">
+                    <div style = "text-align: right; margin-right: 2%; width: 20%" >
+
+<button on:click={back}>
+BACK
+</button>
 <br>
 <br>
-   <div style="text-indent:20px"><button>{ j }</button></div>
+<div style="text-indent:20px"><button>{ j }</button></div>
 <br>
-	<button on:click={forward}>
-		FORWARD
-	</button>
- <br>
- <br>
-                        </div>
-                     <div style = "marginRight: 2%; width: 50%;">
-<br><br><br><br><br><br><br><br><br><br>
+<button on:click={forward}>
+FORWARD
+</button>
+<br>
+<br>
+                
+            </div>
+            <div style = "marginRight: 0%; width: 80%;">
+
 <button id = m0  on:click = {ob.push} >{cache[j][0]}</button>
 <button id = m1  on:click = {ob.push} >{cache[j][1]}</button>
 <button id = m2  on:click = {ob.push} >{cache[j][2]}</button>
@@ -192,6 +187,34 @@ var html = `{#if visible}
 <button id = m8  on:click = {ob.push} >{cache[j][8]}</button>
 </div>
 </div>
+<br>
+<p> An example of an imbedded module that I will explain later: </p> 
+<Cow /> 
+<br><br>
+<div>David Schalk</div>
+<div>October, 2019 </div>
+<br>
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <p> This is the JavaScript code inside of the script tags except for the definitions of the variables "code" and "html", which are just the code and html cut and pasted inside of back quotes: </p>
 <pre>{code}</pre>
 <p> And here is the HTML code: </p>
