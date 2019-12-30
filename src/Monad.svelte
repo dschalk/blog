@@ -77,11 +77,9 @@ Monad(num-0)(sum(7))(prod(4))(v=>v-10)(stop)]}
 
 
 let mona = bonads(num);
-$: mona
 console.log(mona)
 
 function numF (e) {num = e.target.value; console.log("e.target.value is", e.target.value); return e.target.value}
-$: num
 
 console.log("num is", num);
 </script>
@@ -101,7 +99,7 @@ h3 {
     font-style: italic;
 }
 </style>
-<div style = "margin-left: 12%; margin-right: 12%;">
+
 <br><br><br>
  {#if visible}
  	<div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
@@ -133,5 +131,4 @@ A SIMPLE LITTLE MONAD
 <p> mon is still the foo() returned by Monad(). Because mon points to x in the context of its creation by Monad(), x will not be garbage collected. Care should be taken not to polute memory with useless x's.</p>
 
 <p> One reason Svelte is so fast and efficient is that it mutates variables and the attributes and methods of objects. Each module in a discrete global space.  When modules are small, applications are easy to organize and mutations don't have unforseen effects in other parts of applications. Svelte shook off the bonds of current conventional "wisdom" advocating immutability, virtual DOM, and assigning types to functions. </p>
-<p> The next entry in the monad series defines a variation of Monad that maintains and array of primitive data, function return values, and Promise resolution values. Functions have access to everything in the array when they execute. </p>
-</div>
+<p> The next entry in the monad series defines a variation of Monad that maintains an array of primitive data, function return values, and Promise resolution values. Functions have access to everything in the array when they execute. </p>

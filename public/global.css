@@ -158,7 +158,7 @@ pre {
 .icon {
     line-height: 1;
 
-label {
+label: {
     background-color: #331903;
     text-align: left;
     border-color: #331903;

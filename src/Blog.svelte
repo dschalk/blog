@@ -1,92 +1,93 @@
 <script>
-    import { count } from './stores.js';
-	import Inc from './Inc.svelte';
-	import Dec from './Dec.svelte';
-	import Reset from './Reset.svelte';
-    import { createEventDispatcher } from 'svelte';
+import { count } from './stores.js';
+import Inc from './Inc.svelte';
+import Dec from './Dec.svelte';
+import Reset from './Reset.svelte';
+import { createEventDispatcher } from 'svelte';
 
-	let count_value;
-    let j = 0;
-    $: j = count_value;
+let count_value;
+let j = 0;
+$: j = count_value;
 
-	const unsubscribe = count.subscribe(value => {
-		count_value = value;
-    });
-    
-    const dispatch = createEventDispatcher();
+const unsubscribe = count.subscribe(value => {
+    count_value = value;
+});
+
+const dispatch = createEventDispatcher();
 
 
 
-    import Cow from './Cow.svelte'
-    import Monad from './Monad.svelte'
-    import Monad2 from './Monad2.svelte'
-    import Monad3 from './Monad3.svelte'
-    import Haskell from './Haskell.svelte'
-    import Bugs from './Bugs.svelte'
-    import Matrix from './Matrix.svelte'
-    import Transducer from './Transducer.svelte'
-    import ToggleClass from './ToggleClass.svelte'
-    import ToggleTheme from './ToggleTheme.svelte'
-    import Home from './Home.svelte'
-    import Score from './Score.svelte'
-    import Stor from './Stor.svelte'
-    import Snack from './Snack.svelte'
-    
+import Cow from './Cow.svelte'
+import Monad from './Monad.svelte'
+import Monad2 from './Monad2.svelte'
+import Monad3 from './Monad3.svelte'
+import Haskell from './Haskell.svelte'
+import Bugs from './Bugs.svelte'
+import Matrix from './Matrix.svelte'
+import Transducer from './Transducer.svelte'
+import ToggleClass from './ToggleClass.svelte'
+import ToggleTheme from './ToggleTheme.svelte'
+import Home from './Home.svelte'
+import Score from './Score.svelte'
+import Stor from './Stor.svelte'
+import Snack from './Snack.svelte'
 
-    function monad () {j = 1; console.log(j)};
-    function monad2 () {j = 2; console.log(j)};
-    function monad3 () {j = 3; console.log(j)};
-    function bugs () {j = 4; console.log(j)};
-    function matrix () {j = 5; console.log(j)};
-    function transduce () {j = 6; console.log(j)};
-    function async () {j = 7; console.log(j)};
-    function tog () {j = 8; console.log(j)};
-    function haskell () {j = 9; console.log(j)};
-    function score () {j = 10; console.log(j)};
-    function home () {j = 0; console.log(j)};
-    function stor () {j = 21; console.log(j)};
-    function snack () {j = 22; console.log(j)};
+
+function monad () {j = 1; console.log(j)};
+function monad2 () {j = 2; console.log(j)};
+function monad3 () {j = 3; console.log(j)};
+function bugs () {j = 4; console.log(j)};
+function matrix () {j = 5; console.log(j)};
+function transduce () {j = 6; console.log(j)};
+function async () {j = 7; console.log(j)};
+function tog () {j = 8; console.log(j)};
+function haskell () {j = 9; console.log(j)};
+function score () {j = 10; console.log(j)};
+function home () {j = 0; console.log(j)};
+function stor () {j = 21; console.log(j)};
+function snack () {j = 22; console.log(j)};
 
 
 </script>
 
+<div style = "margin-left: 16%; margin-right: 16%;">
 <div class="content">
 
-                        <br><br><br><br><br><br><br>
-                        <div style=" font-weight: 900; font-size: 45px; color: #bbbb00; text-align: center; ">DAVID SCHALK'S BLOG</div>
-                        <br><br>
+                    <br><br><br><br><br><br><br>
+                    <div style=" font-weight: 900; font-size: 45px; color: #bbbb00; text-align: center; ">DAVID SCHALK'S BLOG</div>
+                    <br><br>
 
-                        <ul >
-                          <li><div>MONAD SERIES</div></li>
-                          <li class='button' on:click={monad}  >A Simple Monad</li>
-                          <li class='button' on:click={monad2}>Asynchronous Monad</li>
-                          <li class='button' on:click={monad3}>Promises Monad</li>
-                          <li class='button' on:click={() => {j = 7; console.log("j is", j)}}>Transducer Simulator</li>
-                          <li class='button' on:click={()=>{j=10; console.log("j is", j)}}>Game of Score</li>
-                        </ul>
-                        
-                        <ul>
+                    <ul >
+                        <div>MONAD VARIATIONS ON A THEME</div>
+                        <li class='button' on:click={monad}  >A Simple Monad</li>
+                        <li class='button' on:click={monad2}>A WebSocket and Web Worker Message Handling Monad </li>
+                        <li class='button' on:click={monad3}>A Promises Handling Monad</li>
+                        <li class='button' on:click={() => {j = 7; console.log("j is", j)}}>Transducer Simulator</li>
+                        <li class='button' on:click={()=>{j=10; console.log("j is", j)}}>Game of Score</li>
+                    </ul>
+                    
+                    <ul>
 
-                        <li><div>MISCELLANEOUS TOPICS</div></li>
-                        <li class='button'  on:click={() => j = 5}> Why Svelte</li>
-                        <li class='button' on:click={() => {j = 9; console.log("j is", j)}}>Hidden Haskell Informationx</li>
-                        <li class='button' on:click={() => {j = 4; console.log("j is", j)}}>Bed Bugs</li>
-                        <li class='button' on:click={() => {j = 0; console.log("j is", j)}}>Home</li>
-                        <li class='button' on:click={() => {j = 23; console.log("j is", j)}}>StoreDemo</li>
-                        </ul>
-                        <ul>
-                        <li><div>SVELTE SNIPPETS</div></li>
-                        <li class='button' on:click={() => {j = 8; console.log("j is", j)}}>Toggle Theme</li>
-                        <li class='button' on:click={() => {j = 11; console.log("j is", j)}}>Toggle Class</li>
-                        <li class='button' on:click={stor}>Stor</li>
-                        <li class='button' on:click={snack}>Snack</li>
-                        <br>
-                        </ul>
-                        </div>
-                        <div class = margins>
+                    <li><div>MISCELLANEOUS TOPICS</div></li>
+                    <li class='button'  on:click={() => j = 5}> Why Svelte</li>
+                    <li class='button' on:click={() => {j = 9; console.log("j is", j)}}>Hidden Haskell Informationx</li>
+                    <li class='button' on:click={() => {j = 4; console.log("j is", j)}}>Bed Bugs</li>
+                    <li class='button' on:click={() => {j = 0; console.log("j is", j)}}>Home</li>
+                    <li class='button' on:click={() => {j = 23; console.log("j is", j)}}>StoreDemo</li>
+                    </ul>
+                    <ul>
+                    <li><div>SVELTE SNIPPETS</div></li>
+                    <li class='button' on:click={() => {j = 8; console.log("j is", j)}}>Toggle Theme</li>
+                    <li class='button' on:click={() => {j = 11; console.log("j is", j)}}>Toggle Class</li>
+                    <li class='button' on:click={stor}>Stor</li>
+                    <li class='button' on:click={snack}>Snack</li>
+                    <br>
+                    </ul>
+                    </div>
+                    <div class = margins>
 
 {#if j === 0}
-		<Home />
+    <Home />
 {/if}
 {#if j === 1}
 <Monad />
@@ -131,10 +132,7 @@
 <br><br>
 <slot />
 
-
-
-
-
+<!-- 
 <h1>The count is {count_value}</h1>
 
 <Inc/>
@@ -142,8 +140,11 @@
 <Reset/>
 <br><br>
 
-
-
 <button on:click="{() => dispatch('notify', 'detail value')}">Fire Event</button>
+-->
 
 
+
+<div style="text-align: center" >***</div>
+
+</div>

@@ -37,8 +37,8 @@ HASKELL TUTORIAL SUPPLEMENT
 <p> If you are learning to program in Haskell, the book or blog or YouTube video on which you rely might be telling you that mutations can occur only inside of monads or somewhere away from a program such as the command line or a browser. You might be learning that mutations and side effects can occur only in the lazy IO monad. If so, don't believe it. You are being misled.  </p>
 <p> Even if you resent being lied to, you might find value in some of the dishonest learning resources. They are trying to teach best practices. Just know know that it is easy to mutate values and types anywhere in a Haskell program. Doing so before you know what your compiler (presumably GHC) will do with your mutations is asking for bugs and crashes.  Here are some unsafe functions with descriptions from their creators and maintainers: </p>
 <p id = large> Unsafe.Coerce </p>
-<p> The highly unsafe primitive unsafeCoerce converts a value from any type to any other type. Needless to say, if you use this function, it is your responsibility to ensure that the old and new types have identical internal representations, in order to prevent runtime corruption. </p>
-<span class = tao> The only function in this library is unsafeCoerce :: a -> b. You can read more about it at </span>
+<p> The highly unsafe primitive unsafeCoerce converts a value from any type to any other type. If you use this function, avoiding runtime errors will be especially challenging if the old and new types have different internal representations. </p>
+<span class = tao> The only function in the Unsafe.Coerce library is unsafeCoerce :: a -> b. You can read more about it at </span>
 <a href = "http://hackage.haskell.org/package/base-4.12.0.0/docs/Unsafe-Coerce.html" target = "_blank">Unsafe.Coerce</a>
 <br />
 <pre> GHC.IO.Unsafe </pre>
