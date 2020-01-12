@@ -34,7 +34,7 @@ FUNCTIONAL PROGRAMMING WITH JAVASCRIPT
 
 
 <p>Now that I have abandoned the folly of mindlessly mimicking features of functional programming languages, I can console myself with the thought that I wasn't the first and I wasn't the last JavaScript programmer to got lost in this manner. Strict typing where it serves no useful purpose and insisting on immutability where all it does is polute memory with useless intermediate values is trendy these days. </p>
-<p> Code where functions might colide over mutable global variables leads programmers to religeously avoid mutable global variables. I'm using the Svelte framework for this project, and my numerous modules are quite small. Mutable global variables can't cause problems because I have no modules or heirarchies of nested modules in which clashes might occur. Were I to constrain my creativity by following "best practices" regarding global variables, I would be engaging in another form of cargo cult coding, mindlessly micking forms that have no value.</p>
+<p> Code where functions might collide over mutable global variables leads programmers to religeously avoid mutable global variables. I'm using the Svelte framework for this project, and my numerous modules are quite small. Mutable global variables can't cause problems because I have no modules or heirarchies of nested modules in which clashes might occur. Were I to constrain my creativity by following "best practices" regarding global variables, I would be engaging in another form of cargo cult coding, mindlessly micking forms that have no value.</p>
 
 
 <h3>References</h3>

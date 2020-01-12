@@ -47,16 +47,13 @@ INTRODUCTION
 </div>
 {/if}
 <br>
-<p> The cult that captivated me had no makeshift control towers or runways to entice cargo-bearing planes to land. It was a conglomeration of authors, presenters, and bloggers who ritualistically avoid things not found in exclusively functional languages, such as mutations and referentially opaque functions while favoring curried functions over multi-parameter versions. My enthusiasm for the Haskell programming language and the Glasgow Haskell Compiler (a/k/a Glorious Haskell Compiler) made me an easy recruit.
+<p> The cult that captivated me has no makeshift control towers or dirt runways made to entice cargo-bearing planes to land. It was a conglomeration of authors, presenters, and bloggers who write JavaScript code without mutating variables or objects, and whose functions are strictly typed, referentially transparent, and take arguments one at a time. Maybe it was my enthusiasm for the Haskell programming language that made it so easy for me to hope that mimicking Haskell's inherent characteristics would result in better Javascript code.
 
-When the global space is a tiny module, global variables are not dangerous. When a million and one non-tail-call recursions or passes through a loop can either spew a million pieces of garbage into memory or mutate something a million times, there should be a good reason for choosing to feed the garbage such a large meal. I'll have more on this later. 
+I constrained my JavaScript code in other ways too, favoring "good parts" over "bad parts", and "best practices" over common sense. After a while it dawned on me that when the global space is a little module in an application, global variables are not dangerous. When a million and one non-tail-call recursions or passes through a loop can either spew a million pieces of garbage into memory, or else mutate something a million times, there should be a good reason for choosing to feed the garbage collector such a large feast. That's when I unleashed the full power of JavaScript and started having fun.  
 
-<p> The functional programming I espouse is, in the case of JavaScript, the art of devising application-specific higher-order functions to manipulate smaller, reusable functions. </p>
-<p> This blog isn't only about computer programming. The Tao Te Ching, bed bugs, and other miscellaneous topics have already found places here. </p>
+<p> For me, Functional programming in the context of Javascript is the art of inventing higher-order, often application-specific functions to manipulate smaller, reusable functions. Simple monad, messages monad, Promises monad, and transducer monad (shown herein) hint at the possibilities. </p>
+<p> Posts in this blog aren't just about computer programming. Nothing fit to publish is off limits. </p>
 <br>
 <br>
-<div>David Schalk</div>
-<div>October, 2019 </div>
 <br>
-<br>
-
+<div style = "text-align: center">...</div>

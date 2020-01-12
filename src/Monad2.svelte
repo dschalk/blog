@@ -305,9 +305,9 @@ border-color: #0000AA;
 
 </style>
 
-{#if j === 2}
-<div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
-MAINTAINING STATE IN "O"
+{#if j === 2} 
+ <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
+MAINTAINING AND USING ASYNCHRONOUSLY CREATED STATE
 </div>
 {/if}
 

@@ -3,11 +3,6 @@
 export let j = 0;
 
 import Cow from './Cow.svelte'
-import Drop1 from './Drop1.svelte'
-import Drop2 from './Drop2.svelte'
-import Drop3 from './Drop3.svelte'
-import Drop4 from './Drop4.svelte'
-import Drop5 from './Drop5.svelte'
 import Monad from './Monad.svelte'
 import Monad2 from './Monad2.svelte'
 import Monad3 from './Monad3.svelte'
@@ -84,9 +79,18 @@ background-color: #361B01;
 <div class="dropdown">
   <div class="dropbtn">Table of Contents</div>
   <div class="dropdown-content">
+<div class = menu on:click = {() => j = 0}> Home</div>
 <div class = menu on:click = {() => j = 1}> A Simple Monad</div>
-<div class = menu on:click on:click = {() => j = 2}> A Messaging Monad</div>
-<div class = menu on:click on:click = {() => j = 3}> A Promises Monad</div>
+<div class = menu on:click = {() => j = 2}> A Messaging Monad</div>
+<div class = menu on:click = {() => j = 3}> A Promises Monad</div>
+<div class = menu on:click = {() => j = 4}> A Transducer Monad</div>
+<div class = menu on:click = {() => j = 5}> Why Svelte</div>
+<div class = menu on:click = {() => j = 6}> Haskell Secrets</div>
+<div class = menu on:click = {() => j = 7}> React Game of Score</div>
+<div class = menu on:click = {() => j = 8}> Functional Cargo Cult</div>
+<div class = menu on:click = {() => j = 9}> Eradicating Bed Bugs</div>
+<div class = menu on:click = {() => j = 10}> Toggle Class</div>
+<div class = menu on:click = {() => j = 3}> Toggle Theme</div>
   </div>
 </div>
 
@@ -157,52 +161,34 @@ background-color: #361B01;
 <Monad3 />
 {/if}
 {#if j === 4}
-<Bugs />
+<Transducer />
 {/if}
 {#if j === 5}
 <Matrix />
 {/if}
-{#if j === 7}
-<Transducer />
-{/if}
-{#if j === 8}
-<ToggleTheme />
-{/if}
-{#if j === 9}
+{#if j === 6}
 <Haskell />
 {/if}
-{#if j === 10}
+{#if j === 7}
 <Score />
 {/if}
-{#if j === 11}
-<ToggleClass />
-{/if}
-{#if j === 20}
-<Cow />
-{/if}
-{#if j === 21}
-<Stor />
-{/if}
-{#if j === 22}
-<Snack />
-{/if}
-{#if j === 23}
+{#if j === 8}
 <Cargo />
 {/if}
-{#if j === 40}
-<Drop1 />
+{#if j === 9}
+<Bugs />
 {/if}
-{#if j === 41}
-<Drop2 />
+{#if j === 10}
+<ToggleClass />
 {/if}
-{#if j === 42}
-<Drop3 />
+{#if j === 11}
+<ToggleTheme />
 {/if}
-{#if j === 43}
-<Drop4 />
+{#if j === 12}
+<Cow />
 {/if}
-{#if j === 44}
-<Drop5 />
+{#if j === 13}
+<Stor />
 {/if}
 </div>
 <br><br>

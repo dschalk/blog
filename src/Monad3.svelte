@@ -246,9 +246,10 @@ border-color: #0000AA;
   </style>
 
   {#if j === 3}
-    <div   transition:fade>
-    PROMISES MONAD</div>
-  {/if}
+ <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 26px;" transition:fade>
+MAINTAINING AND USING ASYNCHRONOUSLY CREATED STATE
+</div>
+{/if}
 
   <h2>O.test is {O.test}</h2>
   <h2>O.test_2 is {O.test_2}</h2>             <br>
