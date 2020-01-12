@@ -114,27 +114,26 @@ var lock = false;
 
 O.generic = ["Nobody"];
 
-const Monad = function Monad ( AR = [], name = "generic"  )  {
-var f_, p, run;
-var ar = AR.slice();
-var name = name;
+const Monad = function Monad ( AR = [], name = "generic", f_ = mFunc  )  {
+let ar = AR.slice();
 O[name] = ar;
+let run;
 let x = O[name].pop();
 return run = (function run (x) {
 if (x != undefined && x === x  && x !== false
   && x.name !== "f_" && x.name !== "halt" ) {
     O[name] = O[name].concat(x)
   };
-  function f_ (func) {
-    if (func === 'halt' || func === 'S') return O[name];
-    else if (typeof func !== "function") p = func;
-    else if (x instanceof Promise) p = x.then(v => func(v));
-    else p = func(x);
-    return run(p);
-  };
   return f_;
 })(x);
 }
+
+var mFunc = function mFunc_ (func) {
+    if (func === 'halt' || func === 'S') return O[name];
+    else if (typeof func !== "function") p = func(x);
+    else if (x instanceof Promise) p = x.then(v => func(v));
+    return run(p);
+  };
 
 /* let a0 = *Monad([3])(cube)
 (add(3))(square)(div(100))
@@ -211,7 +210,6 @@ var worker_OO = new Worker('worker_OO.js');
 
 worker_OO.onmessage = e => {
   M = M + 1;
-  console.log("O is",O);
   Monad([e.data], "d"+M);
   if (M === 2) {
     M = -1;
@@ -272,7 +270,6 @@ worker_OO.postMessage([v[3]])
 
 var onmessWorker = `worker_OO.onmessage = e => {
   M = M + 1;
-  console.log("O is",O);
   Monad([e.data], "d"+M);
   if (M === 2) {
     M = -1;
@@ -288,11 +285,11 @@ socket.send(\"BE#$42,solo,name,1000\")    `
 <style>
 button {
 margin-left: 5%;
-background-color: #331903;
+background-color: #004400;
 border-width: 2px;
 border-color: #E8F7C1;
 border-radius: 70px;
-color: #ABABFF;
+text-decoration-color: red;
 font-size: 20px;
 -webkit-box-shadow: 0px 0px 15px 0px rgb(255, 215, 0);
 box-shadow:         0px 0px 15px 0px rgb(255, 215, 0);
@@ -300,9 +297,9 @@ padding: 3px 10px 3px 10px;
 }
 
 button:hover {
-background-color: #0000FF;
+background-color: #0000CC;
 padding: 3px 10px 3px 10px;
-color: #FFABAB;
+text-decoration-color: yellow;
 border-color: #0000AA;
 }
 
@@ -310,13 +307,13 @@ border-color: #0000AA;
 
 {#if j === 2}
 <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
-PRESERVING COMPUTATION RESULTS ON "O"
+MAINTAINING STATE IN "O"
 </div>
 {/if}
 
 <br>
-<p> Clicking the button below sends three requests to the Haskell WebSockets server asking for quasi-random integers. As the numbers come in from the server, they are placed in the object named "O" with key prefixed by "c", and then forwarded to a web worker. The worker returns the prime decompositions of the numbers it recieves and these arrays are placed on "O" with keys prefixed by "d".</p>
-<br>
+<p> Clicking the button below sends three requests to the Haskell WebSockets server asking for quasi-random integers. As the numbers come in from the server, they are placed in the object named "O" with keys prefixed by "c", and then forwarded to a web worker. The worker returns arrays containing the prime factors of the numbers it recieves. These are placed in "O" with keys prefixed by "d".</p> 
+ <br>
 <button on:click = {factors}>
 <br>
 <span style="font-size: 27px; color: #FFABAB">Click --></span>
@@ -326,34 +323,19 @@ PRESERVING COMPUTATION RESULTS ON "O"
 <br><br><br>
 
 
-<div style = "color: #CDCDFF; font-size: 20px;"> The WebSockets server sent these results (now at O.c0, O.c1, and O.c2): </div>
-<div style = "color: #FFFFCD; font-size: 20px; margin-left:  10%">
-<br>
-{O.c0}
-<br>
-{O.c1}
-<br>
-{O.c2}
-<br>
-<br>
+<div style = "color: #BBBBFF; font-size: 20px;"> The WebSockets server sent these numbers (now at O.c0, O.c1, and O.c2): </div>
+<div style = "color: #FFFFCD; font-size: 20px; ">
+{O.c0}, {O.c1}, and {O.c2}  
 </div>
 <br>
-<div style = "color: #CDCDFF; font-size: 20px;"> The web worker sent these results(now at O.d0, O.d1, and O.d2): </div>
-<div style = "color: #FFFFCD; font-size: 20px; margin-left:  10%">
+<span style = "color: #CDCDFF; font-size: 20px;"> The web worker sent these arrays of prime factors (now at O.d0, O.d1, and O.d2): </span>
+<span style = "color: #FFFFCD; font-size: 20px;">
+[{O.d0.join(', ')}], [{O.d1.join(', ')}], and [{O.d2.join(', ')}]</span>
 <br>
-{O.d0}
-<br>
-{O.d1}
-<br>
-{O.d2}
-<br>
-<br>
-</div>
 <br>
 
-<div style = "color: #CDCDFF; font-size: 20px;"> TEST: O.dn.reduce((a,b) => a*b) == O.cn for n = 0, 1, and 2. </div>
-<div style = "color: #FFFFCD; font-size: 20px; margin-left:  10%">
-<br>
+
+<div style = "color: #FFFFCD; font-size: 20px;">
 [{O.d0}].reduce((a,b) => a*b) == {O.c0}: <span style = "font-size:24px; color:#FF0B0B" >{O.d0.reduce((a,b) => a*b) == O.c0}</span>
 <br>
 [{O.d1}].reduce((a,b) => a*b) == {O.c1}: <span style = "font-size:24px; color:#FF0B0B" >{O.d1.reduce((a,b) => a*b) == O.c1}</span>
@@ -364,7 +346,7 @@ PRESERVING COMPUTATION RESULTS ON "O"
 
 </div>
 
-<p> In this demonstration, each monad's array of computed values is preserved as an attribute of an object named O. Here's the revised definition of Monad.</p>
+<p> In this demonstration, each monad's array of computed values is preserved as an attribute of an object named O. Here's the definition of "Monad" used in this module:</p>
 
 <pre>{mon}</pre>
 
