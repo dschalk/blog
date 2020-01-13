@@ -394,13 +394,11 @@ decrease();
   color: #FFFFAA;
 }
 </style>
-<br><br><br>
 {#if visible}
  <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
 TRANSDUCER SIMULATION
  </div>
 {/if}
-<br><br>
 
 <p> The tradition JavaScript method of composing functions using mainly map, filter, and reduce dot notation (eg. "array.map(func1).filter(func2).map(func3)") polutes memory with arrays that are used only to compute the next array in a chain. Moreover, each of the soon-to-be useless arrays must be traversed. When arrays are large and numerous functions are involved, this can be a performance bottleneck.</p>
 <p> Transducers provide an ingenious solution to the problem. Any JavaScript developer who hasn't already done so would do well to get a good night's sleep, drink a big cup of coffee, and wrap his or her head around the transducer algorithm.</p>

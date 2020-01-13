@@ -17,12 +17,10 @@ import Score from './Score.svelte'
 import Stor from './Stor.svelte'
 import Snack from './Snack.svelte'
 import Cargo from './Cargo.svelte'
+
 function id (v) {return v}
 
 </script>
-
-
-
 
 <style>
 body {
@@ -46,6 +44,7 @@ background-color: #361B01;
 }
 
 .dropdown-content {
+font-size: 23px;    
 display: none;
 position: absolute;
 color: sky-blue;    
@@ -90,7 +89,7 @@ background-color: #361B01;
 <div class = menu on:click = {() => j = 8}> Functional Cargo Cult</div>
 <div class = menu on:click = {() => j = 9}> Eradicating Bed Bugs</div>
 <div class = menu on:click = {() => j = 10}> Toggle Class</div>
-<div class = menu on:click = {() => j = 3}> Toggle Theme</div>
+<div class = menu on:click = {() => j = 11}> Toggle Theme</div>
   </div>
 </div>
 

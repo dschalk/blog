@@ -17,16 +17,16 @@ h3 {
 </style>
 {#if visible}
  <div style = "font-family: Times New Roman; text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
- <br><br>
 FUNCTIONAL PROGRAMMING WITH JAVASCRIPT
  </div>}
-     <!-- content here -->
 {/if}
 <p> "Functional programming" means different things to different people. Applied to JavaScript, I wish it meant making good use JavaScript functions. 
 
-<p>Mimicking features of the Haskell programming language vaguely hoping Haskell's reliability, ease of maintenance, and other conveniences will come your way reminds me of the cargo cults. "The name derives from the belief which began among Melanesians in the late 19th and early 20th centuries that various ritualistic acts such as the building of an airplane runway will result in the appearance of material wealth, particularly highly desirable Western goods (i.e., "cargo"), via Western airplanes." </p>  
-<a href = "https://en.wikipedia.org/wiki/Cargo_cult", target="_blank">Cargo Cult</a>, 
 
+<p>Mimicking features of the Haskell programming language vaguely hoping Haskell's reliability, ease of maintenance, and other conveniences will come your way reminds me of the cargo cults. "The name derives from the belief which began among Melanesians in the late 19th and early 20th centuries that various ritualistic acts such as the building of an airplane runway will result in the appearance of material wealth, particularly highly desirable Western goods (i.e., "cargo"), via Western airplanes." </p>  
+
+
+<a href = "https://en.wikipedia.org/wiki/Cargo_cult" target="_blank">Cargo Cult</a>
 
 <p>According to the Wikipedia article "Cargo Cult", "a cargo cult is a belief system among members of a relatively undeveloped society in which adherents practice superstitious rituals hoping to bring modern goods supplied by a more technologically advanced society. https://en.wikipedia.org/wiki/Cargo_cult The article goes on to say, "The name derives from the belief which began among Melanesians in the late 19th and early 20th centuries that various ritualistic acts such as the building of an airplane runway will result in the appearance of material wealth, particularly highly desirable Western goods (i.e., "cargo"), via Western airplanes." citing Burridge, Kenelm (1969). New Heaven, New Earth: A study of Millenarian Activities. London: Basil Blackwell. p. 48 and Lindstrom, Lamont (1993). Cargo Cult: Strange Stories of desire from Melanesia and beyond. Honolulu: University of Hawaii Press.</p>
 

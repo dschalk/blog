@@ -306,21 +306,17 @@ border-color: #0000AA;
 </style>
 
 {#if j === 2} 
- <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
-MAINTAINING AND USING ASYNCHRONOUSLY CREATED STATE
+ <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 38px;" transition:fade>
+ASYNCHRONOUSLY CREATED STATE
 </div>
 {/if}
 
 <br>
 <p> Clicking the button below sends three requests to the Haskell WebSockets server asking for quasi-random integers. As the numbers come in from the server, they are placed in the object named "O" with keys prefixed by "c", and then forwarded to a web worker. The worker returns arrays containing the prime factors of the numbers it recieves. These are placed in "O" with keys prefixed by "d".</p> 
  <br>
-<button on:click = {factors}>
-<br>
-<span style="font-size: 27px; color: #FFABAB">Click --></span>
-<pre>{candle}</pre>
 
-</button>
-<br><br><br>
+
+
 
 
 <div style = "color: #BBBBFF; font-size: 20px;"> The WebSockets server sent these numbers (now at O.c0, O.c1, and O.c2): </div>
@@ -333,6 +329,12 @@ MAINTAINING AND USING ASYNCHRONOUSLY CREATED STATE
 [{O.d0.join(', ')}], [{O.d1.join(', ')}], and [{O.d2.join(', ')}]</span>
 <br>
 <br>
+<button on:click = {factors}>
+<pre>{candle}</pre>
+
+</button>
+<br><br><br>
+
 
 
 <div style = "color: #FFFFCD; font-size: 20px;">

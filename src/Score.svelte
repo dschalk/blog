@@ -4,7 +4,6 @@ let visible = true;
 </script>
 {#if visible}
  <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
- <br><br>
  GAME OF SCORE
  </div>
 {/if}
@@ -16,7 +15,6 @@ let visible = true;
 
 <p> Game rules are available at the game site, which runs online here:</p>
 <a href = "http://game.schalk.site" target = "_blank">Online game of Score></a>
-<br><br>
 <span> The code is here: </span>
 <a href = "https://github.com/dschalk/score2" target = "_blank">Score Github Repository</a>
 <br><br>

@@ -117,8 +117,8 @@
     var lock = false;
     $: lock
 
-    var Monad = function Monad ( AR = [], name = "generic"  )  {
-      var f_, p, run;
+    var Monad = function Monad ( AR = [], name = "generic" )  {
+      let p, run, f_;
       let  ar = AR.slice();
       O[name] = ar;
       let x = O[name].pop();
@@ -133,7 +133,7 @@
               O[name] = O[name].concat(x)
             }
         }
-        function f_ (func) {
+        f_ = function f_ (func) {
           if (func === 'halt' || func === 'S') return O[name].slice();
           else if (typeof func !== "function") p = func;
           else if (x instanceof Promise) p = x.then(v => func(v));
@@ -246,8 +246,9 @@ border-color: #0000AA;
   </style>
 
   {#if j === 3}
- <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 26px;" transition:fade>
-MAINTAINING AND USING ASYNCHRONOUSLY CREATED STATE
+ <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); " transition:fade>
+<div style = "font-size: 26px;"> A MONAD FOR PROMISE MANIPULATION</div>
+<div style = "font-size: 22px;">Computations Easily Resumed and Branched</div>  
 </div>
 {/if}
 
@@ -261,7 +262,7 @@ MAINTAINING AND USING ASYNCHRONOUSLY CREATED STATE
 branch("test", "test_2")(sqrtP)(cubeP)(addP(O.test_2[2])
 (O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))(() =>
 resume("test")(multP(4))(addP(6))))</pre></button>
-
+<p>  </p>
   <br>
   <p> Here's the modified monad constructor: </p>
   <pre>{mon}</pre>
@@ -284,4 +285,8 @@ resume("test")(multP(4))(addP(6))))</pre></button>
   <br>
   <span class = "tao"> Notice the statement: </span>
   <span style = "color: #AAFFAA">()=>addP(O.test_2[2])(O.test_2[1])</span>
-  <span>. Promises in chains of ES6 Promises can't access previous Promise resolution values. One way to get access to prior resolution values is to encapsulate Promise chains in Monad(). This also makes it convenient to resume or branch from terminated computation chains; and this can be accomplished without naming the chains. </span>
+  <span>. Promises in chains of ES6 Promises can't access previous Promise resolution values. One way to get access to prior resolution values is to encapsulate Promise chains in Monad(). This also makes it convenient to resume or branch from terminated computation chains; something that can be accomplished without naming the chains. </span>
+  <br>
+  <br>
+  <br>
+  
