@@ -247,7 +247,7 @@ border-color: #0000AA;
 
   {#if j === 3}
  <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); " transition:fade>
-<div style = "font-size: 26px;"> A MONAD FOR PROMISE MANIPULATION</div>
+<div style = "font-size: 32px;"> A MONAD FOR PROMISE MANIPULATION</div>
 <div style = "font-size: 22px;">Computations Easily Resumed and Branched</div>  
 </div>
 {/if}

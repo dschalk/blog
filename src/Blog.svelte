@@ -34,6 +34,15 @@ font-size: 28px;
 border: none;
 }
 
+.dropdown3 {
+  position: fixed;
+  top: 275px;
+  left: 10%;
+  width: 16%;
+display: inline-block;
+background-color: #361B01;
+}
+
 .dropdown {
   position: fixed;
   top: 200px;
@@ -41,6 +50,16 @@ border: none;
   width: 16%;
 display: inline-block;
 background-color: #361B01;
+}
+
+.dropdown2 {
+  position: fixed;
+  top: 50px;
+  left: 77%;
+  width: 16%;
+display: inline-block;
+background-color: #361B01;
+color: #CCFFCE;
 }
 
 .dropdown-content {
@@ -67,6 +86,45 @@ background-color: #361B01;
 
 .menu {}
 .menu:hover {color: orange}
+
+.dropbtn3 {
+background-color: #361B01;
+color: orange;
+font-size: 28px;
+border: none;
+}
+
+.dropdown3 {
+  position: fixed;
+  top: 275px;
+  left: 10%;
+  width: 16%;
+display: inline-block;
+background-color: #361B01;
+}
+
+.dropdown-content3{
+font-size: 23px;    
+display: none;
+position: absolute;
+color: sky-blue;    
+z-index: 1;
+background-color: #361B01;
+}
+.dropdown-content a3 {
+color: yellow;
+padding: 12px 16px;
+text-decoration: none;
+display: block;
+background-color: #361B01;
+}
+
+.dropdown-content3 a:hover3 {color: gold; background-color: #361B01;}
+
+.dropdown:hover3 .dropdown-content3 {display: block; background-color: #361B01;}
+
+.dropbtn3 {color: gold; background-color: #361B01;}
+
 </style>
 
 
@@ -75,9 +133,34 @@ background-color: #361B01;
 <!-- <div style = "display: flex">
 <div style = "width 20%; margin-right: 2%"> -->
 
+<div class = dropdown2>
+<div>David E. Schalk</div>  
+<div>fp3216@protonmail.com</div>
+<div>https://github.com/dschalk</div>
+
+</div>
+
 <div class="dropdown">
   <div class="dropbtn">Table of Contents</div>
   <div class="dropdown-content">
+<div class = menu on:click = {() => j = 0}> Home</div>
+<div class = menu on:click = {() => j = 1}> A Simple Monad</div>
+<div class = menu on:click = {() => j = 2}> A Messaging Monad</div>
+<div class = menu on:click = {() => j = 3}> A Promises Monad</div>
+<div class = menu on:click = {() => j = 4}> A Transducer Monad</div>
+<div class = menu on:click = {() => j = 5}> Why Svelte</div>
+<div class = menu on:click = {() => j = 6}> Haskell Secrets</div>
+<div class = menu on:click = {() => j = 7}> React Game of Score</div>
+<div class = menu on:click = {() => j = 8}> Functional Cargo Cult</div>
+<div class = menu on:click = {() => j = 9}> Eradicating Bed Bugs</div>
+<div class = menu on:click = {() => j = 10}> Toggle Class</div>
+<div class = menu on:click = {() => j = 11}> Toggle Theme</div>
+  </div>
+</div>
+
+<div class="dropdown3">
+  <div class="dropbtn3">Table of Contents</div>
+  <div class="dropdown-content3">
 <div class = menu on:click = {() => j = 0}> Home</div>
 <div class = menu on:click = {() => j = 1}> A Simple Monad</div>
 <div class = menu on:click = {() => j = 2}> A Messaging Monad</div>
@@ -143,9 +226,12 @@ background-color: #361B01;
 
 <div style = "margin-left: 25%; margin-right: 25%;">
 
-<div style = "font-size: 40px; color: #FFD700; text-align: center">DAVID SCHALK's BLOG</div>
-<div style = "font-size: 24px; color: #FFCCAA; font-style: italic; text-align: center">Escape from a Cargo Cult and Other Adventures </div>
-<br><br><br> 
+<br><br>
+<div style = "font-size: 40px; color: #FFD700; text-align: center">JAVASCRIPT</div>
+<br>
+<div style = "font-size: 24px; color: #FFCCAA; font-style: italic; text-align: center">Escape from the Functional Programming Cargo Cult</div>
+<div style = "font-size: 24px; color: #FFCCAA; font-style: italic; text-align: center">And Other Adventures</div>
+<br><br>
 
 {#if j === 0}
 <Home />
