@@ -859,30 +859,30 @@ var app = (function () {
     			t39 = space();
     			p9 = element("p");
     			p9.textContent = "The next entry in the monad series defines a variation of Monad that maintains an array of primitive data, function return values, and Promise resolution values. Functions have access to everything in the array when they execute.";
-    			add_location(br, file$1, 107, 1, 2418);
+    			add_location(br, file$1, 107, 1, 2416);
     			attr_dev(span0, "class", "tao svelte-1dr4x6t");
-    			add_location(span0, file$1, 108, 1, 2424);
+    			add_location(span0, file$1, 108, 1, 2422);
     			set_style(span1, "font-style", "italic");
-    			add_location(span1, file$1, 109, 0, 2527);
-    			add_location(span2, file$1, 110, 0, 2582);
-    			add_location(p0, file$1, 111, 0, 2952);
-    			add_location(p1, file$1, 112, 0, 3378);
-    			add_location(p2, file$1, 113, 0, 3848);
-    			add_location(pre0, file$1, 114, 0, 3900);
-    			add_location(p3, file$1, 115, 0, 3926);
-    			add_location(pre1, file$1, 116, 0, 4008);
-    			add_location(p4, file$1, 117, 0, 4068);
+    			add_location(span1, file$1, 109, 0, 2525);
+    			add_location(span2, file$1, 110, 0, 2580);
+    			add_location(p0, file$1, 111, 0, 2950);
+    			add_location(p1, file$1, 112, 0, 3376);
+    			add_location(p2, file$1, 113, 0, 3846);
+    			add_location(pre0, file$1, 114, 0, 3898);
+    			add_location(p3, file$1, 115, 0, 3924);
+    			add_location(pre1, file$1, 116, 0, 4006);
+    			add_location(p4, file$1, 117, 0, 4066);
     			attr_dev(input, "id", "one");
     			attr_dev(input, "type", "number");
-    			add_location(input, file$1, 119, 0, 4268);
-    			add_location(p5, file$1, 120, 0, 4341);
+    			add_location(input, file$1, 119, 0, 4266);
+    			add_location(p5, file$1, 120, 0, 4339);
     			attr_dev(span3, "class", "tao svelte-1dr4x6t");
-    			add_location(span3, file$1, 122, 0, 4401);
-    			add_location(pre2, file$1, 123, 0, 4588);
-    			add_location(p6, file$1, 127, 0, 4608);
-    			add_location(p7, file$1, 129, 0, 4696);
-    			add_location(p8, file$1, 131, 0, 4909);
-    			add_location(p9, file$1, 132, 0, 5339);
+    			add_location(span3, file$1, 122, 0, 4399);
+    			add_location(pre2, file$1, 123, 0, 4586);
+    			add_location(p6, file$1, 127, 0, 4606);
+    			add_location(p7, file$1, 129, 0, 4694);
+    			add_location(p8, file$1, 131, 0, 4907);
+    			add_location(p9, file$1, 132, 0, 5337);
 
     			dispose = [
     				listen_dev(input, "input", /*bonads*/ ctx[5], false, false, false),
@@ -3270,6 +3270,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "38px");
+    			set_style(div, "text-align", "center");
     			add_location(div, file$6, 147, 1, 3955);
     		},
     		m: function mount(target, anchor) {
@@ -3481,56 +3482,56 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			t46 = space();
     			p3 = element("p");
     			p3.textContent = "I'm new to Svelte and so far I am very impressed.";
-    			add_location(br0, file$6, 152, 0, 4121);
-    			add_location(br1, file$6, 153, 0, 4126);
-    			add_location(button0, file$6, 157, 0, 4267);
-    			add_location(br2, file$6, 160, 0, 4307);
-    			add_location(br3, file$6, 161, 0, 4312);
-    			add_location(button1, file$6, 162, 30, 4347);
+    			add_location(br0, file$6, 152, 0, 4141);
+    			add_location(br1, file$6, 153, 0, 4146);
+    			add_location(button0, file$6, 157, 0, 4287);
+    			add_location(br2, file$6, 160, 0, 4327);
+    			add_location(br3, file$6, 161, 0, 4332);
+    			add_location(button1, file$6, 162, 30, 4367);
     			set_style(div0, "text-indent", "20px");
-    			add_location(div0, file$6, 162, 0, 4317);
-    			add_location(br4, file$6, 163, 0, 4376);
-    			add_location(button2, file$6, 164, 0, 4381);
-    			add_location(br5, file$6, 167, 0, 4427);
-    			add_location(br6, file$6, 168, 0, 4432);
+    			add_location(div0, file$6, 162, 0, 4337);
+    			add_location(br4, file$6, 163, 0, 4396);
+    			add_location(button2, file$6, 164, 0, 4401);
+    			add_location(br5, file$6, 167, 0, 4447);
+    			add_location(br6, file$6, 168, 0, 4452);
     			set_style(div1, "text-align", "right");
     			set_style(div1, "margin-right", "2%");
     			set_style(div1, "width", "20%");
-    			add_location(div1, file$6, 155, 20, 4201);
+    			add_location(div1, file$6, 155, 20, 4221);
     			attr_dev(button3, "id", "m0");
-    			add_location(button3, file$6, 173, 0, 4531);
+    			add_location(button3, file$6, 173, 0, 4551);
     			attr_dev(button4, "id", "m1");
-    			add_location(button4, file$6, 174, 0, 4593);
+    			add_location(button4, file$6, 174, 0, 4613);
     			attr_dev(button5, "id", "m2");
-    			add_location(button5, file$6, 175, 0, 4655);
-    			add_location(br7, file$6, 176, 0, 4717);
-    			add_location(br8, file$6, 177, 0, 4722);
+    			add_location(button5, file$6, 175, 0, 4675);
+    			add_location(br7, file$6, 176, 0, 4737);
+    			add_location(br8, file$6, 177, 0, 4742);
     			attr_dev(button6, "id", "m3");
-    			add_location(button6, file$6, 178, 0, 4727);
+    			add_location(button6, file$6, 178, 0, 4747);
     			attr_dev(button7, "id", "m4");
-    			add_location(button7, file$6, 179, 0, 4789);
+    			add_location(button7, file$6, 179, 0, 4809);
     			attr_dev(button8, "id", "m5");
-    			add_location(button8, file$6, 180, 0, 4851);
-    			add_location(br9, file$6, 181, 0, 4913);
-    			add_location(br10, file$6, 182, 0, 4918);
+    			add_location(button8, file$6, 180, 0, 4871);
+    			add_location(br9, file$6, 181, 0, 4933);
+    			add_location(br10, file$6, 182, 0, 4938);
     			attr_dev(button9, "id", "m6");
-    			add_location(button9, file$6, 183, 0, 4923);
+    			add_location(button9, file$6, 183, 0, 4943);
     			attr_dev(button10, "id", "m7");
-    			add_location(button10, file$6, 184, 0, 4985);
+    			add_location(button10, file$6, 184, 0, 5005);
     			attr_dev(button11, "id", "m8");
-    			add_location(button11, file$6, 185, 0, 5047);
+    			add_location(button11, file$6, 185, 0, 5067);
     			set_style(div2, "marginRight", "0%");
     			set_style(div2, "width", "80%");
-    			add_location(div2, file$6, 171, 12, 4485);
+    			add_location(div2, file$6, 171, 12, 4505);
     			set_style(div3, "display", "flex");
-    			add_location(div3, file$6, 154, 20, 4151);
-    			add_location(br11, file$6, 188, 0, 5123);
-    			add_location(p0, file$6, 189, 0, 5128);
-    			add_location(p1, file$6, 191, 0, 5199);
-    			add_location(pre0, file$6, 192, 0, 5396);
-    			add_location(p2, file$6, 193, 0, 5414);
-    			add_location(pre1, file$6, 194, 0, 5450);
-    			add_location(p3, file$6, 195, 0, 5468);
+    			add_location(div3, file$6, 154, 20, 4171);
+    			add_location(br11, file$6, 188, 0, 5143);
+    			add_location(p0, file$6, 189, 0, 5148);
+    			add_location(p1, file$6, 191, 0, 5219);
+    			add_location(pre0, file$6, 192, 0, 5416);
+    			add_location(p2, file$6, 193, 0, 5434);
+    			add_location(pre1, file$6, 194, 0, 5470);
+    			add_location(p3, file$6, 195, 0, 5488);
 
     			dispose = [
     				listen_dev(button0, "click", /*back*/ ctx[4], false, false, false),
@@ -5623,16 +5624,21 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     	let br0;
     	let t1;
     	let p0;
+    	let t3;
     	let p1;
-    	let t4;
+    	let t5;
     	let p2;
-    	let t6;
-    	let br1;
     	let t7;
-    	let br2;
-    	let t8;
-    	let br3;
+    	let p3;
     	let t9;
+    	let p4;
+    	let t11;
+    	let br1;
+    	let t12;
+    	let br2;
+    	let t13;
+    	let br3;
+    	let t14;
     	let div;
     	let current;
     	let if_block = /*visible*/ ctx[0] && create_if_block$8(ctx);
@@ -5644,30 +5650,39 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			br0 = element("br");
     			t1 = space();
     			p0 = element("p");
-    			p0.textContent = "The cult that captivated me has no makeshift control towers or dirt runways made to entice cargo-bearing planes to land. It was a conglomeration of authors, presenters, and bloggers who write JavaScript code without mutating variables or objects, and whose functions are strictly typed, referentially transparent, and take arguments one at a time. Maybe it was my enthusiasm for the Haskell programming language that made it so easy for me to hope that mimicking Haskell's inherent characteristics would result in better Javascript code.\n\nI constrained my JavaScript code in other ways too, favoring \"good parts\" over \"bad parts\", and \"best practices\" over common sense. After a while it dawned on me that when the global space is a little module in an application, global variables are not dangerous. When a million and one non-tail-call recursions or passes through a loop can either spew a million pieces of garbage into memory, or else mutate something a million times, there should be a good reason for choosing to feed the garbage collector such a large feast. That's when I unleashed the full power of JavaScript and started having fun.  \n\n";
+    			p0.textContent = "The cult that captivated me has no makeshift control towers or dirt runways made to entice cargo-bearing planes to land. It was authors, presenters, and bloggers who mimic      superficial aspects of functional languages such as Haskell  thinking, without understanding, that it improves their code.  it improves their code don't mutate variables or alter the contents of objects. Their functions are strictly typed, referentially transparent, and take no more than one argument.";
+    			t3 = space();
     			p1 = element("p");
-    			p1.textContent = "For me, Functional programming in the context of Javascript is the art of inventing higher-order, often application-specific functions to manipulate smaller, reusable functions. Simple monad, messages monad, Promises monad, and transducer monad (shown herein) hint at the possibilities.";
-    			t4 = space();
+    			p1.textContent = "Writing this kind of JavaScript code won't entitle you to cult membership if you do it for amusement, experimentation, or whatever satisfaction it brings Maybe it was my enthusiasm for the Haskell programming language that made it so easy for me to hope that mimicking Haskell's essential characteristics would result in better Javascript code.";
+    			t5 = space();
     			p2 = element("p");
-    			p2.textContent = "Posts in this blog aren't just about computer programming. Nothing fit to publish is off limits.";
-    			t6 = space();
-    			br1 = element("br");
+    			p2.textContent = "I constrained my JavaScript code in other ways too, favoring \"good parts\" over \"bad parts\", and \"best practices\" over common sense. After a while it dawned on me that when the global space is a little module in an application, global variables are not dangerous. When a million and one non-tail-call recursions or passes through a loop can either spew a million pieces of garbage into memory, or else mutate something a million times, there should be a good reason for choosing to feed the garbage collector such a large feast. That's when I unleashed the full power of JavaScript and started having fun.";
     			t7 = space();
-    			br2 = element("br");
-    			t8 = space();
-    			br3 = element("br");
+    			p3 = element("p");
+    			p3.textContent = "For me, Functional programming in the context of Javascript is the art of inventing higher-order, often application-specific functions to manipulate smaller, reusable functions. Simple monad, messages monad, Promises monad, and transducer monad (shown herein) hint at the possibilities.";
     			t9 = space();
+    			p4 = element("p");
+    			p4.textContent = "Posts in this blog aren't just about computer programming. Nothing fit to publish is off limits.";
+    			t11 = space();
+    			br1 = element("br");
+    			t12 = space();
+    			br2 = element("br");
+    			t13 = space();
+    			br3 = element("br");
+    			t14 = space();
     			div = element("div");
     			div.textContent = "...";
     			add_location(br0, file$b, 48, 0, 878);
     			add_location(p0, file$b, 49, 0, 883);
-    			add_location(p1, file$b, 53, 0, 2034);
-    			add_location(p2, file$b, 54, 0, 2330);
-    			add_location(br1, file$b, 55, 0, 2436);
-    			add_location(br2, file$b, 56, 0, 2441);
-    			add_location(br3, file$b, 57, 0, 2446);
+    			add_location(p1, file$b, 51, 0, 1373);
+    			add_location(p2, file$b, 53, 0, 1728);
+    			add_location(p3, file$b, 55, 0, 2344);
+    			add_location(p4, file$b, 56, 0, 2640);
+    			add_location(br1, file$b, 57, 0, 2746);
+    			add_location(br2, file$b, 58, 0, 2751);
+    			add_location(br3, file$b, 59, 0, 2756);
     			set_style(div, "text-align", "center");
-    			add_location(div, file$b, 58, 0, 2451);
+    			add_location(div, file$b, 60, 0, 2761);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5678,16 +5693,21 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			insert_dev(target, br0, anchor);
     			insert_dev(target, t1, anchor);
     			insert_dev(target, p0, anchor);
+    			insert_dev(target, t3, anchor);
     			insert_dev(target, p1, anchor);
-    			insert_dev(target, t4, anchor);
+    			insert_dev(target, t5, anchor);
     			insert_dev(target, p2, anchor);
-    			insert_dev(target, t6, anchor);
-    			insert_dev(target, br1, anchor);
     			insert_dev(target, t7, anchor);
-    			insert_dev(target, br2, anchor);
-    			insert_dev(target, t8, anchor);
-    			insert_dev(target, br3, anchor);
+    			insert_dev(target, p3, anchor);
     			insert_dev(target, t9, anchor);
+    			insert_dev(target, p4, anchor);
+    			insert_dev(target, t11, anchor);
+    			insert_dev(target, br1, anchor);
+    			insert_dev(target, t12, anchor);
+    			insert_dev(target, br2, anchor);
+    			insert_dev(target, t13, anchor);
+    			insert_dev(target, br3, anchor);
+    			insert_dev(target, t14, anchor);
     			insert_dev(target, div, anchor);
     			current = true;
     		},
@@ -5707,16 +5727,21 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			if (detaching) detach_dev(br0);
     			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(p0);
+    			if (detaching) detach_dev(t3);
     			if (detaching) detach_dev(p1);
-    			if (detaching) detach_dev(t4);
+    			if (detaching) detach_dev(t5);
     			if (detaching) detach_dev(p2);
-    			if (detaching) detach_dev(t6);
-    			if (detaching) detach_dev(br1);
     			if (detaching) detach_dev(t7);
-    			if (detaching) detach_dev(br2);
-    			if (detaching) detach_dev(t8);
-    			if (detaching) detach_dev(br3);
+    			if (detaching) detach_dev(p3);
     			if (detaching) detach_dev(t9);
+    			if (detaching) detach_dev(p4);
+    			if (detaching) detach_dev(t11);
+    			if (detaching) detach_dev(br1);
+    			if (detaching) detach_dev(t12);
+    			if (detaching) detach_dev(br2);
+    			if (detaching) detach_dev(t13);
+    			if (detaching) detach_dev(br3);
+    			if (detaching) detach_dev(t14);
     			if (detaching) detach_dev(div);
     		}
     	};
@@ -6138,14 +6163,12 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     function create_if_block$a(ctx) {
     	let div;
     	let div_transition;
-    	let t1;
     	let current;
 
     	const block = {
     		c: function create() {
     			div = element("div");
-    			div.textContent = "FUNCTIONAL PROGRAMMING WITH JAVASCRIPT\n ";
-    			t1 = text("}");
+    			div.textContent = "FUNCTIONAL PROGRAMMING";
     			set_style(div, "font-family", "Times New Roman");
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
@@ -6154,7 +6177,6 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
-    			insert_dev(target, t1, anchor);
     			current = true;
     		},
     		i: function intro(local) {
@@ -6175,7 +6197,6 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
     			if (detaching && div_transition) div_transition.end();
-    			if (detaching) detach_dev(t1);
     		}
     	};
 
@@ -6195,7 +6216,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     	let p0;
     	let p1;
     	let t3;
-    	let a;
+    	let a0;
     	let t5;
     	let p2;
     	let t7;
@@ -6207,7 +6228,18 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     	let t13;
     	let h3;
     	let t15;
-    	let pre;
+    	let a1;
+    	let t17;
+    	let br0;
+    	let br1;
+    	let t18;
+    	let a2;
+    	let t20;
+    	let br2;
+    	let br3;
+    	let br4;
+    	let t21;
+    	let div;
     	let current;
     	let if_block = /*visible*/ ctx[0] && create_if_block$a(ctx);
 
@@ -6220,8 +6252,8 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			p1 = element("p");
     			p1.textContent = "Mimicking features of the Haskell programming language vaguely hoping Haskell's reliability, ease of maintenance, and other conveniences will come your way reminds me of the cargo cults. \"The name derives from the belief which began among Melanesians in the late 19th and early 20th centuries that various ritualistic acts such as the building of an airplane runway will result in the appearance of material wealth, particularly highly desirable Western goods (i.e., \"cargo\"), via Western airplanes.\"";
     			t3 = space();
-    			a = element("a");
-    			a.textContent = "Cargo Cult";
+    			a0 = element("a");
+    			a0.textContent = "Cargo Cult";
     			t5 = space();
     			p2 = element("p");
     			p2.textContent = "According to the Wikipedia article \"Cargo Cult\", \"a cargo cult is a belief system among members of a relatively undeveloped society in which adherents practice superstitious rituals hoping to bring modern goods supplied by a more technologically advanced society. https://en.wikipedia.org/wiki/Cargo_cult The article goes on to say, \"The name derives from the belief which began among Melanesians in the late 19th and early 20th centuries that various ritualistic acts such as the building of an airplane runway will result in the appearance of material wealth, particularly highly desirable Western goods (i.e., \"cargo\"), via Western airplanes.\" citing Burridge, Kenelm (1969). New Heaven, New Earth: A study of Millenarian Activities. London: Basil Blackwell. p. 48 and Lindstrom, Lamont (1993). Cargo Cult: Strange Stories of desire from Melanesia and beyond. Honolulu: University of Hawaii Press.";
@@ -6238,20 +6270,45 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			h3 = element("h3");
     			h3.textContent = "References";
     			t15 = space();
-    			pre = element("pre");
-    			pre.textContent = "Cargo Cult Programming video presentation\nhttps://www.youtube.com/watch?v=nm22duia0jU\n\nCargo Cult Science Richard Feynman' s 1974 video\nhttps://www.brainpickings.org/2012/06/08/richard-\n  feynman-caltech-cargo-cult-science/s";
-    			add_location(p0, file$d, 22, 0, 376);
-    			add_location(p1, file$d, 25, 0, 529);
-    			attr_dev(a, "href", "https://en.wikipedia.org/wiki/Cargo_cult");
-    			attr_dev(a, "target", "_blank");
-    			add_location(a, file$d, 28, 0, 1042);
-    			add_location(p2, file$d, 30, 0, 1127);
-    			add_location(p3, file$d, 32, 0, 2036);
-    			add_location(p4, file$d, 35, 0, 2761);
-    			add_location(p5, file$d, 36, 0, 3177);
+    			a1 = element("a");
+    			a1.textContent = "Cargo Cult Programming video presentation";
+    			t17 = space();
+    			br0 = element("br");
+    			br1 = element("br");
+    			t18 = space();
+    			a2 = element("a");
+    			a2.textContent = "Cargo Cult Science -- Richard Feynman's 1974 Caltech lecture";
+    			t20 = space();
+    			br2 = element("br");
+    			br3 = element("br");
+    			br4 = element("br");
+    			t21 = space();
+    			div = element("div");
+    			div.textContent = "...";
+    			add_location(p0, file$d, 22, 0, 359);
+    			add_location(p1, file$d, 25, 0, 512);
+    			attr_dev(a0, "href", "https://en.wikipedia.org/wiki/Cargo_cult");
+    			attr_dev(a0, "target", "_blank");
+    			add_location(a0, file$d, 28, 0, 1025);
+    			add_location(p2, file$d, 30, 0, 1110);
+    			add_location(p3, file$d, 32, 0, 2019);
+    			add_location(p4, file$d, 35, 0, 2744);
+    			add_location(p5, file$d, 36, 0, 3160);
     			attr_dev(h3, "class", "svelte-hw6ke3");
-    			add_location(h3, file$d, 39, 0, 3737);
-    			add_location(pre, file$d, 41, 0, 3758);
+    			add_location(h3, file$d, 38, 0, 3719);
+    			attr_dev(a1, "href", "https://www.youtube.com/watch?v=nm22duia0jU");
+    			attr_dev(a1, "target", "_blank");
+    			add_location(a1, file$d, 40, 0, 3740);
+    			add_location(br0, file$d, 41, 0, 3856);
+    			add_location(br1, file$d, 41, 4, 3860);
+    			attr_dev(a2, "href", "https://www.youtube.com/watch?v=yvfAtIJbatg");
+    			attr_dev(a2, "target", "_blank");
+    			add_location(a2, file$d, 42, 0, 3865);
+    			add_location(br2, file$d, 44, 0, 4003);
+    			add_location(br3, file$d, 44, 4, 4007);
+    			add_location(br4, file$d, 44, 8, 4011);
+    			set_style(div, "text-align", "center");
+    			add_location(div, file$d, 45, 0, 4016);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6262,7 +6319,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			insert_dev(target, p0, anchor);
     			insert_dev(target, p1, anchor);
     			insert_dev(target, t3, anchor);
-    			insert_dev(target, a, anchor);
+    			insert_dev(target, a0, anchor);
     			insert_dev(target, t5, anchor);
     			insert_dev(target, p2, anchor);
     			insert_dev(target, t7, anchor);
@@ -6274,7 +6331,18 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			insert_dev(target, t13, anchor);
     			insert_dev(target, h3, anchor);
     			insert_dev(target, t15, anchor);
-    			insert_dev(target, pre, anchor);
+    			insert_dev(target, a1, anchor);
+    			insert_dev(target, t17, anchor);
+    			insert_dev(target, br0, anchor);
+    			insert_dev(target, br1, anchor);
+    			insert_dev(target, t18, anchor);
+    			insert_dev(target, a2, anchor);
+    			insert_dev(target, t20, anchor);
+    			insert_dev(target, br2, anchor);
+    			insert_dev(target, br3, anchor);
+    			insert_dev(target, br4, anchor);
+    			insert_dev(target, t21, anchor);
+    			insert_dev(target, div, anchor);
     			current = true;
     		},
     		p: noop,
@@ -6293,7 +6361,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			if (detaching) detach_dev(p0);
     			if (detaching) detach_dev(p1);
     			if (detaching) detach_dev(t3);
-    			if (detaching) detach_dev(a);
+    			if (detaching) detach_dev(a0);
     			if (detaching) detach_dev(t5);
     			if (detaching) detach_dev(p2);
     			if (detaching) detach_dev(t7);
@@ -6305,7 +6373,18 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			if (detaching) detach_dev(t13);
     			if (detaching) detach_dev(h3);
     			if (detaching) detach_dev(t15);
-    			if (detaching) detach_dev(pre);
+    			if (detaching) detach_dev(a1);
+    			if (detaching) detach_dev(t17);
+    			if (detaching) detach_dev(br0);
+    			if (detaching) detach_dev(br1);
+    			if (detaching) detach_dev(t18);
+    			if (detaching) detach_dev(a2);
+    			if (detaching) detach_dev(t20);
+    			if (detaching) detach_dev(br2);
+    			if (detaching) detach_dev(br3);
+    			if (detaching) detach_dev(br4);
+    			if (detaching) detach_dev(t21);
+    			if (detaching) detach_dev(div);
     		}
     	};
 
@@ -6351,16 +6430,25 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     /* src/Blog.svelte generated by Svelte v3.16.7 */
     const file$e = "src/Blog.svelte";
 
-    // (236:0) {#if j === 0}
+    // (198:0) {#if j === 0}
     function create_if_block_13(ctx) {
+    	let div;
+    	let t1;
     	let current;
     	const home = new Home({ $$inline: true });
 
     	const block = {
     		c: function create() {
+    			div = element("div");
+    			div.textContent = "Home";
+    			t1 = space();
     			create_component(home.$$.fragment);
+    			attr_dev(div, "class", "show svelte-1dx3l24");
+    			add_location(div, file$e, 198, 0, 6030);
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			insert_dev(target, t1, anchor);
     			mount_component(home, target, anchor);
     			current = true;
     		},
@@ -6374,6 +6462,8 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			current = false;
     		},
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			if (detaching) detach_dev(t1);
     			destroy_component(home, detaching);
     		}
     	};
@@ -6382,23 +6472,32 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     		block,
     		id: create_if_block_13.name,
     		type: "if",
-    		source: "(236:0) {#if j === 0}",
+    		source: "(198:0) {#if j === 0}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (239:0) {#if j === 1}
+    // (202:0) {#if j === 1}
     function create_if_block_12(ctx) {
+    	let div;
+    	let t1;
     	let current;
     	const monad = new Monad_1({ $$inline: true });
 
     	const block = {
     		c: function create() {
+    			div = element("div");
+    			div.textContent = "Simple Monad";
+    			t1 = space();
     			create_component(monad.$$.fragment);
+    			attr_dev(div, "class", "show svelte-1dx3l24");
+    			add_location(div, file$e, 202, 0, 6088);
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			insert_dev(target, t1, anchor);
     			mount_component(monad, target, anchor);
     			current = true;
     		},
@@ -6412,6 +6511,8 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			current = false;
     		},
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			if (detaching) detach_dev(t1);
     			destroy_component(monad, detaching);
     		}
     	};
@@ -6420,23 +6521,32 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     		block,
     		id: create_if_block_12.name,
     		type: "if",
-    		source: "(239:0) {#if j === 1}",
+    		source: "(202:0) {#if j === 1}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (242:0) {#if j === 2}
+    // (206:0) {#if j === 2}
     function create_if_block_11(ctx) {
+    	let div;
+    	let t1;
     	let current;
     	const monad2 = new Monad2({ $$inline: true });
 
     	const block = {
     		c: function create() {
+    			div = element("div");
+    			div.textContent = "Messages Monad";
+    			t1 = space();
     			create_component(monad2.$$.fragment);
+    			attr_dev(div, "class", "show svelte-1dx3l24");
+    			add_location(div, file$e, 206, 0, 6155);
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			insert_dev(target, t1, anchor);
     			mount_component(monad2, target, anchor);
     			current = true;
     		},
@@ -6450,6 +6560,8 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			current = false;
     		},
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			if (detaching) detach_dev(t1);
     			destroy_component(monad2, detaching);
     		}
     	};
@@ -6458,23 +6570,32 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     		block,
     		id: create_if_block_11.name,
     		type: "if",
-    		source: "(242:0) {#if j === 2}",
+    		source: "(206:0) {#if j === 2}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (245:0) {#if j === 3}
+    // (210:0) {#if j === 3}
     function create_if_block_10(ctx) {
+    	let div;
+    	let t1;
     	let current;
     	const monad3 = new Monad3({ $$inline: true });
 
     	const block = {
     		c: function create() {
+    			div = element("div");
+    			div.textContent = "Promises Monad";
+    			t1 = space();
     			create_component(monad3.$$.fragment);
+    			attr_dev(div, "class", "show svelte-1dx3l24");
+    			add_location(div, file$e, 210, 0, 6225);
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			insert_dev(target, t1, anchor);
     			mount_component(monad3, target, anchor);
     			current = true;
     		},
@@ -6488,6 +6609,8 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			current = false;
     		},
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			if (detaching) detach_dev(t1);
     			destroy_component(monad3, detaching);
     		}
     	};
@@ -6496,23 +6619,32 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     		block,
     		id: create_if_block_10.name,
     		type: "if",
-    		source: "(245:0) {#if j === 3}",
+    		source: "(210:0) {#if j === 3}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (248:0) {#if j === 4}
+    // (214:0) {#if j === 4}
     function create_if_block_9(ctx) {
+    	let div;
+    	let t1;
     	let current;
     	const transducer = new Transducer({ $$inline: true });
 
     	const block = {
     		c: function create() {
+    			div = element("div");
+    			div.textContent = "Transducer Monad";
+    			t1 = space();
     			create_component(transducer.$$.fragment);
+    			attr_dev(div, "class", "show svelte-1dx3l24");
+    			add_location(div, file$e, 214, 0, 6295);
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			insert_dev(target, t1, anchor);
     			mount_component(transducer, target, anchor);
     			current = true;
     		},
@@ -6526,6 +6658,8 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			current = false;
     		},
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			if (detaching) detach_dev(t1);
     			destroy_component(transducer, detaching);
     		}
     	};
@@ -6534,23 +6668,32 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     		block,
     		id: create_if_block_9.name,
     		type: "if",
-    		source: "(248:0) {#if j === 4}",
+    		source: "(214:0) {#if j === 4}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (251:0) {#if j === 5}
+    // (218:0) {#if j === 5}
     function create_if_block_8(ctx) {
+    	let div;
+    	let t1;
     	let current;
     	const matrix = new Matrix({ $$inline: true });
 
     	const block = {
     		c: function create() {
+    			div = element("div");
+    			div.textContent = "Why Svelte";
+    			t1 = space();
     			create_component(matrix.$$.fragment);
+    			attr_dev(div, "class", "show svelte-1dx3l24");
+    			add_location(div, file$e, 218, 0, 6371);
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			insert_dev(target, t1, anchor);
     			mount_component(matrix, target, anchor);
     			current = true;
     		},
@@ -6564,6 +6707,8 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			current = false;
     		},
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			if (detaching) detach_dev(t1);
     			destroy_component(matrix, detaching);
     		}
     	};
@@ -6572,23 +6717,32 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     		block,
     		id: create_if_block_8.name,
     		type: "if",
-    		source: "(251:0) {#if j === 5}",
+    		source: "(218:0) {#if j === 5}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (254:0) {#if j === 6}
+    // (222:0) {#if j === 6}
     function create_if_block_7(ctx) {
+    	let div;
+    	let t1;
     	let current;
     	const haskell = new Haskell({ $$inline: true });
 
     	const block = {
     		c: function create() {
+    			div = element("div");
+    			div.textContent = "Haskell Tip";
+    			t1 = space();
     			create_component(haskell.$$.fragment);
+    			attr_dev(div, "class", "show svelte-1dx3l24");
+    			add_location(div, file$e, 222, 0, 6437);
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			insert_dev(target, t1, anchor);
     			mount_component(haskell, target, anchor);
     			current = true;
     		},
@@ -6602,6 +6756,8 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			current = false;
     		},
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			if (detaching) detach_dev(t1);
     			destroy_component(haskell, detaching);
     		}
     	};
@@ -6610,23 +6766,32 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     		block,
     		id: create_if_block_7.name,
     		type: "if",
-    		source: "(254:0) {#if j === 6}",
+    		source: "(222:0) {#if j === 6}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (257:0) {#if j === 7}
+    // (226:0) {#if j === 7}
     function create_if_block_6(ctx) {
+    	let div;
+    	let t1;
     	let current;
     	const score = new Score({ $$inline: true });
 
     	const block = {
     		c: function create() {
+    			div = element("div");
+    			div.textContent = "Game of Score";
+    			t1 = space();
     			create_component(score.$$.fragment);
+    			attr_dev(div, "class", "show svelte-1dx3l24");
+    			add_location(div, file$e, 226, 0, 6505);
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			insert_dev(target, t1, anchor);
     			mount_component(score, target, anchor);
     			current = true;
     		},
@@ -6640,6 +6805,8 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			current = false;
     		},
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			if (detaching) detach_dev(t1);
     			destroy_component(score, detaching);
     		}
     	};
@@ -6648,23 +6815,32 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     		block,
     		id: create_if_block_6.name,
     		type: "if",
-    		source: "(257:0) {#if j === 7}",
+    		source: "(226:0) {#if j === 7}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (260:0) {#if j === 8}
+    // (230:0) {#if j === 8}
     function create_if_block_5(ctx) {
+    	let div;
+    	let t1;
     	let current;
     	const cargo = new Cargo({ $$inline: true });
 
     	const block = {
     		c: function create() {
+    			div = element("div");
+    			div.textContent = "Cargo Cult";
+    			t1 = space();
     			create_component(cargo.$$.fragment);
+    			attr_dev(div, "class", "show svelte-1dx3l24");
+    			add_location(div, file$e, 230, 0, 6573);
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			insert_dev(target, t1, anchor);
     			mount_component(cargo, target, anchor);
     			current = true;
     		},
@@ -6678,6 +6854,8 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			current = false;
     		},
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			if (detaching) detach_dev(t1);
     			destroy_component(cargo, detaching);
     		}
     	};
@@ -6686,23 +6864,32 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     		block,
     		id: create_if_block_5.name,
     		type: "if",
-    		source: "(260:0) {#if j === 8}",
+    		source: "(230:0) {#if j === 8}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (263:0) {#if j === 9}
+    // (234:0) {#if j === 9}
     function create_if_block_4(ctx) {
+    	let div;
+    	let t1;
     	let current;
     	const bugs = new Bugs({ $$inline: true });
 
     	const block = {
     		c: function create() {
+    			div = element("div");
+    			div.textContent = "Bed Bugs";
+    			t1 = space();
     			create_component(bugs.$$.fragment);
+    			attr_dev(div, "class", "show svelte-1dx3l24");
+    			add_location(div, file$e, 234, 0, 6638);
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			insert_dev(target, t1, anchor);
     			mount_component(bugs, target, anchor);
     			current = true;
     		},
@@ -6716,6 +6903,8 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			current = false;
     		},
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			if (detaching) detach_dev(t1);
     			destroy_component(bugs, detaching);
     		}
     	};
@@ -6724,23 +6913,32 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     		block,
     		id: create_if_block_4.name,
     		type: "if",
-    		source: "(263:0) {#if j === 9}",
+    		source: "(234:0) {#if j === 9}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (266:0) {#if j === 10}
+    // (238:0) {#if j === 10}
     function create_if_block_3(ctx) {
+    	let div;
+    	let t1;
     	let current;
     	const toggleclass = new ToggleClass({ $$inline: true });
 
     	const block = {
     		c: function create() {
+    			div = element("div");
+    			div.textContent = "Toggle Class";
+    			t1 = space();
     			create_component(toggleclass.$$.fragment);
+    			attr_dev(div, "class", "show svelte-1dx3l24");
+    			add_location(div, file$e, 238, 0, 6701);
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			insert_dev(target, t1, anchor);
     			mount_component(toggleclass, target, anchor);
     			current = true;
     		},
@@ -6754,6 +6952,8 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			current = false;
     		},
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			if (detaching) detach_dev(t1);
     			destroy_component(toggleclass, detaching);
     		}
     	};
@@ -6762,23 +6962,32 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     		block,
     		id: create_if_block_3.name,
     		type: "if",
-    		source: "(266:0) {#if j === 10}",
+    		source: "(238:0) {#if j === 10}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (269:0) {#if j === 11}
+    // (242:0) {#if j === 11}
     function create_if_block_2(ctx) {
+    	let div;
+    	let t1;
     	let current;
     	const toggletheme = new ToggleTheme({ $$inline: true });
 
     	const block = {
     		c: function create() {
+    			div = element("div");
+    			div.textContent = "Toggle Theme";
+    			t1 = space();
     			create_component(toggletheme.$$.fragment);
+    			attr_dev(div, "class", "show svelte-1dx3l24");
+    			add_location(div, file$e, 242, 0, 6775);
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			insert_dev(target, t1, anchor);
     			mount_component(toggletheme, target, anchor);
     			current = true;
     		},
@@ -6792,6 +7001,8 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			current = false;
     		},
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			if (detaching) detach_dev(t1);
     			destroy_component(toggletheme, detaching);
     		}
     	};
@@ -6800,23 +7011,32 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(269:0) {#if j === 11}",
+    		source: "(242:0) {#if j === 11}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (272:0) {#if j === 12}
+    // (246:0) {#if j === 12}
     function create_if_block_1(ctx) {
+    	let div;
+    	let t1;
     	let current;
     	const cow = new Cow({ $$inline: true });
 
     	const block = {
     		c: function create() {
+    			div = element("div");
+    			div.textContent = "d";
+    			t1 = space();
     			create_component(cow.$$.fragment);
+    			attr_dev(div, "class", "show svelte-1dx3l24");
+    			add_location(div, file$e, 246, 0, 6849);
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			insert_dev(target, t1, anchor);
     			mount_component(cow, target, anchor);
     			current = true;
     		},
@@ -6830,6 +7050,8 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			current = false;
     		},
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			if (detaching) detach_dev(t1);
     			destroy_component(cow, detaching);
     		}
     	};
@@ -6838,23 +7060,32 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(272:0) {#if j === 12}",
+    		source: "(246:0) {#if j === 12}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (275:0) {#if j === 13}
+    // (250:0) {#if j === 13}
     function create_if_block$b(ctx) {
+    	let div;
+    	let t1;
     	let current;
     	const stor = new Stor({ $$inline: true });
 
     	const block = {
     		c: function create() {
+    			div = element("div");
+    			div.textContent = "d";
+    			t1 = space();
     			create_component(stor.$$.fragment);
+    			attr_dev(div, "class", "show svelte-1dx3l24");
+    			add_location(div, file$e, 250, 0, 6904);
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			insert_dev(target, t1, anchor);
     			mount_component(stor, target, anchor);
     			current = true;
     		},
@@ -6868,6 +7099,8 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			current = false;
     		},
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			if (detaching) detach_dev(t1);
     			destroy_component(stor, detaching);
     		}
     	};
@@ -6876,7 +7109,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     		block,
     		id: create_if_block$b.name,
     		type: "if",
-    		source: "(275:0) {#if j === 13}",
+    		source: "(250:0) {#if j === 13}",
     		ctx
     	});
 
@@ -6884,105 +7117,71 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     }
 
     function create_fragment$e(ctx) {
-    	let br0;
-    	let t0;
     	let div3;
     	let div0;
-    	let t2;
+    	let t1;
     	let div1;
-    	let t4;
+    	let t3;
     	let div2;
-    	let t6;
+    	let t5;
     	let div18;
     	let div4;
-    	let t8;
+    	let t7;
     	let div17;
     	let div5;
-    	let t10;
+    	let t9;
     	let div6;
-    	let t12;
+    	let t11;
     	let div7;
-    	let t14;
+    	let t13;
     	let div8;
-    	let t16;
+    	let t15;
     	let div9;
-    	let t18;
+    	let t17;
     	let div10;
-    	let t20;
+    	let t19;
     	let div11;
-    	let t22;
+    	let t21;
     	let div12;
-    	let t24;
+    	let t23;
     	let div13;
-    	let t26;
+    	let t25;
     	let div14;
-    	let t28;
+    	let t27;
     	let div15;
-    	let t30;
+    	let t29;
     	let div16;
-    	let t32;
-    	let div33;
+    	let t31;
+    	let div22;
     	let div19;
+    	let t33;
+    	let br0;
     	let t34;
-    	let div32;
     	let div20;
     	let t36;
     	let div21;
     	let t38;
-    	let div22;
-    	let t40;
-    	let div23;
-    	let t42;
-    	let div24;
-    	let t44;
-    	let div25;
-    	let t46;
-    	let div26;
-    	let t48;
-    	let div27;
-    	let t50;
-    	let div28;
-    	let t52;
-    	let div29;
-    	let t54;
-    	let div30;
-    	let t56;
-    	let div31;
-    	let t58;
-    	let div38;
-    	let div37;
     	let br1;
     	let br2;
-    	let t59;
-    	let div34;
-    	let t61;
+    	let t39;
+    	let t40;
+    	let t41;
+    	let t42;
+    	let t43;
+    	let t44;
+    	let t45;
+    	let t46;
+    	let t47;
+    	let t48;
+    	let t49;
+    	let t50;
+    	let t51;
+    	let t52;
+    	let t53;
     	let br3;
-    	let t62;
-    	let div35;
-    	let t64;
-    	let div36;
-    	let t66;
     	let br4;
-    	let br5;
-    	let t67;
-    	let t68;
-    	let t69;
-    	let t70;
-    	let t71;
-    	let t72;
-    	let t73;
-    	let t74;
-    	let t75;
-    	let t76;
-    	let t77;
-    	let t78;
-    	let t79;
-    	let t80;
-    	let t81;
-    	let br6;
-    	let br7;
-    	let t82;
-    	let t83;
+    	let t54;
+    	let t55;
     	let pre;
     	let current;
     	let dispose;
@@ -7005,247 +7204,173 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
 
     	const block = {
     		c: function create() {
-    			br0 = element("br");
-    			t0 = space();
     			div3 = element("div");
     			div0 = element("div");
     			div0.textContent = "David E. Schalk";
-    			t2 = space();
+    			t1 = space();
     			div1 = element("div");
     			div1.textContent = "fp3216@protonmail.com";
-    			t4 = space();
+    			t3 = space();
     			div2 = element("div");
     			div2.textContent = "https://github.com/dschalk";
-    			t6 = space();
+    			t5 = space();
     			div18 = element("div");
     			div4 = element("div");
     			div4.textContent = "Table of Contents";
-    			t8 = space();
+    			t7 = space();
     			div17 = element("div");
     			div5 = element("div");
     			div5.textContent = "Home";
-    			t10 = space();
+    			t9 = space();
     			div6 = element("div");
     			div6.textContent = "A Simple Monad";
-    			t12 = space();
+    			t11 = space();
     			div7 = element("div");
     			div7.textContent = "A Messaging Monad";
-    			t14 = space();
+    			t13 = space();
     			div8 = element("div");
     			div8.textContent = "A Promises Monad";
-    			t16 = space();
+    			t15 = space();
     			div9 = element("div");
     			div9.textContent = "A Transducer Monad";
-    			t18 = space();
+    			t17 = space();
     			div10 = element("div");
     			div10.textContent = "Why Svelte";
-    			t20 = space();
+    			t19 = space();
     			div11 = element("div");
     			div11.textContent = "Haskell Secrets";
-    			t22 = space();
+    			t21 = space();
     			div12 = element("div");
     			div12.textContent = "React Game of Score";
-    			t24 = space();
+    			t23 = space();
     			div13 = element("div");
     			div13.textContent = "Functional Cargo Cult";
-    			t26 = space();
+    			t25 = space();
     			div14 = element("div");
     			div14.textContent = "Eradicating Bed Bugs";
-    			t28 = space();
+    			t27 = space();
     			div15 = element("div");
     			div15.textContent = "Toggle Class";
-    			t30 = space();
+    			t29 = space();
     			div16 = element("div");
     			div16.textContent = "Toggle Theme";
-    			t32 = space();
-    			div33 = element("div");
+    			t31 = space();
+    			div22 = element("div");
     			div19 = element("div");
-    			div19.textContent = "Table of Contents";
+    			div19.textContent = "JAVASCRIPT";
+    			t33 = space();
+    			br0 = element("br");
     			t34 = space();
-    			div32 = element("div");
     			div20 = element("div");
-    			div20.textContent = "Home";
+    			div20.textContent = "Escape from the Functional Programming Cargo Cult";
     			t36 = space();
     			div21 = element("div");
-    			div21.textContent = "A Simple Monad";
+    			div21.textContent = "And Other Adventures";
     			t38 = space();
-    			div22 = element("div");
-    			div22.textContent = "A Messaging Monad";
-    			t40 = space();
-    			div23 = element("div");
-    			div23.textContent = "A Promises Monad";
-    			t42 = space();
-    			div24 = element("div");
-    			div24.textContent = "A Transducer Monad";
-    			t44 = space();
-    			div25 = element("div");
-    			div25.textContent = "Why Svelte";
-    			t46 = space();
-    			div26 = element("div");
-    			div26.textContent = "Haskell Secrets";
-    			t48 = space();
-    			div27 = element("div");
-    			div27.textContent = "React Game of Score";
-    			t50 = space();
-    			div28 = element("div");
-    			div28.textContent = "Functional Cargo Cult";
-    			t52 = space();
-    			div29 = element("div");
-    			div29.textContent = "Eradicating Bed Bugs";
-    			t54 = space();
-    			div30 = element("div");
-    			div30.textContent = "Toggle Class";
-    			t56 = space();
-    			div31 = element("div");
-    			div31.textContent = "Toggle Theme";
-    			t58 = space();
-    			div38 = element("div");
-    			div37 = element("div");
     			br1 = element("br");
     			br2 = element("br");
-    			t59 = space();
-    			div34 = element("div");
-    			div34.textContent = "JAVASCRIPT";
-    			t61 = space();
-    			br3 = element("br");
-    			t62 = space();
-    			div35 = element("div");
-    			div35.textContent = "Escape from the Functional Programming Cargo Cult";
-    			t64 = space();
-    			div36 = element("div");
-    			div36.textContent = "And Other Adventures";
-    			t66 = space();
-    			br4 = element("br");
-    			br5 = element("br");
-    			t67 = space();
+    			t39 = space();
     			if (if_block0) if_block0.c();
-    			t68 = space();
+    			t40 = space();
     			if (if_block1) if_block1.c();
-    			t69 = space();
+    			t41 = space();
     			if (if_block2) if_block2.c();
-    			t70 = space();
+    			t42 = space();
     			if (if_block3) if_block3.c();
-    			t71 = space();
+    			t43 = space();
     			if (if_block4) if_block4.c();
-    			t72 = space();
+    			t44 = space();
     			if (if_block5) if_block5.c();
-    			t73 = space();
+    			t45 = space();
     			if (if_block6) if_block6.c();
-    			t74 = space();
+    			t46 = space();
     			if (if_block7) if_block7.c();
-    			t75 = space();
+    			t47 = space();
     			if (if_block8) if_block8.c();
-    			t76 = space();
+    			t48 = space();
     			if (if_block9) if_block9.c();
-    			t77 = space();
+    			t49 = space();
     			if (if_block10) if_block10.c();
-    			t78 = space();
+    			t50 = space();
     			if (if_block11) if_block11.c();
-    			t79 = space();
+    			t51 = space();
     			if (if_block12) if_block12.c();
-    			t80 = space();
+    			t52 = space();
     			if (if_block13) if_block13.c();
-    			t81 = space();
-    			br6 = element("br");
-    			br7 = element("br");
-    			t82 = space();
+    			t53 = space();
+    			br3 = element("br");
+    			br4 = element("br");
+    			t54 = space();
     			if (default_slot) default_slot.c();
-    			t83 = space();
+    			t55 = space();
     			pre = element("pre");
     			pre.textContent = "...";
-    			add_location(br0, file$e, 131, 0, 2350);
-    			add_location(div0, file$e, 136, 0, 2463);
-    			add_location(div1, file$e, 137, 0, 2492);
-    			add_location(div2, file$e, 138, 0, 2525);
-    			attr_dev(div3, "class", "dropdown2 svelte-1a2vpfm");
-    			add_location(div3, file$e, 135, 0, 2439);
-    			attr_dev(div4, "class", "dropbtn svelte-1a2vpfm");
-    			add_location(div4, file$e, 143, 2, 2597);
-    			attr_dev(div5, "class", "menu svelte-1a2vpfm");
-    			add_location(div5, file$e, 145, 0, 2675);
-    			attr_dev(div6, "class", "menu svelte-1a2vpfm");
-    			add_location(div6, file$e, 146, 0, 2730);
-    			attr_dev(div7, "class", "menu svelte-1a2vpfm");
-    			add_location(div7, file$e, 147, 0, 2795);
-    			attr_dev(div8, "class", "menu svelte-1a2vpfm");
-    			add_location(div8, file$e, 148, 0, 2863);
-    			attr_dev(div9, "class", "menu svelte-1a2vpfm");
-    			add_location(div9, file$e, 149, 0, 2930);
-    			attr_dev(div10, "class", "menu svelte-1a2vpfm");
-    			add_location(div10, file$e, 150, 0, 2999);
-    			attr_dev(div11, "class", "menu svelte-1a2vpfm");
-    			add_location(div11, file$e, 151, 0, 3060);
-    			attr_dev(div12, "class", "menu svelte-1a2vpfm");
-    			add_location(div12, file$e, 152, 0, 3126);
-    			attr_dev(div13, "class", "menu svelte-1a2vpfm");
-    			add_location(div13, file$e, 153, 0, 3196);
-    			attr_dev(div14, "class", "menu svelte-1a2vpfm");
-    			add_location(div14, file$e, 154, 0, 3268);
-    			attr_dev(div15, "class", "menu svelte-1a2vpfm");
-    			add_location(div15, file$e, 155, 0, 3339);
-    			attr_dev(div16, "class", "menu svelte-1a2vpfm");
-    			add_location(div16, file$e, 156, 0, 3403);
-    			attr_dev(div17, "class", "dropdown-content svelte-1a2vpfm");
-    			add_location(div17, file$e, 144, 2, 2644);
-    			attr_dev(div18, "class", "dropdown svelte-1a2vpfm");
-    			add_location(div18, file$e, 142, 0, 2572);
-    			attr_dev(div19, "class", "dropbtn3 svelte-1a2vpfm");
-    			add_location(div19, file$e, 161, 2, 3510);
-    			attr_dev(div20, "class", "menu svelte-1a2vpfm");
-    			add_location(div20, file$e, 163, 0, 3590);
-    			attr_dev(div21, "class", "menu svelte-1a2vpfm");
-    			add_location(div21, file$e, 164, 0, 3645);
-    			attr_dev(div22, "class", "menu svelte-1a2vpfm");
-    			add_location(div22, file$e, 165, 0, 3710);
-    			attr_dev(div23, "class", "menu svelte-1a2vpfm");
-    			add_location(div23, file$e, 166, 0, 3778);
-    			attr_dev(div24, "class", "menu svelte-1a2vpfm");
-    			add_location(div24, file$e, 167, 0, 3845);
-    			attr_dev(div25, "class", "menu svelte-1a2vpfm");
-    			add_location(div25, file$e, 168, 0, 3914);
-    			attr_dev(div26, "class", "menu svelte-1a2vpfm");
-    			add_location(div26, file$e, 169, 0, 3975);
-    			attr_dev(div27, "class", "menu svelte-1a2vpfm");
-    			add_location(div27, file$e, 170, 0, 4041);
-    			attr_dev(div28, "class", "menu svelte-1a2vpfm");
-    			add_location(div28, file$e, 171, 0, 4111);
-    			attr_dev(div29, "class", "menu svelte-1a2vpfm");
-    			add_location(div29, file$e, 172, 0, 4183);
-    			attr_dev(div30, "class", "menu svelte-1a2vpfm");
-    			add_location(div30, file$e, 173, 0, 4254);
-    			attr_dev(div31, "class", "menu svelte-1a2vpfm");
-    			add_location(div31, file$e, 174, 0, 4318);
-    			attr_dev(div32, "class", "dropdown-content3 svelte-1a2vpfm");
-    			add_location(div32, file$e, 162, 2, 3558);
-    			attr_dev(div33, "class", "dropdown3 svelte-1a2vpfm");
-    			add_location(div33, file$e, 160, 0, 3484);
-    			add_location(br1, file$e, 228, 0, 6960);
-    			add_location(br2, file$e, 228, 4, 6964);
-    			set_style(div34, "font-size", "40px");
-    			set_style(div34, "color", "#FFD700");
-    			set_style(div34, "text-align", "center");
-    			add_location(div34, file$e, 229, 0, 6969);
-    			add_location(br3, file$e, 230, 0, 7053);
-    			set_style(div35, "font-size", "24px");
-    			set_style(div35, "color", "#FFCCAA");
-    			set_style(div35, "font-style", "italic");
-    			set_style(div35, "text-align", "center");
-    			add_location(div35, file$e, 231, 0, 7058);
-    			set_style(div36, "font-size", "24px");
-    			set_style(div36, "color", "#FFCCAA");
-    			set_style(div36, "font-style", "italic");
-    			set_style(div36, "text-align", "center");
-    			add_location(div36, file$e, 232, 0, 7201);
-    			add_location(br4, file$e, 233, 0, 7315);
-    			add_location(br5, file$e, 233, 4, 7319);
-    			set_style(div37, "margin-left", "25%");
-    			set_style(div37, "margin-right", "25%");
-    			add_location(div37, file$e, 226, 0, 6906);
-    			add_location(br6, file$e, 278, 0, 7773);
-    			add_location(br7, file$e, 278, 4, 7777);
-    			attr_dev(div38, "class", "margins");
-    			add_location(div38, file$e, 224, 8, 6883);
-    			add_location(pre, file$e, 281, 0, 7798);
+    			set_style(div0, "font-size", "24px");
+    			attr_dev(div0, "class", "svelte-1dx3l24");
+    			add_location(div0, file$e, 118, 0, 2045);
+    			attr_dev(div1, "class", "svelte-1dx3l24");
+    			add_location(div1, file$e, 119, 0, 2100);
+    			attr_dev(div2, "class", "svelte-1dx3l24");
+    			add_location(div2, file$e, 120, 0, 2133);
+    			attr_dev(div3, "class", "stat svelte-1dx3l24");
+    			add_location(div3, file$e, 117, 0, 2026);
+    			attr_dev(div4, "class", "dropbtn svelte-1dx3l24");
+    			add_location(div4, file$e, 125, 2, 2205);
+    			attr_dev(div5, "class", "menu svelte-1dx3l24");
+    			add_location(div5, file$e, 127, 0, 2283);
+    			attr_dev(div6, "class", "menu svelte-1dx3l24");
+    			add_location(div6, file$e, 128, 0, 2338);
+    			attr_dev(div7, "class", "menu svelte-1dx3l24");
+    			add_location(div7, file$e, 129, 0, 2403);
+    			attr_dev(div8, "class", "menu svelte-1dx3l24");
+    			add_location(div8, file$e, 130, 0, 2471);
+    			attr_dev(div9, "class", "menu svelte-1dx3l24");
+    			add_location(div9, file$e, 131, 0, 2538);
+    			attr_dev(div10, "class", "menu svelte-1dx3l24");
+    			add_location(div10, file$e, 132, 0, 2607);
+    			attr_dev(div11, "class", "menu svelte-1dx3l24");
+    			add_location(div11, file$e, 133, 0, 2668);
+    			attr_dev(div12, "class", "menu svelte-1dx3l24");
+    			add_location(div12, file$e, 134, 0, 2734);
+    			attr_dev(div13, "class", "menu svelte-1dx3l24");
+    			add_location(div13, file$e, 135, 0, 2804);
+    			attr_dev(div14, "class", "menu svelte-1dx3l24");
+    			add_location(div14, file$e, 136, 0, 2876);
+    			attr_dev(div15, "class", "menu svelte-1dx3l24");
+    			add_location(div15, file$e, 137, 0, 2947);
+    			attr_dev(div16, "class", "menu svelte-1dx3l24");
+    			add_location(div16, file$e, 138, 0, 3011);
+    			attr_dev(div17, "class", "dropdown-content svelte-1dx3l24");
+    			add_location(div17, file$e, 126, 2, 2252);
+    			attr_dev(div18, "class", "dropdown svelte-1dx3l24");
+    			add_location(div18, file$e, 124, 0, 2180);
+    			set_style(div19, "font-size", "40px");
+    			set_style(div19, "color", "#FFD700");
+    			set_style(div19, "text-align", "center");
+    			attr_dev(div19, "class", "svelte-1dx3l24");
+    			add_location(div19, file$e, 191, 0, 5660);
+    			add_location(br0, file$e, 192, 0, 5744);
+    			set_style(div20, "font-size", "24px");
+    			set_style(div20, "color", "#FFCCAA");
+    			set_style(div20, "font-style", "italic");
+    			set_style(div20, "text-align", "center");
+    			attr_dev(div20, "class", "svelte-1dx3l24");
+    			add_location(div20, file$e, 193, 0, 5749);
+    			set_style(div21, "font-size", "24px");
+    			set_style(div21, "color", "#FFCCAA");
+    			set_style(div21, "font-style", "italic");
+    			set_style(div21, "text-align", "center");
+    			attr_dev(div21, "class", "svelte-1dx3l24");
+    			add_location(div21, file$e, 194, 0, 5892);
+    			add_location(br1, file$e, 195, 0, 6006);
+    			add_location(br2, file$e, 195, 4, 6010);
+    			set_style(div22, "margin-left", "25%");
+    			set_style(div22, "margin-right", "25%");
+    			attr_dev(div22, "class", "svelte-1dx3l24");
+    			add_location(div22, file$e, 189, 0, 5606);
+    			add_location(br3, file$e, 254, 0, 6952);
+    			add_location(br4, file$e, 254, 4, 6956);
+    			add_location(pre, file$e, 256, 0, 6970);
 
     			dispose = [
     				listen_dev(div5, "click", /*click_handler*/ ctx[3], false, false, false),
@@ -7259,143 +7384,97 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     				listen_dev(div13, "click", /*click_handler_8*/ ctx[11], false, false, false),
     				listen_dev(div14, "click", /*click_handler_9*/ ctx[12], false, false, false),
     				listen_dev(div15, "click", /*click_handler_10*/ ctx[13], false, false, false),
-    				listen_dev(div16, "click", /*click_handler_11*/ ctx[14], false, false, false),
-    				listen_dev(div20, "click", /*click_handler_12*/ ctx[15], false, false, false),
-    				listen_dev(div21, "click", /*click_handler_13*/ ctx[16], false, false, false),
-    				listen_dev(div22, "click", /*click_handler_14*/ ctx[17], false, false, false),
-    				listen_dev(div23, "click", /*click_handler_15*/ ctx[18], false, false, false),
-    				listen_dev(div24, "click", /*click_handler_16*/ ctx[19], false, false, false),
-    				listen_dev(div25, "click", /*click_handler_17*/ ctx[20], false, false, false),
-    				listen_dev(div26, "click", /*click_handler_18*/ ctx[21], false, false, false),
-    				listen_dev(div27, "click", /*click_handler_19*/ ctx[22], false, false, false),
-    				listen_dev(div28, "click", /*click_handler_20*/ ctx[23], false, false, false),
-    				listen_dev(div29, "click", /*click_handler_21*/ ctx[24], false, false, false),
-    				listen_dev(div30, "click", /*click_handler_22*/ ctx[25], false, false, false),
-    				listen_dev(div31, "click", /*click_handler_23*/ ctx[26], false, false, false)
+    				listen_dev(div16, "click", /*click_handler_11*/ ctx[14], false, false, false)
     			];
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, br0, anchor);
-    			insert_dev(target, t0, anchor);
     			insert_dev(target, div3, anchor);
     			append_dev(div3, div0);
-    			append_dev(div3, t2);
+    			append_dev(div3, t1);
     			append_dev(div3, div1);
-    			append_dev(div3, t4);
+    			append_dev(div3, t3);
     			append_dev(div3, div2);
-    			insert_dev(target, t6, anchor);
+    			insert_dev(target, t5, anchor);
     			insert_dev(target, div18, anchor);
     			append_dev(div18, div4);
-    			append_dev(div18, t8);
+    			append_dev(div18, t7);
     			append_dev(div18, div17);
     			append_dev(div17, div5);
-    			append_dev(div17, t10);
+    			append_dev(div17, t9);
     			append_dev(div17, div6);
-    			append_dev(div17, t12);
+    			append_dev(div17, t11);
     			append_dev(div17, div7);
-    			append_dev(div17, t14);
+    			append_dev(div17, t13);
     			append_dev(div17, div8);
-    			append_dev(div17, t16);
+    			append_dev(div17, t15);
     			append_dev(div17, div9);
-    			append_dev(div17, t18);
+    			append_dev(div17, t17);
     			append_dev(div17, div10);
-    			append_dev(div17, t20);
+    			append_dev(div17, t19);
     			append_dev(div17, div11);
-    			append_dev(div17, t22);
+    			append_dev(div17, t21);
     			append_dev(div17, div12);
-    			append_dev(div17, t24);
+    			append_dev(div17, t23);
     			append_dev(div17, div13);
-    			append_dev(div17, t26);
+    			append_dev(div17, t25);
     			append_dev(div17, div14);
-    			append_dev(div17, t28);
+    			append_dev(div17, t27);
     			append_dev(div17, div15);
-    			append_dev(div17, t30);
+    			append_dev(div17, t29);
     			append_dev(div17, div16);
-    			insert_dev(target, t32, anchor);
-    			insert_dev(target, div33, anchor);
-    			append_dev(div33, div19);
-    			append_dev(div33, t34);
-    			append_dev(div33, div32);
-    			append_dev(div32, div20);
-    			append_dev(div32, t36);
-    			append_dev(div32, div21);
-    			append_dev(div32, t38);
-    			append_dev(div32, div22);
-    			append_dev(div32, t40);
-    			append_dev(div32, div23);
-    			append_dev(div32, t42);
-    			append_dev(div32, div24);
-    			append_dev(div32, t44);
-    			append_dev(div32, div25);
-    			append_dev(div32, t46);
-    			append_dev(div32, div26);
-    			append_dev(div32, t48);
-    			append_dev(div32, div27);
-    			append_dev(div32, t50);
-    			append_dev(div32, div28);
-    			append_dev(div32, t52);
-    			append_dev(div32, div29);
-    			append_dev(div32, t54);
-    			append_dev(div32, div30);
-    			append_dev(div32, t56);
-    			append_dev(div32, div31);
-    			insert_dev(target, t58, anchor);
-    			insert_dev(target, div38, anchor);
-    			append_dev(div38, div37);
-    			append_dev(div37, br1);
-    			append_dev(div37, br2);
-    			append_dev(div37, t59);
-    			append_dev(div37, div34);
-    			append_dev(div37, t61);
-    			append_dev(div37, br3);
-    			append_dev(div37, t62);
-    			append_dev(div37, div35);
-    			append_dev(div37, t64);
-    			append_dev(div37, div36);
-    			append_dev(div37, t66);
-    			append_dev(div37, br4);
-    			append_dev(div37, br5);
-    			append_dev(div37, t67);
-    			if (if_block0) if_block0.m(div37, null);
-    			append_dev(div37, t68);
-    			if (if_block1) if_block1.m(div37, null);
-    			append_dev(div37, t69);
-    			if (if_block2) if_block2.m(div37, null);
-    			append_dev(div37, t70);
-    			if (if_block3) if_block3.m(div37, null);
-    			append_dev(div37, t71);
-    			if (if_block4) if_block4.m(div37, null);
-    			append_dev(div37, t72);
-    			if (if_block5) if_block5.m(div37, null);
-    			append_dev(div37, t73);
-    			if (if_block6) if_block6.m(div37, null);
-    			append_dev(div37, t74);
-    			if (if_block7) if_block7.m(div37, null);
-    			append_dev(div37, t75);
-    			if (if_block8) if_block8.m(div37, null);
-    			append_dev(div37, t76);
-    			if (if_block9) if_block9.m(div37, null);
-    			append_dev(div37, t77);
-    			if (if_block10) if_block10.m(div37, null);
-    			append_dev(div37, t78);
-    			if (if_block11) if_block11.m(div37, null);
-    			append_dev(div37, t79);
-    			if (if_block12) if_block12.m(div37, null);
-    			append_dev(div37, t80);
-    			if (if_block13) if_block13.m(div37, null);
-    			append_dev(div38, t81);
-    			append_dev(div38, br6);
-    			append_dev(div38, br7);
-    			append_dev(div38, t82);
+    			insert_dev(target, t31, anchor);
+    			insert_dev(target, div22, anchor);
+    			append_dev(div22, div19);
+    			append_dev(div22, t33);
+    			append_dev(div22, br0);
+    			append_dev(div22, t34);
+    			append_dev(div22, div20);
+    			append_dev(div22, t36);
+    			append_dev(div22, div21);
+    			append_dev(div22, t38);
+    			append_dev(div22, br1);
+    			append_dev(div22, br2);
+    			append_dev(div22, t39);
+    			if (if_block0) if_block0.m(div22, null);
+    			append_dev(div22, t40);
+    			if (if_block1) if_block1.m(div22, null);
+    			append_dev(div22, t41);
+    			if (if_block2) if_block2.m(div22, null);
+    			append_dev(div22, t42);
+    			if (if_block3) if_block3.m(div22, null);
+    			append_dev(div22, t43);
+    			if (if_block4) if_block4.m(div22, null);
+    			append_dev(div22, t44);
+    			if (if_block5) if_block5.m(div22, null);
+    			append_dev(div22, t45);
+    			if (if_block6) if_block6.m(div22, null);
+    			append_dev(div22, t46);
+    			if (if_block7) if_block7.m(div22, null);
+    			append_dev(div22, t47);
+    			if (if_block8) if_block8.m(div22, null);
+    			append_dev(div22, t48);
+    			if (if_block9) if_block9.m(div22, null);
+    			append_dev(div22, t49);
+    			if (if_block10) if_block10.m(div22, null);
+    			append_dev(div22, t50);
+    			if (if_block11) if_block11.m(div22, null);
+    			append_dev(div22, t51);
+    			if (if_block12) if_block12.m(div22, null);
+    			append_dev(div22, t52);
+    			if (if_block13) if_block13.m(div22, null);
+    			insert_dev(target, t53, anchor);
+    			insert_dev(target, br3, anchor);
+    			insert_dev(target, br4, anchor);
+    			insert_dev(target, t54, anchor);
 
     			if (default_slot) {
-    				default_slot.m(div38, null);
+    				default_slot.m(target, anchor);
     			}
 
-    			insert_dev(target, t83, anchor);
+    			insert_dev(target, t55, anchor);
     			insert_dev(target, pre, anchor);
     			current = true;
     		},
@@ -7405,7 +7484,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     					if_block0 = create_if_block_13(ctx);
     					if_block0.c();
     					transition_in(if_block0, 1);
-    					if_block0.m(div37, t68);
+    					if_block0.m(div22, t40);
     				} else {
     					transition_in(if_block0, 1);
     				}
@@ -7424,7 +7503,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     					if_block1 = create_if_block_12(ctx);
     					if_block1.c();
     					transition_in(if_block1, 1);
-    					if_block1.m(div37, t69);
+    					if_block1.m(div22, t41);
     				} else {
     					transition_in(if_block1, 1);
     				}
@@ -7443,7 +7522,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     					if_block2 = create_if_block_11(ctx);
     					if_block2.c();
     					transition_in(if_block2, 1);
-    					if_block2.m(div37, t70);
+    					if_block2.m(div22, t42);
     				} else {
     					transition_in(if_block2, 1);
     				}
@@ -7462,7 +7541,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     					if_block3 = create_if_block_10(ctx);
     					if_block3.c();
     					transition_in(if_block3, 1);
-    					if_block3.m(div37, t71);
+    					if_block3.m(div22, t43);
     				} else {
     					transition_in(if_block3, 1);
     				}
@@ -7481,7 +7560,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     					if_block4 = create_if_block_9(ctx);
     					if_block4.c();
     					transition_in(if_block4, 1);
-    					if_block4.m(div37, t72);
+    					if_block4.m(div22, t44);
     				} else {
     					transition_in(if_block4, 1);
     				}
@@ -7500,7 +7579,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     					if_block5 = create_if_block_8(ctx);
     					if_block5.c();
     					transition_in(if_block5, 1);
-    					if_block5.m(div37, t73);
+    					if_block5.m(div22, t45);
     				} else {
     					transition_in(if_block5, 1);
     				}
@@ -7519,7 +7598,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     					if_block6 = create_if_block_7(ctx);
     					if_block6.c();
     					transition_in(if_block6, 1);
-    					if_block6.m(div37, t74);
+    					if_block6.m(div22, t46);
     				} else {
     					transition_in(if_block6, 1);
     				}
@@ -7538,7 +7617,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     					if_block7 = create_if_block_6(ctx);
     					if_block7.c();
     					transition_in(if_block7, 1);
-    					if_block7.m(div37, t75);
+    					if_block7.m(div22, t47);
     				} else {
     					transition_in(if_block7, 1);
     				}
@@ -7557,7 +7636,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     					if_block8 = create_if_block_5(ctx);
     					if_block8.c();
     					transition_in(if_block8, 1);
-    					if_block8.m(div37, t76);
+    					if_block8.m(div22, t48);
     				} else {
     					transition_in(if_block8, 1);
     				}
@@ -7576,7 +7655,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     					if_block9 = create_if_block_4(ctx);
     					if_block9.c();
     					transition_in(if_block9, 1);
-    					if_block9.m(div37, t77);
+    					if_block9.m(div22, t49);
     				} else {
     					transition_in(if_block9, 1);
     				}
@@ -7595,7 +7674,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     					if_block10 = create_if_block_3(ctx);
     					if_block10.c();
     					transition_in(if_block10, 1);
-    					if_block10.m(div37, t78);
+    					if_block10.m(div22, t50);
     				} else {
     					transition_in(if_block10, 1);
     				}
@@ -7614,7 +7693,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     					if_block11 = create_if_block_2(ctx);
     					if_block11.c();
     					transition_in(if_block11, 1);
-    					if_block11.m(div37, t79);
+    					if_block11.m(div22, t51);
     				} else {
     					transition_in(if_block11, 1);
     				}
@@ -7633,7 +7712,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     					if_block12 = create_if_block_1(ctx);
     					if_block12.c();
     					transition_in(if_block12, 1);
-    					if_block12.m(div37, t80);
+    					if_block12.m(div22, t52);
     				} else {
     					transition_in(if_block12, 1);
     				}
@@ -7652,7 +7731,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     					if_block13 = create_if_block$b(ctx);
     					if_block13.c();
     					transition_in(if_block13, 1);
-    					if_block13.m(div37, null);
+    					if_block13.m(div22, null);
     				} else {
     					transition_in(if_block13, 1);
     				}
@@ -7708,15 +7787,11 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(br0);
-    			if (detaching) detach_dev(t0);
     			if (detaching) detach_dev(div3);
-    			if (detaching) detach_dev(t6);
+    			if (detaching) detach_dev(t5);
     			if (detaching) detach_dev(div18);
-    			if (detaching) detach_dev(t32);
-    			if (detaching) detach_dev(div33);
-    			if (detaching) detach_dev(t58);
-    			if (detaching) detach_dev(div38);
+    			if (detaching) detach_dev(t31);
+    			if (detaching) detach_dev(div22);
     			if (if_block0) if_block0.d();
     			if (if_block1) if_block1.d();
     			if (if_block2) if_block2.d();
@@ -7731,8 +7806,12 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			if (if_block11) if_block11.d();
     			if (if_block12) if_block12.d();
     			if (if_block13) if_block13.d();
+    			if (detaching) detach_dev(t53);
+    			if (detaching) detach_dev(br3);
+    			if (detaching) detach_dev(br4);
+    			if (detaching) detach_dev(t54);
     			if (default_slot) default_slot.d(detaching);
-    			if (detaching) detach_dev(t83);
+    			if (detaching) detach_dev(t55);
     			if (detaching) detach_dev(pre);
     			run_all(dispose);
     		}
@@ -7770,18 +7849,6 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     	const click_handler_9 = () => $$invalidate(0, j = 9);
     	const click_handler_10 = () => $$invalidate(0, j = 10);
     	const click_handler_11 = () => $$invalidate(0, j = 11);
-    	const click_handler_12 = () => $$invalidate(0, j = 0);
-    	const click_handler_13 = () => $$invalidate(0, j = 1);
-    	const click_handler_14 = () => $$invalidate(0, j = 2);
-    	const click_handler_15 = () => $$invalidate(0, j = 3);
-    	const click_handler_16 = () => $$invalidate(0, j = 4);
-    	const click_handler_17 = () => $$invalidate(0, j = 5);
-    	const click_handler_18 = () => $$invalidate(0, j = 6);
-    	const click_handler_19 = () => $$invalidate(0, j = 7);
-    	const click_handler_20 = () => $$invalidate(0, j = 8);
-    	const click_handler_21 = () => $$invalidate(0, j = 9);
-    	const click_handler_22 = () => $$invalidate(0, j = 10);
-    	const click_handler_23 = () => $$invalidate(0, j = 11);
 
     	$$self.$set = $$props => {
     		if ("j" in $$props) $$invalidate(0, j = $$props.j);
@@ -7811,19 +7878,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     		click_handler_8,
     		click_handler_9,
     		click_handler_10,
-    		click_handler_11,
-    		click_handler_12,
-    		click_handler_13,
-    		click_handler_14,
-    		click_handler_15,
-    		click_handler_16,
-    		click_handler_17,
-    		click_handler_18,
-    		click_handler_19,
-    		click_handler_20,
-    		click_handler_21,
-    		click_handler_22,
-    		click_handler_23
+    		click_handler_11
     	];
     }
 

@@ -17,8 +17,8 @@ h3 {
 </style>
 {#if visible}
  <div style = "font-family: Times New Roman; text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
-FUNCTIONAL PROGRAMMING WITH JAVASCRIPT
- </div>}
+FUNCTIONAL PROGRAMMING
+ </div>
 {/if}
 <p> "Functional programming" means different things to different people. Applied to JavaScript, I wish it meant making good use JavaScript functions. 
 
@@ -36,12 +36,11 @@ FUNCTIONAL PROGRAMMING WITH JAVASCRIPT
 <p>Now that I have abandoned the folly of mindlessly mimicking features of functional programming languages, I can console myself with the thought that I wasn't the first and I wasn't the last JavaScript programmer to got lost in this manner. Strict typing where it serves no useful purpose and insisting on immutability where all it does is polute memory with useless intermediate values is trendy these days. </p>
 <p> Code where functions might collide over mutable global variables leads programmers to religeously avoid mutable global variables. I'm using the Svelte framework for this project, and my numerous modules are quite small. Mutable global variables can't cause problems because I have no modules or heirarchies of nested modules in which clashes might occur. Were I to constrain my creativity by following "best practices" regarding global variables, I would be engaging in another form of cargo cult coding, mindlessly micking forms that have no value.</p>
 
-
 <h3>References</h3>
 
-<pre>Cargo Cult Programming video presentation
-https://www.youtube.com/watch?v=nm22duia0jU
+<a href="https://www.youtube.com/watch?v=nm22duia0jU" target="_blank">Cargo Cult Programming video presentation</a>
+<br><br>
+<a href = "https://www.youtube.com/watch?v=yvfAtIJbatg" target="_blank">Cargo Cult Science -- Richard Feynman's 1974 Caltech lecture</a>
 
-Cargo Cult Science Richard Feynman' s 1974 video
-https://www.brainpickings.org/2012/06/08/richard-
-  feynman-caltech-cargo-cult-science/s</pre>
+<br><br><br>
+<div style = "text-align: center">...</div>

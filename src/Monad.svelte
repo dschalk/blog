@@ -101,7 +101,7 @@ h3 {
 </style>
 
  {#if visible}
- 	<div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
+ 	<div style = "font-family: Times New Roman; text-align:center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
 A SIMPLE LITTLE MONAD
  	</div>
  {/if}

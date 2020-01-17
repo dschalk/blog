@@ -145,7 +145,7 @@ var html = `{#if visible}
 <p> Is Svelte awesome, or what? </p> `
 </script>
 {#if visible}
- <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 38px;" transition:fade>
+ <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 38px; text-align:center; " transition:fade>
  A LITTLE SVELTE MODULE
  </div>
 {/if}
