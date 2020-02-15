@@ -6,6 +6,7 @@ import Cow from './Cow.svelte'
 import Monad from './Monad.svelte'
 import Monad2 from './Monad2.svelte'
 import Monad3 from './Monad3.svelte'
+import Monad5 from './Monad5.svelte'
 import Haskell from './Haskell.svelte'
 import Bugs from './Bugs.svelte'
 import Matrix from './Matrix.svelte'
@@ -41,7 +42,7 @@ color: #EEF7DD;
 
 .stat {
   position: relative;
-  top: 100px;
+  top: 30px;
   left: 82%;
   width: 16%;
 display: inline-block;
@@ -112,8 +113,7 @@ background-color:#361B01;}
 
 </style>
 
-
-
+<div style = "font-size: 56px; color: #FFD700; text-align: center">Functions In JavaScript</div> 
 
 <div class = stat>
 <div style = "font-size: 24px">David E. Schalk</div>  
@@ -137,6 +137,7 @@ background-color:#361B01;}
 <div class = menu on:click = {() => j = 9}> Eradicating Bed Bugs</div>
 <div class = menu on:click = {() => j = 10}> Toggle Class</div>
 <div class = menu on:click = {() => j = 11}> Toggle Theme</div>
+<div class = menu on:click = {() => j = 14}> Monad5</div>
   </div>
 </div>
 
@@ -189,11 +190,7 @@ background-color:#361B01;}
 
 <div style = "margin-left: 25%; margin-right: 25%;">
 
-<div style = "font-size: 40px; color: #FFD700; text-align: center">JAVASCRIPT</div>
-<br>
-<div style = "font-size: 24px; color: #FFCCAA; font-style: italic; text-align: center">Escape from the Functional Programming Cargo Cult</div>
-<div style = "font-size: 24px; color: #FFCCAA; font-style: italic; text-align: center">And Other Adventures</div>
-<br><br>
+ <br>
 
 {#if j === 0}
 <div class = show>Home</div>
@@ -243,13 +240,13 @@ background-color:#361B01;}
 <div class = show>Toggle Theme</div>
 <ToggleTheme />
 {/if}
-{#if j === 12}
-<div class = show>d</div>
-<Cow />
-{/if}
 {#if j === 13}
 <div class = show>d</div>
 <Stor />
+{/if}
+{#if j === 14}
+<div class = show>d</div>
+<Monad5 />
 {/if}
 </div>
 <br><br>

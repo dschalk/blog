@@ -6,8 +6,8 @@ let visible = true;
 let monadDisplay = `function Monad (z) {
     var x = z;
     var foo = function foo (func) {
-        var stop = 'stop';
-        if (func.name === 'stop') return x
+        var "stop" = '"stop"';
+        if (func.name === '"stop"') return x
         else {
             x = func(x);
             return foo;
@@ -20,45 +20,44 @@ const prod = a => b => a*b;
 const sum = a => b => a+b;`
 
 let bonadsD = `function bonads(num) {
-return [Monad(num)(sum(7))(prod(4))(v=>v-10)(stop),
-Monad(num-1)(sum(7))(prod(4))(v=>v-10)(stop),
-Monad(num-2)(sum(7))(prod(4))(v=>v-10)(stop),
-Monad(num-3)(sum(7))(prod(4))(v=>v-10)(stop),
-Monad(num-2)(sum(7))(prod(4))(v=>v-10)(stop),
-Monad(num-1)(sum(7))(prod(4))(v=>v-10)(stop),
-Monad(num-0)(sum(7))(prod(4))(v=>v-10)(stop)]}`
+return [Monad(num)(sum(7))(prod(4))(v=>v-10)("stop"),
+Monad(num-1)(sum(7))(prod(4))(v=>v-10)("stop"),
+Monad(num-2)(sum(7))(prod(4))(v=>v-10)("stop"),
+Monad(num-3)(sum(7))(prod(4))(v=>v-10)("stop"),
+Monad(num-2)(sum(7))(prod(4))(v=>v-10)("stop"),
+Monad(num-1)(sum(7))(prod(4))(v=>v-10)("stop"),
+Monad(num-0)(sum(7))(prod(4))(v=>v-10)("stop")]}`
 
 let axe = `
 let mon = Monad(3);
-let a = mon(x=>x**3)(x=>x+3)(x=>x**2)(stop);
+let a = mon(x=>x**3)(x=>x+3)(x=>x**2)("stop");
 console.log("a is", a)  // a is 900`
 
 let tree = `
 mon(x => x/100)
-console.log("mon(stop) now is",mon(stop))  // mon(stop) now is 9 `
+console.log("mon("stop") now is",mon("stop"))  // mon("stop") now is 9 `
 
 let fred = `
 let ar = [];
 let mon = Monad(3);
 let mon2 = Monad();
-ar.push(mon(stop));
+ar.push(mon("stop"));
 var a = mon(x=>x**3)(x=>x+3)(x=>x**2)
 ar.push(a);
 ar.push(mon(x => x/100);
-ar.push(mon2(mon(stop)(x=>x*100)))
-console.log("ar.map(v=>v('stop')) is", ar.map(v=>v('stop')))  // [3, 900, 9] `
+ar.push(mon2(mon("stop")(x=>x*100)))
+console.log("ar.map(v=>v('"stop"')) is", ar.map(v=>v('"stop"')))  // [3, 900, 9] `
 
 function Monad (z) {
   var x = z;
-  var stop = "stop";
-  var foo = function foo (func) {
-    if (func.name === "stop") return x
-    else {
+  var foo;
+  return foo = function foo (func) {
+    if (func === "stop") return x
+    else  {
       x = func(x);
       return foo;
     }
   };
-  return foo;
 }
 
 const prod = a => b => a*b;
@@ -67,13 +66,13 @@ const sum = a => b => a+b;
 let num = 6;
 
 let bonads = function bonads(num) {
-return [Monad(num)(sum(7))(prod(4))(v=>v-10)(stop),
-Monad(num-1)(sum(7))(prod(4))(v=>v-10)(stop),
-Monad(num-2)(sum(7))(prod(4))(v=>v-10)(stop),
-Monad(num-3)(sum(7))(prod(4))(v=>v-10)(stop),
-Monad(num-2)(sum(7))(prod(4))(v=>v-10)(stop),
-Monad(num-1)(sum(7))(prod(4))(v=>v-10)(stop),
-Monad(num-0)(sum(7))(prod(4))(v=>v-10)(stop)]}
+return [Monad(num)(sum(7))(prod(4))(v=>v-10)("stop"),
+Monad(num-1)(sum(7))(prod(4))(v=>v-10)("stop"),
+Monad(num-2)(sum(7))(prod(4))(v=>v-10)("stop"),
+Monad(num-3)(sum(7))(prod(4))(v=>v-10)("stop"),
+Monad(num-2)(sum(7))(prod(4))(v=>v-10)("stop"),
+Monad(num-1)(sum(7))(prod(4))(v=>v-10)("stop"),
+Monad(num-0)(sum(7))(prod(4))(v=>v-10)("stop")]}
 
 
 let mona = bonads(num);
@@ -113,14 +112,14 @@ A SIMPLE LITTLE MONAD
 <p> So it should be no surprise that my JavaScript monads are not Category Theory monads. They do obey a JavaScript version of the Haskell monad laws, which are not a requirement in Haskell but are indicative of utility and robustness objects (including functions) don't constitute a category. But functions that hold values and compose with multiple functions that operate on their values behave like Category Theory monads enough to justify calling them "monads".</p>
 <p> Here's the definitions of three functions: </p>
 <pre>{monadDisplay}</pre>
-<p> And here is an anonymous monad followed by three functions and "stop". : </p>
-<pre> Monad(6)(sum(7))(prod(4))(v=>v-10)(stop) // 42 </pre>
+<p> And here is an anonymous monad followed by three functions and ""stop"". : </p>
+<pre> Monad(6)(sum(7))(prod(4))(v=>v-10)("stop") // 42 </pre>
 <p> Anonymous monads never interfere with other monads. The demonstration below illustrates this by running seven anonymous monads in rapid succession. The number you enter is "num" in </p>
 {bonadsD}
 <input id = "one" type = "number" on:input={bonads}  bind:value={num} />
 <p> num is {num} so bonads(num) returns {bonads(num)} </p>
 
-<span class = tao> Named monads retain their values, even after they encounter "stop" and return the value of x held in the Monad closure. The following examples illustrate this: </span>
+<span class = tao> Named monads retain their values, even after they encounter ""stop"" and return the value of x held in the Monad closure. The following examples illustrate this: </span>
 <pre>
 {axe}
 </pre>

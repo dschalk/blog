@@ -187,7 +187,6 @@ FORWARD
 </div>
 </div>
 <br>
-<p> An example of an imbedded module that I will explain later: </p> 
 
 <p> This is the JavaScript code inside of the script tags except for the definitions of the variables "code" and "html", which are just the code and html cut and pasted inside of back quotes: </p>
 <pre>{code}</pre>
