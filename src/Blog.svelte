@@ -26,7 +26,7 @@ function id (v) {return v}
     <style>
 div {
 font-style: "Times New Roman";
-font-size: 22px;
+font-size: 20px;
 }
 
 .show {   
@@ -129,6 +129,7 @@ background-color:#361B01;}
 <div class = menu on:click = {() => j = 1}> A Simple Monad</div>
 <div class = menu on:click = {() => j = 2}> A Messaging Monad</div>
 <div class = menu on:click = {() => j = 3}> A Promises Monad</div>
+<div class = menu on:click = {() => j = 14}> Another Promises Monad</div>
 <div class = menu on:click = {() => j = 4}> A Transducer Monad</div>
 <div class = menu on:click = {() => j = 5}> Why Svelte</div>
 <div class = menu on:click = {() => j = 6}> Haskell Secrets</div>
@@ -137,7 +138,6 @@ background-color:#361B01;}
 <div class = menu on:click = {() => j = 9}> Eradicating Bed Bugs</div>
 <div class = menu on:click = {() => j = 10}> Toggle Class</div>
 <div class = menu on:click = {() => j = 11}> Toggle Theme</div>
-<div class = menu on:click = {() => j = 14}> Monad5</div>
   </div>
 </div>
 
@@ -208,6 +208,10 @@ background-color:#361B01;}
 <div class = show>Promises Monad</div>
 <Monad3 />
 {/if}
+{#if j === 14}
+<div class = show>Promises II</div>
+<Monad5 />
+{/if}
 {#if j === 4}
 <div class = show>Transducer Monad</div>
 <Transducer />
@@ -240,14 +244,7 @@ background-color:#361B01;}
 <div class = show>Toggle Theme</div>
 <ToggleTheme />
 {/if}
-{#if j === 13}
-<div class = show>d</div>
-<Stor />
-{/if}
-{#if j === 14}
-<div class = show>d</div>
-<Monad5 />
-{/if}
+
 </div>
 <br><br>
 <slot />

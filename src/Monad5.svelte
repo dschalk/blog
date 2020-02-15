@@ -124,12 +124,15 @@ $: B;
                   let x = B[ar].slice(-1)[0] ;
                   return run = (function run (x) {
                   if (x instanceof Promise) {x.then(y => {
-                    if (!( y.name == "f_" || y == lok || y == NaN || y == undefined || typeof y == "undefined" || y != y  ) ){B[ar] = B[ar].concat(y)}
-                    else if (!(x.name == "f_" || x == lok || x instanceof Promise || x == undefined || x == NaN)) {B[ar] = B[ar].concat(x);
+                    if (!( y.name == "f_" || y == lok || y == NaN || y == undefined ||
+                     typeof y == "undefined" || y != y  ) ){B[ar] = B[ar].concat(y)}
+                    else if (!(x.name == "f_" || x == lok || x instanceof Promise ||
+                     x == undefined || x == NaN)) {B[ar] = B[ar].concat(x);
                   }   }  )  }
                     f_ = function f_ (func) {
                       console.log("B[ar] is", B[ar]);
-                      if (func === 'halt' || func === 'h' || func == undefined || typeof func == "undefined" || func == NaN ) {
+                      if (func === 'halt' || func === 'h' || func == undefined ||
+                       typeof func == "undefined" || func == NaN ) {
                         B[ar] = B[ar]; 
                         return B[ar].slice();
                       }
@@ -161,7 +164,8 @@ function test_3 () {
     branch(sym2,sym1)(idP)(squareP)(divP(27))(multP(7))(doubleP)(() => 
       branch(sym3,sym2)(idP)(() => B[sym1][1]+B[sym1][2]+B[sym1][3])
       (divP(10))(multP(7))(()=>2+3+4+5)(multP(3))(() => 
-        branch(sym1,sym2)(divP(7))(addP(8))(multP(3))(() => B[sym1].reduce((a,b) => a+b))
+        branch(sym1,sym2)(divP(7))(addP(8))(multP(3))
+        (() => B[sym1].reduce((a,b) => a+b))
         (addP(-23))(divP(24))(() => lok = false)
       )
     )
@@ -225,12 +229,15 @@ var Mona = function Mona ( AR = [], ar = [] )  {
   let x = B[ar].slice(-1)[0] ;
   return run = (function run (x) {
   if (x instanceof Promise) {x.then(y => {
-    if (!( y.name == "f_" || y == lok || y == NaN || y == undefined || typeof y == "undefined" || y != y  ) ){B[ar] = B[ar].concat(y)}
-    else if (!(x.name == "f_" || x == lok || x instanceof Promise || x == undefined || x == NaN)) {B[ar] = B[ar].concat(x);
+    if (!( y.name == "f_" || y == lok || y == NaN || y == undefined || 
+    typeof y == "undefined" || y != y  ) ){B[ar] = B[ar].concat(y)}
+    else if (!(x.name == "f_" || x == lok || x instanceof Promise || x == undefined ||
+     x == NaN)) {B[ar] = B[ar].concat(x);
   }   }  )  }
     f_ = function f_ (func) {
       console.log("B[ar] is", B[ar]);
-      if (func === 'halt' || func === 'h' || func == undefined || typeof func == "undefined" || func == NaN ) {
+      if (func === 'halt' || func === 'h' || func == undefined ||
+       typeof func == "undefined" || func == NaN ) {
         B[ar] = B[ar]; 
         return B[ar].slice();
       }
@@ -262,7 +269,8 @@ function test_3 () {
     branch(sym2,sym1)(idP)(squareP)(divP(27))(multP(7))(doubleP)(() => 
       branch(sym3,sym2)(idP)(() => B[sym1][1]+B[sym1][2]+B[sym1][3])
       (divP(10))(multP(7))(()=>2+3+4+5)(multP(3))(() => 
-        branch(sym1,sym2)(divP(7))(addP(8))(multP(3))(() => B[sym1].reduce((a,b) => a+b))
+        branch(sym1,sym2)(divP(7))(addP(8))(multP(3))
+        (() => B[sym1].reduce((a,b) => a+b))
         (addP(-23))(divP(24))(() => lok = false)
       )
     )
@@ -314,23 +322,24 @@ button:hover {
   text-decoration-color: yellow;
    border-color: #0000AA;
 }
-    pre:hover {
-      color: gold;
-    }
 
-    .caption {
-      font: times;  
-      text-align: center; 
-      color: hsl(210, 90%, 90%); 
-      font-size: 32px;
-    }
+pre:hover {
+  color: gold;
+}
 
-    .sub_caption {
-      font: times;  
-      text-align: center; 
-      color: hsl(210, 90%, 90%); 
-      font-size: 32px;
-    }
+.caption {
+  font: times;  
+  text-align: center; 
+  color: hsl(210, 90%, 90%); 
+  font-size: 32px;
+}
+
+.sub_caption {
+  font: times;  
+  text-align: center; 
+  color: hsl(210, 90%, 90%); 
+  font-size: 32px;
+}
   </style>
 
   {#if j === 3}
@@ -354,10 +363,10 @@ test_3()
 
 <p> Symbols are used as names and as the second parameter of Mona(). Mona() instances in object "A" populate and update object B with their arrays. Mona() instances in "A" and their arrays in "B" have identical object keys.</p>
 
-<pre>{syms}</pre>
-  <pre>{t_3}</pre> 
+<pre style = "font-size: 18">{syms}</pre>
+  <pre style = "font-size: 18">{t_3}</pre> 
 
-<pre>{code}</pre>
+<pre style = "font-size: 18">{code}</pre>
 
 
   <br>
