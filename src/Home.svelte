@@ -46,6 +46,17 @@ import Cow from "./Cow.svelte";
 INTRODUCTION 
 </div>
 {/if}
+<p> The frontend for this site is built in the Svelte framework. The supporting WebSockets server is written in Haskell. </p> 
+<p> </p>
+<p> Each Svelte component is its own global space, so when components are small functions don't accidentally collide on global variables. Using namespaces and closures to avoid bugs . </p>
+
+
+
+
+
+
+
+
 
 <br>
 <br>

@@ -5,112 +5,110 @@
         $: j;
 
 
-                function wait(ms) {
-                  return new Promise(r => setTimeout(r, ms));
-                }
+function wait(ms) {
+return new Promise(r => setTimeout(r, ms));
+}
 
-                  async function pause (x) {
-                    await wait(1000)
-                    return x;
-                  }
+async function pause (x) {
+  await wait(1000)
+  return x;
+}
 
-                  var pauseP = t => async x => {
-                    await wait(t*1000)
-                    return x;
-                  }
+var pauseP = t => async x => {
+  await wait(t*1000)
+  return x;
+}
 
-                  async function pauseM (x) {
-                    await wait(600)
-                    return ret(x);
-                  }
+async function pauseM (x) {
+  await wait(600)
+  return ret(x);
+}
 
-                  async function pauseX (x) {
-                    await wait(x);
-                  }
+async function pauseX (x) {
+  await wait(x);
+}
 
-                  async function squareP (x) {
-                    await wait(300)
-                    return x*x;
-                  }
+async function squareP (x) {
+  await wait(300)
+  return x*x;
+}
 
-                  var divPinverse = a => async b => {
-                    await wait (300)
-                    return a/b;
-                  }
+var divPinverse = a => async b => {
+  await wait (300)
+  return a/b;
+}
 
-                  var divP = a => async b => {
-                    await wait (300)
-                    return b/a;
-                  }
+var divP = a => async b => {
+  await wait (300)
+  return b/a;
+}
 
-                  var doubleP = async a => {
-                    await wait (300)
-                    return a+a;
-                  }
+var doubleP = async a => {
+  await wait (300)
+  return a+a;
+}
 
-                  var toInt = a => pareseInt(a, 10);
+var toInt = a => pareseInt(a, 10);
 
-                  var addP_toInt = x => async y => {
-                    await wait(300)
-                    return toInt(x) + toInt(y);
-                  }
+var addP_toInt = x => async y => {
+  await wait(300)
+  return toInt(x) + toInt(y);
+}
 
-                  var addP = x => async y => {
-                    await wait(900)
-                    return parseInt(x,10) + parseInt(y,10);
-                  }
+var addP = x => async y => {
+  await wait(900)
+  return parseInt(x,10) + parseInt(y,10);
+}
 
-                  var multP = x => async y => {
-                    await wait(300)
-                    return x * y;
-                  }
+var multP = x => async y => {
+  await wait(300)
+  return x * y;
+}
 
-                  var powP = x => async y => {
-                    await wait(300)
-                    return y**x;
-                  }
+var powP = x => async y => {
+  await wait(300)
+  return y**x;
+}
 
-                  async function cubeP (x) {
-                    await wait(300)
-                    return x*x*x;
-                  }
+async function cubeP (x) {
+  await wait(300)
+  return x*x*x;
+}
 
-                  async function idP (x) {
-                    await wait(900)
-                    return x;
-                  }
-                  async function sqrtP (x) {
-                    await wait(900)
-                    return x**(1/2)
-                  }
+async function idP (x) {
+  await wait(900)
+  return x;
+}
+async function sqrtP (x) {
+  await wait(900)
+  return x**(1/2)
+}
 
-                  var _conveNt_ = a => b => parseFloat(b,a);
-                  var toFloat = _conveNt_ (10);
+var _conveNt_ = a => b => parseFloat(b,a);
+var toFloat = _conveNt_ (10);
 
-                  var cube = x => x**3;
-                  var pow = p => x => x**p;
-                  var square = x => x*x;
-                  var add = x => y => parseInt(x) + parseInt(y);
-                  var sqrt = x => x**(1/2);
-                  var root = r => x => x(1/r);
-                  var mult = a => b => a*b;
-                  var div = d => x => x/d;
+var cube = x => x**3;
+var pow = p => x => x**p;
+var square = x => x*x;
+var add = x => y => parseInt(x) + parseInt(y);
+var sqrt = x => x**(1/2);
+var root = r => x => x(1/r);
+var mult = a => b => a*b;
+var div = d => x => x/d;
 
-                var f = function f () {};
-                var f_ = function f_ () {};
-                var sto = "sto";
-                var halt = "halt";
+var f = function f () {};
+var f_ = function f_ () {};
+var sto = "sto";
+var halt = "halt";
 
-                var lock = false;
-                $: lock
-                
-                var h = "halt"
+var lock = false;
+$: lock
 
+var h = "halt"
 
-
-  const sym1 = Symbol('sym1');
-  const sym2 = Symbol('sym2');
-  const sym3 = Symbol('sym3');
+const sym1 = Symbol('sym1');
+const sym2 = Symbol('sym2');
+const sym3 = Symbol('sym3');
 
 var B = {};
 B[sym1] = [];
@@ -118,33 +116,33 @@ B[sym2] = [];
 B[sym3] = [];
 
 $: B;
-                var Mona = function Mona ( AR = [], ar = [] )  {  
-                  let p, run, f_;
-                  B[ar] = AR.slice();
-                  let x = B[ar].slice(-1)[0] ;
-                  return run = (function run (x) {
-                  if (x instanceof Promise) {x.then(y => {
-                    if (!( y.name == "f_" || y == lok || y == NaN || y == undefined ||
-                     typeof y == "undefined" || y != y  ) ){B[ar] = B[ar].concat(y)}
-                    else if (!(x.name == "f_" || x == lok || x instanceof Promise ||
-                     x == undefined || x == NaN)) {B[ar] = B[ar].concat(x);
-                  }   }  )  }
-                    f_ = function f_ (func) {
-                      console.log("B[ar] is", B[ar]);
-                      if (func === 'halt' || func === 'h' || func == undefined ||
-                       typeof func == "undefined" || func == NaN ) {
-                        B[ar] = B[ar]; 
-                        return B[ar].slice();
-                      }
-                      if (typeof func == "function" && x instanceof Promise) p = x.then(v => func(v))
-                      else if (typeof func != "function" && x instanceof Promise) p = x.then(v => v)
-                      else if (typeof func != "function") p = func
-                      else p = func(x);
-                      return run(p);
-                    };
-                    return f_;
-                  })(x);
-                }
+var Mona = function Mona ( AR = [], ar = [] )  {  
+  let p, run, f_;
+  B[ar] = AR.slice();
+  let x = B[ar].slice(-1)[0] ;
+  return run = (function run (x) {
+  if (x instanceof Promise) {x.then(y => {
+    if (!( y.name == "f_" || y == lok || y == NaN || y == undefined ||
+      typeof y == "undefined" || y != y  ) ){B[ar] = B[ar].concat(y)}
+    else if (!(x.name == "f_" || x == lok || x instanceof Promise ||
+      x == undefined || x == NaN)) {B[ar] = B[ar].concat(x);
+  }   }  )  }
+    f_ = function f_ (func) {
+      console.log("B[ar] is", B[ar]);
+      if (func === 'halt' || func === 'h' || func == undefined ||
+        typeof func == "undefined" || func == NaN ) {
+        B[ar] = B[ar]; 
+        return B[ar].slice();
+      }
+      if (typeof func == "function" && x instanceof Promise) p = x.then(v => func(v))
+      else if (typeof func != "function" && x instanceof Promise) p = x.then(v => v)
+      else if (typeof func != "function") p = func
+      else p = func(x);
+      return run(p);
+    };
+    return f_;
+  })(x);
+}
 
   const A = {};
 
@@ -193,7 +191,6 @@ function start () {
 
 function resume (s) {return branch(s,s)}
 start();
-
 
 // var resume = function resume (s) {return Mona(A[s])}
 
@@ -285,19 +282,85 @@ function branch (a, b) {  // Transfers a copy of the last item in A[b] to A[a]
 }
 
 var lok = false;
-$: lok;
+$: lok;`
+var funcs = `function wait(ms) {
+return new Promise(r => setTimeout(r, ms));
+}
 
-function start () {
-  if (!lok) {
-    console.log("lok is false -- calling test_3")
-    test_3()
-  }
-  else {
-    console.log("lok is true -- setTimeout 300")
-    setTimeout(() => start(),300);
-  }
+async function pause (x) {
+  await wait(1000)
+  return x;
+}
+
+var pauseP = t => async x => {
+  await wait(t*1000)
+  return x;
+}
+
+async function pauseM (x) {
+  await wait(600)
+  return ret(x);
+}
+
+async function pauseX (x) {
+  await wait(x);
+}
+
+async function squareP (x) {
+  await wait(300)
+  return x*x;
+}
+
+var divPinverse = a => async b => {
+  await wait (300)
+  return a/b;
+}
+
+var divP = a => async b => {
+  await wait (300)
+  return b/a;
+}
+
+var doubleP = async a => {
+  await wait (300)
+  return a+a;
+}
+
+var toInt = a => pareseInt(a, 10);
+
+var addP_toInt = x => async y => {
+  await wait(300)
+  return toInt(x) + toInt(y);
+}
+
+var addP = x => async y => {
+  await wait(900)
+  return parseInt(x,10) + parseInt(y,10);
+}
+
+var multP = x => async y => {
+  await wait(300)
+  return x * y;
+}
+
+var powP = x => async y => {
+  await wait(300)
+  return y**x;
+}
+
+async function cubeP (x) {
+  await wait(300)
+  return x*x*x;
+}
+
+async function idP (x) {
+  await wait(900)
+  return x;
+}
+async function sqrtP (x) {
+  await wait(900)
+  return x**(1/2)
 }`
-
   </script>
 
   <style>
@@ -364,9 +427,9 @@ test_3()
 <p> Symbols are used as names and as the second parameter of Mona(). Mona() instances in object "A" populate and update object B with their arrays. Mona() instances in "A" and their arrays in "B" have identical object keys.</p>
 
 <pre style = "font-size: 18">{syms}</pre>
-  <pre style = "font-size: 18">{t_3}</pre> 
-
+<pre style = "font-size: 18">{t_3}</pre> 
 <pre style = "font-size: 18">{code}</pre>
+<pre style = "font-size: 18">{funcs}</pre>
 
 
   <br>
