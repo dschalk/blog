@@ -1,7 +1,7 @@
 
   <script>  
       import {fade} from "svelte/transition"
-        var j = 3;
+        let j = 3;
         $: j;
 
 
@@ -14,7 +14,7 @@ async function pause (x) {
   return x;
 }
 
-var pauseP = t => async x => {
+let pauseP = t => async x => {
   await wait(t*1000)
   return x;
 }
@@ -33,39 +33,39 @@ async function squareP (x) {
   return x*x;
 }
 
-var divPinverse = a => async b => {
+let divPinverse = a => async b => {
   await wait (300)
   return a/b;
 }
 
-var divP = a => async b => {
+let divP = a => async b => {
   await wait (300)
   return b/a;
 }
 
-var doubleP = async a => {
+let doubleP = async a => {
   await wait (300)
   return a+a;
 }
 
-var toInt = a => pareseInt(a, 10);
+let toInt = a => pareseInt(a, 10);
 
-var addP_toInt = x => async y => {
+let addP_toInt = x => async y => {
   await wait(300)
   return toInt(x) + toInt(y);
 }
 
-var addP = x => async y => {
+let addP = x => async y => {
   await wait(900)
   return parseInt(x,10) + parseInt(y,10);
 }
 
-var multP = x => async y => {
+let multP = x => async y => {
   await wait(300)
   return x * y;
 }
 
-var powP = x => async y => {
+let powP = x => async y => {
   await wait(300)
   return y**x;
 }
@@ -84,39 +84,39 @@ async function sqrtP (x) {
   return x**(1/2)
 }
 
-var _conveNt_ = a => b => parseFloat(b,a);
-var toFloat = _conveNt_ (10);
+let _conveNt_ = a => b => parseFloat(b,a);
+let toFloat = _conveNt_ (10);
 
-var cube = x => x**3;
-var pow = p => x => x**p;
-var square = x => x*x;
-var add = x => y => parseInt(x) + parseInt(y);
-var sqrt = x => x**(1/2);
-var root = r => x => x(1/r);
-var mult = a => b => a*b;
-var div = d => x => x/d;
+let cube = x => x**3;
+let pow = p => x => x**p;
+let square = x => x*x;
+let add = x => y => parseInt(x) + parseInt(y);
+let sqrt = x => x**(1/2);
+let root = r => x => x(1/r);
+let mult = a => b => a*b;
+let div = d => x => x/d;
 
-var f = function f () {};
-var f_ = function f_ () {};
-var sto = "sto";
-var halt = "halt";
+let f = function f () {};
+let f_ = function f_ () {};
+let sto = "sto";
+let halt = "halt";
 
-var lock = false;
+let lock = false;
 $: lock
 
-var h = "halt"
+let h = "halt"
 
 const sym1 = Symbol('sym1');
 const sym2 = Symbol('sym2');
 const sym3 = Symbol('sym3');
 
-var B = {};
+let B = {};
 B[sym1] = [];
 B[sym2] = [];
 B[sym3] = [];
 
 $: B;
-var Mona = function Mona ( AR = [], ar = [] )  {  
+let Mona = function Mona ( AR = [], ar = [] )  {  
   let p, run, f_;
   B[ar] = AR.slice();
   let x = B[ar].slice(-1)[0] ;
@@ -171,11 +171,11 @@ function test_3 () {
 }
 
 function branch (a, b) {  // Transfers a copy of the last item in A[b] to A[a]
-  var c = A[b]().slice(-1);
+  let c = A[b]().slice(-1);
   return A[a](c);
 }
 
-var lok = false;
+let lok = false;
 $: lok;
 
 function start () {
@@ -192,13 +192,13 @@ function start () {
 function resume (s) {return branch(s,s)}
 start();
 
-// var resume = function resume (s) {return Mona(A[s])}
+// let resume = function resume (s) {return Mona(A[s])}
 
-var syms = `const sym1 = Symbol('sym1');
+let syms = `const sym1 = Symbol('sym1');
 const sym2 = Symbol('sym2');
 const sym3 = Symbol('sym3');`
 
-var t_3 = `function test_3 () {
+let t_3 = `function test_3 () {
   lok = true;
   A[sym1] = Mona([0], sym1);
   A[sym2] = Mona( [], sym2);
@@ -213,14 +213,14 @@ var t_3 = `function test_3 () {
     )
   )  
 } `
-var code = `var B = {};
+let code = `let B = {};
 B[sym1] = [];
 B[sym2] = [];
 B[sym3] = [];
 
 $: B;
 
-var Mona = function Mona ( AR = [], ar = [] )  {  
+let Mona = function Mona ( AR = [], ar = [] )  {  
   let p, run, f_;
   B[ar] = AR.slice();
   let x = B[ar].slice(-1)[0] ;
@@ -277,13 +277,13 @@ function test_3 () {
 test_3 ();
 
 function branch (a, b) {  // Transfers a copy of the last item in A[b] to A[a]
-  var c = A[b]().slice(-1);
+  let c = A[b]().slice(-1);
   return A[a](c);
 }
 
-var lok = false;
+let lok = false;
 $: lok;`
-var funcs = `function wait(ms) {
+let funcs = `function wait(ms) {
 return new Promise(r => setTimeout(r, ms));
 }
 
@@ -292,7 +292,7 @@ async function pause (x) {
   return x;
 }
 
-var pauseP = t => async x => {
+let pauseP = t => async x => {
   await wait(t*1000)
   return x;
 }
@@ -311,39 +311,39 @@ async function squareP (x) {
   return x*x;
 }
 
-var divPinverse = a => async b => {
+let divPinverse = a => async b => {
   await wait (300)
   return a/b;
 }
 
-var divP = a => async b => {
+let divP = a => async b => {
   await wait (300)
   return b/a;
 }
 
-var doubleP = async a => {
+let doubleP = async a => {
   await wait (300)
   return a+a;
 }
 
-var toInt = a => pareseInt(a, 10);
+let toInt = a => pareseInt(a, 10);
 
-var addP_toInt = x => async y => {
+let addP_toInt = x => async y => {
   await wait(300)
   return toInt(x) + toInt(y);
 }
 
-var addP = x => async y => {
+let addP = x => async y => {
   await wait(900)
   return parseInt(x,10) + parseInt(y,10);
 }
 
-var multP = x => async y => {
+let multP = x => async y => {
   await wait(300)
   return x * y;
 }
 
-var powP = x => async y => {
+let powP = x => async y => {
   await wait(300)
   return y**x;
 }

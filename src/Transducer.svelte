@@ -3,24 +3,24 @@ import {fade} from "svelte/transition"
 let visible = true;
 
 
-var k  = 100000000;
+let k  = 100000000;
 $: k;
-var ltTest = x => y => new Filt(x => y < x);
+let ltTest = x => y => new Filt(x => y < x);
 $: ltTest;
 
-var isOdd = function isOdd (x) {return new Filt(v => v % 2 === 1)};
-var _fives = function _fives (x) {
+let isOdd = function isOdd (x) {return new Filt(v => v % 2 === 1)};
+let _fives = function _fives (x) {
  if (typeof x === "number") {return new Filt(v => v % 10 === 5)}
  else if (typeof x === "string") {return Filt(v = v(v.length - 1))}
  else {return undefined}''
 }
 
-var fives = function fives (x) {return new Filt(v => v % 10 === 5)}
+let fives = function fives (x) {return new Filt(v => v % 10 === 5)}
 
-var isOddF = function isOddF (x) {return new Filt(v => v % 2 === 1)};
+let isOddF = function isOddF (x) {return new Filt(v => v % 2 === 1)};
 
 function isOd_ (x) {return new Filt(v => v % 2 === 1)};
-var lessThan = x => y => new Filt(x => y < x);
+let lessThan = x => y => new Filt(x => y < x);
 
 function tdReduce(base) {
   return function(reducingFunction) {
@@ -46,10 +46,10 @@ function tdFilter(test) {
   };
 };
 
-var ar = "cowgirl";
+let ar = "cowgirl";
 $: ar;
 
-var cleanF = function cleanF (arthur = []) {
+let cleanF = function cleanF (arthur = []) {
   ar = arthur;
   return ar.filter(
     a => a === 0 || a && typeof a !== "boolean" //
@@ -60,14 +60,14 @@ $: cleanF;
 
 
 function Monad ( AR = [] )  {
-  var f_, p, run;
-  var ar = AR.slice();
-  var x = ar.pop();
+  let f_, p, run;
+  let ar = AR.slice();
+  let x = ar.pop();
   return run = (function run (x) {
     if (x === null || x === NaN ||
       x === undefined) x = f_('stop').pop();
     if (x instanceof Filt) {
-      var z = ar.pop();
+      let z = ar.pop();
       if (x.filt(z)) x = z; else ar = [];
     }
     else if (x instanceof Promise) x.then(y =>
@@ -93,15 +93,15 @@ function Monad ( AR = [] )  {
   })(x)
 }
 
-var mon44 = `function Monad ( AR = [] )  {
-  var f_, p, run;
-  var ar = AR.slice();
-  var x = ar.pop();
+let mon44 = `function Monad ( AR = [] )  {
+  let f_, p, run;
+  let ar = AR.slice();
+  let x = ar.pop();
   return run = (function run (x) {
     if (x === null || x === NaN ||
       x === undefined) x = f_('stop').pop();
     if (x instanceof Filt) {
-      var z = ar.pop();
+      let z = ar.pop();
       if (x.filt(z)) x = z; else ar = [];
     }
     else if (x instanceof Promise) x.then(y =>
@@ -127,31 +127,31 @@ var mon44 = `function Monad ( AR = [] )  {
   })(x)
 } `
 
-var compose = (...fns) =>
+let compose = (...fns) =>
 fns.reduceRight((prevFn, nextFn) =>
 (...args) => nextFn(prevFn(...args)),
 value => value
 );
 
-var add1 = function add1(v) { return v + 1; };
-var sum = function sum(total,v) { return total + v; };
-var cube = function cube(v) { return v**3; };
+let add1 = function add1(v) { return v + 1; };
+let sum = function sum(total,v) { return total + v; };
+let cube = function cube(v) { return v**3; };
 
-var size = 400;
+let size = 400;
 $: size;
 
-var ar74 = [...Array(size).keys()];
+let ar74 = [...Array(size).keys()];
 $: ar74;
 
-var mapWRf = mapping(cube);
-var mapRes = ar74.reduce(mapWRf(concat), []);
+let mapWRf = mapping(cube);
+let mapRes = ar74.reduce(mapWRf(concat), []);
 
-var isEven = x => x % 2 === 0;
-var not = x => !x;
-var isOdd2 = compose(not, isEven);
+let isEven = x => x % 2 === 0;
+let not = x => !x;
+let isOdd2 = compose(not, isEven);
 
 function curry(fn) {
-   var arity = fn.length;
+   let arity = fn.length;
    return function $curry(...args) {
       if (args.length < arity) {
          return $curry.bind(null, ...args);
@@ -160,9 +160,9 @@ function curry(fn) {
    }  ;
 }
 
-var map = f => ar => ar.map(v=>f(v));
-var filter = p => ar => ar.filter(p);
-var reduce = f => ar => v => ar.reduce(f,v)
+let map = f => ar => ar.map(v=>f(v));
+let filter = p => ar => ar.filter(p);
+let reduce = f => ar => v => ar.reduce(f,v)
 function apply(x, f) {return f(x);}
 function concat(xs, val) {return xs.concat(val);}
 
@@ -174,37 +174,37 @@ function mapping(f) {
    }
 }
 
-var A_A = "H";
+let A_A = "H";
 $: A_A;
 
-var B_B = "s";
+let B_B = "s";
 $: B_B;
 
-var C_C = "G";
+let C_C = "G";
 $: C_C;
 
-var D_D = "I";
+let D_D = "I";
 $: D_D;
 
-var res1;
+let res1;
 // $: res1;
 
-var res2;
+let res2;
 // $: res2;
 
-var res3;
+let res3;
 $: res3;
 
-var res4;
+let res4;
 $: res4;
 
-var dotResult = [];
+let dotResult = [];
 $: dotResult;
 
-var test9;
+let test9;
 $: test9;
 
-var transducerResult;
+let transducerResult;
 $: transducerResult;
 
 
@@ -219,29 +219,25 @@ $: transducerResult;
    .map(v=>v+1000)
 
 
-var td3;
+let td3;
 $: td3;
 
-var xform;
+let xform;
 $: xform;
 
-var xform2;
+let xform2;
 $: xform2;
 
-var xform3;
+let xform3;
 $: xform3
 
 
-var test8 = k => ltTest(k).filt;;
-
-var test9
-$: test9;
+let test8 = k => ltTest(k).filt;;
 
   function Filt (p) {this.p = p; this.filt = function filt (x) {return p(x)}};
-  var fives = function fives (x) {return new Filt(v => v % 10 === 5)}
 
-  var td1 = x => Monad([x])(isOdd)(v=>v**4)(v=>v+3)(v=>v-3)(fives)(Math.sqrt)('stop').pop()
-  var td2 = y => Monad([y])(v=>v*v)(v=>v+1000)('stop').pop()
+  let td1 = x => Monad([x])(isOdd)(v=>v**4)(v=>v+3)(v=>v-3)(fives)(Math.sqrt)('stop').pop()
+  let td2 = y => Monad([y])(v=>v*v)(v=>v+1000)('stop').pop()
 
 res1 = ar74.map(x => td1(x));
 B_B = res2 = res1.map(y => td2(y));
@@ -279,7 +275,7 @@ C_C = res3 = ar74.map(z => td2(td1(z)));
    $: C_C = cleanF(res3);
    $: D_D = transducerResult;
 
-var t37;
+let t37;
 $: t37;
 function test37 (e) {t37 = e; console.log(e)};
 
@@ -289,7 +285,7 @@ $: res2;
 $: res3;
 $: transducerResult;
 
-var callback = `function increase () {
+let callback = `function increase () {
   size = size + 10;
   ar74 = [...Array(size).keys()];
    A_A = dotResult = ar74
@@ -307,15 +303,15 @@ var callback = `function increase () {
 }
 
   function Filt (p) {this.p = p; this.filt = function filt (x) {return p(x)}};
-  var fives = function fives (x) {return new Filt(v => v % 10 === 5)}
-  var isOdd = function isOdd (x) {return new Filt(v => v % 2 === 1)};
+  let fives = function fives (x) {return new Filt(v => v % 10 === 5)}
+  let isOdd = function isOdd (x) {return new Filt(v => v % 2 === 1)};
 
-  var td1 = x => Monad([x])(isOdd)(v=>v**4)(v=>v+3)
+  let td1 = x => Monad([x])(isOdd)(v=>v**4)(v=>v+3)
     (v=>v-3)(fives)(Math.sqrt)('stop').pop()
   res1 = ar74.map(x => td1(x));
-  var td2 = y => Monad([y])(v=>v*v)(v=>v+1000)('stop').pop()`
+  let td2 = y => Monad([y])(v=>v*v)(v=>v+1000)('stop').pop()`
 
-var call2 = `xform3 = compose(
+let call2 = `xform3 = compose(
     tdFilter(x=>x%2===1),
     tdMap(x => x**4),
     tdMap(x => x+3),

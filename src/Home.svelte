@@ -1,35 +1,35 @@
 
 <script>
-var cache = [[1,2,3,4,5,6,7,8,9]];
-var j = 0;
-var ob = {
+let cache = [[1,2,3,4,5,6,7,8,9]];
+let j = 0;
+let ob = {
   x: [], 
   push: function push (e) {
     ob.x.push(parseInt(e.target.id.slice(1,2), 10));
     if (ob.x.length >1) {
-      var d = exchange(ob.x[0], ob.x[1]);
+      let d = exchange(ob.x[0], ob.x[1]);
       cache.splice(j+1,0,d);
       ob.x = [];
       j+=1;
-      return cache;   var j = 0;
+      return cache;   let j = 0;
     }
   }
 }
 
 function exchange (k,n) {
-  var ar = cache[j].slice();
-  var a = ar[k]
+  let ar = cache[j].slice();
+  let a = ar[k]
   ar[k] = ar[n];
   ar[n] = a;
   return ar;
 }
 
-var back = function back () {
+let back = function back () {
   if (j > 0) j = j-=1;
   else j = j;
 }
 
-var forward = function forward () {
+let forward = function forward () {
   if (j+1 < cache.length) j = j+=1;
   else j = j;
 }
@@ -46,9 +46,9 @@ import Cow from "./Cow.svelte";
 INTRODUCTION 
 </div>
 {/if}
-<p> The frontend for this site is built in the Svelte framework. The supporting WebSockets server is written in Haskell. </p> 
-<p> </p>
-<p> Each Svelte component is its own global space, so when components are small functions don't accidentally collide on global variables. Using namespaces and closures to avoid bugs . </p>
+
+<p> Each item in the menu on the left links to a Svelte component. Some components are supported by a modified Haskell Wai Websockets server. </p>
+  
 
 
 

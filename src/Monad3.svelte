@@ -16,7 +16,7 @@
         return x;
       }
 
-      var pauseP = t => async x => {
+      let pauseP = t => async x => {
         await wait(t*1000)
         return x;
       }
@@ -35,39 +35,39 @@
         return x*x;
       }
 
-      var divPinverse = a => async b => {
+      let divPinverse = a => async b => {
         await wait (300)
         return a/b;
       }
 
-      var divP = a => async b => {
+      let divP = a => async b => {
         await wait (300)
         return b/a;
       }
 
-      var doubleP = async a => {
+      let doubleP = async a => {
         await wait (300)
         return a+a;
       }
 
-      var toInt = a => pareseInt(a, 10);
+      let toInt = a => pareseInt(a, 10);
 
-      var addP_toInt = x => async y => {
+      let addP_toInt = x => async y => {
         await wait(300)
         return toInt(x) + toInt(y);
       }
 
-      var addP = x => async y => {
+      let addP = x => async y => {
         await wait(900)
         return x + y;
       }
 
-      var multP = x => async y => {
+      let multP = x => async y => {
         await wait(300)
         return x * y;
       }
 
-      var powP = x => async y => {
+      let powP = x => async y => {
         await wait(300)
         return y**x;
       }
@@ -86,38 +86,38 @@
         return x**(1/2)
       }
 
-      var _conveNt_ = a => b => parseFloat(b,a);
-      var toFloat = _conveNt_ (10);
+      let _conveNt_ = a => b => parseFloat(b,a);
+      let toFloat = _conveNt_ (10);
 
-      var cube = x => x**3;
-      var pow = p => x => x**p;
-      var square = x => x*x;
-      var add = x => y => x+y;
-      var sqrt = x => x**(1/2);
-      var root = r => x => x(1/r);
-      var div = d => x => x/d;
+      let cube = x => x**3;
+      let pow = p => x => x**p;
+      let square = x => x*x;
+      let add = x => y => x+y;
+      let sqrt = x => x**(1/2);
+      let root = r => x => x(1/r);
+      let div = d => x => x/d;
 
-    var f = function f () {};
-    var f_ = function f_ () {};
-    var sto = "sto";
-    var halt = "halt";
+    let f = function f () {};
+    let f_ = function f_ () {};
+    let sto = "sto";
+    let halt = "halt";
 
-    var O = new Object();
+    let O = new Object();
     $: O;
 
-    var M = -1;
+    let M = -1;
     $: M;
-    var N = -1;
+    let N = -1;
     $: N;
-    var T = -1;
+    let T = -1;
     $: T;
-    var Q = -1
+    let Q = -1
     $: Q;
 
-    var lock = false;
+    let lock = false;
     $: lock
 
-    var Monad = function Monad ( AR = [], name = "generic" )  {
+    let Monad = function Monad ( AR = [], name = "generic" )  {
       let p, run, f_;
       let  ar = AR.slice();
       O[name] = ar;
@@ -144,19 +144,19 @@
       })(x);
     }
 
-    var branch = function branch (s,s2) {return Monad(O[s].slice()  , s2)}
-    var resume = function resume (s) {return Monad(O[s], s)}
+    let branch = function branch (s,s2) {return Monad(O[s].slice()  , s2)}
+    let resume = function resume (s) {return Monad(O[s], s)}
 
-    Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))
+  /*  Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))
     (() => branch("test", "test_2")(sqrtP)(cubeP)(()=>addP(O.test_2[2])
     (O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))
-    (() => resume("test")(multP(4))(addP(6))))
+    (() => resume("test")(multP(4))(addP(6)))) */
 
 
-  var mon = `   var Monad = function Monad ( AR = [], name = "generic"  )  {
-      var f_, p, run;
-      var ar = AR.slice();
-      var name = name;
+  let mon = `   let Monad = function Monad ( AR = [], name = "generic"  )  {
+      let f_, p, run;
+      let ar = AR.slice();
+      let name = name;
       O[name] = ar;
       let x = O[name].pop();
       return run = (function run (x) {
@@ -181,9 +181,9 @@
       })(x);
     }`
 
-    var lok = false;
+    let lok = false;
 
-    var start = function start () {
+    let start = function start () {
       if (!lok) {
         lok = true;
         setTimeout(() => lok = false,3000 );
@@ -197,9 +197,9 @@
       }
     }
 
-  var fs = `   var branch = function branch (s,s2) {return Monad(O[s].slice(-1)  , s2)}
-    var resume = function resume (s) {return Monad(O[s], s)}`
-  var code = `    Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))
+  let fs = `   let branch = function branch (s,s2) {return Monad(O[s].slice(-1)  , s2)}
+    let resume = function resume (s) {return Monad(O[s], s)}`
+  let code = `    Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))
       (() => branch("test", "test_2")(sqrtP)(cubeP)(()=>addP(O.test_2[2])
       (O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))
       (() => resume("test")(multP(4))(addP(6))))`

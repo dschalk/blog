@@ -1,11 +1,11 @@
 
 <script>
 
-var Monad = function Monad (z = 42, g = 'generic') {
+let Monad = function Monad (z = 42, g = 'generic') {
     this.x = z,
     this.id = g,
     this.bnd = function (func, ...args) {
-        var m;
+        let m;
         if (typeof func === "function") {
             m = func(this.x, ...args)
             if (m instanceof Monad) m = m.x;
@@ -17,15 +17,15 @@ var Monad = function Monad (z = 42, g = 'generic') {
     }
 };
 
-var Comp = function Comp ( AR = [] )  {
-  var f_, p, run;
-  var ar = AR.slice();
-  var x = ar.pop();
+let Comp = function Comp ( AR = [] )  {
+  let f_, p, run;
+  let ar = AR.slice();
+  let x = ar.pop();
   return run = (function run (x) {
     if (x === null || x === NaN ||
       x === undefined) x = f_('stop').pop();
     if (x instanceof Filt) {
-      var z = ar.pop();
+      let z = ar.pop();
       if (x.filt(z)) x = z; else ar = [];
     }
     else if (x instanceof Promise) x.then(y =>
@@ -80,33 +80,33 @@ function tdFilter(test) {
 
 
 function isOdd (x) {return new Filt(v => v % 2 === 1)};
-var lessThan = x => y => new Filt(x => y < x);
-var ltTest = lessThan();
+let lessThan = x => y => new Filt(x => y < x);
+let ltTest = lessThan();
 
 
-var rt = fork(h,f)(x=>x/100)(x=>x*x)('stop');
+let rt = fork(h,f)(x=>x/100)(x=>x*x)('stop');
 console.log("rr is", rr);
 console.log("rt is",rt)
 
-    var orb1 = Comp();
-    var orb2 = Comp();
-    var orb3 = Comp();
-    var orb4 = Comp();
-    var orb5 = Comp();
-    var orb6 = Comp();
-    var orb7 = Comp();
-    var orb8 = Comp();
-    var orb9 = Comp();
-    var orb10 = Comp();
-    var orb11 = Comp();
-    var orb12 = Comp();
-    var orb13 = Comp();
-    var orb14 = Comp();
-    var orb15 = Comp();
-    var orb16 = Comp();
-    var orb17 = Comp();
-    var orb18 = Comp();
-    var orb19 = Comp();
+    let orb1 = Comp();
+    let orb2 = Comp();
+    let orb3 = Comp();
+    let orb4 = Comp();
+    let orb5 = Comp();
+    let orb6 = Comp();
+    let orb7 = Comp();
+    let orb8 = Comp();
+    let orb9 = Comp();
+    let orb10 = Comp();
+    let orb11 = Comp();
+    let orb12 = Comp();
+    let orb13 = Comp();
+    let orb14 = Comp();
+    let orb15 = Comp();
+    let orb16 = Comp();
+    let orb17 = Comp();
+    let orb18 = Comp();
+    let orb19 = Comp();
 
 function runT (k) {
 
@@ -119,9 +119,9 @@ function runT (k) {
     orb7 = Comp();
     orb8 = Comp();
 
-var orbit_1 = "In about eight seconds, orb5 will do something shocking. It will remove the last element from orb2.ar and replace it with its square root. Oh well, it's all inside of runT(). "
+let orbit_1 = "In about eight seconds, orb5 will do something shocking. It will remove the last element from orb2.ar and replace it with its square root. Oh well, it's all inside of runT(). "
 
-var orbit_2 = 'Soon, orb6 will obtain copies of the last three elements of orb2 and perform some computations. Then it will display "THE END". '
+let orbit_2 = 'Soon, orb6 will obtain copies of the last three elements of orb2 and perform some computations. Then it will display "THE END". '
 
 console.log("diffRender is", diffRender);
 
@@ -149,37 +149,37 @@ function f(x) {
     return Comp([x])(x=>x**3)(x=>x+3)(x=>x*x)
 };
 
-var wwd = [1,2,3,4,5].map(v=>f(v)('stop').pop())
+let wwd = [1,2,3,4,5].map(v=>f(v)('stop').pop())
 console.log("Mapping a stream into Comp([x])(x=>x**3)(x=>x+3)(x=>x*x) -- wwd is", wwd)
 
 // ->   ************************************************ transduce tduce
-var arf =  [x=>x*10,  x=>x*x, x=>x+x];
-var arn = [1,2,3,4,5,6,7]
+let arf =  [x=>x*10,  x=>x*x, x=>x+x];
+let arn = [1,2,3,4,5,6,7]
 
-var ff1 = ar => ar.reduceRight((a,b) => b(a))
-var ark = ar => x => ar.concat(x);
+let ff1 = ar => ar.reduceRight((a,b) => b(a))
+let ark = ar => x => ar.concat(x);
 
-var tduce = ar1 => ar2  => ar2.map(v => (ff1)(ark(ar1)(v)))
+let tduce = ar1 => ar2  => ar2.map(v => (ff1)(ark(ar1)(v)))
 console.log(tduce(arf)(arn))
 
 
-  var tdF = arF => arA => {var ob, result = []; arA.map(v => {
+  let tdF = arF => arA => {let ob, result = []; arA.map(v => {
       result.push(arF.reduce((a,b) => b(a),v))
       })
       return result;
   }
 
-  var dd = tdF([x=>x**3, x=>x+3, x=>x*x])([1,2,3,4,5])
+  let dd = tdF([x=>x**3, x=>x+3, x=>x*x])([1,2,3,4,5])
   console.log("dd is", dd);
 
 
 
-var tduce = ar1 => ar2  => ar2.map(v => (ff1)(ark(ar1)(v)))
+let tduce = ar1 => ar2  => ar2.map(v => (ff1)(ark(ar1)(v)))
 console.log(tduce(arf)(arn))
 
 
-var arF = [x=>x**3, x=>x+3, x=>x*x];
-var arA = [1,2,3,4,5];
+let arF = [x=>x**3, x=>x+3, x=>x*x];
+let arA = [1,2,3,4,5];
 
 function apply(x, f) {
   return f(x);
@@ -189,23 +189,23 @@ function concat(xs, val) {
   return xs.concat(val);
 }
 
-var nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+let nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 // transformations
-var add1 = x => x + 1;
-var doubleIt = x => x * 2;
-var add = (x, y) => x + y;
+let add1 = x => x + 1;
+let doubleIt = x => x * 2;
+let add = (x, y) => x + y;
 
 // ********************************************************** conpTest3
 
 
-var A_A = [1,2,3].join( );
-var B_B = [1,2,3].join( );
-var C_C = [1,2,3].join( );
-var D_D = [1,2,3].join( );
-var E_E = "Sspecify an upper bound. The number you enter will be multiplied by 1000.";
+let A_A = [1,2,3].join( );
+let B_B = [1,2,3].join( );
+let C_C = [1,2,3].join( );
+let D_D = [1,2,3].join( );
+let E_E = "Sspecify an upper bound. The number you enter will be multiplied by 1000.";
 
-var obS  = { ar: [] };
+let obS  = { ar: [] };
 
 obS.push = function (x) {
   this.ar.push(x);
@@ -219,10 +219,10 @@ obS.push = function (x) {
 
 function compTest3 (k,n) {
 
-var test9 = ltTest(k*1000).filt
-var ar7b = [...Array(Math.abs(n)).keys()];
+let test9 = ltTest(k*1000).filt
+let ar7b = [...Array(Math.abs(n)).keys()];
 
-var res4 = ar7b
+let res4 = ar7b
 .filter(v => (v % 2 === 1))
 .map(x => x**4)
 .map(x => x+3)
@@ -230,36 +230,36 @@ var res4 = ar7b
 .map(x => Math.sqrt(x))
 // console.log("res4 is", res4);
 
-var dotResult = res4
+let dotResult = res4
 .map(v=>v*v)
 .map(v=>v+1000)
 .filter(v => v < k*1000);
 console.log("dotResult is", dotResult);
 
-var td1 = x => Comp([x])(isOdd)(v=>v**4)(v=>v+3)(v=>(v-3)/Math.sqrt(v-3))('stop').pop()
-var td2 = y => Comp([y])(v=>v*v)(v=>v+1000)(test9)('stop').pop()
+let td1 = x => Comp([x])(isOdd)(v=>v**4)(v=>v+3)(v=>(v-3)/Math.sqrt(v-3))('stop').pop()
+let td2 = y => Comp([y])(v=>v*v)(v=>v+1000)(test9)('stop').pop()
 
-var res1 = ar7b.map(x => td1(x));
-var res2 = res1.map(y => td2(y));
-var res3 = ar7b.map(z => td2(td1(z)));
+let res1 = ar7b.map(x => td1(x));
+let res2 = res1.map(y => td2(y));
+let res3 = ar7b.map(z => td2(td1(z)));
 
 console.log("cleanF(res2) is", cleanF(res2));
 console.log("cleanF(res3) is", cleanF(res3));
 
-var xform = compose(
+let xform = compose(
   tdFilter(x=>x%2===1),
   tdMap(x => x**4),
   tdMap(x => x+3),
   tdMap(x => x-3),
   tdMap(x => Math.sqrt(x))
 )
-var xform2 = compose(
+let xform2 = compose(
   tdMap(x=>x*x),
   tdMap(x=>x+1000),
   tdFilter(x => x < k*1000)
 );
 
-var transducerResult = ar7b.reduce(xform(xform2(concat)),[] );
+let transducerResult = ar7b.reduce(xform(xform2(concat)),[] );
 console.log("transducerResult is", transducerResult);
 
   A_A = dotResult.map(v => v.toString() + ", ");
@@ -269,9 +269,9 @@ console.log("transducerResult is", transducerResult);
 }
 compTest3(20,10)
 
-var fibonacci = {
+let fibonacci = {
     next: (function () {
-        var pre = 0, cur = 1;
+        let pre = 0, cur = 1;
         return function () {
             tmp = pre;
             pre = cur;
@@ -281,7 +281,7 @@ var fibonacci = {
     })()
 };
 
-/*var n;
+/*let n;
 for (;;) {
     n = fibonacci.next();
     if (n > 100000)
@@ -291,7 +291,7 @@ for (;;) {
 console.log("*******************************");
 console.log("*******************************");
 function f233 (n) {
-   var arm, xx, ar = [0.5,1.5];
+   let arm, xx, ar = [0.5,1.5];
    while (ar.length < n) {
      arm = ar.slice(-2);
      xx = arm[1] + arm[1] - arm[0] + 0.5;
@@ -302,8 +302,8 @@ function f233 (n) {
 console.log("f233(30)", f233(30));
 
 function f234 (k) {
-   var ar = [];
-   var j;
+   let ar = [];
+   let j;
    for (let n = 1; n < k; n+=1) {
       j=n*(n+1)/4;
       ar.push(j)

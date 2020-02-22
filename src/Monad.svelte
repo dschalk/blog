@@ -3,17 +3,15 @@
 import {fade} from "svelte/transition"
 let visible = true;
 
-let monadDisplay = `function Monad (z) {
-    var x = z;
-    var foo = function foo (func) {
-        var "stop" = '"stop"';
-        if (func.name === '"stop"') return x
-        else {
-            x = func(x);
-            return foo;
-        }
-    };
-    return foo;
+let monadDisplay = `function Monad (x) {
+  let foo;
+  return foo = function foo (func) {
+    if (func === "stop") return x
+    else  {
+      x = func(x);
+      return foo;
+    }
+  };
 }
 
 const prod = a => b => a*b;
@@ -42,16 +40,24 @@ let ar = [];
 let mon = Monad(3);
 let mon2 = Monad();
 ar.push(mon("stop"));
-var a = mon(x=>x**3)(x=>x+3)(x=>x**2)
+let a = mon(x=>x**3)(x=>x+3)(x=>x**2)
 ar.push(a);
 ar.push(mon(x => x/100);
 ar.push(mon2(mon("stop")(x=>x*100)))
-console.log("ar.map(v=>v('"stop"')) is", ar.map(v=>v('"stop"')))  // [3, 900, 9] `
+console.log("ar.map(v=>v('stop')) is", ar.map(v=>v('stop')))  // [3, 900, 9] `
 
-function Monad (z) {
-  var x = z;
-  var foo;
-  return foo = function foo (func) {
+let steve = `function Monad (x) {
+  return function foo (func) {
+    if (func === "stop") return x
+    else  {
+      x = func(x);
+      return foo;
+    }
+  };
+}`
+
+function Monad (x) {
+  return function foo (func) {
     if (func === "stop") return x
     else  {
       x = func(x);
@@ -105,28 +111,30 @@ A SIMPLE LITTLE MONAD
  	</div>
  {/if}
  <br>
- <span class="tao"> The word "monad" has been around for centuries. Gottfried Leibniz published </span>
+ <span class="tao"> Monad (from Greek μονάς monas, "singularity" in turn from μόνος monos, "alone")[1] refers, in cosmogony, to the Supreme Being, divinity or the totality of all things. A basic unit of perceptual reality is a "monad" in Gottfried Leibniz' </span>
 <span style = "font-style: italic"> Monadology </span>
-<span> in 1714. The precursor to the familiar symbol of yin-yang, taijitu (太極圖), has a version with two dots added, has been given the august designation: "The Great Monad". A single note in music theory is called a monad. All of this is too tangential to warrant references. I Googled around a little to get it and you can too if the word "monad" interests you.</span>
-<p> Monads in the Haskell Programming Language were inspired by Category Theory monads. In order to be Category Theory monads, function must exist in a mathematically rigorous "category". Haskells objects and functions are not the objects and morphisms of Category Theory. Making a category out of most of Haskell's functions and types is an amusing pasttime for some people, but I doubt that it has any practical value. </p>
-<p> So it should be no surprise that my JavaScript monads are not Category Theory monads. They do obey a JavaScript version of the Haskell monad laws, which are not a requirement in Haskell but are indicative of utility and robustness objects (including functions) don't constitute a category. But functions that hold values and compose with multiple functions that operate on their values behave like Category Theory monads enough to justify calling them "monads".</p>
-<p> Here's the definitions of three functions: </p>
-<pre>{monadDisplay}</pre>
-<p> And here is an anonymous monad followed by three functions and ""stop"". : </p>
-<pre> Monad(6)(sum(7))(prod(4))(v=>v-10)("stop") // 42 </pre>
+<span>, published in 1714. A single note in music theory is called a monad. </span>
+<p> Monads in the Haskell Programming Language were inspired by Category Theory monads. The "monads" discussed herein are inspired by Haskell monads. Here's the definition of the simple monad described in this module: </p>
+<pre>{steve}</pre>
+
+<p> In the following expression: </p>
+<pre> Monad(6)(v=>v+7)(v=>v*4)(v=>v-10)("stop") // 42 </pre>
+<p> The expression "Monad(6)" creates a closure whose outer function contains "x" (initially equal to 6) and whose inner function "foo" is confined to the scope of the anonymous outer function.  whose scope is  returns "foo"; "foo(v=>v+7) returns "foo" while also mutating "x" in its outer scope, making it 13. "foo(v=>v*4) changes x to 52 and returns "foo". "foo(v=>v-10)" returns "foo" while mutating x again, making it 42. Finally, the expression "foo('stop')" causes foo to return the number 42. </p>
+<p> As in the Haskell programming language, the monads described above encapsulate sequences of computations. The similarity is greater when we avoid mutation, as we do in some of the more-complex definitions of "Monad" (or whatever we decide to call it). </p>
+
+
+
 <p> Anonymous monads never interfere with other monads. The demonstration below illustrates this by running seven anonymous monads in rapid succession. The number you enter is "num" in </p>
 {bonadsD}
 <input id = "one" type = "number" on:input={bonads}  bind:value={num} />
 <p> num is {num} so bonads(num) returns {bonads(num)} </p>
 
-<span class = tao> Named monads retain their values, even after they encounter ""stop"" and return the value of x held in the Monad closure. The following examples illustrate this: </span>
+<span class = tao> Named monads retain their values, even after they encounter "stop" and return the value of x held in the Monad closure. The following examples illustrate this: </span>
 <pre>
 {axe}
 </pre>
 
-<p> As expected, mon returns which is the "foo()" returned by by calling Monad(3):</p>
 
-<p> mon is still the foo() returned by Monad(). Because mon points to x in the context of its creation by Monad(), x will not be garbage collected. Care should be taken not to polute memory with useless x's.</p>
 
-<p> One reason Svelte is so fast and efficient is that it mutates variables and the attributes and methods of objects. Each module in a discrete global space.  When modules are small, applications are easy to organize and mutations don't have unforseen effects in other parts of applications. Svelte shook off the bonds of current conventional "wisdom" advocating immutability, virtual DOM, and assigning types to functions. </p>
-<p> The next entry in the monad series defines a variation of Monad that maintains an array of primitive data, function return values, and Promise resolution values. Functions have access to everything in the array when they execute. </p>
+
+
