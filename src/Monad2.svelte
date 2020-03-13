@@ -114,26 +114,29 @@ var lock = false;
 
 O.generic = ["Nobody"];
 
-const Monad = function Monad ( AR = [], name = "generic", f_ = mFunc  )  {
-let ar = AR.slice();
+const Monad = function Monad ( AR = [],  name = "generic",  f_ = f_Func,  rF = runFunc )  {
+var x = AR.slice();
 O[name] = ar;
-let run;
-let x = O[name].pop();
-return run = (function run (x) {
-if (x != undefined && x === x  && x !== false
-  && x.name !== "f_" && x.name !== "halt" ) {
-    O[name] = O[name].concat(x)
-  };
-  return f_;
-})(x);
+var s = "stop";
+rF(x); 
 }
 
-var mFunc = function mFunc_ (func) {
-    if (func === 'halt' || func === 'S') return O[name];
-    else if (typeof func !== "function") p = func(x);
-    else if (x instanceof Promise) p = x.then(v => func(v));
-    return run(p);
-  };
+test_2
+var runFunc = function  runFunc () { 
+varx = O[name].pop();   //  x will be replaced below
+return run = (function run (x) {
+if (x != undefined  && x === x  && x !== false && x.name !== "f_" && x.name !== "stop" )  {
+  O[name] = O[name].concat(x)
+};
+return f_;
+})
+}
+var f_mFunc = function f_Func_ (func) {
+  if (func === 'stop'  || func === 's') return O[name];
+  else if (typeof func !== "function") p = func(x);
+  else if (x instanceof Promise) p = x.then(v => func(v));
+  return run(p);
+};
 
 /* let a0 = *Monad([3])(cube)
 (add(3))(square)(div(100))
@@ -150,10 +153,10 @@ socket.onmessage = function(e) {
 // console.log("WebSocket message is", e);
 var v = e.data.split(',');
 if (v[0] === "BE#$42") {
-  Q = Q + 1;
-  Monad([v[3]], "c"+Q);
-  if (Q === 2) Q = -1;
-  worker_OO.postMessage([v[3]])
+Q = Q + 1;
+Monad([v[3]], "c"+Q);
+if (Q === 2) Q = -1;
+worker_OO.postMessage([v[3]])
 }
 }
 
@@ -162,28 +165,28 @@ login();
 function login() {
 console.log('00000000000000000000000000000000 Entering login', socket.readyState);
 setTimeout(function () {
-  if (socket.readyState === 1) {
-    console.log('readyState is', socket.readyState);
-    var v = Math.random().toString().substring(5);
-    var v2 = v.toString().substring(2);
-    var combo = v + '<o>' + v2;
-    socket.send('CC#$42' + combo);
-    // socket.send(`GZ#$42,solo,${v}`);
-    socket.send("BE#$42,solo,name,10000")
-    socket.send("BE#$42,solo,name,100000")
-    socket.send("BE#$42,solo,name,1000")
-  } else {
-    login();
-  }
+if (socket.readyState === 1) {
+  console.log('readyState is', socket.readyState);
+  var v = Math.random().toString().substring(5);
+  var v2 = v.toString().substring(2);
+  var combo = v + '<o>' + v2;
+  socket.send('CC#$42' + combo);
+  // socket.send(`GZ#$42,solo,${v}`);
+  socket.send("BE#$42,solo,name,10000")
+  socket.send("BE#$42,solo,name,100000")
+  socket.send("BE#$42,solo,name,1000")
+} else {
+  login();
+}
 }, 200)
 }
 
 function isEmpty(obj) {
-  for(var key in obj) {
-      if(obj.hasOwnProperty(key))
-          return false;
-  }
-  return true;
+for(var key in obj) {
+    if(obj.hasOwnProperty(key))
+        return false;
+}
+return true;
 };
 
 function countKeys(ob, s) {
@@ -209,11 +212,11 @@ socket.send("BE#$42,solo,name,1000")
 var worker_OO = new Worker('worker_OO.js');
 
 worker_OO.onmessage = e => {
-  M = M + 1;
-  Monad([e.data], "d"+M);
-  if (M === 2) {
-    M = -1;
-  }
+M = M + 1;
+Monad([e.data], "d"+M);
+if (M === 2) {
+  M = -1;
+}
 }
 
 var mon = `const Monad = function Monad ( AR = [], name = "generic" )  {
@@ -224,17 +227,17 @@ O[name] = ar;
 let x = O[name].pop();
 return run = (function run (x) {
 if (x != undefined && x === x  && x !== false
-  && x.name !== "f_" && x.name !== "halt" ) {
-    O[name] = O[name].concat(x)
-  };
-  function f_ (func) {
-    if (func === 'halt' || func === 'S') return O[name];
-    else if (typeof func !== "function") p = func;
-    else if (x instanceof Promise) p = x.then(v => func(v));
-    else p = func(x);
-    return run(p);
-  };
-  return f_;
+&& x.name !== "f_" && x.name !== "halt" ) {
+  O[name] = O[name].concat(x)
+};
+function f_ (func) {
+  if (func === 'halt' || func === 'S') return O[name];
+  else if (typeof func !== "function") p = func;
+  else if (x instanceof Promise) p = x.then(v => func(v));
+  else p = func(x);
+  return run(p);
+};
+return f_;
 })(x);
 } `
 
@@ -243,19 +246,19 @@ O.key   // ["value", "This is the value", "This is the value."]`
 
 var fa = `    function factors () {
 if (lock === false && j === 2) {
-  lock = true;
-  clearOb(O);
-  N = -1;
-  M = -1;
-  Q = -1;
-  groupDelete(O, "c");
-  groupDelete(O, "d");
-  fact();
+lock = true;
+clearOb(O);
+N = -1;
+M = -1;
+Q = -1;
+groupDelete(O, "c");
+groupDelete(O, "d");
+fact();
 }
 else if (j !== 2) {return}
 else {
-  setTimeout(()=> {
-  factors()
+setTimeout(()=> {
+factors()
 },1000)
 }
 }`
@@ -269,22 +272,23 @@ worker_OO.postMessage([v[3]])
 }  `
 
 var onmessWorker = `worker_OO.onmessage = e => {
-  M = M + 1;
-  Monad([e.data], "d"+M);
-  if (M === 2) {
-    M = -1;
-  }
+M = M + 1;
+Monad([e.data], "d"+M);
+if (M === 2) {
+  M = -1;
+}
 }`
 
 let candle = ` socket.send(\"BE#$42,solo,name,10000\")    
 socket.send('\BE#$42,solo,name,100000\")    
 socket.send(\"BE#$42,solo,name,1000\")    `    
 
+
 </script>
 
 <style>
 button {
-margin-left: 5%;
+margin-left: 5%i;
 background-color: #004400;
 border-width: 2px;
 border-color: #E8F7C1;
@@ -304,16 +308,16 @@ border-color: #0000AA;
 }
 
 </style>
-
+<br><br>
 {#if j === 2} 
- <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 38px;" transition:fade>
-ASYNCHRONOUSLY CREATED STATE
+<div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 38px;" transition:fade>
+ASYNCHRONOUSLY MODIFIED STATE
 </div>
 {/if}
 
 <br>
 <p> Clicking the button below sends three requests to the Haskell WebSockets server asking for quasi-random integers. As the numbers come in from the server, they are placed in the object named "O" with keys prefixed by "c", and then forwarded to a web worker. The worker returns arrays containing the prime factors of the numbers it recieves. These are placed in "O" with keys prefixed by "d".</p> 
- <br>
+<br>
 
 
 
@@ -326,7 +330,7 @@ ASYNCHRONOUSLY CREATED STATE
 <br>
 <span style = "color: #CDCDFF; font-size: 20px;"> The web worker sent these arrays of prime factors (now at O.d0, O.d1, and O.d2): </span>
 <span style = "color: #FFFFCD; font-size: 20px;">
-[{O.d0.join(', ')}], [{O.d1.join(', ')}], and [{O.d2.join(', ')}]</span>
+<br> [{O.d0.join(', ')}] <br> [{O.d1.join(', ')}] <br> [{O.d2.join(', ')}]</span>
 <br>
 <br>
 <button on:click = {factors}>
@@ -338,11 +342,11 @@ ASYNCHRONOUSLY CREATED STATE
 
 
 <div style = "color: #FFFFCD; font-size: 20px;">
-[{O.d0}].reduce((a,b) => a*b) == {O.c0}: <span style = "font-size:24px; color:#FF0B0B" >{O.d0.reduce((a,b) => a*b) == O.c0}</span>
+[{O.d0}].reduce((a,b) => a*b) === {O.c0}: <span style = "font-size:24px; color:#FF0B0B" >{O.d0.reduce((a,b) => a*b) == O.c0}</span>
 <br>
-[{O.d1}].reduce((a,b) => a*b) == {O.c1}: <span style = "font-size:24px; color:#FF0B0B" >{O.d1.reduce((a,b) => a*b) == O.c1}</span>
+[{O.d1}].reduce((a,b) => a*b) === {O.c1}: <span style = "font-size:24px; color:#FF0B0B" >{O.d1.reduce((a,b) => a*b) == O.c1}</span>
 <br>
-[{O.d2}].reduce((a,b) => a*b) == {O.c2}: <span style = "font-size:24px; color:#FF0B0B" >{O.d2.reduce((a,b) => a*b) == O.c2}</span>
+[{O.d2}].reduce((a,b) => a*b) ==  = {O.c2}: <span style = "font-size:24px; color:#FF0B0B" >{O.d2.reduce((a,b) => a*b) == O.c2}</span>
 <br>
 
 

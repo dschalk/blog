@@ -1,5 +1,5 @@
 
-(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.head.appendChild(r) })(window.document);
+(function(l, i, v, e) { v = l.createElement(i); v.async = 1; v.src = '//' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; e = l.getElementsByTagName(i)[0]; e.parentNode.insertBefore(v, e)})(document, 'script');
 var app = (function () {
     'use strict';
 
@@ -31,47 +31,21 @@ var app = (function () {
     function safe_not_equal(a, b) {
         return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
     }
-    function validate_store(store, name) {
-        if (!store || typeof store.subscribe !== 'function') {
-            throw new Error(`'${name}' is not a store with a 'subscribe' method`);
-        }
-    }
-    function subscribe(store, callback) {
-        const unsub = store.subscribe(callback);
-        return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
-    }
-    function component_subscribe(component, store, callback) {
-        component.$$.on_destroy.push(subscribe(store, callback));
-    }
-    function create_slot(definition, ctx, $$scope, fn) {
+    function create_slot(definition, ctx, fn) {
         if (definition) {
-            const slot_ctx = get_slot_context(definition, ctx, $$scope, fn);
+            const slot_ctx = get_slot_context(definition, ctx, fn);
             return definition[0](slot_ctx);
         }
     }
-    function get_slot_context(definition, ctx, $$scope, fn) {
-        return definition[1] && fn
-            ? assign($$scope.ctx.slice(), definition[1](fn(ctx)))
-            : $$scope.ctx;
+    function get_slot_context(definition, ctx, fn) {
+        return definition[1]
+            ? assign({}, assign(ctx.$$scope.ctx, definition[1](fn ? fn(ctx) : {})))
+            : ctx.$$scope.ctx;
     }
-    function get_slot_changes(definition, $$scope, dirty, fn) {
-        if (definition[2] && fn) {
-            const lets = definition[2](fn(dirty));
-            if (typeof $$scope.dirty === 'object') {
-                const merged = [];
-                const len = Math.max($$scope.dirty.length, lets.length);
-                for (let i = 0; i < len; i += 1) {
-                    merged[i] = $$scope.dirty[i] | lets[i];
-                }
-                return merged;
-            }
-            return $$scope.dirty | lets;
-        }
-        return $$scope.dirty;
-    }
-    function set_store_value(store, ret, value = ret) {
-        store.set(value);
-        return ret;
+    function get_slot_changes(definition, ctx, changed, fn) {
+        return definition[1]
+            ? assign({}, assign(ctx.$$scope.changed || {}, definition[1](fn ? fn(changed) : {})))
+            : ctx.$$scope.changed || {};
     }
 
     const is_client = typeof window !== 'undefined';
@@ -81,27 +55,27 @@ var app = (function () {
     let raf = is_client ? cb => requestAnimationFrame(cb) : noop;
 
     const tasks = new Set();
-    function run_tasks(now) {
+    let running = false;
+    function run_tasks() {
         tasks.forEach(task => {
-            if (!task.c(now)) {
+            if (!task[0](now())) {
                 tasks.delete(task);
-                task.f();
+                task[1]();
             }
         });
-        if (tasks.size !== 0)
+        running = tasks.size > 0;
+        if (running)
             raf(run_tasks);
     }
-    /**
-     * Creates a new task that runs on each raf frame
-     * until it returns a falsy value or is aborted
-     */
-    function loop(callback) {
+    function loop(fn) {
         let task;
-        if (tasks.size === 0)
+        if (!running) {
+            running = true;
             raf(run_tasks);
+        }
         return {
-            promise: new Promise(fulfill => {
-                tasks.add(task = { c: callback, f: fulfill });
+            promise: new Promise(fulfil => {
+                tasks.add(task = [fn, fulfil]);
             }),
             abort() {
                 tasks.delete(task);
@@ -127,9 +101,6 @@ var app = (function () {
     function space() {
         return text(' ');
     }
-    function empty() {
-        return text('');
-    }
     function listen(node, event, handler, options) {
         node.addEventListener(event, handler, options);
         return () => node.removeEventListener(event, handler, options);
@@ -137,25 +108,19 @@ var app = (function () {
     function attr(node, attribute, value) {
         if (value == null)
             node.removeAttribute(attribute);
-        else if (node.getAttribute(attribute) !== value)
+        else
             node.setAttribute(attribute, value);
-    }
-    function to_number(value) {
-        return value === '' ? undefined : +value;
     }
     function children(element) {
         return Array.from(element.childNodes);
     }
-    function set_input_value(input, value) {
-        if (value != null || input.value) {
-            input.value = value;
-        }
+    function set_data(text, data) {
+        data = '' + data;
+        if (text.data !== data)
+            text.data = data;
     }
     function set_style(node, key, value, important) {
         node.style.setProperty(key, value, important ? 'important' : '');
-    }
-    function toggle_class(element, name, toggle) {
-        element.classList[toggle ? 'add' : 'remove'](name);
     }
     function custom_event(type, detail) {
         const e = document.createEvent('CustomEvent');
@@ -270,12 +235,11 @@ var app = (function () {
         update_scheduled = false;
     }
     function update($$) {
-        if ($$.fragment !== null) {
-            $$.update();
+        if ($$.fragment) {
+            $$.update($$.dirty);
             run_all($$.before_update);
-            const dirty = $$.dirty;
-            $$.dirty = [-1];
-            $$.fragment && $$.fragment.p($$.ctx, dirty);
+            $$.fragment.p($$.dirty, $$.ctx);
+            $$.dirty = null;
             $$.after_update.forEach(add_render_callback);
         }
     }
@@ -436,12 +400,9 @@ var app = (function () {
             }
         };
     }
-    function create_component(block) {
-        block && block.c();
-    }
     function mount_component(component, target, anchor) {
         const { fragment, on_mount, on_destroy, after_update } = component.$$;
-        fragment && fragment.m(target, anchor);
+        fragment.m(target, anchor);
         // onMount happens before the initial afterUpdate
         add_render_callback(() => {
             const new_on_destroy = on_mount.map(run$1).filter(is_function);
@@ -458,33 +419,32 @@ var app = (function () {
         after_update.forEach(add_render_callback);
     }
     function destroy_component(component, detaching) {
-        const $$ = component.$$;
-        if ($$.fragment !== null) {
-            run_all($$.on_destroy);
-            $$.fragment && $$.fragment.d(detaching);
+        if (component.$$.fragment) {
+            run_all(component.$$.on_destroy);
+            component.$$.fragment.d(detaching);
             // TODO null out other refs, including component.$$ (but need to
             // preserve final state?)
-            $$.on_destroy = $$.fragment = null;
-            $$.ctx = [];
+            component.$$.on_destroy = component.$$.fragment = null;
+            component.$$.ctx = {};
         }
     }
-    function make_dirty(component, i) {
-        if (component.$$.dirty[0] === -1) {
+    function make_dirty(component, key) {
+        if (!component.$$.dirty) {
             dirty_components.push(component);
             schedule_update();
-            component.$$.dirty.fill(0);
+            component.$$.dirty = blank_object();
         }
-        component.$$.dirty[(i / 31) | 0] |= (1 << (i % 31));
+        component.$$.dirty[key] = true;
     }
-    function init(component, options, instance, create_fragment, not_equal, props, dirty = [-1]) {
+    function init(component, options, instance, create_fragment, not_equal, prop_names) {
         const parent_component = current_component;
         set_current_component(component);
-        const prop_values = options.props || {};
+        const props = options.props || {};
         const $$ = component.$$ = {
             fragment: null,
             ctx: null,
             // state
-            props,
+            props: prop_names,
             update: noop,
             not_equal,
             bound: blank_object(),
@@ -496,33 +456,31 @@ var app = (function () {
             context: new Map(parent_component ? parent_component.$$.context : []),
             // everything else
             callbacks: blank_object(),
-            dirty
+            dirty: null
         };
         let ready = false;
         $$.ctx = instance
-            ? instance(component, prop_values, (i, ret, value = ret) => {
-                if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
-                    if ($$.bound[i])
-                        $$.bound[i](value);
+            ? instance(component, props, (key, value) => {
+                if ($$.ctx && not_equal($$.ctx[key], $$.ctx[key] = value)) {
+                    if ($$.bound[key])
+                        $$.bound[key](value);
                     if (ready)
-                        make_dirty(component, i);
+                        make_dirty(component, key);
                 }
-                return ret;
             })
-            : [];
+            : props;
         $$.update();
         ready = true;
         run_all($$.before_update);
-        // `false` as a special case of no DOM component
-        $$.fragment = create_fragment ? create_fragment($$.ctx) : false;
+        $$.fragment = create_fragment($$.ctx);
         if (options.target) {
             if (options.hydrate) {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                $$.fragment && $$.fragment.l(children(options.target));
+                $$.fragment.l(children(options.target));
             }
             else {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                $$.fragment && $$.fragment.c();
+                $$.fragment.c();
             }
             if (options.intro)
                 transition_in(component.$$.fragment);
@@ -549,49 +507,6 @@ var app = (function () {
             // overridden by instance, if it has props
         }
     }
-
-    function dispatch_dev(type, detail) {
-        document.dispatchEvent(custom_event(type, detail));
-    }
-    function append_dev(target, node) {
-        dispatch_dev("SvelteDOMInsert", { target, node });
-        append(target, node);
-    }
-    function insert_dev(target, node, anchor) {
-        dispatch_dev("SvelteDOMInsert", { target, node, anchor });
-        insert(target, node, anchor);
-    }
-    function detach_dev(node) {
-        dispatch_dev("SvelteDOMRemove", { node });
-        detach(node);
-    }
-    function listen_dev(node, event, handler, options, has_prevent_default, has_stop_propagation) {
-        const modifiers = options === true ? ["capture"] : options ? Array.from(Object.keys(options)) : [];
-        if (has_prevent_default)
-            modifiers.push('preventDefault');
-        if (has_stop_propagation)
-            modifiers.push('stopPropagation');
-        dispatch_dev("SvelteDOMAddEventListener", { node, event, handler, modifiers });
-        const dispose = listen(node, event, handler, options);
-        return () => {
-            dispatch_dev("SvelteDOMRemoveEventListener", { node, event, handler, modifiers });
-            dispose();
-        };
-    }
-    function attr_dev(node, attribute, value) {
-        attr(node, attribute, value);
-        if (value == null)
-            dispatch_dev("SvelteDOMRemoveAttribute", { node, attribute });
-        else
-            dispatch_dev("SvelteDOMSetAttribute", { node, attribute, value });
-    }
-    function set_data_dev(text, data) {
-        data = '' + data;
-        if (text.data === data)
-            return;
-        dispatch_dev("SvelteDOMSetData", { node: text, data });
-        text.data = data;
-    }
     class SvelteComponentDev extends SvelteComponent {
         constructor(options) {
             if (!options || (!options.target && !options.$$inline)) {
@@ -607,26 +522,24 @@ var app = (function () {
         }
     }
 
-    function fade(node, { delay = 0, duration = 400, easing = identity }) {
+    function fade(node, { delay = 0, duration = 400 }) {
         const o = +getComputedStyle(node).opacity;
         return {
             delay,
             duration,
-            easing,
             css: t => `opacity: ${t * o}`
         };
     }
 
-    /* src/Monad.svelte generated by Svelte v3.16.7 */
-    const file = "src/Monad.svelte";
+    /* src/Monad1.svelte generated by Svelte v3.9.1 */
 
-    // (108:1) {#if visible}
+    const file = "src/Monad1.svelte";
+
+    // (83:0) {#if visible}
     function create_if_block(ctx) {
-    	let div;
-    	let div_transition;
-    	let current;
+    	var div, div_transition, current;
 
-    	const block = {
+    	return {
     		c: function create() {
     			div = element("div");
     			div.textContent = "A SIMPLE LITTLE MONAD";
@@ -634,15 +547,16 @@ var app = (function () {
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file, 108, 2, 2324);
+    			add_location(div, file, 83, 0, 2046);
     		},
+
     		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
+    			insert(target, div, anchor);
     			current = true;
     		},
+
     		i: function intro(local) {
     			if (current) return;
-
     			add_render_callback(() => {
     				if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, true);
     				div_transition.run(1);
@@ -650,436 +564,435 @@ var app = (function () {
 
     			current = true;
     		},
+
     		o: function outro(local) {
     			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
     			div_transition.run(0);
+
     			current = false;
     		},
+
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching && div_transition) div_transition.end();
+    			if (detaching) {
+    				detach(div);
+    				if (div_transition) div_transition.end();
+    			}
     		}
     	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block.name,
-    		type: "if",
-    		source: "(108:1) {#if visible}",
-    		ctx
-    	});
-
-    	return block;
     }
 
     function create_fragment(ctx) {
-    	let t0;
-    	let br;
-    	let t1;
-    	let span0;
-    	let t3;
-    	let span1;
-    	let t5;
-    	let span2;
-    	let t7;
-    	let p0;
-    	let t9;
-    	let pre0;
-    	let t11;
-    	let p1;
-    	let t13;
-    	let pre1;
-    	let t15;
-    	let p2;
-    	let t17;
-    	let p3;
-    	let t19;
-    	let p4;
-    	let t21;
-    	let t22;
-    	let t23;
-    	let input;
-    	let input_updating = false;
-    	let t24;
-    	let p5;
-    	let t25;
-    	let t26;
-    	let t27;
-    	let t28_value = /*bonads*/ ctx[5](/*num*/ ctx[0]) + "";
-    	let t28;
-    	let t29;
-    	let span3;
-    	let t31;
-    	let pre2;
-    	let current;
-    	let dispose;
-    	let if_block = /*visible*/ ctx[1] && create_if_block(ctx);
+    	var t0, br, t1, p0, t3, pre0, t4, t5, p1, t7, pre1, t8, t9, p2, t11, pre2, t12, t13, input, t14, h30, t15, t16, t17, h31, t18, t19, t20, h32, t21, t22, t23, h33, t24, t25, t26, h34, t27, t28_value = ctx.a("stop") + "", t28, t29, t30, h35, t31, t32_value = ctx.b("stop") + "", t32, t33, t34, h36, t35, t36, t37, h2, t38, t39_value = demo() + "", t39, current, dispose;
 
-    	function input_input_handler() {
-    		input_updating = true;
-    		/*input_input_handler*/ ctx[13].call(input);
-    	}
+    	var if_block =  create_if_block();
 
-    	const block = {
+    	return {
     		c: function create() {
     			if (if_block) if_block.c();
     			t0 = space();
     			br = element("br");
     			t1 = space();
-    			span0 = element("span");
-    			span0.textContent = "Monad (from Greek μονάς monas, \"singularity\" in turn from μόνος monos, \"alone\")[1] refers, in cosmogony, to the Supreme Being, divinity or the totality of all things. A basic unit of perceptual reality is a \"monad\" in Gottfried Leibniz'";
-    			t3 = space();
-    			span1 = element("span");
-    			span1.textContent = "Monadology";
-    			t5 = space();
-    			span2 = element("span");
-    			span2.textContent = ", published in 1714. A single note in music theory is called a monad.";
-    			t7 = space();
     			p0 = element("p");
-    			p0.textContent = "Monads in the Haskell Programming Language were inspired by Category Theory monads. The \"monads\" discussed herein are inspired by Haskell monads. Here's the definition of the simple monad described in this module:";
-    			t9 = space();
+    			p0.textContent = "The following definition of \"Monad\" exhibits a basic feature of the more complex definitions that follow: When _f() is returned and there is some value \"v\" in front of it, _f(v) is evaluated and _f is returned again. When, at last, there is nothing in front of _f, _f just waits for further instructions. It can resume activity where it left off, start a branch without altering the current value, or return its array.";
+    			t3 = space();
     			pre0 = element("pre");
-    			pre0.textContent = `${/*steve*/ ctx[4]}`;
-    			t11 = space();
+    			t4 = text(ctx.code1);
+    			t5 = space();
     			p1 = element("p");
-    			p1.textContent = "In the following expression:";
-    			t13 = space();
+    			p1.textContent = "For example:";
+    			t7 = space();
     			pre1 = element("pre");
-    			pre1.textContent = "Monad(6)(v=>v+7)(v=>v*4)(v=>v-10)(\"stop\") // 42";
-    			t15 = space();
+    			t8 = text(ctx.code2);
+    			t9 = space();
     			p2 = element("p");
-    			p2.textContent = "The expression \"Monad(6)\" creates a closure whose outer function contains \"x\" (initially equal to 6) and whose inner function \"foo\" is confined to the scope of the anonymous outer function.  whose scope is  returns \"foo\"; \"foo(v=>v+7) returns \"foo\" while also mutating \"x\" in its outer scope, making it 13. \"foo(v=>v*4) changes x to 52 and returns \"foo\". \"foo(v=>v-10)\" returns \"foo\" while mutating x again, making it 42. Finally, the expression \"foo('stop')\" causes foo to return the number 42.";
-    			t17 = space();
-    			p3 = element("p");
-    			p3.textContent = "As in the Haskell programming language, the monads described above encapsulate sequences of computations. The similarity is greater when we avoid mutation, as we do in some of the more-complex definitions of \"Monad\" (or whatever we decide to call it).";
-    			t19 = space();
-    			p4 = element("p");
-    			p4.textContent = "Anonymous monads never interfere with other monads. The demonstration below illustrates this by running seven anonymous monads in rapid succession. The number you enter is \"num\" in";
-    			t21 = space();
-    			t22 = text(/*bonadsD*/ ctx[2]);
-    			t23 = space();
-    			input = element("input");
-    			t24 = space();
-    			p5 = element("p");
-    			t25 = text("num is ");
-    			t26 = text(/*num*/ ctx[0]);
-    			t27 = text(" so bonads(num) returns ");
-    			t28 = text(t28_value);
-    			t29 = space();
-    			span3 = element("span");
-    			span3.textContent = "Named monads retain their values, even after they encounter \"stop\" and return the value of x held in the Monad closure. The following examples illustrate this:";
-    			t31 = space();
+    			p2.textContent = "Here's an anonymous monad performing computations and returning results along with a string.";
+    			t11 = space();
     			pre2 = element("pre");
-    			pre2.textContent = `${/*axe*/ ctx[3]}`;
-    			add_location(br, file, 112, 1, 2488);
-    			attr_dev(span0, "class", "tao svelte-1dr4x6t");
-    			add_location(span0, file, 113, 1, 2494);
-    			set_style(span1, "font-style", "italic");
-    			add_location(span1, file, 114, 0, 2758);
-    			add_location(span2, file, 115, 0, 2813);
-    			add_location(p0, file, 116, 0, 2897);
-    			add_location(pre0, file, 117, 0, 3120);
-    			add_location(p1, file, 119, 0, 3140);
-    			add_location(pre1, file, 120, 0, 3178);
-    			add_location(p2, file, 121, 0, 3239);
-    			add_location(p3, file, 122, 0, 3744);
-    			add_location(p4, file, 126, 0, 4008);
-    			attr_dev(input, "id", "one");
-    			attr_dev(input, "type", "number");
-    			add_location(input, file, 128, 0, 4208);
-    			add_location(p5, file, 129, 0, 4281);
-    			attr_dev(span3, "class", "tao svelte-1dr4x6t");
-    			add_location(span3, file, 131, 0, 4341);
-    			add_location(pre2, file, 132, 0, 4528);
-
-    			dispose = [
-    				listen_dev(input, "input", /*bonads*/ ctx[5], false, false, false),
-    				listen_dev(input, "input", input_input_handler)
-    			];
+    			t12 = text(ctx.code3);
+    			t13 = space();
+    			input = element("input");
+    			t14 = space();
+    			h30 = element("h3");
+    			t15 = text("res1 = ");
+    			t16 = text(ctx.res1);
+    			t17 = space();
+    			h31 = element("h3");
+    			t18 = text("res2 = ");
+    			t19 = text(ctx.res2);
+    			t20 = space();
+    			h32 = element("h3");
+    			t21 = text("res3 = ");
+    			t22 = text(ctx.res3);
+    			t23 = space();
+    			h33 = element("h3");
+    			t24 = text("res4 = ");
+    			t25 = text(ctx.res4);
+    			t26 = space();
+    			h34 = element("h3");
+    			t27 = text("a(\"stop\") returns [");
+    			t28 = text(t28_value);
+    			t29 = text("]");
+    			t30 = space();
+    			h35 = element("h3");
+    			t31 = text("b(\"stop\") returns [");
+    			t32 = text(t32_value);
+    			t33 = text("]");
+    			t34 = space();
+    			h36 = element("h3");
+    			t35 = text("The variable \"result\" is: ");
+    			t36 = text(ctx.result);
+    			t37 = space();
+    			h2 = element("h2");
+    			t38 = text("demo3:");
+    			t39 = text(t39_value);
+    			add_location(br, file, 88, 0, 2207);
+    			add_location(p0, file, 89, 0, 2212);
+    			add_location(pre0, file, 90, 0, 2639);
+    			add_location(p1, file, 91, 0, 2658);
+    			add_location(pre1, file, 93, 0, 2680);
+    			add_location(p2, file, 95, 0, 2700);
+    			add_location(pre2, file, 96, 0, 2801);
+    			attr(input, "type", "number");
+    			add_location(input, file, 98, 0, 2821);
+    			add_location(h30, file, 102, 0, 2869);
+    			add_location(h31, file, 103, 0, 2892);
+    			add_location(h32, file, 104, 0, 2915);
+    			add_location(h33, file, 105, 0, 2938);
+    			add_location(h34, file, 107, 0, 2962);
+    			add_location(h35, file, 108, 0, 3003);
+    			add_location(h36, file, 110, 0, 3045);
+    			add_location(h2, file, 112, 0, 3090);
+    			dispose = listen(input, "input", demo);
     		},
+
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
+
     		m: function mount(target, anchor) {
     			if (if_block) if_block.m(target, anchor);
-    			insert_dev(target, t0, anchor);
-    			insert_dev(target, br, anchor);
-    			insert_dev(target, t1, anchor);
-    			insert_dev(target, span0, anchor);
-    			insert_dev(target, t3, anchor);
-    			insert_dev(target, span1, anchor);
-    			insert_dev(target, t5, anchor);
-    			insert_dev(target, span2, anchor);
-    			insert_dev(target, t7, anchor);
-    			insert_dev(target, p0, anchor);
-    			insert_dev(target, t9, anchor);
-    			insert_dev(target, pre0, anchor);
-    			insert_dev(target, t11, anchor);
-    			insert_dev(target, p1, anchor);
-    			insert_dev(target, t13, anchor);
-    			insert_dev(target, pre1, anchor);
-    			insert_dev(target, t15, anchor);
-    			insert_dev(target, p2, anchor);
-    			insert_dev(target, t17, anchor);
-    			insert_dev(target, p3, anchor);
-    			insert_dev(target, t19, anchor);
-    			insert_dev(target, p4, anchor);
-    			insert_dev(target, t21, anchor);
-    			insert_dev(target, t22, anchor);
-    			insert_dev(target, t23, anchor);
-    			insert_dev(target, input, anchor);
-    			set_input_value(input, /*num*/ ctx[0]);
-    			insert_dev(target, t24, anchor);
-    			insert_dev(target, p5, anchor);
-    			append_dev(p5, t25);
-    			append_dev(p5, t26);
-    			append_dev(p5, t27);
-    			append_dev(p5, t28);
-    			insert_dev(target, t29, anchor);
-    			insert_dev(target, span3, anchor);
-    			insert_dev(target, t31, anchor);
-    			insert_dev(target, pre2, anchor);
+    			insert(target, t0, anchor);
+    			insert(target, br, anchor);
+    			insert(target, t1, anchor);
+    			insert(target, p0, anchor);
+    			insert(target, t3, anchor);
+    			insert(target, pre0, anchor);
+    			append(pre0, t4);
+    			insert(target, t5, anchor);
+    			insert(target, p1, anchor);
+    			insert(target, t7, anchor);
+    			insert(target, pre1, anchor);
+    			append(pre1, t8);
+    			insert(target, t9, anchor);
+    			insert(target, p2, anchor);
+    			insert(target, t11, anchor);
+    			insert(target, pre2, anchor);
+    			append(pre2, t12);
+    			insert(target, t13, anchor);
+    			insert(target, input, anchor);
+    			insert(target, t14, anchor);
+    			insert(target, h30, anchor);
+    			append(h30, t15);
+    			append(h30, t16);
+    			insert(target, t17, anchor);
+    			insert(target, h31, anchor);
+    			append(h31, t18);
+    			append(h31, t19);
+    			insert(target, t20, anchor);
+    			insert(target, h32, anchor);
+    			append(h32, t21);
+    			append(h32, t22);
+    			insert(target, t23, anchor);
+    			insert(target, h33, anchor);
+    			append(h33, t24);
+    			append(h33, t25);
+    			insert(target, t26, anchor);
+    			insert(target, h34, anchor);
+    			append(h34, t27);
+    			append(h34, t28);
+    			append(h34, t29);
+    			insert(target, t30, anchor);
+    			insert(target, h35, anchor);
+    			append(h35, t31);
+    			append(h35, t32);
+    			append(h35, t33);
+    			insert(target, t34, anchor);
+    			insert(target, h36, anchor);
+    			append(h36, t35);
+    			append(h36, t36);
+    			insert(target, t37, anchor);
+    			insert(target, h2, anchor);
+    			append(h2, t38);
+    			append(h2, t39);
     			current = true;
     		},
-    		p: function update(ctx, [dirty]) {
-    			if (!input_updating && dirty & /*num*/ 1) {
-    				set_input_value(input, /*num*/ ctx[0]);
+
+    		p: function update(changed, ctx) {
+    			{
+    				if (!if_block) {
+    					if_block = create_if_block();
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(t0.parentNode, t0);
+    				} else {
+    									transition_in(if_block, 1);
+    				}
     			}
 
-    			input_updating = false;
-    			if (!current || dirty & /*num*/ 1) set_data_dev(t26, /*num*/ ctx[0]);
-    			if ((!current || dirty & /*num*/ 1) && t28_value !== (t28_value = /*bonads*/ ctx[5](/*num*/ ctx[0]) + "")) set_data_dev(t28, t28_value);
+    			if (!current || changed.res1) {
+    				set_data(t16, ctx.res1);
+    			}
+
+    			if (!current || changed.res2) {
+    				set_data(t19, ctx.res2);
+    			}
+
+    			if (!current || changed.res3) {
+    				set_data(t22, ctx.res3);
+    			}
+
+    			if (!current || changed.res4) {
+    				set_data(t25, ctx.res4);
+    			}
+
+    			if ((!current || changed.a) && t28_value !== (t28_value = ctx.a("stop") + "")) {
+    				set_data(t28, t28_value);
+    			}
+
+    			if ((!current || changed.b) && t32_value !== (t32_value = ctx.b("stop") + "")) {
+    				set_data(t32, t32_value);
+    			}
     		},
+
     		i: function intro(local) {
     			if (current) return;
     			transition_in(if_block);
     			current = true;
     		},
+
     		o: function outro(local) {
     			transition_out(if_block);
     			current = false;
     		},
+
     		d: function destroy(detaching) {
     			if (if_block) if_block.d(detaching);
-    			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(br);
-    			if (detaching) detach_dev(t1);
-    			if (detaching) detach_dev(span0);
-    			if (detaching) detach_dev(t3);
-    			if (detaching) detach_dev(span1);
-    			if (detaching) detach_dev(t5);
-    			if (detaching) detach_dev(span2);
-    			if (detaching) detach_dev(t7);
-    			if (detaching) detach_dev(p0);
-    			if (detaching) detach_dev(t9);
-    			if (detaching) detach_dev(pre0);
-    			if (detaching) detach_dev(t11);
-    			if (detaching) detach_dev(p1);
-    			if (detaching) detach_dev(t13);
-    			if (detaching) detach_dev(pre1);
-    			if (detaching) detach_dev(t15);
-    			if (detaching) detach_dev(p2);
-    			if (detaching) detach_dev(t17);
-    			if (detaching) detach_dev(p3);
-    			if (detaching) detach_dev(t19);
-    			if (detaching) detach_dev(p4);
-    			if (detaching) detach_dev(t21);
-    			if (detaching) detach_dev(t22);
-    			if (detaching) detach_dev(t23);
-    			if (detaching) detach_dev(input);
-    			if (detaching) detach_dev(t24);
-    			if (detaching) detach_dev(p5);
-    			if (detaching) detach_dev(t29);
-    			if (detaching) detach_dev(span3);
-    			if (detaching) detach_dev(t31);
-    			if (detaching) detach_dev(pre2);
-    			run_all(dispose);
+
+    			if (detaching) {
+    				detach(t0);
+    				detach(br);
+    				detach(t1);
+    				detach(p0);
+    				detach(t3);
+    				detach(pre0);
+    				detach(t5);
+    				detach(p1);
+    				detach(t7);
+    				detach(pre1);
+    				detach(t9);
+    				detach(p2);
+    				detach(t11);
+    				detach(pre2);
+    				detach(t13);
+    				detach(input);
+    				detach(t14);
+    				detach(h30);
+    				detach(t17);
+    				detach(h31);
+    				detach(t20);
+    				detach(h32);
+    				detach(t23);
+    				detach(h33);
+    				detach(t26);
+    				detach(h34);
+    				detach(t30);
+    				detach(h35);
+    				detach(t34);
+    				detach(h36);
+    				detach(t37);
+    				detach(h2);
+    			}
+
+    			dispose();
     		}
     	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
     }
 
-    function Monad(x) {
-    	return function foo(func) {
-    		if (func === "stop") return x; else {
-    			x = func(x);
-    			return foo;
-    		}
-    	};
+    let s = "stop";
+
+    function Monad () { 
+    var ar = [];
+    return function _f (func) {
+      if (func === "stop") return ar
+      if (typeof func !== "function") {
+        ar = ar.concat(func); 
+        return _f
+      } 
+      else  {
+        ar = ar.concat(func(ar.slice(-1)[0]));
+        return _f;
+      }
+    };
+    }
+
+    function demo(num) {
+    var a = Monad();
+    var  b = Monad();
+    var res1 = a(3)(v=>v**3)(v=>v+3)(v=>v*v)(s);    
+    var res2  = b(a("stop"))(v=>v/100)(Math.sqrt)(Math.floor)(s);  
+    var res3 = a(Math.floor(a(v=>v/((a(s)[0]*10)))(s))) (v=>v+4)(v=>v*3) (s);   
+    var res4 = b(v=>v*2)(v=>v*7) (s);    
+    return [[res1],[res2],[res3],[res4]];
     }
 
     function instance($$self, $$props, $$invalidate) {
-    	let visible = true;
+    	
 
-    	let monadDisplay = `function Monad (x) {
-  let foo;
-  return foo = function foo (func) {
-    if (func === "stop") return x
+    var { a = Monad(), b = Monad(), res1 = a(3)(v=>v**3)(v=>v+3)(v=>v*v)(s) } = $$props;    
+    var { res2  = b(a("stop"))(v=>v/100)(Math.sqrt)(Math.floor)(s) } = $$props;  
+    var { res3 = a(Math.floor(a(v=>v/((a(s)[0]*10)))(s))) (v=>v+4)(v=>v*3) (s) } = $$props;   
+    var { res4 = b(v=>v*2)(v=>v*7) (s) } = $$props;
+
+    var result =  Monad()(4)(v=>v**4)(Math.sqrt)(x=>x-2)
+    (v => "And the answer is: " + v*3)('stop');
+
+    var code1 = `function Monad () { 
+  var ar = []
+  return function _f (func) {
+    if (func === "stop") return ar.slice();
+    if (typeof func !== "function") {
+      ar = ar.concat(func); 
+      return _f
+    } 
     else  {
-      x = func(x);
-      return foo;
-    }
-  };
-}
-
-const prod = a => b => a*b;
-const sum = a => b => a+b;`;
-
-    	let bonadsD = `function bonads(num) {
-return [Monad(num)(sum(7))(prod(4))(v=>v-10)("stop"),
-Monad(num-1)(sum(7))(prod(4))(v=>v-10)("stop"),
-Monad(num-2)(sum(7))(prod(4))(v=>v-10)("stop"),
-Monad(num-3)(sum(7))(prod(4))(v=>v-10)("stop"),
-Monad(num-2)(sum(7))(prod(4))(v=>v-10)("stop"),
-Monad(num-1)(sum(7))(prod(4))(v=>v-10)("stop"),
-Monad(num-0)(sum(7))(prod(4))(v=>v-10)("stop")]}`;
-
-    	let axe = `
-let mon = Monad(3);
-let a = mon(x=>x**3)(x=>x+3)(x=>x**2)("stop");
-console.log("a is", a)  // a is 900`;
-
-    	let tree = `
-mon(x => x/100)
-console.log("mon("stop") now is",mon("stop"))  // mon("stop") now is 9 `;
-
-    	let fred = `
-let ar = [];
-let mon = Monad(3);
-let mon2 = Monad();
-ar.push(mon("stop"));
-let a = mon(x=>x**3)(x=>x+3)(x=>x**2)
-ar.push(a);
-ar.push(mon(x => x/100);
-ar.push(mon2(mon("stop")(x=>x*100)))
-console.log("ar.map(v=>v('stop')) is", ar.map(v=>v('stop')))  // [3, 900, 9] `;
-
-    	let steve = `function Monad (x) {
-  return function foo (func) {
-    if (func === "stop") return x
-    else  {
-      x = func(x);
-      return foo;
+      ar = ar.concat(func(ar.slice(-1)[0]));
+      return _f;
     }
   };
 }`;
 
-    	const prod = a => b => a * b;
-    	const sum = a => b => a + b;
-    	let num = 6;
+    var code2 =  `
+let a = Monad()
+let  b = Monad();
+let res1 = a(3)(v=>v**3)(v=>v+3)(v=>v*v)(s)    // [3,27,30,900]
+let res2  = b(a("stop"))(v=>v/100)(Math.sqrt)(s);  // [3,27,30,900,9,3]
+let res3 = a(v=>v/90)(v=>v+4)(v=>v*3) (s)         // [3,27,30,900,10,14,42]
+let res4 = b(v=>v*2)(v=>v*7) (s)                  // [3,27,30,900,9,3,6,42] `;
 
-    	let bonads = function bonads(num) {
-    		return [
-    			Monad(num)(sum(7))(prod(4))(v => v - 10)("stop"),
-    			Monad(num - 1)(sum(7))(prod(4))(v => v - 10)("stop"),
-    			Monad(num - 2)(sum(7))(prod(4))(v => v - 10)("stop"),
-    			Monad(num - 3)(sum(7))(prod(4))(v => v - 10)("stop"),
-    			Monad(num - 2)(sum(7))(prod(4))(v => v - 10)("stop"),
-    			Monad(num - 1)(sum(7))(prod(4))(v => v - 10)("stop"),
-    			Monad(num - 0)(sum(7))(prod(4))(v => v - 10)("stop")
-    		];
+    var result = Monad()(4)(v=>v**4)(Math.sqrt)(x=>x-2)
+        (v => "And the answer is: " + v*3)('stop');
+
+     var code3 = `Monad()(4)(v=>v**4)(Math.sqrt)(x=>x-2)(v => "And the answer is: " + v*3)('stop')}`;
+
+    	const writable_props = ['a', 'b', 'res1', 'res2', 'res3', 'res4'];
+    	Object.keys($$props).forEach(key => {
+    		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<Monad1> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$set = $$props => {
+    		if ('a' in $$props) $$invalidate('a', a = $$props.a);
+    		if ('b' in $$props) $$invalidate('b', b = $$props.b);
+    		if ('res1' in $$props) $$invalidate('res1', res1 = $$props.res1);
+    		if ('res2' in $$props) $$invalidate('res2', res2 = $$props.res2);
+    		if ('res3' in $$props) $$invalidate('res3', res3 = $$props.res3);
+    		if ('res4' in $$props) $$invalidate('res4', res4 = $$props.res4);
     	};
 
-    	let mona = bonads(num);
-    	console.log(mona);
-
-    	function numF(e) {
-    		$$invalidate(0, num = e.target.value);
-    		console.log("e.target.value is", e.target.value);
-    		return e.target.value;
-    	}
-
-    	console.log("num is", num);
-
-    	function input_input_handler() {
-    		num = to_number(this.value);
-    		$$invalidate(0, num);
-    	}
-
-    	$$self.$capture_state = () => {
-    		return {};
+    	return {
+    		a,
+    		b,
+    		res1,
+    		res2,
+    		res3,
+    		res4,
+    		result,
+    		code1,
+    		code2,
+    		code3
     	};
-
-    	$$self.$inject_state = $$props => {
-    		if ("visible" in $$props) $$invalidate(1, visible = $$props.visible);
-    		if ("monadDisplay" in $$props) monadDisplay = $$props.monadDisplay;
-    		if ("bonadsD" in $$props) $$invalidate(2, bonadsD = $$props.bonadsD);
-    		if ("axe" in $$props) $$invalidate(3, axe = $$props.axe);
-    		if ("tree" in $$props) tree = $$props.tree;
-    		if ("fred" in $$props) fred = $$props.fred;
-    		if ("steve" in $$props) $$invalidate(4, steve = $$props.steve);
-    		if ("num" in $$props) $$invalidate(0, num = $$props.num);
-    		if ("bonads" in $$props) $$invalidate(5, bonads = $$props.bonads);
-    		if ("mona" in $$props) mona = $$props.mona;
-    	};
-
-    	return [
-    		num,
-    		visible,
-    		bonadsD,
-    		axe,
-    		steve,
-    		bonads,
-    		monadDisplay,
-    		tree,
-    		fred,
-    		prod,
-    		sum,
-    		mona,
-    		numF,
-    		input_input_handler
-    	];
     }
 
-    class Monad_1 extends SvelteComponentDev {
+    class Monad1 extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance, create_fragment, safe_not_equal, {});
+    		init(this, options, instance, create_fragment, safe_not_equal, ["a", "b", "res1", "res2", "res3", "res4"]);
+    	}
 
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "Monad_1",
-    			options,
-    			id: create_fragment.name
-    		});
+    	get a() {
+    		throw new Error("<Monad1>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set a(value) {
+    		throw new Error("<Monad1>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get b() {
+    		throw new Error("<Monad1>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set b(value) {
+    		throw new Error("<Monad1>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get res1() {
+    		throw new Error("<Monad1>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set res1(value) {
+    		throw new Error("<Monad1>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get res2() {
+    		throw new Error("<Monad1>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set res2(value) {
+    		throw new Error("<Monad1>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get res3() {
+    		throw new Error("<Monad1>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set res3(value) {
+    		throw new Error("<Monad1>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get res4() {
+    		throw new Error("<Monad1>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set res4(value) {
+    		throw new Error("<Monad1>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
 
-    /* src/Monad2.svelte generated by Svelte v3.16.7 */
+    /* src/Monad2.svelte generated by Svelte v3.9.1 */
+
     const file$1 = "src/Monad2.svelte";
 
-    // (308:0) {#if j === 2}
+    // (312:0) {#if j === 2}
     function create_if_block$1(ctx) {
-    	let div_1;
-    	let div_1_transition;
-    	let current;
+    	var div_1, div_1_transition, current;
 
-    	const block = {
+    	return {
     		c: function create() {
     			div_1 = element("div");
-    			div_1.textContent = "ASYNCHRONOUSLY CREATED STATE";
+    			div_1.textContent = "ASYNCHRONOUSLY MODIFIED STATE";
     			set_style(div_1, "font-family", "Times New Roman");
     			set_style(div_1, "text-align", "center");
     			set_style(div_1, "color", "hsl(210, 90%, 90%)");
     			set_style(div_1, "font-size", "38px");
-    			add_location(div_1, file$1, 308, 1, 5867);
+    			add_location(div_1, file$1, 312, 0, 5862);
     		},
+
     		m: function mount(target, anchor) {
-    			insert_dev(target, div_1, anchor);
+    			insert(target, div_1, anchor);
     			current = true;
     		},
+
     		i: function intro(local) {
     			if (current) return;
-
     			add_render_callback(() => {
     				if (!div_1_transition) div_1_transition = create_bidirectional_transition(div_1, fade, {}, true);
     				div_1_transition.run(1);
@@ -1087,642 +1000,546 @@ console.log("ar.map(v=>v('stop')) is", ar.map(v=>v('stop')))  // [3, 900, 9] `;
 
     			current = true;
     		},
+
     		o: function outro(local) {
     			if (!div_1_transition) div_1_transition = create_bidirectional_transition(div_1, fade, {}, false);
     			div_1_transition.run(0);
+
     			current = false;
     		},
+
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div_1);
-    			if (detaching && div_1_transition) div_1_transition.end();
+    			if (detaching) {
+    				detach(div_1);
+    				if (div_1_transition) div_1_transition.end();
+    			}
     		}
     	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block$1.name,
-    		type: "if",
-    		source: "(308:0) {#if j === 2}",
-    		ctx
-    	});
-
-    	return block;
     }
 
     function create_fragment$1(ctx) {
-    	let t0;
-    	let br0;
-    	let t1;
-    	let p0;
-    	let t3;
-    	let br1;
-    	let t4;
-    	let div0;
-    	let t6;
-    	let div1;
-    	let t7_value = /*O*/ ctx[0].c0 + "";
-    	let t7;
-    	let t8;
-    	let t9_value = /*O*/ ctx[0].c1 + "";
-    	let t9;
-    	let t10;
-    	let t11_value = /*O*/ ctx[0].c2 + "";
-    	let t11;
-    	let t12;
-    	let br2;
-    	let t13;
-    	let span0;
-    	let t15;
-    	let span1;
-    	let t16;
-    	let t17_value = /*O*/ ctx[0].d0.join(", ") + "";
-    	let t17;
-    	let t18;
-    	let t19_value = /*O*/ ctx[0].d1.join(", ") + "";
-    	let t19;
-    	let t20;
-    	let t21_value = /*O*/ ctx[0].d2.join(", ") + "";
-    	let t21;
-    	let t22;
-    	let t23;
-    	let br3;
-    	let t24;
-    	let br4;
-    	let t25;
-    	let button;
-    	let pre0;
-    	let t27;
-    	let br5;
-    	let br6;
-    	let br7;
-    	let t28;
-    	let div2;
-    	let t29;
-    	let t30_value = /*O*/ ctx[0].d0 + "";
-    	let t30;
-    	let t31;
-    	let t32_value = /*O*/ ctx[0].c0 + "";
-    	let t32;
-    	let t33;
-    	let span2;
-    	let t34_value = (/*O*/ ctx[0].d0.reduce(func) == /*O*/ ctx[0].c0) + "";
-    	let t34;
-    	let t35;
-    	let br8;
-    	let t36;
-    	let t37_value = /*O*/ ctx[0].d1 + "";
-    	let t37;
-    	let t38;
-    	let t39_value = /*O*/ ctx[0].c1 + "";
-    	let t39;
-    	let t40;
-    	let span3;
-    	let t41_value = (/*O*/ ctx[0].d1.reduce(func_1) == /*O*/ ctx[0].c1) + "";
-    	let t41;
-    	let t42;
-    	let br9;
-    	let t43;
-    	let t44_value = /*O*/ ctx[0].d2 + "";
-    	let t44;
-    	let t45;
-    	let t46_value = /*O*/ ctx[0].c2 + "";
-    	let t46;
-    	let t47;
-    	let span4;
-    	let t48_value = (/*O*/ ctx[0].d2.reduce(func_2) == /*O*/ ctx[0].c2) + "";
-    	let t48;
-    	let t49;
-    	let br10;
-    	let t50;
-    	let p1;
-    	let t52;
-    	let pre1;
-    	let t54;
-    	let p2;
-    	let pre2;
-    	let t57;
-    	let p3;
-    	let pre3;
-    	let t60;
-    	let p4;
-    	let t62;
-    	let br11;
-    	let t63;
-    	let span5;
-    	let t65;
-    	let a;
-    	let current;
-    	let dispose;
-    	let if_block = /*j*/ ctx[1] === 2 && create_if_block$1(ctx);
+    	var br0, br1, t0, t1, br2, t2, p0, t4, br3, t5, div0, t7, div1, t8_value = ctx.O.c0 + "", t8, t9, t10_value = ctx.O.c1 + "", t10, t11, t12_value = ctx.O.c2 + "", t12, t13, br4, t14, span0, t16, span1, br5, t17, t18_value = ctx.O.d0.join(', ') + "", t18, t19, br6, t20, t21_value = ctx.O.d1.join(', ') + "", t21, t22, br7, t23, t24_value = ctx.O.d2.join(', ') + "", t24, t25, t26, br8, t27, br9, t28, button, pre0, t29, t30, br10, br11, br12, t31, div2, t32, t33_value = ctx.O.d0 + "", t33, t34, t35_value = ctx.O.c0 + "", t35, t36, span2, t37_value = ctx.O.d0.reduce(func) == ctx.O.c0 + "", t37, t38, br13, t39, t40_value = ctx.O.d1 + "", t40, t41, t42_value = ctx.O.c1 + "", t42, t43, span3, t44_value = ctx.O.d1.reduce(func_1) == ctx.O.c1 + "", t44, t45, br14, t46, t47_value = ctx.O.d2 + "", t47, t48, t49_value = ctx.O.c2 + "", t49, t50, span4, t51_value = ctx.O.d2.reduce(func_2) == ctx.O.c2 + "", t51, t52, br15, t53, p1, t55, pre1, t56, t57, p2, pre2, t59, t60, p3, pre3, t62, t63, p4, t65, br16, t66, span5, t68, a, current, dispose;
 
-    	const block = {
+    	var if_block =  create_if_block$1();
+
+    	return {
     		c: function create() {
-    			if (if_block) if_block.c();
-    			t0 = space();
     			br0 = element("br");
+    			br1 = element("br");
+    			t0 = space();
+    			if (if_block) if_block.c();
     			t1 = space();
+    			br2 = element("br");
+    			t2 = space();
     			p0 = element("p");
     			p0.textContent = "Clicking the button below sends three requests to the Haskell WebSockets server asking for quasi-random integers. As the numbers come in from the server, they are placed in the object named \"O\" with keys prefixed by \"c\", and then forwarded to a web worker. The worker returns arrays containing the prime factors of the numbers it recieves. These are placed in \"O\" with keys prefixed by \"d\".";
-    			t3 = space();
-    			br1 = element("br");
     			t4 = space();
+    			br3 = element("br");
+    			t5 = space();
     			div0 = element("div");
     			div0.textContent = "The WebSockets server sent these numbers (now at O.c0, O.c1, and O.c2):";
-    			t6 = space();
+    			t7 = space();
     			div1 = element("div");
-    			t7 = text(t7_value);
-    			t8 = text(", ");
-    			t9 = text(t9_value);
-    			t10 = text(", and ");
-    			t11 = text(t11_value);
-    			t12 = space();
-    			br2 = element("br");
+    			t8 = text(t8_value);
+    			t9 = text(", ");
+    			t10 = text(t10_value);
+    			t11 = text(", and ");
+    			t12 = text(t12_value);
     			t13 = space();
+    			br4 = element("br");
+    			t14 = space();
     			span0 = element("span");
     			span0.textContent = "The web worker sent these arrays of prime factors (now at O.d0, O.d1, and O.d2):";
-    			t15 = space();
+    			t16 = space();
     			span1 = element("span");
-    			t16 = text("[");
-    			t17 = text(t17_value);
-    			t18 = text("], [");
-    			t19 = text(t19_value);
-    			t20 = text("], and [");
+    			br5 = element("br");
+    			t17 = text(" [");
+    			t18 = text(t18_value);
+    			t19 = text("] ");
+    			br6 = element("br");
+    			t20 = text(" [");
     			t21 = text(t21_value);
-    			t22 = text("]");
-    			t23 = space();
-    			br3 = element("br");
-    			t24 = space();
-    			br4 = element("br");
-    			t25 = space();
+    			t22 = text("] ");
+    			br7 = element("br");
+    			t23 = text(" [");
+    			t24 = text(t24_value);
+    			t25 = text("]");
+    			t26 = space();
+    			br8 = element("br");
+    			t27 = space();
+    			br9 = element("br");
+    			t28 = space();
     			button = element("button");
     			pre0 = element("pre");
-    			pre0.textContent = `${/*candle*/ ctx[6]}`;
-    			t27 = space();
-    			br5 = element("br");
-    			br6 = element("br");
-    			br7 = element("br");
-    			t28 = space();
-    			div2 = element("div");
-    			t29 = text("[");
-    			t30 = text(t30_value);
-    			t31 = text("].reduce((a,b) => a*b) == ");
-    			t32 = text(t32_value);
-    			t33 = text(": ");
-    			span2 = element("span");
-    			t34 = text(t34_value);
-    			t35 = space();
-    			br8 = element("br");
-    			t36 = text("\n[");
-    			t37 = text(t37_value);
-    			t38 = text("].reduce((a,b) => a*b) == ");
-    			t39 = text(t39_value);
-    			t40 = text(": ");
-    			span3 = element("span");
-    			t41 = text(t41_value);
-    			t42 = space();
-    			br9 = element("br");
-    			t43 = text("\n[");
-    			t44 = text(t44_value);
-    			t45 = text("].reduce((a,b) => a*b) == ");
-    			t46 = text(t46_value);
-    			t47 = text(": ");
-    			span4 = element("span");
-    			t48 = text(t48_value);
-    			t49 = space();
+    			t29 = text(ctx.candle);
+    			t30 = space();
     			br10 = element("br");
-    			t50 = space();
+    			br11 = element("br");
+    			br12 = element("br");
+    			t31 = space();
+    			div2 = element("div");
+    			t32 = text("[");
+    			t33 = text(t33_value);
+    			t34 = text("].reduce((a,b) => a*b) === ");
+    			t35 = text(t35_value);
+    			t36 = text(": ");
+    			span2 = element("span");
+    			t37 = text(t37_value);
+    			t38 = space();
+    			br13 = element("br");
+    			t39 = text("\n[");
+    			t40 = text(t40_value);
+    			t41 = text("].reduce((a,b) => a*b) === ");
+    			t42 = text(t42_value);
+    			t43 = text(": ");
+    			span3 = element("span");
+    			t44 = text(t44_value);
+    			t45 = space();
+    			br14 = element("br");
+    			t46 = text("\n[");
+    			t47 = text(t47_value);
+    			t48 = text("].reduce((a,b) => a*b) ==  = ");
+    			t49 = text(t49_value);
+    			t50 = text(": ");
+    			span4 = element("span");
+    			t51 = text(t51_value);
+    			t52 = space();
+    			br15 = element("br");
+    			t53 = space();
     			p1 = element("p");
     			p1.textContent = "In this demonstration, each monad's array of computed values is preserved as an attribute of an object named O. Here's the definition of \"Monad\" used in this module:";
-    			t52 = space();
+    			t55 = space();
     			pre1 = element("pre");
-    			pre1.textContent = `${/*mon*/ ctx[3]}`;
-    			t54 = space();
+    			t56 = text(ctx.mon);
+    			t57 = space();
     			p2 = element("p");
     			p2.textContent = "Messages are sent to the Haskell WebSockets server requesting pseudo-random numbers between 1 and the integer specified at the end of the request. On the server, randomR from the System.Random library produces a number which is sent to the browser with prefix \"BE#$42\". Messages from the server are parsed in socket.onmessage. If the prefix is \"BE#$42\", the payload (a number) is sent to worker_OO, which sends back the number's prime decomposition.\n";
     			pre2 = element("pre");
-    			pre2.textContent = `${/*onmessServer*/ ctx[4]}`;
-    			t57 = space();
+    			t59 = text(ctx.onmessServer);
+    			t60 = space();
     			p3 = element("p");
     			p3.textContent = "Messages from the web worker are processed in worker_OO.onmessage\n";
     			pre3 = element("pre");
-    			pre3.textContent = `${/*onmessWorker*/ ctx[5]}`;
-    			t60 = space();
+    			t62 = text(ctx.onmessWorker);
+    			t63 = space();
     			p4 = element("p");
     			p4.textContent = "When M === 2 the process is complete. M and N are set to -1 and lock is set to false, allowing another possible call to random() to call rand().";
-    			t62 = space();
-    			br11 = element("br");
-    			t63 = space();
+    			t65 = space();
+    			br16 = element("br");
+    			t66 = space();
     			span5 = element("span");
     			span5.textContent = "The code for this Svelte application is at";
-    			t65 = space();
+    			t68 = space();
     			a = element("a");
     			a.textContent = "GitHub repository";
-    			add_location(br0, file$1, 313, 0, 6037);
-    			add_location(p0, file$1, 314, 0, 6042);
-    			add_location(br1, file$1, 315, 1, 6443);
+    			add_location(br0, file$1, 310, 0, 5838);
+    			add_location(br1, file$1, 310, 4, 5842);
+    			add_location(br2, file$1, 317, 0, 6033);
+    			add_location(p0, file$1, 318, 0, 6038);
+    			add_location(br3, file$1, 319, 0, 6438);
     			set_style(div0, "color", "#BBBBFF");
     			set_style(div0, "font-size", "20px");
-    			add_location(div0, file$1, 321, 0, 6453);
+    			add_location(div0, file$1, 325, 0, 6448);
     			set_style(div1, "color", "#FFFFCD");
     			set_style(div1, "font-size", "20px");
-    			add_location(div1, file$1, 322, 0, 6581);
-    			add_location(br2, file$1, 325, 0, 6667);
+    			add_location(div1, file$1, 326, 0, 6576);
+    			add_location(br4, file$1, 329, 0, 6662);
     			set_style(span0, "color", "#CDCDFF");
     			set_style(span0, "font-size", "20px");
-    			add_location(span0, file$1, 326, 0, 6672);
+    			add_location(span0, file$1, 330, 0, 6667);
+    			add_location(br5, file$1, 332, 0, 6856);
+    			add_location(br6, file$1, 332, 25, 6881);
+    			add_location(br7, file$1, 332, 50, 6906);
     			set_style(span1, "color", "#FFFFCD");
     			set_style(span1, "font-size", "20px");
-    			add_location(span1, file$1, 327, 0, 6811);
-    			add_location(br3, file$1, 329, 0, 6934);
-    			add_location(br4, file$1, 330, 0, 6939);
-    			add_location(pre0, file$1, 332, 0, 6974);
-    			attr_dev(button, "class", "svelte-14lwxew");
-    			add_location(button, file$1, 331, 0, 6944);
-    			add_location(br5, file$1, 335, 0, 7005);
-    			add_location(br6, file$1, 335, 4, 7009);
-    			add_location(br7, file$1, 335, 8, 7013);
+    			add_location(span1, file$1, 331, 0, 6806);
+    			add_location(br8, file$1, 333, 0, 6938);
+    			add_location(br9, file$1, 334, 0, 6943);
+    			add_location(pre0, file$1, 336, 0, 6978);
+    			attr(button, "class", "svelte-8aass1");
+    			add_location(button, file$1, 335, 0, 6948);
+    			add_location(br10, file$1, 339, 0, 7009);
+    			add_location(br11, file$1, 339, 4, 7013);
+    			add_location(br12, file$1, 339, 8, 7017);
     			set_style(span2, "font-size", "24px");
     			set_style(span2, "color", "#FF0B0B");
-    			add_location(span2, file$1, 340, 41, 7111);
-    			add_location(br8, file$1, 341, 0, 7201);
+    			add_location(span2, file$1, 344, 42, 7116);
+    			add_location(br13, file$1, 345, 0, 7206);
     			set_style(span3, "font-size", "24px");
     			set_style(span3, "color", "#FF0B0B");
-    			add_location(span3, file$1, 342, 41, 7247);
-    			add_location(br9, file$1, 343, 0, 7337);
+    			add_location(span3, file$1, 346, 42, 7253);
+    			add_location(br14, file$1, 347, 0, 7343);
     			set_style(span4, "font-size", "24px");
     			set_style(span4, "color", "#FF0B0B");
-    			add_location(span4, file$1, 344, 41, 7383);
-    			add_location(br10, file$1, 345, 0, 7473);
+    			add_location(span4, file$1, 348, 44, 7392);
+    			add_location(br15, file$1, 349, 0, 7482);
     			set_style(div2, "color", "#FFFFCD");
     			set_style(div2, "font-size", "20px");
-    			add_location(div2, file$1, 339, 0, 7021);
-    			add_location(p1, file$1, 350, 0, 7488);
-    			add_location(pre1, file$1, 352, 0, 7663);
-    			add_location(p2, file$1, 354, 0, 7681);
-    			add_location(pre2, file$1, 355, 0, 8135);
-    			add_location(p3, file$1, 356, 0, 8161);
-    			add_location(pre3, file$1, 357, 0, 8231);
-    			add_location(p4, file$1, 358, 0, 8257);
-    			add_location(br11, file$1, 359, 0, 8411);
-    			add_location(span5, file$1, 360, 0, 8416);
-    			attr_dev(a, "href", "https://github.com/dschalk/blog/");
-    			attr_dev(a, "target", "_blank");
-    			add_location(a, file$1, 361, 0, 8474);
-    			dispose = listen_dev(button, "click", /*factors*/ ctx[2], false, false, false);
+    			add_location(div2, file$1, 343, 0, 7025);
+    			add_location(p1, file$1, 354, 0, 7497);
+    			add_location(pre1, file$1, 356, 0, 7672);
+    			add_location(p2, file$1, 358, 0, 7690);
+    			add_location(pre2, file$1, 359, 0, 8144);
+    			add_location(p3, file$1, 360, 0, 8170);
+    			add_location(pre3, file$1, 361, 0, 8240);
+    			add_location(p4, file$1, 362, 0, 8266);
+    			add_location(br16, file$1, 363, 0, 8420);
+    			add_location(span5, file$1, 364, 0, 8425);
+    			attr(a, "href", "https://github.com/dschalk/blog/");
+    			attr(a, "target", "_blank");
+    			add_location(a, file$1, 365, 0, 8483);
+    			dispose = listen(button, "click", ctx.factors);
     		},
+
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
+
     		m: function mount(target, anchor) {
+    			insert(target, br0, anchor);
+    			insert(target, br1, anchor);
+    			insert(target, t0, anchor);
     			if (if_block) if_block.m(target, anchor);
-    			insert_dev(target, t0, anchor);
-    			insert_dev(target, br0, anchor);
-    			insert_dev(target, t1, anchor);
-    			insert_dev(target, p0, anchor);
-    			insert_dev(target, t3, anchor);
-    			insert_dev(target, br1, anchor);
-    			insert_dev(target, t4, anchor);
-    			insert_dev(target, div0, anchor);
-    			insert_dev(target, t6, anchor);
-    			insert_dev(target, div1, anchor);
-    			append_dev(div1, t7);
-    			append_dev(div1, t8);
-    			append_dev(div1, t9);
-    			append_dev(div1, t10);
-    			append_dev(div1, t11);
-    			insert_dev(target, t12, anchor);
-    			insert_dev(target, br2, anchor);
-    			insert_dev(target, t13, anchor);
-    			insert_dev(target, span0, anchor);
-    			insert_dev(target, t15, anchor);
-    			insert_dev(target, span1, anchor);
-    			append_dev(span1, t16);
-    			append_dev(span1, t17);
-    			append_dev(span1, t18);
-    			append_dev(span1, t19);
-    			append_dev(span1, t20);
-    			append_dev(span1, t21);
-    			append_dev(span1, t22);
-    			insert_dev(target, t23, anchor);
-    			insert_dev(target, br3, anchor);
-    			insert_dev(target, t24, anchor);
-    			insert_dev(target, br4, anchor);
-    			insert_dev(target, t25, anchor);
-    			insert_dev(target, button, anchor);
-    			append_dev(button, pre0);
-    			insert_dev(target, t27, anchor);
-    			insert_dev(target, br5, anchor);
-    			insert_dev(target, br6, anchor);
-    			insert_dev(target, br7, anchor);
-    			insert_dev(target, t28, anchor);
-    			insert_dev(target, div2, anchor);
-    			append_dev(div2, t29);
-    			append_dev(div2, t30);
-    			append_dev(div2, t31);
-    			append_dev(div2, t32);
-    			append_dev(div2, t33);
-    			append_dev(div2, span2);
-    			append_dev(span2, t34);
-    			append_dev(div2, t35);
-    			append_dev(div2, br8);
-    			append_dev(div2, t36);
-    			append_dev(div2, t37);
-    			append_dev(div2, t38);
-    			append_dev(div2, t39);
-    			append_dev(div2, t40);
-    			append_dev(div2, span3);
-    			append_dev(span3, t41);
-    			append_dev(div2, t42);
-    			append_dev(div2, br9);
-    			append_dev(div2, t43);
-    			append_dev(div2, t44);
-    			append_dev(div2, t45);
-    			append_dev(div2, t46);
-    			append_dev(div2, t47);
-    			append_dev(div2, span4);
-    			append_dev(span4, t48);
-    			append_dev(div2, t49);
-    			append_dev(div2, br10);
-    			insert_dev(target, t50, anchor);
-    			insert_dev(target, p1, anchor);
-    			insert_dev(target, t52, anchor);
-    			insert_dev(target, pre1, anchor);
-    			insert_dev(target, t54, anchor);
-    			insert_dev(target, p2, anchor);
-    			insert_dev(target, pre2, anchor);
-    			insert_dev(target, t57, anchor);
-    			insert_dev(target, p3, anchor);
-    			insert_dev(target, pre3, anchor);
-    			insert_dev(target, t60, anchor);
-    			insert_dev(target, p4, anchor);
-    			insert_dev(target, t62, anchor);
-    			insert_dev(target, br11, anchor);
-    			insert_dev(target, t63, anchor);
-    			insert_dev(target, span5, anchor);
-    			insert_dev(target, t65, anchor);
-    			insert_dev(target, a, anchor);
+    			insert(target, t1, anchor);
+    			insert(target, br2, anchor);
+    			insert(target, t2, anchor);
+    			insert(target, p0, anchor);
+    			insert(target, t4, anchor);
+    			insert(target, br3, anchor);
+    			insert(target, t5, anchor);
+    			insert(target, div0, anchor);
+    			insert(target, t7, anchor);
+    			insert(target, div1, anchor);
+    			append(div1, t8);
+    			append(div1, t9);
+    			append(div1, t10);
+    			append(div1, t11);
+    			append(div1, t12);
+    			insert(target, t13, anchor);
+    			insert(target, br4, anchor);
+    			insert(target, t14, anchor);
+    			insert(target, span0, anchor);
+    			insert(target, t16, anchor);
+    			insert(target, span1, anchor);
+    			append(span1, br5);
+    			append(span1, t17);
+    			append(span1, t18);
+    			append(span1, t19);
+    			append(span1, br6);
+    			append(span1, t20);
+    			append(span1, t21);
+    			append(span1, t22);
+    			append(span1, br7);
+    			append(span1, t23);
+    			append(span1, t24);
+    			append(span1, t25);
+    			insert(target, t26, anchor);
+    			insert(target, br8, anchor);
+    			insert(target, t27, anchor);
+    			insert(target, br9, anchor);
+    			insert(target, t28, anchor);
+    			insert(target, button, anchor);
+    			append(button, pre0);
+    			append(pre0, t29);
+    			insert(target, t30, anchor);
+    			insert(target, br10, anchor);
+    			insert(target, br11, anchor);
+    			insert(target, br12, anchor);
+    			insert(target, t31, anchor);
+    			insert(target, div2, anchor);
+    			append(div2, t32);
+    			append(div2, t33);
+    			append(div2, t34);
+    			append(div2, t35);
+    			append(div2, t36);
+    			append(div2, span2);
+    			append(span2, t37);
+    			append(div2, t38);
+    			append(div2, br13);
+    			append(div2, t39);
+    			append(div2, t40);
+    			append(div2, t41);
+    			append(div2, t42);
+    			append(div2, t43);
+    			append(div2, span3);
+    			append(span3, t44);
+    			append(div2, t45);
+    			append(div2, br14);
+    			append(div2, t46);
+    			append(div2, t47);
+    			append(div2, t48);
+    			append(div2, t49);
+    			append(div2, t50);
+    			append(div2, span4);
+    			append(span4, t51);
+    			append(div2, t52);
+    			append(div2, br15);
+    			insert(target, t53, anchor);
+    			insert(target, p1, anchor);
+    			insert(target, t55, anchor);
+    			insert(target, pre1, anchor);
+    			append(pre1, t56);
+    			insert(target, t57, anchor);
+    			insert(target, p2, anchor);
+    			insert(target, pre2, anchor);
+    			append(pre2, t59);
+    			insert(target, t60, anchor);
+    			insert(target, p3, anchor);
+    			insert(target, pre3, anchor);
+    			append(pre3, t62);
+    			insert(target, t63, anchor);
+    			insert(target, p4, anchor);
+    			insert(target, t65, anchor);
+    			insert(target, br16, anchor);
+    			insert(target, t66, anchor);
+    			insert(target, span5, anchor);
+    			insert(target, t68, anchor);
+    			insert(target, a, anchor);
     			current = true;
     		},
-    		p: function update(ctx, dirty) {
-    			if ((!current || dirty[0] & /*O*/ 1) && t7_value !== (t7_value = /*O*/ ctx[0].c0 + "")) set_data_dev(t7, t7_value);
-    			if ((!current || dirty[0] & /*O*/ 1) && t9_value !== (t9_value = /*O*/ ctx[0].c1 + "")) set_data_dev(t9, t9_value);
-    			if ((!current || dirty[0] & /*O*/ 1) && t11_value !== (t11_value = /*O*/ ctx[0].c2 + "")) set_data_dev(t11, t11_value);
-    			if ((!current || dirty[0] & /*O*/ 1) && t17_value !== (t17_value = /*O*/ ctx[0].d0.join(", ") + "")) set_data_dev(t17, t17_value);
-    			if ((!current || dirty[0] & /*O*/ 1) && t19_value !== (t19_value = /*O*/ ctx[0].d1.join(", ") + "")) set_data_dev(t19, t19_value);
-    			if ((!current || dirty[0] & /*O*/ 1) && t21_value !== (t21_value = /*O*/ ctx[0].d2.join(", ") + "")) set_data_dev(t21, t21_value);
-    			if ((!current || dirty[0] & /*O*/ 1) && t30_value !== (t30_value = /*O*/ ctx[0].d0 + "")) set_data_dev(t30, t30_value);
-    			if ((!current || dirty[0] & /*O*/ 1) && t32_value !== (t32_value = /*O*/ ctx[0].c0 + "")) set_data_dev(t32, t32_value);
-    			if ((!current || dirty[0] & /*O*/ 1) && t34_value !== (t34_value = (/*O*/ ctx[0].d0.reduce(func) == /*O*/ ctx[0].c0) + "")) set_data_dev(t34, t34_value);
-    			if ((!current || dirty[0] & /*O*/ 1) && t37_value !== (t37_value = /*O*/ ctx[0].d1 + "")) set_data_dev(t37, t37_value);
-    			if ((!current || dirty[0] & /*O*/ 1) && t39_value !== (t39_value = /*O*/ ctx[0].c1 + "")) set_data_dev(t39, t39_value);
-    			if ((!current || dirty[0] & /*O*/ 1) && t41_value !== (t41_value = (/*O*/ ctx[0].d1.reduce(func_1) == /*O*/ ctx[0].c1) + "")) set_data_dev(t41, t41_value);
-    			if ((!current || dirty[0] & /*O*/ 1) && t44_value !== (t44_value = /*O*/ ctx[0].d2 + "")) set_data_dev(t44, t44_value);
-    			if ((!current || dirty[0] & /*O*/ 1) && t46_value !== (t46_value = /*O*/ ctx[0].c2 + "")) set_data_dev(t46, t46_value);
-    			if ((!current || dirty[0] & /*O*/ 1) && t48_value !== (t48_value = (/*O*/ ctx[0].d2.reduce(func_2) == /*O*/ ctx[0].c2) + "")) set_data_dev(t48, t48_value);
+
+    		p: function update(changed, ctx) {
+    			{
+    				if (!if_block) {
+    					if_block = create_if_block$1();
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(t1.parentNode, t1);
+    				} else {
+    									transition_in(if_block, 1);
+    				}
+    			}
+
+    			if ((!current || changed.O) && t8_value !== (t8_value = ctx.O.c0 + "")) {
+    				set_data(t8, t8_value);
+    			}
+
+    			if ((!current || changed.O) && t10_value !== (t10_value = ctx.O.c1 + "")) {
+    				set_data(t10, t10_value);
+    			}
+
+    			if ((!current || changed.O) && t12_value !== (t12_value = ctx.O.c2 + "")) {
+    				set_data(t12, t12_value);
+    			}
+
+    			if ((!current || changed.O) && t18_value !== (t18_value = ctx.O.d0.join(', ') + "")) {
+    				set_data(t18, t18_value);
+    			}
+
+    			if ((!current || changed.O) && t21_value !== (t21_value = ctx.O.d1.join(', ') + "")) {
+    				set_data(t21, t21_value);
+    			}
+
+    			if ((!current || changed.O) && t24_value !== (t24_value = ctx.O.d2.join(', ') + "")) {
+    				set_data(t24, t24_value);
+    			}
+
+    			if ((!current || changed.O) && t33_value !== (t33_value = ctx.O.d0 + "")) {
+    				set_data(t33, t33_value);
+    			}
+
+    			if ((!current || changed.O) && t35_value !== (t35_value = ctx.O.c0 + "")) {
+    				set_data(t35, t35_value);
+    			}
+
+    			if ((!current || changed.O) && t37_value !== (t37_value = ctx.O.d0.reduce(func) == ctx.O.c0 + "")) {
+    				set_data(t37, t37_value);
+    			}
+
+    			if ((!current || changed.O) && t40_value !== (t40_value = ctx.O.d1 + "")) {
+    				set_data(t40, t40_value);
+    			}
+
+    			if ((!current || changed.O) && t42_value !== (t42_value = ctx.O.c1 + "")) {
+    				set_data(t42, t42_value);
+    			}
+
+    			if ((!current || changed.O) && t44_value !== (t44_value = ctx.O.d1.reduce(func_1) == ctx.O.c1 + "")) {
+    				set_data(t44, t44_value);
+    			}
+
+    			if ((!current || changed.O) && t47_value !== (t47_value = ctx.O.d2 + "")) {
+    				set_data(t47, t47_value);
+    			}
+
+    			if ((!current || changed.O) && t49_value !== (t49_value = ctx.O.c2 + "")) {
+    				set_data(t49, t49_value);
+    			}
+
+    			if ((!current || changed.O) && t51_value !== (t51_value = ctx.O.d2.reduce(func_2) == ctx.O.c2 + "")) {
+    				set_data(t51, t51_value);
+    			}
     		},
+
     		i: function intro(local) {
     			if (current) return;
     			transition_in(if_block);
     			current = true;
     		},
+
     		o: function outro(local) {
     			transition_out(if_block);
     			current = false;
     		},
+
     		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(br0);
+    				detach(br1);
+    				detach(t0);
+    			}
+
     			if (if_block) if_block.d(detaching);
-    			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(br0);
-    			if (detaching) detach_dev(t1);
-    			if (detaching) detach_dev(p0);
-    			if (detaching) detach_dev(t3);
-    			if (detaching) detach_dev(br1);
-    			if (detaching) detach_dev(t4);
-    			if (detaching) detach_dev(div0);
-    			if (detaching) detach_dev(t6);
-    			if (detaching) detach_dev(div1);
-    			if (detaching) detach_dev(t12);
-    			if (detaching) detach_dev(br2);
-    			if (detaching) detach_dev(t13);
-    			if (detaching) detach_dev(span0);
-    			if (detaching) detach_dev(t15);
-    			if (detaching) detach_dev(span1);
-    			if (detaching) detach_dev(t23);
-    			if (detaching) detach_dev(br3);
-    			if (detaching) detach_dev(t24);
-    			if (detaching) detach_dev(br4);
-    			if (detaching) detach_dev(t25);
-    			if (detaching) detach_dev(button);
-    			if (detaching) detach_dev(t27);
-    			if (detaching) detach_dev(br5);
-    			if (detaching) detach_dev(br6);
-    			if (detaching) detach_dev(br7);
-    			if (detaching) detach_dev(t28);
-    			if (detaching) detach_dev(div2);
-    			if (detaching) detach_dev(t50);
-    			if (detaching) detach_dev(p1);
-    			if (detaching) detach_dev(t52);
-    			if (detaching) detach_dev(pre1);
-    			if (detaching) detach_dev(t54);
-    			if (detaching) detach_dev(p2);
-    			if (detaching) detach_dev(pre2);
-    			if (detaching) detach_dev(t57);
-    			if (detaching) detach_dev(p3);
-    			if (detaching) detach_dev(pre3);
-    			if (detaching) detach_dev(t60);
-    			if (detaching) detach_dev(p4);
-    			if (detaching) detach_dev(t62);
-    			if (detaching) detach_dev(br11);
-    			if (detaching) detach_dev(t63);
-    			if (detaching) detach_dev(span5);
-    			if (detaching) detach_dev(t65);
-    			if (detaching) detach_dev(a);
+
+    			if (detaching) {
+    				detach(t1);
+    				detach(br2);
+    				detach(t2);
+    				detach(p0);
+    				detach(t4);
+    				detach(br3);
+    				detach(t5);
+    				detach(div0);
+    				detach(t7);
+    				detach(div1);
+    				detach(t13);
+    				detach(br4);
+    				detach(t14);
+    				detach(span0);
+    				detach(t16);
+    				detach(span1);
+    				detach(t26);
+    				detach(br8);
+    				detach(t27);
+    				detach(br9);
+    				detach(t28);
+    				detach(button);
+    				detach(t30);
+    				detach(br10);
+    				detach(br11);
+    				detach(br12);
+    				detach(t31);
+    				detach(div2);
+    				detach(t53);
+    				detach(p1);
+    				detach(t55);
+    				detach(pre1);
+    				detach(t57);
+    				detach(p2);
+    				detach(pre2);
+    				detach(t60);
+    				detach(p3);
+    				detach(pre3);
+    				detach(t63);
+    				detach(p4);
+    				detach(t65);
+    				detach(br16);
+    				detach(t66);
+    				detach(span5);
+    				detach(t68);
+    				detach(a);
+    			}
+
     			dispose();
     		}
     	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$1.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
     }
 
-    function wait$1(ms) {
-    	return new Promise(r => setTimeout(r, ms));
+    function func(a,b) {
+    	return a*b;
     }
 
-    const func = (a, b) => a * b;
-    const func_1 = (a, b) => a * b;
-    const func_2 = (a, b) => a * b;
+    function func_1(a,b) {
+    	return a*b;
+    }
+
+    function func_2(a,b) {
+    	return a*b;
+    }
 
     function instance$1($$self, $$props, $$invalidate) {
-    	let visible = true;
-    	let j = 2;
+    var f_ = function f_ () {};
 
-    	var pauseP = t => async x => {
-    		await wait$1(t * 1000);
-    		return x;
-    	};
+    var O = new Object();
+    O.d0 = [2,3,4]; $$invalidate('O', O);
+    O.d1 = [2,3,4]; $$invalidate('O', O);
+    O.d2= [2,3,4]; $$invalidate('O', O);
 
-    	var divPinverse = a => async b => {
-    		await wait$1(600);
-    		return a / b;
-    	};
+    var M = -1;
+    var Q = -1;
 
-    	var divP = a => async b => {
-    		await wait$1(600);
-    		return b / a;
-    	};
+    O.generic = ["Nobody"]; $$invalidate('O', O);
 
-    	var doubleP = async a => {
-    		await wait$1(1000);
-    		return a + a;
-    	};
+    const Monad = function Monad ( AR = [],  name = "generic",  f_ = f_Func,  rF = runFunc )  {
+    var x = AR.slice();
+    O[name] = ar; $$invalidate('O', O);
+    rF(x); 
+    };
+    var runFunc = function  runFunc () { 
+    varx = O[name].pop();   //  x will be replaced below
+    return run = (function run (x) {
+    if (x != undefined  && x === x  && x !== false && x.name !== "f_" && x.name !== "stop" )  {
+      O[name] = O[name].concat(x); $$invalidate('O', O);
+    }return f_;
+    })
+    };
 
-    	var toInt = a => parseInt(a, 10);
+    /* let a0 = *Monad([3])(cube)
+    (add(3))(square)(div(100))
+    (sqrt)(()=>this)(halt); */
 
-    	var addP_toInt = x => async y => {
-    		await wait$1(1000);
-    		return toInt(x) + toInt(y);
-    	};
+    // var socket = new WebSocket("ws://localhost:3055")
+    var socket = new WebSocket("ws://167.71.168.53:3055");
 
-    	var addP = x => async y => {
-    		await wait$1(1000);
-    		return x + y;
-    	};
+    socket.onclose = function (event) {
+    console.log('<><><> ALERT - socket is closing. <><><> ', event);
+    };
+    socket.onmessage = function(e) {
+    // console.log("WebSocket message is", e);
+    var v = e.data.split(',');
+    if (v[0] === "BE#$42") {
+    Q = Q + 1;
+    Monad([v[3]], "c"+Q);
+    if (Q === 2) Q = -1;
+    worker_OO.postMessage([v[3]]);
+    }
+    };
+    login();
 
-    	var multP = x => async y => {
-    		await wait$1(1200);
-    		return x * y;
-    	};
+    function login() {
+    console.log('00000000000000000000000000000000 Entering login', socket.readyState);
+    setTimeout(function () {
+    if (socket.readyState === 1) {
+      console.log('readyState is', socket.readyState);
+      var v = Math.random().toString().substring(5);
+      var v2 = v.toString().substring(2);
+      var combo = v + '<o>' + v2;
+      socket.send('CC#$42' + combo);
+      // socket.send(`GZ#$42,solo,${v}`);
+      socket.send("BE#$42,solo,name,10000");
+      socket.send("BE#$42,solo,name,100000");
+      socket.send("BE#$42,solo,name,1000");
+    } else {
+      login();
+    }
+    }, 200);
+    }
+    const factors = function factors () {
+    socket.send("BE#$42,solo,name,10000");
+    socket.send("BE#$42,solo,name,100000");
+    socket.send("BE#$42,solo,name,1000");
+    };
 
-    	var powP = x => async y => {
-    		await wait$1(1200);
-    		return y ** x;
-    	};
+    var worker_OO = new Worker('worker_OO.js');
 
-    	var cube = x => x ** 3;
-    	var pow = p => x => x ** p;
-    	var square = x => x * x;
-    	var add = x => y => x + y;
-    	var sqrt = x => x ** (1 / 2);
-    	var root = r => x => x(1 / r);
-    	var div = d => x => x / d;
-
-    	var f = function f() {
-    		
-    	};
-
-    	var f_ = function f_() {
-    		
-    	};
-
-    	var sto = "sto";
-    	var halt = "halt";
-    	var O = new Object();
-    	O.d0 = [2, 3, 4];
-    	O.d1 = [2, 3, 4];
-    	O.d2 = [2, 3, 4];
-    	var M = -1;
-    	var Q = -1;
-    	var lock = false;
-    	O.generic = ["Nobody"];
-
-    	const Monad = function Monad(AR = [], name = "generic", f_ = mFunc) {
-    		let ar = AR.slice();
-    		$$invalidate(0, O[name] = ar, O);
-    		let run;
-    		let x = O[name].pop();
-
-    		return run = (function run(x) {
-    			if (x != undefined && x === x && x !== false && x.name !== "f_" && x.name !== "halt") {
-    				$$invalidate(0, O[name] = O[name].concat(x), O);
-    			}
-
-    			
-    			return f_;
-    		})(x);
-    	};
-
-    	var mFunc = function mFunc_(func) {
-    		if (func === "halt" || func === "S") return O[name]; else if (typeof func !== "function") p = func(x); else if (x instanceof Promise) p = x.then(v => func(v));
-    		return run(p);
-    	};
-
-    	var socket = new WebSocket("ws://167.71.168.53:3055");
-
-    	socket.onclose = function (event) {
-    		console.log("<><><> ALERT - socket is closing. <><><> ", event);
-    	};
-
-    	socket.onmessage = function (e) {
-    		var v = e.data.split(",");
-
-    		if (v[0] === "BE#$42") {
-    			Q = Q + 1;
-    			Monad([v[3]], "c" + Q);
-    			if (Q === 2) Q = -1;
-    			worker_OO.postMessage([v[3]]);
-    		}
-    	};
-
-    	login();
-
-    	function login() {
-    		console.log("00000000000000000000000000000000 Entering login", socket.readyState);
-
-    		setTimeout(
-    			function () {
-    				if (socket.readyState === 1) {
-    					console.log("readyState is", socket.readyState);
-    					var v = Math.random().toString().substring(5);
-    					var v2 = v.toString().substring(2);
-    					var combo = v + "<o>" + v2;
-    					socket.send("CC#$42" + combo);
-    					socket.send("BE#$42,solo,name,10000");
-    					socket.send("BE#$42,solo,name,100000");
-    					socket.send("BE#$42,solo,name,1000");
-    				} else {
-    					login();
-    				}
-    			},
-    			200
-    		);
-    	}
-
-    	
-
-    	var groupDelete = function groupDelete(ob, x) {
-    		for (var z in ob) if (z.startsWith("x")) delete ob[z];
-    	};
-
-    	var clearOb = function clearOb(ob) {
-    		for (var x in ob) delete ob[x];
-    	};
-
-    	const factors = function factors() {
-    		socket.send("BE#$42,solo,name,10000");
-    		socket.send("BE#$42,solo,name,100000");
-    		socket.send("BE#$42,solo,name,1000");
-    	};
-
-    	var worker_OO = new Worker("worker_OO.js");
-
-    	worker_OO.onmessage = e => {
-    		M = M + 1;
-    		Monad([e.data], "d" + M);
-
-    		if (M === 2) {
-    			M = -1;
-    		}
-    	};
-
-    	var mon = `const Monad = function Monad ( AR = [], name = "generic" )  {
+    worker_OO.onmessage = e => {
+    M = M + 1;
+    Monad([e.data], "d"+M);
+    if (M === 2) {
+      M = -1;
+    }
+    };
+    var mon = `const Monad = function Monad ( AR = [], name = "generic" )  {
 var f_, p, run;
 var ar = AR.slice();
 var name = name;
@@ -1730,43 +1547,21 @@ O[name] = ar;
 let x = O[name].pop();
 return run = (function run (x) {
 if (x != undefined && x === x  && x !== false
-  && x.name !== "f_" && x.name !== "halt" ) {
-    O[name] = O[name].concat(x)
-  };
-  function f_ (func) {
-    if (func === 'halt' || func === 'S') return O[name];
-    else if (typeof func !== "function") p = func;
-    else if (x instanceof Promise) p = x.then(v => func(v));
-    else p = func(x);
-    return run(p);
-  };
-  return f_;
+&& x.name !== "f_" && x.name !== "halt" ) {
+  O[name] = O[name].concat(x)
+};
+function f_ (func) {
+  if (func === 'halt' || func === 'S') return O[name];
+  else if (typeof func !== "function") p = func;
+  else if (x instanceof Promise) p = x.then(v => func(v));
+  else p = func(x);
+  return run(p);
+};
+return f_;
 })(x);
 } `;
 
-    	var statement = `    Monad(["value"], "key")(x => "This is the " + x)(x => x + ".")(halt)
-O.key   // ["value", "This is the value", "This is the value."]`;
-
-    	var fa = `    function factors () {
-if (lock === false && j === 2) {
-  lock = true;
-  clearOb(O);
-  N = -1;
-  M = -1;
-  Q = -1;
-  groupDelete(O, "c");
-  groupDelete(O, "d");
-  fact();
-}
-else if (j !== 2) {return}
-else {
-  setTimeout(()=> {
-  factors()
-},1000)
-}
-}`;
-
-    	var onmessServer = `ar v = e.data.split(',');
+    var onmessServer = `ar v = e.data.split(',');
 if (v[0] === "BE#$42") {
 Q = Q + 1;
 Monad([v[3]], "c"+Q);
@@ -1774,117 +1569,75 @@ worker_OO.postMessage([v[3]])
 }
 }  `;
 
-    	var onmessWorker = `worker_OO.onmessage = e => {
-  M = M + 1;
-  Monad([e.data], "d"+M);
-  if (M === 2) {
-    M = -1;
-  }
+    var onmessWorker = `worker_OO.onmessage = e => {
+M = M + 1;
+Monad([e.data], "d"+M);
+if (M === 2) {
+  M = -1;
+}
 }`;
 
-    	let candle = ` socket.send(\"BE#$42,solo,name,10000\")    
+    let candle = ` socket.send(\"BE#$42,solo,name,10000\")    
 socket.send('\BE#$42,solo,name,100000\")    
 socket.send(\"BE#$42,solo,name,1000\")    `;
 
-    	$$self.$capture_state = () => {
-    		return {};
+    	$$self.$$.update = ($$dirty = { j: 1 }) => {
+    		if ($$dirty.j) ;
     	};
 
-    	$$self.$inject_state = $$props => {
-    		if ("visible" in $$props) visible = $$props.visible;
-    		if ("j" in $$props) $$invalidate(1, j = $$props.j);
-    		if ("pauseP" in $$props) pauseP = $$props.pauseP;
-    		if ("divPinverse" in $$props) divPinverse = $$props.divPinverse;
-    		if ("divP" in $$props) divP = $$props.divP;
-    		if ("doubleP" in $$props) doubleP = $$props.doubleP;
-    		if ("toInt" in $$props) toInt = $$props.toInt;
-    		if ("addP_toInt" in $$props) addP_toInt = $$props.addP_toInt;
-    		if ("addP" in $$props) addP = $$props.addP;
-    		if ("multP" in $$props) multP = $$props.multP;
-    		if ("powP" in $$props) powP = $$props.powP;
-    		if ("cube" in $$props) cube = $$props.cube;
-    		if ("pow" in $$props) pow = $$props.pow;
-    		if ("square" in $$props) square = $$props.square;
-    		if ("add" in $$props) add = $$props.add;
-    		if ("sqrt" in $$props) sqrt = $$props.sqrt;
-    		if ("root" in $$props) root = $$props.root;
-    		if ("div" in $$props) div = $$props.div;
-    		if ("f" in $$props) f = $$props.f;
-    		if ("f_" in $$props) f_ = $$props.f_;
-    		if ("sto" in $$props) sto = $$props.sto;
-    		if ("halt" in $$props) halt = $$props.halt;
-    		if ("O" in $$props) $$invalidate(0, O = $$props.O);
-    		if ("M" in $$props) M = $$props.M;
-    		if ("Q" in $$props) Q = $$props.Q;
-    		if ("lock" in $$props) lock = $$props.lock;
-    		if ("mFunc" in $$props) mFunc = $$props.mFunc;
-    		if ("socket" in $$props) socket = $$props.socket;
-    		if ("groupDelete" in $$props) groupDelete = $$props.groupDelete;
-    		if ("clearOb" in $$props) clearOb = $$props.clearOb;
-    		if ("worker_OO" in $$props) worker_OO = $$props.worker_OO;
-    		if ("mon" in $$props) $$invalidate(3, mon = $$props.mon);
-    		if ("statement" in $$props) statement = $$props.statement;
-    		if ("fa" in $$props) fa = $$props.fa;
-    		if ("onmessServer" in $$props) $$invalidate(4, onmessServer = $$props.onmessServer);
-    		if ("onmessWorker" in $$props) $$invalidate(5, onmessWorker = $$props.onmessWorker);
-    		if ("candle" in $$props) $$invalidate(6, candle = $$props.candle);
+    	return {
+    		O,
+    		factors,
+    		mon,
+    		onmessServer,
+    		onmessWorker,
+    		candle
     	};
-    	return [O, j, factors, mon, onmessServer, onmessWorker, candle];
     }
 
     class Monad2 extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$1, create_fragment$1, safe_not_equal, {}, [-1, -1]);
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "Monad2",
-    			options,
-    			id: create_fragment$1.name
-    		});
+    		init(this, options, instance$1, create_fragment$1, safe_not_equal, []);
     	}
     }
 
-    /* src/Monad3.svelte generated by Svelte v3.16.7 */
+    /* src/Monad3.svelte generated by Svelte v3.9.1 */
+
     const file$2 = "src/Monad3.svelte";
 
-    // (248:2) {#if j === 3}
+    // (408:2) {#if j === 3}
     function create_if_block$2(ctx) {
-    	let div2;
-    	let div0;
-    	let t1;
-    	let div1;
-    	let div2_transition;
-    	let current;
+    	var div2, div0, t_1, div1, div2_transition, current;
 
-    	const block = {
+    	return {
     		c: function create() {
     			div2 = element("div");
     			div0 = element("div");
-    			div0.textContent = "A MONAD FOR PROMISE MANIPULATION";
-    			t1 = space();
+    			div0.textContent = "PROMISE MANIPULATION";
+    			t_1 = space();
     			div1 = element("div");
     			div1.textContent = "Computations Easily Resumed and Branched";
     			set_style(div0, "font-size", "32px");
-    			add_location(div0, file$2, 249, 0, 6083);
+    			add_location(div0, file$2, 409, 0, 8567);
     			set_style(div1, "font-size", "22px");
-    			add_location(div1, file$2, 250, 0, 6155);
+    			add_location(div1, file$2, 410, 0, 8627);
     			set_style(div2, "font-family", "Times New Roman");
     			set_style(div2, "text-align", "center");
     			set_style(div2, "color", "hsl(210, 90%, 90%)");
-    			add_location(div2, file$2, 248, 1, 5972);
+    			add_location(div2, file$2, 408, 1, 8456);
     		},
+
     		m: function mount(target, anchor) {
-    			insert_dev(target, div2, anchor);
-    			append_dev(div2, div0);
-    			append_dev(div2, t1);
-    			append_dev(div2, div1);
+    			insert(target, div2, anchor);
+    			append(div2, div0);
+    			append(div2, t_1);
+    			append(div2, div1);
     			current = true;
     		},
+
     		i: function intro(local) {
     			if (current) return;
-
     			add_render_callback(() => {
     				if (!div2_transition) div2_transition = create_bidirectional_transition(div2, fade, {}, true);
     				div2_transition.run(1);
@@ -1892,750 +1645,29 @@ socket.send(\"BE#$42,solo,name,1000\")    `;
 
     			current = true;
     		},
+
     		o: function outro(local) {
     			if (!div2_transition) div2_transition = create_bidirectional_transition(div2, fade, {}, false);
     			div2_transition.run(0);
+
     			current = false;
     		},
+
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div2);
-    			if (detaching && div2_transition) div2_transition.end();
+    			if (detaching) {
+    				detach(div2);
+    				if (div2_transition) div2_transition.end();
+    			}
     		}
     	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block$2.name,
-    		type: "if",
-    		source: "(248:2) {#if j === 3}",
-    		ctx
-    	});
-
-    	return block;
     }
 
     function create_fragment$2(ctx) {
-    	let t0;
-    	let h20;
-    	let t1;
-    	let t2_value = /*O*/ ctx[0].test + "";
-    	let t2;
-    	let t3;
-    	let h21;
-    	let t4;
-    	let t5_value = /*O*/ ctx[0].test_2 + "";
-    	let t5;
-    	let t6;
-    	let br0;
-    	let t7;
-    	let span0;
-    	let t9;
-    	let br1;
-    	let br2;
-    	let t10;
-    	let button0;
-    	let pre0;
-    	let t12;
-    	let p0;
-    	let t13;
-    	let br3;
-    	let t14;
-    	let p1;
-    	let t16;
-    	let pre1;
-    	let t18;
-    	let p2;
-    	let t20;
-    	let pre2;
-    	let t22;
-    	let p3;
-    	let t24;
-    	let pre3;
-    	let t26;
-    	let br4;
-    	let t27;
-    	let button1;
-    	let pre4;
-    	let t29;
-    	let br5;
-    	let t30;
-    	let h22;
-    	let t31;
-    	let t32_value = /*O*/ ctx[0].test + "";
-    	let t32;
-    	let t33;
-    	let h23;
-    	let t34;
-    	let t35_value = /*O*/ ctx[0].test_2 + "";
-    	let t35;
-    	let t36;
-    	let br6;
-    	let t37;
-    	let br7;
-    	let t38;
-    	let span1;
-    	let t40;
-    	let span2;
-    	let t42;
-    	let span3;
-    	let t44;
-    	let br8;
-    	let t45;
-    	let br9;
-    	let t46;
-    	let br10;
-    	let current;
-    	let dispose;
-    	let if_block = /*j*/ ctx[1] === 3 && create_if_block$2(ctx);
+    	var t0, br0, t1, p0, t3, p1, t5, button, t7, h30, t8, t9, t10, h31, t11, t12_value = ctx.B[ctx.sym1] + "", t12, t13, h32, t14, t15_value = ctx.B[ctx.sym2] + "", t15, t16, h33, t17, t18_value = ctx.B[ctx.sym3] + "", t18, t19, p2, t21, pre0, t22, t23, pre1, t24, t25, pre2, t26, t27, pre3, t28, t29, br1, t30, br2, t31, p3, t32, br3, current, dispose;
 
-    	const block = {
-    		c: function create() {
-    			if (if_block) if_block.c();
-    			t0 = space();
-    			h20 = element("h2");
-    			t1 = text("O.test is ");
-    			t2 = text(t2_value);
-    			t3 = space();
-    			h21 = element("h2");
-    			t4 = text("O.test_2 is ");
-    			t5 = text(t5_value);
-    			t6 = space();
-    			br0 = element("br");
-    			t7 = space();
-    			span0 = element("span");
-    			span0.textContent = "To see branch() and resume() in action, click the verbose butt6n (below). To see the boolean \"lok\" protecting the integrity of the data, click the verbose button (below) several times in rapid succession:";
-    			t9 = space();
-    			br1 = element("br");
-    			br2 = element("br");
-    			t10 = space();
-    			button0 = element("button");
-    			pre0 = element("pre");
-    			pre0.textContent = "Monad([2], \"test\")(addP(1))\n(cubeP)(addP(3))(squareP)(divP(100))(() => \nbranch(\"test\", \"test_2\")(sqrtP)(cubeP)(addP(O.test_2[2])\n(O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))(() =>\nresume(\"test\")(multP(4))(addP(6))))";
-    			t12 = space();
-    			p0 = element("p");
-    			t13 = space();
-    			br3 = element("br");
-    			t14 = space();
-    			p1 = element("p");
-    			p1.textContent = "Here's the modified monad constructor:";
-    			t16 = space();
-    			pre1 = element("pre");
-    			pre1.textContent = `${/*mon*/ ctx[2]}`;
-    			t18 = space();
-    			p2 = element("p");
-    			p2.textContent = "After monads encounter \"halt\", they can use the function resume() to continue processing data where they left off and (2) they can branch off in new monads created by branch(). Here are the definitions:";
-    			t20 = space();
-    			pre2 = element("pre");
-    			pre2.textContent = `${/*fs*/ ctx[4]}`;
-    			t22 = space();
-    			p3 = element("p");
-    			p3.textContent = "This is the statement that produces the observed results when \"START\" is clicked.";
-    			t24 = space();
-    			pre3 = element("pre");
-    			pre3.textContent = `${/*code*/ ctx[5]}`;
-    			t26 = space();
-    			br4 = element("br");
-    			t27 = space();
-    			button1 = element("button");
-    			pre4 = element("pre");
-    			pre4.textContent = "Monad([2], \"test\")(addP(1))\n(cubeP)(addP(3))(squareP)(divP(100))(() => \nbranch(\"test\", \"test_2\")(sqrtP)(cubeP)(addP(O.test_2[2])\n(O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))(() =>\nresume(\"test\")(multP(4))(addP(6))))";
-    			t29 = space();
-    			br5 = element("br");
-    			t30 = space();
-    			h22 = element("h2");
-    			t31 = text("O.test is ");
-    			t32 = text(t32_value);
-    			t33 = space();
-    			h23 = element("h2");
-    			t34 = text("O.test_2 is ");
-    			t35 = text(t35_value);
-    			t36 = space();
-    			br6 = element("br");
-    			t37 = space();
-    			br7 = element("br");
-    			t38 = space();
-    			span1 = element("span");
-    			span1.textContent = "Notice the statement:";
-    			t40 = space();
-    			span2 = element("span");
-    			span2.textContent = "()=>addP(O.test_2[2])(O.test_2[1])";
-    			t42 = space();
-    			span3 = element("span");
-    			span3.textContent = ". Promises in chains of ES6 Promises can't access previous Promise resolution values. One way to get access to prior resolution values is to encapsulate Promise chains in Monad(). This also makes it convenient to resume or branch from terminated computation chains; something that can be accomplished without naming the chains.";
-    			t44 = space();
-    			br8 = element("br");
-    			t45 = space();
-    			br9 = element("br");
-    			t46 = space();
-    			br10 = element("br");
-    			add_location(h20, file$2, 254, 2, 6252);
-    			add_location(h21, file$2, 255, 2, 6282);
-    			add_location(br0, file$2, 255, 46, 6326);
-    			attr_dev(span0, "class", "tao");
-    			add_location(span0, file$2, 256, 2, 6333);
-    			add_location(br1, file$2, 257, 2, 6564);
-    			add_location(br2, file$2, 257, 6, 6568);
-    			attr_dev(pre0, "class", "svelte-41wco8");
-    			add_location(pre0, file$2, 259, 56, 6630);
-    			set_style(button0, "text-align", "left");
-    			attr_dev(button0, "class", "svelte-41wco8");
-    			add_location(button0, file$2, 259, 2, 6576);
-    			add_location(p0, file$2, 264, 0, 6874);
-    			add_location(br3, file$2, 265, 2, 6886);
-    			add_location(p1, file$2, 266, 2, 6893);
-    			attr_dev(pre1, "class", "svelte-41wco8");
-    			add_location(pre1, file$2, 267, 2, 6943);
-    			add_location(p2, file$2, 268, 2, 6962);
-    			attr_dev(pre2, "class", "svelte-41wco8");
-    			add_location(pre2, file$2, 269, 2, 7175);
-    			add_location(p3, file$2, 270, 2, 7193);
-    			attr_dev(pre3, "class", "svelte-41wco8");
-    			add_location(pre3, file$2, 271, 2, 7286);
-    			add_location(br4, file$2, 271, 46, 7330);
-    			attr_dev(pre4, "class", "svelte-41wco8");
-    			add_location(pre4, file$2, 272, 56, 7391);
-    			set_style(button1, "text-align", "left");
-    			attr_dev(button1, "class", "svelte-41wco8");
-    			add_location(button1, file$2, 272, 2, 7337);
-    			add_location(br5, file$2, 279, 2, 7639);
-    			add_location(h22, file$2, 280, 2, 7646);
-    			add_location(h23, file$2, 281, 2, 7676);
-    			add_location(br6, file$2, 282, 2, 7710);
-    			add_location(br7, file$2, 284, 2, 7718);
-    			attr_dev(span1, "class", "tao");
-    			add_location(span1, file$2, 285, 2, 7725);
-    			set_style(span2, "color", "#AAFFAA");
-    			add_location(span2, file$2, 286, 2, 7778);
-    			add_location(span3, file$2, 287, 2, 7853);
-    			add_location(br8, file$2, 288, 2, 8197);
-    			add_location(br9, file$2, 289, 2, 8204);
-    			add_location(br10, file$2, 290, 2, 8211);
+    	var if_block =  create_if_block$2();
 
-    			dispose = [
-    				listen_dev(button0, "click", /*start*/ ctx[3], false, false, false),
-    				listen_dev(button1, "click", /*start*/ ctx[3], false, false, false)
-    			];
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-    		},
-    		m: function mount(target, anchor) {
-    			if (if_block) if_block.m(target, anchor);
-    			insert_dev(target, t0, anchor);
-    			insert_dev(target, h20, anchor);
-    			append_dev(h20, t1);
-    			append_dev(h20, t2);
-    			insert_dev(target, t3, anchor);
-    			insert_dev(target, h21, anchor);
-    			append_dev(h21, t4);
-    			append_dev(h21, t5);
-    			insert_dev(target, t6, anchor);
-    			insert_dev(target, br0, anchor);
-    			insert_dev(target, t7, anchor);
-    			insert_dev(target, span0, anchor);
-    			insert_dev(target, t9, anchor);
-    			insert_dev(target, br1, anchor);
-    			insert_dev(target, br2, anchor);
-    			insert_dev(target, t10, anchor);
-    			insert_dev(target, button0, anchor);
-    			append_dev(button0, pre0);
-    			insert_dev(target, t12, anchor);
-    			insert_dev(target, p0, anchor);
-    			insert_dev(target, t13, anchor);
-    			insert_dev(target, br3, anchor);
-    			insert_dev(target, t14, anchor);
-    			insert_dev(target, p1, anchor);
-    			insert_dev(target, t16, anchor);
-    			insert_dev(target, pre1, anchor);
-    			insert_dev(target, t18, anchor);
-    			insert_dev(target, p2, anchor);
-    			insert_dev(target, t20, anchor);
-    			insert_dev(target, pre2, anchor);
-    			insert_dev(target, t22, anchor);
-    			insert_dev(target, p3, anchor);
-    			insert_dev(target, t24, anchor);
-    			insert_dev(target, pre3, anchor);
-    			insert_dev(target, t26, anchor);
-    			insert_dev(target, br4, anchor);
-    			insert_dev(target, t27, anchor);
-    			insert_dev(target, button1, anchor);
-    			append_dev(button1, pre4);
-    			insert_dev(target, t29, anchor);
-    			insert_dev(target, br5, anchor);
-    			insert_dev(target, t30, anchor);
-    			insert_dev(target, h22, anchor);
-    			append_dev(h22, t31);
-    			append_dev(h22, t32);
-    			insert_dev(target, t33, anchor);
-    			insert_dev(target, h23, anchor);
-    			append_dev(h23, t34);
-    			append_dev(h23, t35);
-    			insert_dev(target, t36, anchor);
-    			insert_dev(target, br6, anchor);
-    			insert_dev(target, t37, anchor);
-    			insert_dev(target, br7, anchor);
-    			insert_dev(target, t38, anchor);
-    			insert_dev(target, span1, anchor);
-    			insert_dev(target, t40, anchor);
-    			insert_dev(target, span2, anchor);
-    			insert_dev(target, t42, anchor);
-    			insert_dev(target, span3, anchor);
-    			insert_dev(target, t44, anchor);
-    			insert_dev(target, br8, anchor);
-    			insert_dev(target, t45, anchor);
-    			insert_dev(target, br9, anchor);
-    			insert_dev(target, t46, anchor);
-    			insert_dev(target, br10, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			if ((!current || dirty[0] & /*O*/ 1) && t2_value !== (t2_value = /*O*/ ctx[0].test + "")) set_data_dev(t2, t2_value);
-    			if ((!current || dirty[0] & /*O*/ 1) && t5_value !== (t5_value = /*O*/ ctx[0].test_2 + "")) set_data_dev(t5, t5_value);
-    			if ((!current || dirty[0] & /*O*/ 1) && t32_value !== (t32_value = /*O*/ ctx[0].test + "")) set_data_dev(t32, t32_value);
-    			if ((!current || dirty[0] & /*O*/ 1) && t35_value !== (t35_value = /*O*/ ctx[0].test_2 + "")) set_data_dev(t35, t35_value);
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(if_block);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(if_block);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (if_block) if_block.d(detaching);
-    			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(h20);
-    			if (detaching) detach_dev(t3);
-    			if (detaching) detach_dev(h21);
-    			if (detaching) detach_dev(t6);
-    			if (detaching) detach_dev(br0);
-    			if (detaching) detach_dev(t7);
-    			if (detaching) detach_dev(span0);
-    			if (detaching) detach_dev(t9);
-    			if (detaching) detach_dev(br1);
-    			if (detaching) detach_dev(br2);
-    			if (detaching) detach_dev(t10);
-    			if (detaching) detach_dev(button0);
-    			if (detaching) detach_dev(t12);
-    			if (detaching) detach_dev(p0);
-    			if (detaching) detach_dev(t13);
-    			if (detaching) detach_dev(br3);
-    			if (detaching) detach_dev(t14);
-    			if (detaching) detach_dev(p1);
-    			if (detaching) detach_dev(t16);
-    			if (detaching) detach_dev(pre1);
-    			if (detaching) detach_dev(t18);
-    			if (detaching) detach_dev(p2);
-    			if (detaching) detach_dev(t20);
-    			if (detaching) detach_dev(pre2);
-    			if (detaching) detach_dev(t22);
-    			if (detaching) detach_dev(p3);
-    			if (detaching) detach_dev(t24);
-    			if (detaching) detach_dev(pre3);
-    			if (detaching) detach_dev(t26);
-    			if (detaching) detach_dev(br4);
-    			if (detaching) detach_dev(t27);
-    			if (detaching) detach_dev(button1);
-    			if (detaching) detach_dev(t29);
-    			if (detaching) detach_dev(br5);
-    			if (detaching) detach_dev(t30);
-    			if (detaching) detach_dev(h22);
-    			if (detaching) detach_dev(t33);
-    			if (detaching) detach_dev(h23);
-    			if (detaching) detach_dev(t36);
-    			if (detaching) detach_dev(br6);
-    			if (detaching) detach_dev(t37);
-    			if (detaching) detach_dev(br7);
-    			if (detaching) detach_dev(t38);
-    			if (detaching) detach_dev(span1);
-    			if (detaching) detach_dev(t40);
-    			if (detaching) detach_dev(span2);
-    			if (detaching) detach_dev(t42);
-    			if (detaching) detach_dev(span3);
-    			if (detaching) detach_dev(t44);
-    			if (detaching) detach_dev(br8);
-    			if (detaching) detach_dev(t45);
-    			if (detaching) detach_dev(br9);
-    			if (detaching) detach_dev(t46);
-    			if (detaching) detach_dev(br10);
-    			run_all(dispose);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$2.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function wait$2(ms) {
-    	return new Promise(r => setTimeout(r, ms));
-    }
-
-    async function squareP(x) {
-    	await wait$2(100);
-    	return x * x;
-    }
-
-    async function cubeP(x) {
-    	await wait$2(300);
-    	return x * x * x;
-    }
-
-    async function sqrtP(x) {
-    	await wait$2(900);
-    	return x ** (1 / 2);
-    }
-
-    function instance$2($$self, $$props, $$invalidate) {
-    	let visible = true;
-    	let j = 3;
-
-    	let pauseP = t => async x => {
-    		await wait$2(t * 1000);
-    		return x;
-    	};
-
-    	let divPinverse = a => async b => {
-    		await wait$2(300);
-    		return a / b;
-    	};
-
-    	let divP = a => async b => {
-    		await wait$2(300);
-    		return b / a;
-    	};
-
-    	let doubleP = async a => {
-    		await wait$2(300);
-    		return a + a;
-    	};
-
-    	let toInt = a => pareseInt(a, 10);
-
-    	let addP_toInt = x => async y => {
-    		await wait$2(300);
-    		return toInt(x) + toInt(y);
-    	};
-
-    	let addP = x => async y => {
-    		await wait$2(900);
-    		return x + y;
-    	};
-
-    	let multP = x => async y => {
-    		await wait$2(300);
-    		return x * y;
-    	};
-
-    	let powP = x => async y => {
-    		await wait$2(300);
-    		return y ** x;
-    	};
-
-    	let _conveNt_ = a => b => parseFloat(b, a);
-    	let toFloat = _conveNt_(10);
-    	let cube = x => x ** 3;
-    	let pow = p => x => x ** p;
-    	let square = x => x * x;
-    	let add = x => y => x + y;
-    	let sqrt = x => x ** (1 / 2);
-    	let root = r => x => x(1 / r);
-    	let div = d => x => x / d;
-
-    	let f = function f() {
-    		
-    	};
-
-    	let f_ = function f_() {
-    		
-    	};
-
-    	let sto = "sto";
-    	let halt = "halt";
-    	let O = new Object();
-    	let M = -1;
-    	let N = -1;
-    	let T = -1;
-    	let Q = -1;
-    	let lock = false;
-
-    	let Monad = function Monad(AR = [], name = "generic") {
-    		let p, run, f_;
-    		let ar = AR.slice();
-    		$$invalidate(0, O[name] = ar, O);
-    		let x = O[name].pop();
-
-    		return run = (function run(x) {
-    			if (x instanceof Promise) x.then(y => {
-    				if (typeof y != "undefined" && y == y && y.name !== "f_") {
-    					$$invalidate(0, O[name] = O[name].concat(y), O);
-    				}
-    			});
-
-    			if (!(x instanceof Promise)) {
-    				if (x != undefined && x == x) {
-    					$$invalidate(0, O[name] = O[name].concat(x), O);
-    				}
-    			}
-
-    			f_ = function f_(func) {
-    				if (func === "halt" || func === "S") return O[name].slice(); else if (typeof func !== "function") p = func; else if (x instanceof Promise) p = x.then(v => func(v)); else p = func(x);
-    				return run(p);
-    			};
-
-    			return f_;
-    		})(x);
-    	};
-
-    	let branch = function branch(s, s2) {
-    		return Monad(O[s].slice(), s2);
-    	};
-
-    	let resume = function resume(s) {
-    		return Monad(O[s], s);
-    	};
-
-    	let mon = `   let Monad = function Monad ( AR = [], name = "generic"  )  {
-      let f_, p, run;
-      let ar = AR.slice();
-      let name = name;
-      O[name] = ar;
-      let x = O[name].pop();
-      return run = (function run (x) {
-        if (x instanceof Promise) x.then(y => {
-          if (y != undefined && y == y && y.name !== "f_") {
-          O[name] = O[name].concat(y)
-          }
-        })
-        if (!(x instanceof Promise)) {
-            if (x != undefined && x == x) {
-              O[name] = O[name].concat(x)
-            }
-        }
-        function f_ (func) {
-          if (func === 'halt' || func === 'S') return O[name].slice();
-          else if (typeof func !== "function") p = func;
-          else if (x instanceof Promise) p = x.then(v => func(v));
-          else p = func(x);
-          return run(p);
-        };
-        return f_;
-      })(x);
-    }`;
-
-    	let lok = false;
-
-    	let start = function start() {
-    		if (!lok) {
-    			lok = true;
-    			setTimeout(() => lok = false, 3000);
-    			$$invalidate(0, O = {});
-    			Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))(() => branch("test", "test_2")(sqrtP)(cubeP)(() => addP(O.test_2[2])(O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))(() => resume("test")(multP(4))(addP(6))));
-    		} else {
-    			setTimeout(() => start(), 300);
-    		}
-    	};
-
-    	let fs = `   let branch = function branch (s,s2) {return Monad(O[s].slice(-1)  , s2)}
-    let resume = function resume (s) {return Monad(O[s], s)}`;
-
-    	let code = `    Monad([2], "test")(addP(1))(cubeP)(addP(3))(squareP)(divP(100))
-      (() => branch("test", "test_2")(sqrtP)(cubeP)(()=>addP(O.test_2[2])
-      (O.test_2[1]))(squareP)(divP(100))(sqrtP)(multP(14))
-      (() => resume("test")(multP(4))(addP(6))))`;
-
-    	$$self.$capture_state = () => {
-    		return {};
-    	};
-
-    	$$self.$inject_state = $$props => {
-    		if ("visible" in $$props) visible = $$props.visible;
-    		if ("j" in $$props) $$invalidate(1, j = $$props.j);
-    		if ("pauseP" in $$props) pauseP = $$props.pauseP;
-    		if ("divPinverse" in $$props) divPinverse = $$props.divPinverse;
-    		if ("divP" in $$props) divP = $$props.divP;
-    		if ("doubleP" in $$props) doubleP = $$props.doubleP;
-    		if ("toInt" in $$props) toInt = $$props.toInt;
-    		if ("addP_toInt" in $$props) addP_toInt = $$props.addP_toInt;
-    		if ("addP" in $$props) addP = $$props.addP;
-    		if ("multP" in $$props) multP = $$props.multP;
-    		if ("powP" in $$props) powP = $$props.powP;
-    		if ("_conveNt_" in $$props) _conveNt_ = $$props._conveNt_;
-    		if ("toFloat" in $$props) toFloat = $$props.toFloat;
-    		if ("cube" in $$props) cube = $$props.cube;
-    		if ("pow" in $$props) pow = $$props.pow;
-    		if ("square" in $$props) square = $$props.square;
-    		if ("add" in $$props) add = $$props.add;
-    		if ("sqrt" in $$props) sqrt = $$props.sqrt;
-    		if ("root" in $$props) root = $$props.root;
-    		if ("div" in $$props) div = $$props.div;
-    		if ("f" in $$props) f = $$props.f;
-    		if ("f_" in $$props) f_ = $$props.f_;
-    		if ("sto" in $$props) sto = $$props.sto;
-    		if ("halt" in $$props) halt = $$props.halt;
-    		if ("O" in $$props) $$invalidate(0, O = $$props.O);
-    		if ("M" in $$props) $$invalidate(30, M = $$props.M);
-    		if ("N" in $$props) $$invalidate(31, N = $$props.N);
-    		if ("T" in $$props) $$invalidate(32, T = $$props.T);
-    		if ("Q" in $$props) $$invalidate(33, Q = $$props.Q);
-    		if ("lock" in $$props) $$invalidate(34, lock = $$props.lock);
-    		if ("Monad" in $$props) Monad = $$props.Monad;
-    		if ("branch" in $$props) branch = $$props.branch;
-    		if ("resume" in $$props) resume = $$props.resume;
-    		if ("mon" in $$props) $$invalidate(2, mon = $$props.mon);
-    		if ("lok" in $$props) lok = $$props.lok;
-    		if ("start" in $$props) $$invalidate(3, start = $$props.start);
-    		if ("fs" in $$props) $$invalidate(4, fs = $$props.fs);
-    		if ("code" in $$props) $$invalidate(5, code = $$props.code);
-    	};
-
-    	$$self.$$.update = () => {
-    		if ($$self.$$.dirty[0] & /*O*/ 1) ;
-    	};
-    	return [O, j, mon, start, fs, code];
-    }
-
-    class Monad3 extends SvelteComponentDev {
-    	constructor(options) {
-    		super(options);
-    		init(this, options, instance$2, create_fragment$2, safe_not_equal, {}, [-1, -1]);
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "Monad3",
-    			options,
-    			id: create_fragment$2.name
-    		});
-    	}
-    }
-
-    /* src/Monad5.svelte generated by Svelte v3.16.7 */
-    const file$3 = "src/Monad5.svelte";
-
-    // (408:2) {#if j === 3}
-    function create_if_block$3(ctx) {
-    	let div2;
-    	let div0;
-    	let t1;
-    	let div1;
-    	let div2_transition;
-    	let current;
-
-    	const block = {
-    		c: function create() {
-    			div2 = element("div");
-    			div0 = element("div");
-    			div0.textContent = "MORE PROMISE MANIPULATION";
-    			t1 = space();
-    			div1 = element("div");
-    			div1.textContent = "Computations Easily Resumed and Branched";
-    			set_style(div0, "font-size", "32px");
-    			add_location(div0, file$3, 409, 0, 8567);
-    			set_style(div1, "font-size", "22px");
-    			add_location(div1, file$3, 410, 0, 8632);
-    			set_style(div2, "font-family", "Times New Roman");
-    			set_style(div2, "text-align", "center");
-    			set_style(div2, "color", "hsl(210, 90%, 90%)");
-    			add_location(div2, file$3, 408, 1, 8456);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div2, anchor);
-    			append_dev(div2, div0);
-    			append_dev(div2, t1);
-    			append_dev(div2, div1);
-    			current = true;
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-
-    			add_render_callback(() => {
-    				if (!div2_transition) div2_transition = create_bidirectional_transition(div2, fade, {}, true);
-    				div2_transition.run(1);
-    			});
-
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			if (!div2_transition) div2_transition = create_bidirectional_transition(div2, fade, {}, false);
-    			div2_transition.run(0);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div2);
-    			if (detaching && div2_transition) div2_transition.end();
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block$3.name,
-    		type: "if",
-    		source: "(408:2) {#if j === 3}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function create_fragment$3(ctx) {
-    	let t0;
-    	let br0;
-    	let t1;
-    	let p0;
-    	let t3;
-    	let p1;
-    	let t5;
-    	let button;
-    	let t7;
-    	let h30;
-    	let t8;
-    	let t9;
-    	let t10;
-    	let h31;
-    	let t11;
-    	let t12_value = /*B*/ ctx[0][/*sym1*/ ctx[3]] + "";
-    	let t12;
-    	let t13;
-    	let h32;
-    	let t14;
-    	let t15_value = /*B*/ ctx[0][/*sym2*/ ctx[4]] + "";
-    	let t15;
-    	let t16;
-    	let h33;
-    	let t17;
-    	let t18_value = /*B*/ ctx[0][/*sym3*/ ctx[5]] + "";
-    	let t18;
-    	let t19;
-    	let p2;
-    	let t21;
-    	let pre0;
-    	let t23;
-    	let pre1;
-    	let t25;
-    	let pre2;
-    	let t27;
-    	let pre3;
-    	let t29;
-    	let br1;
-    	let t30;
-    	let br2;
-    	let t31;
-    	let p3;
-    	let t32;
-    	let br3;
-    	let current;
-    	let dispose;
-    	let if_block = /*j*/ ctx[2] === 3 && create_if_block$3(ctx);
-
-    	const block = {
+    	return {
     		c: function create() {
     			if (if_block) if_block.c();
     			t0 = space();
@@ -2652,7 +1684,7 @@ socket.send(\"BE#$42,solo,name,1000\")    `;
     			t7 = space();
     			h30 = element("h3");
     			t8 = text("lok is ");
-    			t9 = text(/*lok*/ ctx[1]);
+    			t9 = text(ctx.lok);
     			t10 = space();
     			h31 = element("h3");
     			t11 = text("B[sym1] is ");
@@ -2670,16 +1702,16 @@ socket.send(\"BE#$42,solo,name,1000\")    `;
     			p2.textContent = "Symbols are used as names and as the second parameter of Mona(). Mona() instances in object \"A\" populate and update object B with their arrays. Mona() instances in \"A\" and their arrays in \"B\" have identical object keys.";
     			t21 = space();
     			pre0 = element("pre");
-    			pre0.textContent = `${/*syms*/ ctx[7]}`;
+    			t22 = text(ctx.syms);
     			t23 = space();
     			pre1 = element("pre");
-    			pre1.textContent = `${/*t_3*/ ctx[8]}`;
+    			t24 = text(ctx.t_3);
     			t25 = space();
     			pre2 = element("pre");
-    			pre2.textContent = `${/*code*/ ctx[9]}`;
+    			t26 = text(ctx.code);
     			t27 = space();
     			pre3 = element("pre");
-    			pre3.textContent = `${/*funcs*/ ctx[10]}`;
+    			t28 = text(ctx.funcs);
     			t29 = space();
     			br1 = element("br");
     			t30 = space();
@@ -2688,314 +1720,296 @@ socket.send(\"BE#$42,solo,name,1000\")    `;
     			p3 = element("p");
     			t32 = space();
     			br3 = element("br");
-    			add_location(br0, file$3, 413, 2, 8728);
-    			add_location(p0, file$3, 414, 0, 8733);
-    			add_location(p1, file$3, 415, 0, 9156);
+    			add_location(br0, file$2, 413, 2, 8723);
+    			add_location(p0, file$2, 414, 0, 8728);
+    			add_location(p1, file$2, 415, 0, 9151);
     			set_style(button, "text-align", "left");
-    			attr_dev(button, "class", "svelte-77grfh");
-    			add_location(button, file$3, 417, 0, 9671);
-    			add_location(h30, file$3, 421, 0, 9748);
-    			add_location(h31, file$3, 422, 0, 9770);
-    			add_location(h32, file$3, 423, 0, 9802);
-    			add_location(h33, file$3, 424, 0, 9834);
-    			add_location(p2, file$3, 426, 0, 9867);
+    			attr(button, "class", "svelte-77grfh");
+    			add_location(button, file$2, 417, 0, 9666);
+    			add_location(h30, file$2, 421, 0, 9743);
+    			add_location(h31, file$2, 422, 0, 9765);
+    			add_location(h32, file$2, 423, 0, 9797);
+    			add_location(h33, file$2, 424, 0, 9829);
+    			add_location(p2, file$2, 426, 0, 9862);
     			set_style(pre0, "font-size", "18");
-    			attr_dev(pre0, "class", "svelte-77grfh");
-    			add_location(pre0, file$3, 428, 0, 10096);
+    			attr(pre0, "class", "svelte-77grfh");
+    			add_location(pre0, file$2, 428, 0, 10091);
     			set_style(pre1, "font-size", "18");
-    			attr_dev(pre1, "class", "svelte-77grfh");
-    			add_location(pre1, file$3, 429, 0, 10138);
+    			attr(pre1, "class", "svelte-77grfh");
+    			add_location(pre1, file$2, 429, 0, 10133);
     			set_style(pre2, "font-size", "18");
-    			attr_dev(pre2, "class", "svelte-77grfh");
-    			add_location(pre2, file$3, 430, 0, 10180);
+    			attr(pre2, "class", "svelte-77grfh");
+    			add_location(pre2, file$2, 430, 0, 10175);
     			set_style(pre3, "font-size", "18");
-    			attr_dev(pre3, "class", "svelte-77grfh");
-    			add_location(pre3, file$3, 431, 0, 10222);
-    			add_location(br1, file$3, 434, 2, 10269);
-    			add_location(br2, file$3, 436, 2, 10277);
-    			add_location(p3, file$3, 439, 2, 10287);
-    			add_location(br3, file$3, 442, 2, 10303);
-    			dispose = listen_dev(button, "click", /*start*/ ctx[6], false, false, false);
+    			attr(pre3, "class", "svelte-77grfh");
+    			add_location(pre3, file$2, 431, 0, 10217);
+    			add_location(br1, file$2, 434, 2, 10264);
+    			add_location(br2, file$2, 436, 2, 10272);
+    			add_location(p3, file$2, 439, 2, 10282);
+    			add_location(br3, file$2, 442, 2, 10298);
+    			dispose = listen(button, "click", ctx.start);
     		},
+
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
+
     		m: function mount(target, anchor) {
     			if (if_block) if_block.m(target, anchor);
-    			insert_dev(target, t0, anchor);
-    			insert_dev(target, br0, anchor);
-    			insert_dev(target, t1, anchor);
-    			insert_dev(target, p0, anchor);
-    			insert_dev(target, t3, anchor);
-    			insert_dev(target, p1, anchor);
-    			insert_dev(target, t5, anchor);
-    			insert_dev(target, button, anchor);
-    			insert_dev(target, t7, anchor);
-    			insert_dev(target, h30, anchor);
-    			append_dev(h30, t8);
-    			append_dev(h30, t9);
-    			insert_dev(target, t10, anchor);
-    			insert_dev(target, h31, anchor);
-    			append_dev(h31, t11);
-    			append_dev(h31, t12);
-    			insert_dev(target, t13, anchor);
-    			insert_dev(target, h32, anchor);
-    			append_dev(h32, t14);
-    			append_dev(h32, t15);
-    			insert_dev(target, t16, anchor);
-    			insert_dev(target, h33, anchor);
-    			append_dev(h33, t17);
-    			append_dev(h33, t18);
-    			insert_dev(target, t19, anchor);
-    			insert_dev(target, p2, anchor);
-    			insert_dev(target, t21, anchor);
-    			insert_dev(target, pre0, anchor);
-    			insert_dev(target, t23, anchor);
-    			insert_dev(target, pre1, anchor);
-    			insert_dev(target, t25, anchor);
-    			insert_dev(target, pre2, anchor);
-    			insert_dev(target, t27, anchor);
-    			insert_dev(target, pre3, anchor);
-    			insert_dev(target, t29, anchor);
-    			insert_dev(target, br1, anchor);
-    			insert_dev(target, t30, anchor);
-    			insert_dev(target, br2, anchor);
-    			insert_dev(target, t31, anchor);
-    			insert_dev(target, p3, anchor);
-    			insert_dev(target, t32, anchor);
-    			insert_dev(target, br3, anchor);
+    			insert(target, t0, anchor);
+    			insert(target, br0, anchor);
+    			insert(target, t1, anchor);
+    			insert(target, p0, anchor);
+    			insert(target, t3, anchor);
+    			insert(target, p1, anchor);
+    			insert(target, t5, anchor);
+    			insert(target, button, anchor);
+    			insert(target, t7, anchor);
+    			insert(target, h30, anchor);
+    			append(h30, t8);
+    			append(h30, t9);
+    			insert(target, t10, anchor);
+    			insert(target, h31, anchor);
+    			append(h31, t11);
+    			append(h31, t12);
+    			insert(target, t13, anchor);
+    			insert(target, h32, anchor);
+    			append(h32, t14);
+    			append(h32, t15);
+    			insert(target, t16, anchor);
+    			insert(target, h33, anchor);
+    			append(h33, t17);
+    			append(h33, t18);
+    			insert(target, t19, anchor);
+    			insert(target, p2, anchor);
+    			insert(target, t21, anchor);
+    			insert(target, pre0, anchor);
+    			append(pre0, t22);
+    			insert(target, t23, anchor);
+    			insert(target, pre1, anchor);
+    			append(pre1, t24);
+    			insert(target, t25, anchor);
+    			insert(target, pre2, anchor);
+    			append(pre2, t26);
+    			insert(target, t27, anchor);
+    			insert(target, pre3, anchor);
+    			append(pre3, t28);
+    			insert(target, t29, anchor);
+    			insert(target, br1, anchor);
+    			insert(target, t30, anchor);
+    			insert(target, br2, anchor);
+    			insert(target, t31, anchor);
+    			insert(target, p3, anchor);
+    			insert(target, t32, anchor);
+    			insert(target, br3, anchor);
     			current = true;
     		},
-    		p: function update(ctx, dirty) {
-    			if (!current || dirty[0] & /*lok*/ 2) set_data_dev(t9, /*lok*/ ctx[1]);
-    			if ((!current || dirty[0] & /*B*/ 1) && t12_value !== (t12_value = /*B*/ ctx[0][/*sym1*/ ctx[3]] + "")) set_data_dev(t12, t12_value);
-    			if ((!current || dirty[0] & /*B*/ 1) && t15_value !== (t15_value = /*B*/ ctx[0][/*sym2*/ ctx[4]] + "")) set_data_dev(t15, t15_value);
-    			if ((!current || dirty[0] & /*B*/ 1) && t18_value !== (t18_value = /*B*/ ctx[0][/*sym3*/ ctx[5]] + "")) set_data_dev(t18, t18_value);
+
+    		p: function update(changed, ctx) {
+    			{
+    				if (!if_block) {
+    					if_block = create_if_block$2();
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(t0.parentNode, t0);
+    				} else {
+    									transition_in(if_block, 1);
+    				}
+    			}
+
+    			if (!current || changed.lok) {
+    				set_data(t9, ctx.lok);
+    			}
+
+    			if ((!current || changed.B) && t12_value !== (t12_value = ctx.B[ctx.sym1] + "")) {
+    				set_data(t12, t12_value);
+    			}
+
+    			if ((!current || changed.B) && t15_value !== (t15_value = ctx.B[ctx.sym2] + "")) {
+    				set_data(t15, t15_value);
+    			}
+
+    			if ((!current || changed.B) && t18_value !== (t18_value = ctx.B[ctx.sym3] + "")) {
+    				set_data(t18, t18_value);
+    			}
     		},
+
     		i: function intro(local) {
     			if (current) return;
     			transition_in(if_block);
     			current = true;
     		},
+
     		o: function outro(local) {
     			transition_out(if_block);
     			current = false;
     		},
+
     		d: function destroy(detaching) {
     			if (if_block) if_block.d(detaching);
-    			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(br0);
-    			if (detaching) detach_dev(t1);
-    			if (detaching) detach_dev(p0);
-    			if (detaching) detach_dev(t3);
-    			if (detaching) detach_dev(p1);
-    			if (detaching) detach_dev(t5);
-    			if (detaching) detach_dev(button);
-    			if (detaching) detach_dev(t7);
-    			if (detaching) detach_dev(h30);
-    			if (detaching) detach_dev(t10);
-    			if (detaching) detach_dev(h31);
-    			if (detaching) detach_dev(t13);
-    			if (detaching) detach_dev(h32);
-    			if (detaching) detach_dev(t16);
-    			if (detaching) detach_dev(h33);
-    			if (detaching) detach_dev(t19);
-    			if (detaching) detach_dev(p2);
-    			if (detaching) detach_dev(t21);
-    			if (detaching) detach_dev(pre0);
-    			if (detaching) detach_dev(t23);
-    			if (detaching) detach_dev(pre1);
-    			if (detaching) detach_dev(t25);
-    			if (detaching) detach_dev(pre2);
-    			if (detaching) detach_dev(t27);
-    			if (detaching) detach_dev(pre3);
-    			if (detaching) detach_dev(t29);
-    			if (detaching) detach_dev(br1);
-    			if (detaching) detach_dev(t30);
-    			if (detaching) detach_dev(br2);
-    			if (detaching) detach_dev(t31);
-    			if (detaching) detach_dev(p3);
-    			if (detaching) detach_dev(t32);
-    			if (detaching) detach_dev(br3);
+
+    			if (detaching) {
+    				detach(t0);
+    				detach(br0);
+    				detach(t1);
+    				detach(p0);
+    				detach(t3);
+    				detach(p1);
+    				detach(t5);
+    				detach(button);
+    				detach(t7);
+    				detach(h30);
+    				detach(t10);
+    				detach(h31);
+    				detach(t13);
+    				detach(h32);
+    				detach(t16);
+    				detach(h33);
+    				detach(t19);
+    				detach(p2);
+    				detach(t21);
+    				detach(pre0);
+    				detach(t23);
+    				detach(pre1);
+    				detach(t25);
+    				detach(pre2);
+    				detach(t27);
+    				detach(pre3);
+    				detach(t29);
+    				detach(br1);
+    				detach(t30);
+    				detach(br2);
+    				detach(t31);
+    				detach(p3);
+    				detach(t32);
+    				detach(br3);
+    			}
+
     			dispose();
     		}
     	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$3.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
     }
 
-    function wait$3(ms) {
-    	return new Promise(r => setTimeout(r, ms));
+    function wait$1(ms) {
+    return new Promise(r => setTimeout(r, ms));
     }
 
-    async function squareP$1(x) {
-    	await wait$3(300);
-    	return x * x;
+    async function squareP (x) {
+    await wait$1(300);
+    return x*x;
     }
 
-    async function cubeP$1(x) {
-    	await wait$3(300);
-    	return x * x * x;
+    async function cubeP (x) {
+    await wait$1(300);
+    return x*x*x;
     }
 
-    async function idP(x) {
-    	await wait$3(900);
-    	return x;
+    async function idP (x) {
+    await wait$1(900);
+    return x;
     }
 
-    function instance$3($$self, $$props, $$invalidate) {
-    	let j = 3;
+    function instance$2($$self, $$props, $$invalidate) {
 
-    	let pauseP = t => async x => {
-    		await wait$3(t * 1000);
-    		return x;
-    	};
+    let divP = a => async b => {
+      await wait$1 (300);
+      return b/a;
+    };
 
-    	let divPinverse = a => async b => {
-    		await wait$3(300);
-    		return a / b;
-    	};
+    let doubleP = async a => {
+      await wait$1 (300);
+      return a+a;
+    };
 
-    	let divP = a => async b => {
-    		await wait$3(300);
-    		return b / a;
-    	};
+    let addP = x => async y => {
+      await wait$1(900);
+      return parseInt(x,10) + parseInt(y,10);
+    };
 
-    	let doubleP = async a => {
-    		await wait$3(300);
-    		return a + a;
-    	};
+    let multP = x => async y => {
+      await wait$1(300);
+      return x * y;
+    };
 
-    	let toInt = a => pareseInt(a, 10);
+    const sym1 = Symbol('sym1');
+    const sym2 = Symbol('sym2');
+    const sym3 = Symbol('sym3');
 
-    	let addP_toInt = x => async y => {
-    		await wait$3(300);
-    		return toInt(x) + toInt(y);
-    	};
+    let B = {};
+    B[sym1] = []; $$invalidate('B', B);
+    B[sym2] = []; $$invalidate('B', B);
+    B[sym3] = []; $$invalidate('B', B);
+    let Mona = function Mona ( AR = [], ar = [] )  {  
+      let p, run, f_;
+      B[ar] = AR.slice(); $$invalidate('B', B);
+      let x = B[ar].slice(-1)[0] ;
+      return run = (function run (x) {
+      if (x instanceof Promise) {x.then(y => {
+        if (!( y.name == "f_" || y == lok || y == NaN || y == undefined ||
+          typeof y == "undefined" || y != y  ) ){B[ar] = B[ar].concat(y); $$invalidate('B', B);}
+        else if (!(x.name == "f_" || x == lok || x instanceof Promise ||
+          x == undefined || x == NaN)) {B[ar] = B[ar].concat(x); $$invalidate('B', B);
+      }   }  );  }
+        f_ = function f_ (func) {
+          console.log("B[ar] is", B[ar]);
+          if (func === 'halt' || func === 'h' || func == undefined ||
+            typeof func == "undefined" || func == NaN ) {
+            $$invalidate('B', B); 
+            return B[ar].slice();
+          }
+          if (typeof func == "function" && x instanceof Promise) p = x.then(v => func(v));
+          else if (typeof func != "function" && x instanceof Promise) p = x.then(v => v);
+          else if (typeof func != "function") p = func;
+          else p = func(x);
+          return run(p);
+        };
+        return f_;
+      })(x);
+    };
 
-    	let addP = x => async y => {
-    		await wait$3(900);
-    		return parseInt(x, 10) + parseInt(y, 10);
-    	};
+      const A = {};
 
-    	let multP = x => async y => {
-    		await wait$3(300);
-    		return x * y;
-    	};
+      A[sym1] = Mona([0], sym1);  A[sym2] = Mona([], sym2);  A[sym3] = Mona([], sym3);
+    function test_3 () {
+      $$invalidate('lok', lok = true);
+      A[sym1] = Mona([0], sym1);  A[sym2] = Mona( [], sym2);  A[sym3] = Mona([], sym3);  A[sym1](addP(3))(cubeP)(addP(3))(squareP)(divP(100))(() => 
+        branch(sym2,sym1)(idP)(squareP)(divP(27))(multP(7))(doubleP)(() => 
+          branch(sym3,sym2)(idP)(() => B[sym1][1]+B[sym1][2]+B[sym1][3])
+          (divP(10))(multP(7))(()=>2+3+4+5)(multP(3))(() => 
+            branch(sym1,sym2)(divP(7))(addP(8))(multP(3))
+            (() => B[sym1].reduce((a,b) => a+b))
+            (addP(-23))(divP(24))(() => { const $$result = lok = false; $$invalidate('lok', lok); return $$result; })
+          )
+        )
+      );  
+    }
 
-    	let powP = x => async y => {
-    		await wait$3(300);
-    		return y ** x;
-    	};
+    function branch (a, b) {  // Transfers a copy of the last item in A[b] to A[a]
+      let c = A[b]().slice(-1);
+      return A[a](c);
+    }
 
-    	let _conveNt_ = a => b => parseFloat(b, a);
-    	let toFloat = _conveNt_(10);
-    	let cube = x => x ** 3;
-    	let pow = p => x => x ** p;
-    	let square = x => x * x;
-    	let add = x => y => parseInt(x) + parseInt(y);
-    	let sqrt = x => x ** (1 / 2);
-    	let root = r => x => x(1 / r);
-    	let mult = a => b => a * b;
-    	let div = d => x => x / d;
+    let lok = false;
 
-    	let f = function f() {
-    		
-    	};
+    function start () {
+      if (!lok) {
+        console.log("lok is false -- calling test_3");
+        test_3();
+      }
+      else {
+        console.log("lok is true -- setTimeout 300");
+        setTimeout(() => start(),300);
+      }
+    }
+    start();
 
-    	let f_ = function f_() {
-    		
-    	};
+    // let resume = function resume (s) {return Mona(A[s])}
 
-    	let sto = "sto";
-    	let halt = "halt";
-    	let lock = false;
-    	let h = "halt";
-    	const sym1 = Symbol("sym1");
-    	const sym2 = Symbol("sym2");
-    	const sym3 = Symbol("sym3");
-    	let B = {};
-    	B[sym1] = [];
-    	B[sym2] = [];
-    	B[sym3] = [];
-
-    	let Mona = function Mona(AR = [], ar = []) {
-    		let p, run, f_;
-    		$$invalidate(0, B[ar] = AR.slice(), B);
-    		let x = B[ar].slice(-1)[0];
-
-    		return run = (function run(x) {
-    			if (x instanceof Promise) {
-    				x.then(y => {
-    					if (!(y.name == "f_" || y == lok || y == NaN || y == undefined || typeof y == "undefined" || y != y)) {
-    						$$invalidate(0, B[ar] = B[ar].concat(y), B);
-    					} else if (!(x.name == "f_" || x == lok || x instanceof Promise || x == undefined || x == NaN)) {
-    						$$invalidate(0, B[ar] = B[ar].concat(x), B);
-    					}
-    				});
-    			}
-
-    			f_ = function f_(func) {
-    				console.log("B[ar] is", B[ar]);
-
-    				if (func === "halt" || func === "h" || func == undefined || typeof func == "undefined" || func == NaN) {
-    					$$invalidate(0, B);
-    					return B[ar].slice();
-    				}
-
-    				if (typeof func == "function" && x instanceof Promise) p = x.then(v => func(v)); else if (typeof func != "function" && x instanceof Promise) p = x.then(v => v); else if (typeof func != "function") p = func; else p = func(x);
-    				return run(p);
-    			};
-
-    			return f_;
-    		})(x);
-    	};
-
-    	const A = {};
-    	A[sym1] = Mona([0], sym1);
-    	A[sym2] = Mona([], sym2);
-    	A[sym3] = Mona([], sym3);
-
-    	function test_3() {
-    		$$invalidate(1, lok = true);
-    		A[sym1] = Mona([0], sym1);
-    		A[sym2] = Mona([], sym2);
-    		A[sym3] = Mona([], sym3);
-    		A[sym1](addP(3))(cubeP$1)(addP(3))(squareP$1)(divP(100))(() => branch(sym2, sym1)(idP)(squareP$1)(divP(27))(multP(7))(doubleP)(() => branch(sym3, sym2)(idP)(() => B[sym1][1] + B[sym1][2] + B[sym1][3])(divP(10))(multP(7))(() => 2 + 3 + 4 + 5)(multP(3))(() => branch(sym1, sym2)(divP(7))(addP(8))(multP(3))(() => B[sym1].reduce((a, b) => a + b))(addP(-23))(divP(24))(() => $$invalidate(1, lok = false)))));
-    	}
-
-    	function branch(a, b) {
-    		let c = A[b]().slice(-1);
-    		return A[a](c);
-    	}
-
-    	let lok = false;
-
-    	function start() {
-    		if (!lok) {
-    			console.log("lok is false -- calling test_3");
-    			test_3();
-    		} else {
-    			console.log("lok is true -- setTimeout 300");
-    			setTimeout(() => start(), 300);
-    		}
-    	}
-
-    	start();
-
-    	let syms = `const sym1 = Symbol('sym1');
+    let syms = `const sym1 = Symbol('sym1');
 const sym2 = Symbol('sym2');
 const sym3 = Symbol('sym3');`;
 
-    	let t_3 = `function test_3 () {
+    let t_3 = `function test_3 () {
   lok = true;
   A[sym1] = Mona([0], sym1);
   A[sym2] = Mona( [], sym2);
@@ -3010,8 +2024,7 @@ const sym3 = Symbol('sym3');`;
     )
   )  
 } `;
-
-    	let code = `let B = {};
+    let code = `let B = {};
 B[sym1] = [];
 B[sym2] = [];
 B[sym3] = [];
@@ -3081,8 +2094,7 @@ function branch (a, b) {  // Transfers a copy of the last item in A[b] to A[a]
 
 let lok = false;
 $: lok;`;
-
-    	let funcs = `function wait(ms) {
+    let funcs = `function wait(ms) {
 return new Promise(r => setTimeout(r, ms));
 }
 
@@ -3161,718 +2173,45 @@ async function sqrtP (x) {
   return x**(1/2)
 }`;
 
-    	$$self.$capture_state = () => {
-    		return {};
+    	$$self.$$.update = ($$dirty = { j: 1, lock: 1, B: 1, lok: 1 }) => {
+    		if ($$dirty.j) ;
+    		if ($$dirty.lock) ;
+    		if ($$dirty.B) ;
+    		if ($$dirty.B) ;
+    		if ($$dirty.B) ;
+    		if ($$dirty.lok) ;
     	};
 
-    	$$self.$inject_state = $$props => {
-    		if ("j" in $$props) $$invalidate(2, j = $$props.j);
-    		if ("pauseP" in $$props) pauseP = $$props.pauseP;
-    		if ("divPinverse" in $$props) divPinverse = $$props.divPinverse;
-    		if ("divP" in $$props) divP = $$props.divP;
-    		if ("doubleP" in $$props) doubleP = $$props.doubleP;
-    		if ("toInt" in $$props) toInt = $$props.toInt;
-    		if ("addP_toInt" in $$props) addP_toInt = $$props.addP_toInt;
-    		if ("addP" in $$props) addP = $$props.addP;
-    		if ("multP" in $$props) multP = $$props.multP;
-    		if ("powP" in $$props) powP = $$props.powP;
-    		if ("_conveNt_" in $$props) _conveNt_ = $$props._conveNt_;
-    		if ("toFloat" in $$props) toFloat = $$props.toFloat;
-    		if ("cube" in $$props) cube = $$props.cube;
-    		if ("pow" in $$props) pow = $$props.pow;
-    		if ("square" in $$props) square = $$props.square;
-    		if ("add" in $$props) add = $$props.add;
-    		if ("sqrt" in $$props) sqrt = $$props.sqrt;
-    		if ("root" in $$props) root = $$props.root;
-    		if ("mult" in $$props) mult = $$props.mult;
-    		if ("div" in $$props) div = $$props.div;
-    		if ("f" in $$props) f = $$props.f;
-    		if ("f_" in $$props) f_ = $$props.f_;
-    		if ("sto" in $$props) sto = $$props.sto;
-    		if ("halt" in $$props) halt = $$props.halt;
-    		if ("lock" in $$props) $$invalidate(35, lock = $$props.lock);
-    		if ("h" in $$props) h = $$props.h;
-    		if ("B" in $$props) $$invalidate(0, B = $$props.B);
-    		if ("Mona" in $$props) Mona = $$props.Mona;
-    		if ("lok" in $$props) $$invalidate(1, lok = $$props.lok);
-    		if ("syms" in $$props) $$invalidate(7, syms = $$props.syms);
-    		if ("t_3" in $$props) $$invalidate(8, t_3 = $$props.t_3);
-    		if ("code" in $$props) $$invalidate(9, code = $$props.code);
-    		if ("funcs" in $$props) $$invalidate(10, funcs = $$props.funcs);
+    	return {
+    		sym1,
+    		sym2,
+    		sym3,
+    		B,
+    		lok,
+    		start,
+    		syms,
+    		t_3,
+    		code,
+    		funcs
     	};
-
-    	$$self.$$.update = () => {
-    		if ($$self.$$.dirty[0] & /*B*/ 1) ;
-
-    		if ($$self.$$.dirty[0] & /*B*/ 1) {
-    			 B[sym1];
-    		}
-
-    		if ($$self.$$.dirty[0] & /*B*/ 1) {
-    			 B[sym2];
-    		}
-
-    		if ($$self.$$.dirty[0] & /*lok*/ 2) ;
-    	};
-    	return [B, lok, j, sym1, sym2, sym3, start, syms, t_3, code, funcs];
     }
 
-    class Monad5 extends SvelteComponentDev {
+    class Monad3 extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$3, create_fragment$3, safe_not_equal, {}, [-1, -1]);
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "Monad5",
-    			options,
-    			id: create_fragment$3.name
-    		});
+    		init(this, options, instance$2, create_fragment$2, safe_not_equal, []);
     	}
     }
 
-    /* src/Haskell.svelte generated by Svelte v3.16.7 */
-    const file$4 = "src/Haskell.svelte";
+    /* src/Matrix.svelte generated by Svelte v3.9.1 */
 
-    // (30:0) {#if visible}
-    function create_if_block$4(ctx) {
-    	let div;
-    	let div_transition;
-    	let current;
+    const file$3 = "src/Matrix.svelte";
 
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			div.textContent = "HASKELL TUTORIAL SUPPLEMENT";
-    			set_style(div, "font-family", "Times New Roman");
-    			set_style(div, "text-align", "center");
-    			set_style(div, "color", "hsl(210, 90%, 90%)");
-    			set_style(div, "font-size", "32px");
-    			add_location(div, file$4, 30, 1, 594);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			current = true;
-    		},
-    		i: function intro(local) {
-    			if (current) return;
+    // (150:0) {#if visible}
+    function create_if_block$3(ctx) {
+    	var div, div_transition, current;
 
-    			add_render_callback(() => {
-    				if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, true);
-    				div_transition.run(1);
-    			});
-
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
-    			div_transition.run(0);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching && div_transition) div_transition.end();
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block$4.name,
-    		type: "if",
-    		source: "(30:0) {#if visible}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function create_fragment$4(ctx) {
-    	let t0;
-    	let p0;
-    	let t2;
-    	let p1;
-    	let t4;
-    	let p2;
-    	let t6;
-    	let p3;
-    	let t8;
-    	let span0;
-    	let t10;
-    	let a0;
-    	let t12;
-    	let br0;
-    	let t13;
-    	let pre;
-    	let t15;
-    	let p4;
-    	let t17;
-    	let span1;
-    	let t19;
-    	let a1;
-    	let t21;
-    	let br1;
-    	let t22;
-    	let br2;
-    	let t23;
-    	let span2;
-    	let t25;
-    	let a2;
-    	let t27;
-    	let span3;
-    	let t29;
-    	let a3;
-    	let current;
-    	let if_block = /*visible*/ ctx[0] && create_if_block$4(ctx);
-
-    	const block = {
-    		c: function create() {
-    			if (if_block) if_block.c();
-    			t0 = space();
-    			p0 = element("p");
-    			p0.textContent = "If you are learning to program in Haskell, the book or blog or YouTube video on which you rely might be telling you that mutations can occur only inside of monads or somewhere away from a program such as the command line or a browser. You might be learning that mutations and side effects can occur only in the lazy IO monad. If so, don't believe it. You are being misled.";
-    			t2 = space();
-    			p1 = element("p");
-    			p1.textContent = "Even if you resent being lied to, you might find value in some of the dishonest learning resources. They are trying to teach best practices. Just know know that it is easy to mutate values and types anywhere in a Haskell program. Doing so before you know what your compiler (presumably GHC) will do with your mutations is asking for bugs and crashes.  Here are some unsafe functions with descriptions from their creators and maintainers:";
-    			t4 = space();
-    			p2 = element("p");
-    			p2.textContent = "Unsafe.Coerce";
-    			t6 = space();
-    			p3 = element("p");
-    			p3.textContent = "The highly unsafe primitive unsafeCoerce converts a value from any type to any other type. If you use this function, avoiding runtime errors will be especially challenging if the old and new types have different internal representations.";
-    			t8 = space();
-    			span0 = element("span");
-    			span0.textContent = "The only function in the Unsafe.Coerce library is unsafeCoerce :: a -> b. You can read more about it at";
-    			t10 = space();
-    			a0 = element("a");
-    			a0.textContent = "Unsafe.Coerce";
-    			t12 = space();
-    			br0 = element("br");
-    			t13 = space();
-    			pre = element("pre");
-    			pre.textContent = "GHC.IO.Unsafe";
-    			t15 = space();
-    			p4 = element("p");
-    			p4.textContent = "If the IO computation wrapped in \\'unsafePerformIO\\' performs side effects, then the relative order in which those side effects take place (relative to the main IO trunk, or other calls to \\'unsafePerformIO\\') is indeterminate.  Furthermore, when using \\'unsafePerformIO\\' to cause side-effects, you should take the following precautions to ensure the side effects are performed as many times as you expect them to be.  Note that these precautions are necessary for GHC, but may not be sufficient, and other compilers may require different precautions.";
-    			t17 = space();
-    			span1 = element("span");
-    			span1.textContent = "For more information, go to";
-    			t19 = space();
-    			a1 = element("a");
-    			a1.textContent = "GHC.IO.Unsafe";
-    			t21 = space();
-    			br1 = element("br");
-    			t22 = space();
-    			br2 = element("br");
-    			t23 = space();
-    			span2 = element("span");
-    			span2.textContent = "And here\\'s a stub on the Haskell Wiki site that isn\\'t generating much interest:";
-    			t25 = space();
-    			a2 = element("a");
-    			a2.textContent = "More on GHC.IO.Unsafe";
-    			t27 = space();
-    			span3 = element("span");
-    			span3.textContent = "along with a discussion of mutable global variables in Haskell programs:";
-    			t29 = space();
-    			a3 = element("a");
-    			a3.textContent = "Top level mutable state";
-    			add_location(p0, file$4, 35, 0, 763);
-    			add_location(p1, file$4, 36, 0, 1146);
-    			attr_dev(p2, "id", "large");
-    			attr_dev(p2, "class", "svelte-hw6ke3");
-    			add_location(p2, file$4, 37, 0, 1593);
-    			add_location(p3, file$4, 38, 0, 1627);
-    			attr_dev(span0, "class", "tao");
-    			add_location(span0, file$4, 39, 0, 1874);
-    			attr_dev(a0, "href", "http://hackage.haskell.org/package/base-4.12.0.0/docs/Unsafe-Coerce.html");
-    			attr_dev(a0, "target", "_blank");
-    			add_location(a0, file$4, 40, 0, 2005);
-    			add_location(br0, file$4, 41, 0, 2126);
-    			add_location(pre, file$4, 42, 0, 2133);
-    			add_location(p4, file$4, 43, 0, 2160);
-    			attr_dev(span1, "class", "tao");
-    			add_location(span1, file$4, 44, 0, 2722);
-    			attr_dev(a1, "href", "http://hackage.haskell.org/package/base-4.12.0.0/docs/src/GHC.IO.Unsafe.html");
-    			attr_dev(a1, "target", "_blank");
-    			add_location(a1, file$4, 45, 0, 2778);
-    			add_location(br1, file$4, 46, 0, 2905);
-    			add_location(br2, file$4, 47, 0, 2912);
-    			attr_dev(span2, "class", "tao");
-    			add_location(span2, file$4, 48, 0, 2919);
-    			attr_dev(a2, "href", "https://wiki.haskell.org/Unsafe_functions");
-    			attr_dev(a2, "target", "_blank");
-    			add_location(a2, file$4, 49, 0, 3028);
-    			add_location(span3, file$4, 50, 0, 3129);
-    			attr_dev(a3, "href", "https://wiki.haskell.org/Top_level_mutable_state");
-    			attr_dev(a3, "target", "_blank");
-    			add_location(a3, file$4, 51, 0, 3217);
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-    		},
-    		m: function mount(target, anchor) {
-    			if (if_block) if_block.m(target, anchor);
-    			insert_dev(target, t0, anchor);
-    			insert_dev(target, p0, anchor);
-    			insert_dev(target, t2, anchor);
-    			insert_dev(target, p1, anchor);
-    			insert_dev(target, t4, anchor);
-    			insert_dev(target, p2, anchor);
-    			insert_dev(target, t6, anchor);
-    			insert_dev(target, p3, anchor);
-    			insert_dev(target, t8, anchor);
-    			insert_dev(target, span0, anchor);
-    			insert_dev(target, t10, anchor);
-    			insert_dev(target, a0, anchor);
-    			insert_dev(target, t12, anchor);
-    			insert_dev(target, br0, anchor);
-    			insert_dev(target, t13, anchor);
-    			insert_dev(target, pre, anchor);
-    			insert_dev(target, t15, anchor);
-    			insert_dev(target, p4, anchor);
-    			insert_dev(target, t17, anchor);
-    			insert_dev(target, span1, anchor);
-    			insert_dev(target, t19, anchor);
-    			insert_dev(target, a1, anchor);
-    			insert_dev(target, t21, anchor);
-    			insert_dev(target, br1, anchor);
-    			insert_dev(target, t22, anchor);
-    			insert_dev(target, br2, anchor);
-    			insert_dev(target, t23, anchor);
-    			insert_dev(target, span2, anchor);
-    			insert_dev(target, t25, anchor);
-    			insert_dev(target, a2, anchor);
-    			insert_dev(target, t27, anchor);
-    			insert_dev(target, span3, anchor);
-    			insert_dev(target, t29, anchor);
-    			insert_dev(target, a3, anchor);
-    			current = true;
-    		},
-    		p: noop,
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(if_block);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(if_block);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (if_block) if_block.d(detaching);
-    			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(p0);
-    			if (detaching) detach_dev(t2);
-    			if (detaching) detach_dev(p1);
-    			if (detaching) detach_dev(t4);
-    			if (detaching) detach_dev(p2);
-    			if (detaching) detach_dev(t6);
-    			if (detaching) detach_dev(p3);
-    			if (detaching) detach_dev(t8);
-    			if (detaching) detach_dev(span0);
-    			if (detaching) detach_dev(t10);
-    			if (detaching) detach_dev(a0);
-    			if (detaching) detach_dev(t12);
-    			if (detaching) detach_dev(br0);
-    			if (detaching) detach_dev(t13);
-    			if (detaching) detach_dev(pre);
-    			if (detaching) detach_dev(t15);
-    			if (detaching) detach_dev(p4);
-    			if (detaching) detach_dev(t17);
-    			if (detaching) detach_dev(span1);
-    			if (detaching) detach_dev(t19);
-    			if (detaching) detach_dev(a1);
-    			if (detaching) detach_dev(t21);
-    			if (detaching) detach_dev(br1);
-    			if (detaching) detach_dev(t22);
-    			if (detaching) detach_dev(br2);
-    			if (detaching) detach_dev(t23);
-    			if (detaching) detach_dev(span2);
-    			if (detaching) detach_dev(t25);
-    			if (detaching) detach_dev(a2);
-    			if (detaching) detach_dev(t27);
-    			if (detaching) detach_dev(span3);
-    			if (detaching) detach_dev(t29);
-    			if (detaching) detach_dev(a3);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$4.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function instance$4($$self) {
-    	let visible = true;
-
-    	let GHC_IO = `module GHC.IO.Unsafe (
-    unsafePerformIO, unsafeInterleaveIO,
-    unsafeDupablePerformIO, unsafeDupableInterleaveIO,
-    noDuplicate,
-  ) where
-
-import GHC.Base
-
-This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be performed at any time.  For this to be safe, the \'IO\' computation should be free of side effects and independent of its environment.
- `;
-
-    	$$self.$capture_state = () => {
-    		return {};
-    	};
-
-    	$$self.$inject_state = $$props => {
-    		if ("visible" in $$props) $$invalidate(0, visible = $$props.visible);
-    		if ("GHC_IO" in $$props) GHC_IO = $$props.GHC_IO;
-    	};
-
-    	return [visible];
-    }
-
-    class Haskell extends SvelteComponentDev {
-    	constructor(options) {
-    		super(options);
-    		init(this, options, instance$4, create_fragment$4, safe_not_equal, {});
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "Haskell",
-    			options,
-    			id: create_fragment$4.name
-    		});
-    	}
-    }
-
-    /* src/Bugs.svelte generated by Svelte v3.16.7 */
-    const file$5 = "src/Bugs.svelte";
-
-    // (12:0) {#if visible}
-    function create_if_block$5(ctx) {
-    	let div;
-    	let div_transition;
-    	let current;
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			div.textContent = "COMPLETE ERADICATION OF BED BUGS";
-    			set_style(div, "font-family", "Times New Roman");
-    			set_style(div, "text-align", "center");
-    			set_style(div, "color", "hsl(210, 90%, 90%)");
-    			set_style(div, "font-size", "32px");
-    			add_location(div, file$5, 12, 1, 394);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			current = true;
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-
-    			add_render_callback(() => {
-    				if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, true);
-    				div_transition.run(1);
-    			});
-
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
-    			div_transition.run(0);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching && div_transition) div_transition.end();
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block$5.name,
-    		type: "if",
-    		source: "(12:0) {#if visible}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function create_fragment$5(ctx) {
-    	let t0;
-    	let p0;
-    	let t2;
-    	let span0;
-    	let t4;
-    	let span1;
-    	let t6;
-    	let h3;
-    	let t8;
-    	let ul;
-    	let li0;
-    	let t10;
-    	let li1;
-    	let t12;
-    	let li2;
-    	let t14;
-    	let li3;
-    	let t16;
-    	let li4;
-    	let t18;
-    	let li5;
-    	let t20;
-    	let li6;
-    	let t22;
-    	let li7;
-    	let t24;
-    	let li8;
-    	let t26;
-    	let p1;
-    	let t28;
-    	let p2;
-    	let t30;
-    	let p3;
-    	let t32;
-    	let p4;
-    	let t34;
-    	let p5;
-    	let t36;
-    	let p6;
-    	let t38;
-    	let p7;
-    	let current;
-    	let if_block = /*visible*/ ctx[0] && create_if_block$5(ctx);
-
-    	const block = {
-    		c: function create() {
-    			if (if_block) if_block.c();
-    			t0 = space();
-    			p0 = element("p");
-    			p0.textContent = "It is widely believed that the only reliable way to eraacate a bed bug infestation is to pay thousands of dollars for a thorough heat treatment; one that sends deadly heat through drywall and insullation all the way to the exterior walls. I had a massive bed bug infestation in my rented condominium. My box springs were on the floor, making it easy for bed bugs to climb onto my mattress and feast on me -- and increase in numbers exponentially.";
-    			t2 = space();
-    			span0 = element("span");
-    			span0.textContent = "As I researched the life cycle of bed bugs, it became clear that bed bugs are far easier to eradicate than termites or cock roaches:";
-    			t4 = space();
-    			span1 = element("span");
-    			span1.textContent = "BED BUG INFESTATIONS ARE EXTREMELY FRAGILE!";
-    			t6 = space();
-    			h3 = element("h3");
-    			h3.textContent = "Pertinent Facts About Bed Bugs";
-    			t8 = space();
-    			ul = element("ul");
-    			li0 = element("li");
-    			li0.textContent = "Blood is the only substance that nourishes them.";
-    			t10 = space();
-    			li1 = element("li");
-    			li1.textContent = "After emerging from eggs, bed bug nymphs molt five times.";
-    			t12 = space();
-    			li2 = element("li");
-    			li2.textContent = "Stage one nymphs can't survive beyond two months at room temperature without blood.";
-    			t14 = space();
-    			li3 = element("li");
-    			li3.textContent = "Mature bed bugs don't survive more than six months at room temperature.";
-    			t16 = space();
-    			li4 = element("li");
-    			li4.textContent = "Nymphs must have blood before each of their five moltings.";
-    			t18 = space();
-    			li5 = element("li");
-    			li5.textContent = "Bed bugs will go to the source of exhaled carbon dioxide.";
-    			t20 = space();
-    			li6 = element("li");
-    			li6.textContent = "After sufficient (not much) contact with silica gel, bed bugs dry up and die within three days.";
-    			t22 = space();
-    			li7 = element("li");
-    			li7.textContent = "Silica gel is not systemically toxic, but it is a respiratory tract irritant.";
-    			t24 = space();
-    			li8 = element("li");
-    			li8.textContent = "Cimex® silica gel is very expensive but a five-pound bag from Ebay is pretty cheap.";
-    			t26 = space();
-    			p1 = element("p");
-    			p1.textContent = "I put the box spring on a metal frame with each leg in a bed bug trap. I encased the mattress but not the box spring because I could see through the mesh on the bottom that no bugs had entered.";
-    			t28 = space();
-    			p2 = element("p");
-    			p2.textContent = "A coffee grinder was used to Fluff the silica gel (obtained from Ebay) which was then applied (with a big yellow puffer from Amazon.com) under and around my bed and between the box spring and matterss.";
-    			t30 = space();
-    			p3 = element("p");
-    			p3.textContent = "I knew bed bugs would not lay dormant in furnature, walls, and rugs when they sensed a source of carbon dioxide. I was confident that failing to find a route to my bed around the silica gel they would give up and walk through silica gel in an effort to obtain blood. Their life expectancy was then a couple of days, at most.";
-    			t32 = space();
-    			p4 = element("p");
-    			p4.textContent = "I puffed silica gel into light sockets and anywhere a wall panel could be removed. Soon, the only bed bugs I could find were located in upholstered furniture. I could have killed them, but I decided to throw the invested furnitue away.";
-    			t34 = space();
-    			p5 = element("p");
-    			p5.textContent = "Professional exterminators get unsatisfactory results with silica gel because they won't leave a site that has visible white powder on the floor. They tried applying silica gel in water, which seems absurd since silica gel kills bed bugs by drying them out.";
-    			t36 = space();
-    			p6 = element("p");
-    			p6.textContent = "The little packets of drying agent found in jars and bags of commercial consumer goods usually contain silica gel. USDA regulations allow up to two percent silica gel in food. You should wear a dust mask while dispensing silica gel with a puffer, or else hold your breath and rush into an adjacent room when you need air.";
-    			t38 = space();
-    			p7 = element("p");
-    			p7.textContent = "Professional eradicators don't leave visible residues on floors. That is why they get poor results with silica gel; results comparable to the ones they get with toxic pesticides. Professional exterminators have been known to apply silica gel dissolved in water, which seems absurd in light of the fact that silica gel kills bed bugs by drying them up.";
-    			add_location(p0, file$5, 16, 0, 568);
-    			add_location(span0, file$5, 17, 0, 1022);
-    			set_style(span1, "font-weight", "900");
-    			set_style(span1, "color", "#ddff00");
-    			add_location(span1, file$5, 18, 0, 1170);
-    			add_location(h3, file$5, 19, 0, 1270);
-    			add_location(li0, file$5, 21, 0, 1315);
-    			add_location(li1, file$5, 22, 0, 1374);
-    			add_location(li2, file$5, 23, 0, 1441);
-    			add_location(li3, file$5, 24, 0, 1534);
-    			add_location(li4, file$5, 25, 0, 1615);
-    			add_location(li5, file$5, 26, 0, 1683);
-    			add_location(li6, file$5, 27, 0, 1750);
-    			add_location(li7, file$5, 28, 0, 1855);
-    			add_location(li8, file$5, 29, 0, 1943);
-    			add_location(ul, file$5, 20, 0, 1310);
-    			add_location(p1, file$5, 31, 0, 2042);
-    			add_location(p2, file$5, 32, 0, 2245);
-    			add_location(p3, file$5, 33, 0, 2456);
-    			add_location(p4, file$5, 34, 0, 2789);
-    			add_location(p5, file$5, 37, 0, 3036);
-    			add_location(p6, file$5, 38, 0, 3302);
-    			add_location(p7, file$5, 39, 0, 3632);
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-    		},
-    		m: function mount(target, anchor) {
-    			if (if_block) if_block.m(target, anchor);
-    			insert_dev(target, t0, anchor);
-    			insert_dev(target, p0, anchor);
-    			insert_dev(target, t2, anchor);
-    			insert_dev(target, span0, anchor);
-    			insert_dev(target, t4, anchor);
-    			insert_dev(target, span1, anchor);
-    			insert_dev(target, t6, anchor);
-    			insert_dev(target, h3, anchor);
-    			insert_dev(target, t8, anchor);
-    			insert_dev(target, ul, anchor);
-    			append_dev(ul, li0);
-    			append_dev(ul, t10);
-    			append_dev(ul, li1);
-    			append_dev(ul, t12);
-    			append_dev(ul, li2);
-    			append_dev(ul, t14);
-    			append_dev(ul, li3);
-    			append_dev(ul, t16);
-    			append_dev(ul, li4);
-    			append_dev(ul, t18);
-    			append_dev(ul, li5);
-    			append_dev(ul, t20);
-    			append_dev(ul, li6);
-    			append_dev(ul, t22);
-    			append_dev(ul, li7);
-    			append_dev(ul, t24);
-    			append_dev(ul, li8);
-    			insert_dev(target, t26, anchor);
-    			insert_dev(target, p1, anchor);
-    			insert_dev(target, t28, anchor);
-    			insert_dev(target, p2, anchor);
-    			insert_dev(target, t30, anchor);
-    			insert_dev(target, p3, anchor);
-    			insert_dev(target, t32, anchor);
-    			insert_dev(target, p4, anchor);
-    			insert_dev(target, t34, anchor);
-    			insert_dev(target, p5, anchor);
-    			insert_dev(target, t36, anchor);
-    			insert_dev(target, p6, anchor);
-    			insert_dev(target, t38, anchor);
-    			insert_dev(target, p7, anchor);
-    			current = true;
-    		},
-    		p: noop,
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(if_block);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(if_block);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (if_block) if_block.d(detaching);
-    			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(p0);
-    			if (detaching) detach_dev(t2);
-    			if (detaching) detach_dev(span0);
-    			if (detaching) detach_dev(t4);
-    			if (detaching) detach_dev(span1);
-    			if (detaching) detach_dev(t6);
-    			if (detaching) detach_dev(h3);
-    			if (detaching) detach_dev(t8);
-    			if (detaching) detach_dev(ul);
-    			if (detaching) detach_dev(t26);
-    			if (detaching) detach_dev(p1);
-    			if (detaching) detach_dev(t28);
-    			if (detaching) detach_dev(p2);
-    			if (detaching) detach_dev(t30);
-    			if (detaching) detach_dev(p3);
-    			if (detaching) detach_dev(t32);
-    			if (detaching) detach_dev(p4);
-    			if (detaching) detach_dev(t34);
-    			if (detaching) detach_dev(p5);
-    			if (detaching) detach_dev(t36);
-    			if (detaching) detach_dev(p6);
-    			if (detaching) detach_dev(t38);
-    			if (detaching) detach_dev(p7);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$5.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function instance$5($$self) {
-    	let visible = true;
-    	let axe = `var mon = Monad(3);var a = mon(x=>x**3)(x=>x+3)(x=>x**2)(stop)console.log("a is", a) // a os 900console.log("mon is", mon); /*ƒ foo(func) {var stop = "stop";if (func.name === "stop") return x;else {x = func(x);return foo;}} */mon(x => x/100)console.log("mon(stop) now is",mon(stop))`;
-
-    	$$self.$capture_state = () => {
-    		return {};
-    	};
-
-    	$$self.$inject_state = $$props => {
-    		if ("visible" in $$props) $$invalidate(0, visible = $$props.visible);
-    		if ("axe" in $$props) axe = $$props.axe;
-    	};
-
-    	return [visible];
-    }
-
-    class Bugs extends SvelteComponentDev {
-    	constructor(options) {
-    		super(options);
-    		init(this, options, instance$5, create_fragment$5, safe_not_equal, {});
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "Bugs",
-    			options,
-    			id: create_fragment$5.name
-    		});
-    	}
-    }
-
-    /* src/Matrix.svelte generated by Svelte v3.16.7 */
-    const file$6 = "src/Matrix.svelte";
-
-    // (147:0) {#if visible}
-    function create_if_block$6(ctx) {
-    	let div;
-    	let div_transition;
-    	let current;
-
-    	const block = {
+    	return {
     		c: function create() {
     			div = element("div");
     			div.textContent = "A LITTLE SVELTE MODULE";
@@ -3881,15 +2220,16 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "38px");
     			set_style(div, "text-align", "center");
-    			add_location(div, file$6, 147, 1, 3955);
+    			add_location(div, file$3, 150, 0, 3690);
     		},
+
     		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
+    			insert(target, div, anchor);
     			current = true;
     		},
+
     		i: function intro(local) {
     			if (current) return;
-
     			add_render_callback(() => {
     				if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, true);
     				div_transition.run(1);
@@ -3897,115 +2237,29 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
 
     			current = true;
     		},
+
     		o: function outro(local) {
     			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
     			div_transition.run(0);
+
     			current = false;
     		},
+
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching && div_transition) div_transition.end();
+    			if (detaching) {
+    				detach(div);
+    				if (div_transition) div_transition.end();
+    			}
     		}
     	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block$6.name,
-    		type: "if",
-    		source: "(147:0) {#if visible}",
-    		ctx
-    	});
-
-    	return block;
     }
 
-    function create_fragment$6(ctx) {
-    	let t0;
-    	let br0;
-    	let t1;
-    	let br1;
-    	let t2;
-    	let div3;
-    	let div1;
-    	let button0;
-    	let t4;
-    	let br2;
-    	let t5;
-    	let br3;
-    	let t6;
-    	let div0;
-    	let button1;
-    	let t7;
-    	let t8;
-    	let br4;
-    	let t9;
-    	let button2;
-    	let t11;
-    	let br5;
-    	let t12;
-    	let br6;
-    	let t13;
-    	let div2;
-    	let button3;
-    	let t14_value = /*cache*/ ctx[3][/*j*/ ctx[0]][0] + "";
-    	let t14;
-    	let t15;
-    	let button4;
-    	let t16_value = /*cache*/ ctx[3][/*j*/ ctx[0]][1] + "";
-    	let t16;
-    	let t17;
-    	let button5;
-    	let t18_value = /*cache*/ ctx[3][/*j*/ ctx[0]][2] + "";
-    	let t18;
-    	let t19;
-    	let br7;
-    	let t20;
-    	let br8;
-    	let t21;
-    	let button6;
-    	let t22_value = /*cache*/ ctx[3][/*j*/ ctx[0]][3] + "";
-    	let t22;
-    	let t23;
-    	let button7;
-    	let t24_value = /*cache*/ ctx[3][/*j*/ ctx[0]][4] + "";
-    	let t24;
-    	let t25;
-    	let button8;
-    	let t26_value = /*cache*/ ctx[3][/*j*/ ctx[0]][5] + "";
-    	let t26;
-    	let t27;
-    	let br9;
-    	let t28;
-    	let br10;
-    	let t29;
-    	let button9;
-    	let t30_value = /*cache*/ ctx[3][/*j*/ ctx[0]][6] + "";
-    	let t30;
-    	let t31;
-    	let button10;
-    	let t32_value = /*cache*/ ctx[3][/*j*/ ctx[0]][7] + "";
-    	let t32;
-    	let t33;
-    	let button11;
-    	let t34_value = /*cache*/ ctx[3][/*j*/ ctx[0]][8] + "";
-    	let t34;
-    	let t35;
-    	let br11;
-    	let t36;
-    	let p0;
-    	let t38;
-    	let pre0;
-    	let t40;
-    	let p1;
-    	let t42;
-    	let pre1;
-    	let t44;
-    	let p2;
-    	let current;
-    	let dispose;
-    	let if_block = /*visible*/ ctx[2] && create_if_block$6(ctx);
+    function create_fragment$3(ctx) {
+    	var t0, br0, t1, br1, t2, div3, div1, button0, t4, br2, t5, br3, t6, div0, button1, t7, t8, br4, t9, button2, t11, br5, t12, br6, t13, div2, button3, t14_value = ctx.cache[ctx.j][0] + "", t14, t15, button4, t16_value = ctx.cache[ctx.j][1] + "", t16, t17, button5, t18_value = ctx.cache[ctx.j][2] + "", t18, t19, br7, t20, br8, t21, button6, t22_value = ctx.cache[ctx.j][3] + "", t22, t23, button7, t24_value = ctx.cache[ctx.j][4] + "", t24, t25, button8, t26_value = ctx.cache[ctx.j][5] + "", t26, t27, br9, t28, br10, t29, button9, t30_value = ctx.cache[ctx.j][6] + "", t30, t31, button10, t32_value = ctx.cache[ctx.j][7] + "", t32, t33, button11, t34_value = ctx.cache[ctx.j][8] + "", t34, t35, br11, t36, p0, t38, pre0, t39, t40, p1, t42, pre1, t43, t44, p2, current, dispose;
 
-    	const block = {
+    	var if_block =  create_if_block$3();
+
+    	return {
     		c: function create() {
     			if (if_block) if_block.c();
     			t0 = space();
@@ -4024,7 +2278,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			t6 = space();
     			div0 = element("div");
     			button1 = element("button");
-    			t7 = text(/*j*/ ctx[0]);
+    			t7 = text(ctx.j);
     			t8 = space();
     			br4 = element("br");
     			t9 = space();
@@ -4077,428 +2331,384 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			p0.textContent = "This is the JavaScript code inside of the script tags except for the definitions of the variables \"code\" and \"html\", which are just the code and html cut and pasted inside of back quotes:";
     			t38 = space();
     			pre0 = element("pre");
-    			pre0.textContent = `${/*code*/ ctx[6]}`;
+    			t39 = text(ctx.code);
     			t40 = space();
     			p1 = element("p");
     			p1.textContent = "And here is the HTML code:";
     			t42 = space();
     			pre1 = element("pre");
-    			pre1.textContent = `${/*html*/ ctx[7]}`;
+    			t43 = text(ctx.html);
     			t44 = space();
     			p2 = element("p");
-    			p2.textContent = "I'm new to Svelte and so far I am very impressed.";
-    			add_location(br0, file$6, 152, 0, 4141);
-    			add_location(br1, file$6, 153, 0, 4146);
-    			add_location(button0, file$6, 157, 0, 4287);
-    			add_location(br2, file$6, 160, 0, 4327);
-    			add_location(br3, file$6, 161, 0, 4332);
-    			add_location(button1, file$6, 162, 30, 4367);
+    			p2.textContent = "Svelte implements this and other apps so simply, neatly, and transparently that, for the foreseeable future, it will remain my goto framework for small, mid-sized, and possibly large applications.";
+    			add_location(br0, file$3, 155, 0, 3874);
+    			add_location(br1, file$3, 156, 0, 3879);
+    			add_location(button0, file$3, 160, 0, 4016);
+    			add_location(br2, file$3, 163, 0, 4056);
+    			add_location(br3, file$3, 164, 0, 4061);
+    			add_location(button1, file$3, 165, 30, 4096);
     			set_style(div0, "text-indent", "20px");
-    			add_location(div0, file$6, 162, 0, 4337);
-    			add_location(br4, file$6, 163, 0, 4396);
-    			add_location(button2, file$6, 164, 0, 4401);
-    			add_location(br5, file$6, 167, 0, 4447);
-    			add_location(br6, file$6, 168, 0, 4452);
+    			add_location(div0, file$3, 165, 0, 4066);
+    			add_location(br4, file$3, 166, 0, 4125);
+    			add_location(button2, file$3, 167, 0, 4130);
+    			add_location(br5, file$3, 170, 0, 4176);
+    			add_location(br6, file$3, 171, 0, 4181);
     			set_style(div1, "text-align", "right");
     			set_style(div1, "margin-right", "2%");
     			set_style(div1, "width", "20%");
-    			add_location(div1, file$6, 155, 20, 4221);
-    			attr_dev(button3, "id", "m0");
-    			add_location(button3, file$6, 173, 0, 4551);
-    			attr_dev(button4, "id", "m1");
-    			add_location(button4, file$6, 174, 0, 4613);
-    			attr_dev(button5, "id", "m2");
-    			add_location(button5, file$6, 175, 0, 4675);
-    			add_location(br7, file$6, 176, 0, 4737);
-    			add_location(br8, file$6, 177, 0, 4742);
-    			attr_dev(button6, "id", "m3");
-    			add_location(button6, file$6, 178, 0, 4747);
-    			attr_dev(button7, "id", "m4");
-    			add_location(button7, file$6, 179, 0, 4809);
-    			attr_dev(button8, "id", "m5");
-    			add_location(button8, file$6, 180, 0, 4871);
-    			add_location(br9, file$6, 181, 0, 4933);
-    			add_location(br10, file$6, 182, 0, 4938);
-    			attr_dev(button9, "id", "m6");
-    			add_location(button9, file$6, 183, 0, 4943);
-    			attr_dev(button10, "id", "m7");
-    			add_location(button10, file$6, 184, 0, 5005);
-    			attr_dev(button11, "id", "m8");
-    			add_location(button11, file$6, 185, 0, 5067);
+    			add_location(div1, file$3, 158, 18, 3950);
+    			attr(button3, "id", "m0");
+    			add_location(button3, file$3, 176, 0, 4273);
+    			attr(button4, "id", "m1");
+    			add_location(button4, file$3, 177, 0, 4335);
+    			attr(button5, "id", "m2");
+    			add_location(button5, file$3, 178, 0, 4397);
+    			add_location(br7, file$3, 179, 0, 4459);
+    			add_location(br8, file$3, 180, 0, 4464);
+    			attr(button6, "id", "m3");
+    			add_location(button6, file$3, 181, 0, 4469);
+    			attr(button7, "id", "m4");
+    			add_location(button7, file$3, 182, 0, 4531);
+    			attr(button8, "id", "m5");
+    			add_location(button8, file$3, 183, 0, 4593);
+    			add_location(br9, file$3, 184, 0, 4655);
+    			add_location(br10, file$3, 185, 0, 4660);
+    			attr(button9, "id", "m6");
+    			add_location(button9, file$3, 186, 0, 4665);
+    			attr(button10, "id", "m7");
+    			add_location(button10, file$3, 187, 0, 4727);
+    			attr(button11, "id", "m8");
+    			add_location(button11, file$3, 188, 0, 4789);
     			set_style(div2, "marginRight", "0%");
     			set_style(div2, "width", "80%");
-    			add_location(div2, file$6, 171, 12, 4505);
+    			add_location(div2, file$3, 174, 9, 4227);
     			set_style(div3, "display", "flex");
-    			add_location(div3, file$6, 154, 20, 4171);
-    			add_location(br11, file$6, 188, 0, 5143);
-    			add_location(p0, file$6, 190, 0, 5149);
-    			add_location(pre0, file$6, 191, 0, 5346);
-    			add_location(p1, file$6, 192, 0, 5364);
-    			add_location(pre1, file$6, 193, 0, 5400);
-    			add_location(p2, file$6, 194, 0, 5418);
+    			add_location(div3, file$3, 157, 18, 3902);
+    			add_location(br11, file$3, 191, 0, 4865);
+    			add_location(p0, file$3, 193, 0, 4871);
+    			add_location(pre0, file$3, 194, 0, 5068);
+    			add_location(p1, file$3, 195, 0, 5086);
+    			add_location(pre1, file$3, 196, 0, 5122);
+    			add_location(p2, file$3, 197, 0, 5140);
 
     			dispose = [
-    				listen_dev(button0, "click", /*back*/ ctx[4], false, false, false),
-    				listen_dev(button2, "click", /*forward*/ ctx[5], false, false, false),
-    				listen_dev(
-    					button3,
-    					"click",
-    					function () {
-    						if (is_function(/*ob*/ ctx[1].push)) /*ob*/ ctx[1].push.apply(this, arguments);
-    					},
-    					false,
-    					false,
-    					false
-    				),
-    				listen_dev(
-    					button4,
-    					"click",
-    					function () {
-    						if (is_function(/*ob*/ ctx[1].push)) /*ob*/ ctx[1].push.apply(this, arguments);
-    					},
-    					false,
-    					false,
-    					false
-    				),
-    				listen_dev(
-    					button5,
-    					"click",
-    					function () {
-    						if (is_function(/*ob*/ ctx[1].push)) /*ob*/ ctx[1].push.apply(this, arguments);
-    					},
-    					false,
-    					false,
-    					false
-    				),
-    				listen_dev(
-    					button6,
-    					"click",
-    					function () {
-    						if (is_function(/*ob*/ ctx[1].push)) /*ob*/ ctx[1].push.apply(this, arguments);
-    					},
-    					false,
-    					false,
-    					false
-    				),
-    				listen_dev(
-    					button7,
-    					"click",
-    					function () {
-    						if (is_function(/*ob*/ ctx[1].push)) /*ob*/ ctx[1].push.apply(this, arguments);
-    					},
-    					false,
-    					false,
-    					false
-    				),
-    				listen_dev(
-    					button8,
-    					"click",
-    					function () {
-    						if (is_function(/*ob*/ ctx[1].push)) /*ob*/ ctx[1].push.apply(this, arguments);
-    					},
-    					false,
-    					false,
-    					false
-    				),
-    				listen_dev(
-    					button9,
-    					"click",
-    					function () {
-    						if (is_function(/*ob*/ ctx[1].push)) /*ob*/ ctx[1].push.apply(this, arguments);
-    					},
-    					false,
-    					false,
-    					false
-    				),
-    				listen_dev(
-    					button10,
-    					"click",
-    					function () {
-    						if (is_function(/*ob*/ ctx[1].push)) /*ob*/ ctx[1].push.apply(this, arguments);
-    					},
-    					false,
-    					false,
-    					false
-    				),
-    				listen_dev(
-    					button11,
-    					"click",
-    					function () {
-    						if (is_function(/*ob*/ ctx[1].push)) /*ob*/ ctx[1].push.apply(this, arguments);
-    					},
-    					false,
-    					false,
-    					false
-    				)
+    				listen(button0, "click", ctx.back),
+    				listen(button2, "click", ctx.forward),
+    				listen(button3, "click", ctx.ob.push),
+    				listen(button4, "click", ctx.ob.push),
+    				listen(button5, "click", ctx.ob.push),
+    				listen(button6, "click", ctx.ob.push),
+    				listen(button7, "click", ctx.ob.push),
+    				listen(button8, "click", ctx.ob.push),
+    				listen(button9, "click", ctx.ob.push),
+    				listen(button10, "click", ctx.ob.push),
+    				listen(button11, "click", ctx.ob.push)
     			];
     		},
+
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
+
     		m: function mount(target, anchor) {
     			if (if_block) if_block.m(target, anchor);
-    			insert_dev(target, t0, anchor);
-    			insert_dev(target, br0, anchor);
-    			insert_dev(target, t1, anchor);
-    			insert_dev(target, br1, anchor);
-    			insert_dev(target, t2, anchor);
-    			insert_dev(target, div3, anchor);
-    			append_dev(div3, div1);
-    			append_dev(div1, button0);
-    			append_dev(div1, t4);
-    			append_dev(div1, br2);
-    			append_dev(div1, t5);
-    			append_dev(div1, br3);
-    			append_dev(div1, t6);
-    			append_dev(div1, div0);
-    			append_dev(div0, button1);
-    			append_dev(button1, t7);
-    			append_dev(div1, t8);
-    			append_dev(div1, br4);
-    			append_dev(div1, t9);
-    			append_dev(div1, button2);
-    			append_dev(div1, t11);
-    			append_dev(div1, br5);
-    			append_dev(div1, t12);
-    			append_dev(div1, br6);
-    			append_dev(div3, t13);
-    			append_dev(div3, div2);
-    			append_dev(div2, button3);
-    			append_dev(button3, t14);
-    			append_dev(div2, t15);
-    			append_dev(div2, button4);
-    			append_dev(button4, t16);
-    			append_dev(div2, t17);
-    			append_dev(div2, button5);
-    			append_dev(button5, t18);
-    			append_dev(div2, t19);
-    			append_dev(div2, br7);
-    			append_dev(div2, t20);
-    			append_dev(div2, br8);
-    			append_dev(div2, t21);
-    			append_dev(div2, button6);
-    			append_dev(button6, t22);
-    			append_dev(div2, t23);
-    			append_dev(div2, button7);
-    			append_dev(button7, t24);
-    			append_dev(div2, t25);
-    			append_dev(div2, button8);
-    			append_dev(button8, t26);
-    			append_dev(div2, t27);
-    			append_dev(div2, br9);
-    			append_dev(div2, t28);
-    			append_dev(div2, br10);
-    			append_dev(div2, t29);
-    			append_dev(div2, button9);
-    			append_dev(button9, t30);
-    			append_dev(div2, t31);
-    			append_dev(div2, button10);
-    			append_dev(button10, t32);
-    			append_dev(div2, t33);
-    			append_dev(div2, button11);
-    			append_dev(button11, t34);
-    			insert_dev(target, t35, anchor);
-    			insert_dev(target, br11, anchor);
-    			insert_dev(target, t36, anchor);
-    			insert_dev(target, p0, anchor);
-    			insert_dev(target, t38, anchor);
-    			insert_dev(target, pre0, anchor);
-    			insert_dev(target, t40, anchor);
-    			insert_dev(target, p1, anchor);
-    			insert_dev(target, t42, anchor);
-    			insert_dev(target, pre1, anchor);
-    			insert_dev(target, t44, anchor);
-    			insert_dev(target, p2, anchor);
+    			insert(target, t0, anchor);
+    			insert(target, br0, anchor);
+    			insert(target, t1, anchor);
+    			insert(target, br1, anchor);
+    			insert(target, t2, anchor);
+    			insert(target, div3, anchor);
+    			append(div3, div1);
+    			append(div1, button0);
+    			append(div1, t4);
+    			append(div1, br2);
+    			append(div1, t5);
+    			append(div1, br3);
+    			append(div1, t6);
+    			append(div1, div0);
+    			append(div0, button1);
+    			append(button1, t7);
+    			append(div1, t8);
+    			append(div1, br4);
+    			append(div1, t9);
+    			append(div1, button2);
+    			append(div1, t11);
+    			append(div1, br5);
+    			append(div1, t12);
+    			append(div1, br6);
+    			append(div3, t13);
+    			append(div3, div2);
+    			append(div2, button3);
+    			append(button3, t14);
+    			append(div2, t15);
+    			append(div2, button4);
+    			append(button4, t16);
+    			append(div2, t17);
+    			append(div2, button5);
+    			append(button5, t18);
+    			append(div2, t19);
+    			append(div2, br7);
+    			append(div2, t20);
+    			append(div2, br8);
+    			append(div2, t21);
+    			append(div2, button6);
+    			append(button6, t22);
+    			append(div2, t23);
+    			append(div2, button7);
+    			append(button7, t24);
+    			append(div2, t25);
+    			append(div2, button8);
+    			append(button8, t26);
+    			append(div2, t27);
+    			append(div2, br9);
+    			append(div2, t28);
+    			append(div2, br10);
+    			append(div2, t29);
+    			append(div2, button9);
+    			append(button9, t30);
+    			append(div2, t31);
+    			append(div2, button10);
+    			append(button10, t32);
+    			append(div2, t33);
+    			append(div2, button11);
+    			append(button11, t34);
+    			insert(target, t35, anchor);
+    			insert(target, br11, anchor);
+    			insert(target, t36, anchor);
+    			insert(target, p0, anchor);
+    			insert(target, t38, anchor);
+    			insert(target, pre0, anchor);
+    			append(pre0, t39);
+    			insert(target, t40, anchor);
+    			insert(target, p1, anchor);
+    			insert(target, t42, anchor);
+    			insert(target, pre1, anchor);
+    			append(pre1, t43);
+    			insert(target, t44, anchor);
+    			insert(target, p2, anchor);
     			current = true;
     		},
-    		p: function update(new_ctx, [dirty]) {
-    			ctx = new_ctx;
-    			if (!current || dirty & /*j*/ 1) set_data_dev(t7, /*j*/ ctx[0]);
-    			if ((!current || dirty & /*j*/ 1) && t14_value !== (t14_value = /*cache*/ ctx[3][/*j*/ ctx[0]][0] + "")) set_data_dev(t14, t14_value);
-    			if ((!current || dirty & /*j*/ 1) && t16_value !== (t16_value = /*cache*/ ctx[3][/*j*/ ctx[0]][1] + "")) set_data_dev(t16, t16_value);
-    			if ((!current || dirty & /*j*/ 1) && t18_value !== (t18_value = /*cache*/ ctx[3][/*j*/ ctx[0]][2] + "")) set_data_dev(t18, t18_value);
-    			if ((!current || dirty & /*j*/ 1) && t22_value !== (t22_value = /*cache*/ ctx[3][/*j*/ ctx[0]][3] + "")) set_data_dev(t22, t22_value);
-    			if ((!current || dirty & /*j*/ 1) && t24_value !== (t24_value = /*cache*/ ctx[3][/*j*/ ctx[0]][4] + "")) set_data_dev(t24, t24_value);
-    			if ((!current || dirty & /*j*/ 1) && t26_value !== (t26_value = /*cache*/ ctx[3][/*j*/ ctx[0]][5] + "")) set_data_dev(t26, t26_value);
-    			if ((!current || dirty & /*j*/ 1) && t30_value !== (t30_value = /*cache*/ ctx[3][/*j*/ ctx[0]][6] + "")) set_data_dev(t30, t30_value);
-    			if ((!current || dirty & /*j*/ 1) && t32_value !== (t32_value = /*cache*/ ctx[3][/*j*/ ctx[0]][7] + "")) set_data_dev(t32, t32_value);
-    			if ((!current || dirty & /*j*/ 1) && t34_value !== (t34_value = /*cache*/ ctx[3][/*j*/ ctx[0]][8] + "")) set_data_dev(t34, t34_value);
+
+    		p: function update(changed, ctx) {
+    			{
+    				if (!if_block) {
+    					if_block = create_if_block$3();
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(t0.parentNode, t0);
+    				} else {
+    									transition_in(if_block, 1);
+    				}
+    			}
+
+    			if (!current || changed.j) {
+    				set_data(t7, ctx.j);
+    			}
+
+    			if ((!current || changed.j) && t14_value !== (t14_value = ctx.cache[ctx.j][0] + "")) {
+    				set_data(t14, t14_value);
+    			}
+
+    			if ((!current || changed.j) && t16_value !== (t16_value = ctx.cache[ctx.j][1] + "")) {
+    				set_data(t16, t16_value);
+    			}
+
+    			if ((!current || changed.j) && t18_value !== (t18_value = ctx.cache[ctx.j][2] + "")) {
+    				set_data(t18, t18_value);
+    			}
+
+    			if ((!current || changed.j) && t22_value !== (t22_value = ctx.cache[ctx.j][3] + "")) {
+    				set_data(t22, t22_value);
+    			}
+
+    			if ((!current || changed.j) && t24_value !== (t24_value = ctx.cache[ctx.j][4] + "")) {
+    				set_data(t24, t24_value);
+    			}
+
+    			if ((!current || changed.j) && t26_value !== (t26_value = ctx.cache[ctx.j][5] + "")) {
+    				set_data(t26, t26_value);
+    			}
+
+    			if ((!current || changed.j) && t30_value !== (t30_value = ctx.cache[ctx.j][6] + "")) {
+    				set_data(t30, t30_value);
+    			}
+
+    			if ((!current || changed.j) && t32_value !== (t32_value = ctx.cache[ctx.j][7] + "")) {
+    				set_data(t32, t32_value);
+    			}
+
+    			if ((!current || changed.j) && t34_value !== (t34_value = ctx.cache[ctx.j][8] + "")) {
+    				set_data(t34, t34_value);
+    			}
     		},
+
     		i: function intro(local) {
     			if (current) return;
     			transition_in(if_block);
     			current = true;
     		},
+
     		o: function outro(local) {
     			transition_out(if_block);
     			current = false;
     		},
+
     		d: function destroy(detaching) {
     			if (if_block) if_block.d(detaching);
-    			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(br0);
-    			if (detaching) detach_dev(t1);
-    			if (detaching) detach_dev(br1);
-    			if (detaching) detach_dev(t2);
-    			if (detaching) detach_dev(div3);
-    			if (detaching) detach_dev(t35);
-    			if (detaching) detach_dev(br11);
-    			if (detaching) detach_dev(t36);
-    			if (detaching) detach_dev(p0);
-    			if (detaching) detach_dev(t38);
-    			if (detaching) detach_dev(pre0);
-    			if (detaching) detach_dev(t40);
-    			if (detaching) detach_dev(p1);
-    			if (detaching) detach_dev(t42);
-    			if (detaching) detach_dev(pre1);
-    			if (detaching) detach_dev(t44);
-    			if (detaching) detach_dev(p2);
+
+    			if (detaching) {
+    				detach(t0);
+    				detach(br0);
+    				detach(t1);
+    				detach(br1);
+    				detach(t2);
+    				detach(div3);
+    				detach(t35);
+    				detach(br11);
+    				detach(t36);
+    				detach(p0);
+    				detach(t38);
+    				detach(pre0);
+    				detach(t40);
+    				detach(p1);
+    				detach(t42);
+    				detach(pre1);
+    				detach(t44);
+    				detach(p2);
+    			}
+
     			run_all(dispose);
     		}
     	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$6.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
     }
 
-    function instance$6($$self, $$props, $$invalidate) {
-    	let visible = true;
-    	var cache = [[1, 2, 3, 4, 5, 6, 7, 8, 9]];
-    	var j = 0;
+    function instance$3($$self, $$props, $$invalidate) {
+    	
 
-    	var ob = {
-    		x: [],
-    		push: function push(e) {
-    			ob.x.push(parseInt(e.target.id.slice(1, 2), 10));
+    var cache = [[1,2,3,4,5,6,7,8,9]];
+    var j = 0;
+    var ob = {x: [], push: function push (e) {
+       ob.x.push(parseInt(e.target.id.slice(1,2), 10));
+       if (ob.x.length >1) {
+          var d = exchange(ob.x[0], ob.x[1]);
+          cache.splice(j+1,0,d);
+          ob.x = []; $$invalidate('ob', ob);
+          j+=1;
+          return cache;   var j = 0;
+          }
+       }
+    };
 
-    			if (ob.x.length > 1) {
-    				var d = exchange(ob.x[0], ob.x[1]);
-    				cache.splice(j + 1, 0, d);
-    				$$invalidate(1, ob.x = [], ob);
-    				j += 1;
-    				return cache;
-    				var j = 0;
-    			}
-    		}
-    	};
+    function exchange (k,n) {
+       var ar = cache[j].slice();
+       var a = ar[k];
+       ar[k] = ar[n];
+       ar[n] = a;
+       return ar;
+    }
 
-    	function exchange(k, n) {
-    		var ar = cache[j].slice();
-    		var a = ar[k];
-    		ar[k] = ar[n];
-    		ar[n] = a;
-    		return ar;
-    	}
+    var back = function back () {
+       if (j > 0) { $$invalidate('j', j = j-=1); $$invalidate('j', j); }
+       else $$invalidate('j', j);
+    };
 
-    	var back = function back() {
-    		if (j > 0) $$invalidate(0, j = $$invalidate(0, j -= 1)); else $$invalidate(0, j);
-    	};
+    var forward = function forward () {
+       if (j+1 < cache.length) { $$invalidate('j', j = j+=1); $$invalidate('j', j); }
+       else $$invalidate('j', j);
+       };
 
-    	var forward = function forward() {
-    		if (j + 1 < cache.length) $$invalidate(0, j = $$invalidate(0, j += 1)); else $$invalidate(0, j);
-    	};
+       var cache = [[1,2,3,4,5,6,7,8,9]];
+       var j = 0;
+       var ob = {x: [], push: function push (e) {
+          ob.x.push(parseInt(e.target.id.slice(1,2), 10));
+          if (ob.x.length >1) {
+             var d = exchange(ob.x[0], ob.x[1]);
+             cache.splice(j+1,0,d);
+             ob.x = []; $$invalidate('ob', ob);
+             $$invalidate('j', j+=1);
+             return cache;
+             }
+          }
+       };
+    var code = `
+var cache = [[1,2,3,4,5,6,7,8,9]];
+var j = 0;
+var ob = {x: [], push: function push (e) {
+   ob.x.push(parseInt(e.target.id.slice(1,2), 10));
+   if (ob.x.length >1) {
+      var d = exchange(ob.x[0], ob.x[1]);
+      cache.splice(j+1,0,d);
+      ob.x = [];
+      j+=1;
+      return cache;   var j = 0;
+      }
+   }
+}
 
-    	var cache = [[1, 2, 3, 4, 5, 6, 7, 8, 9]];
-    	var j = 0;
+function exchange (k,n) {
+   var ar = cache[j].slice();
+   var a = ar[k]
+   ar[k] = ar[n];
+   ar[n] = a;
+   return ar;
+}
 
-    	var ob = {
-    		x: [],
-    		push: function push(e) {
-    			ob.x.push(parseInt(e.target.id.slice(1, 2), 10));
+function back () {
+   if (j > 0) j = j-=1;
+   else j = j;
+}
 
-    			if (ob.x.length > 1) {
-    				var d = exchange(ob.x[0], ob.x[1]);
-    				cache.splice(j + 1, 0, d);
-    				$$invalidate(1, ob.x = [], ob);
-    				$$invalidate(0, j += 1);
-    				return cache;
-    			}
-    		}
-    	};
+function forward () {
+   if (j+1 < cache.length) j = j+=1;
+   else j = j;
+   }
 
-    	var code = `
-  var cache = [[1,2,3,4,5,6,7,8,9]];
-  var j = 0;
-  var ob = {x: [], push: function push (e) {
-     ob.x.push(parseInt(e.target.id.slice(1,2), 10));
-     if (ob.x.length >1) {
+   var cache = [[1,2,3,4,5,6,7,8,9]];
+   var j = 0;
+   var ob = {x: [], push: function push (e) {
+      ob.x.push(parseInt(e.target.id.slice(1,2), 10));
+      if (ob.x.length >1) {
          var d = exchange(ob.x[0], ob.x[1]);
          cache.splice(j+1,0,d);
          ob.x = [];
          j+=1;
-         return cache;   var j = 0;
-        }
-     }
-  }
+         return cache;
+         }
+      }
+   }`;
 
-   function exchange (k,n) {
-      var ar = cache[j].slice();
-      var a = ar[k]
-      ar[k] = ar[n];
-      ar[n] = a;
-      return ar;
-   }
-
-   function back () {
-      if (j > 0) j = j-=1;
-      else j = j;
-   }
-
-   function forward () {
-      if (j+1 < cache.length) j = j+=1;
-      else j = j;
-    }
-
-     var cache = [[1,2,3,4,5,6,7,8,9]];
-     var j = 0;
-     var ob = {x: [], push: function push (e) {
-        ob.x.push(parseInt(e.target.id.slice(1,2), 10));
-        if (ob.x.length >1) {
-            var d = exchange(ob.x[0], ob.x[1]);
-            cache.splice(j+1,0,d);
-            ob.x = [];
-            j+=1;
-            return cache;
-           }
-        }
-     }`;
-
-    	var html = `{#if visible}
- <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
- <br><br>
- A LITTLE SVELTE MODULE
- </div>
+    var html = `{#if visible}
+<div style = "font-family: Times New Roman;  text-align: center; 
+color: hsl(210, 90%, 90%); font-size: 32px;" transition:fade>
+<br><br>
+A LITTLE SVELTE MODULE
+</div>
 {/if}
 
-                        <div style = "display: flex">
-                        <div style = "margin-Left: 2%; width: 50%" >
+                     <div style = "display: flex">
+                     <div style = "margin-Left: 2%; width: 50%" >
 
-<p> If you click any two numbers (below), they switch locations and a "BACK" button appears. If you go back and click two numbers, the result gets inserted  at your location.</p>
+<p> If you click any two numbers (below), they switch locations and 
+a "BACK" button appears. If you go back and click two numbers, the 
+result gets inserted  at your location.</p>
 <br>	<button on:click={back}>
-		BACK
-	</button>
+   BACK
+</button>
 <br>
 <br>
 
-   <div style="text-indent:20px"><button>{ j }</button></div>
+<div style="text-indent:20px"><button>{ j }</button></div>
 <br>
-	<button on:click={forward}>
-		FORWARD
-	</button>
-                        </div>
-                     <div style = "marginRight: 2%; width: 50%; font-size: 30">
+<button on:click={forward}>
+   FORWARD
+</button>
+                     </div>
+                  <div style = "marginRight: 2%; width: 50%; font-size: 30">
 <br><br><br><br><br><p>Suck my dick</p>
 <button id = m0  on:click = {ob.push} >{cache[j][0]}</button>
 <button id = m1  on:click = {ob.push} >{cache[j][1]}</button>
 <button id = m2  on:click = {ob.push} >{cache[j][
-   2]}</button>
+2]}</button>
 <br>
 <br>
 <button id = m3  on:click = {ob.push} >{cache[j][3]}</button>
@@ -4508,58 +2718,37 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
 <br>
 <button id = m6  on:click = {ob.push} >{cache[j][6]}</button>
 <button id = m7  on:click = {ob.push} >{cache[j]
-   [7]}</button>
+[7]}</button>
 <button id = m8  on:click = {ob.push} >{cache[j][8]}</button>
 </div>
 </div>
-<p> This is the JavaScript code inside of the script tags except for the definitions of the variables "code" and "html", which are just the code and html cut and pasted inside of back quotes: </p>
+<p> This is the JavaScript code inside of the script tags except 
+for the definitions of the variables "code" and "html", which are 
+just the code and html cut and pasted inside of back quotes: </p>
 <pre>{code}</pre>
 <p> And here is the HTML code: </p>
 <pre>{html}</pre>
 <p> Is Svelte awesome, or what? </p> `;
 
-    	$$self.$capture_state = () => {
-    		return {};
-    	};
-
-    	$$self.$inject_state = $$props => {
-    		if ("visible" in $$props) $$invalidate(2, visible = $$props.visible);
-    		if ("cache" in $$props) $$invalidate(3, cache = $$props.cache);
-    		if ("j" in $$props) $$invalidate(0, j = $$props.j);
-    		if ("ob" in $$props) $$invalidate(1, ob = $$props.ob);
-    		if ("back" in $$props) $$invalidate(4, back = $$props.back);
-    		if ("forward" in $$props) $$invalidate(5, forward = $$props.forward);
-    		if ("code" in $$props) $$invalidate(6, code = $$props.code);
-    		if ("html" in $$props) $$invalidate(7, html = $$props.html);
-    	};
-
-    	return [j, ob, visible, cache, back, forward, code, html];
+    	return { cache, j, ob, back, forward, code, html };
     }
 
     class Matrix extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$6, create_fragment$6, safe_not_equal, {});
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "Matrix",
-    			options,
-    			id: create_fragment$6.name
-    		});
+    		init(this, options, instance$3, create_fragment$3, safe_not_equal, []);
     	}
     }
 
-    /* src/Transducer.svelte generated by Svelte v3.16.7 */
-    const file$7 = "src/Transducer.svelte";
+    /* src/Transducer.svelte generated by Svelte v3.9.1 */
+
+    const file$4 = "src/Transducer.svelte";
 
     // (393:0) {#if visible}
-    function create_if_block$7(ctx) {
-    	let div;
-    	let div_transition;
-    	let current;
+    function create_if_block$4(ctx) {
+    	var div, div_transition, current;
 
-    	const block = {
+    	return {
     		c: function create() {
     			div = element("div");
     			div.textContent = "TRANSDUCER SIMULATION";
@@ -4567,15 +2756,16 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file$7, 393, 1, 8806);
+    			add_location(div, file$4, 393, 1, 8806);
     		},
+
     		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
+    			insert(target, div, anchor);
     			current = true;
     		},
+
     		i: function intro(local) {
     			if (current) return;
-
     			add_render_callback(() => {
     				if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, true);
     				div_transition.run(1);
@@ -4583,162 +2773,29 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
 
     			current = true;
     		},
+
     		o: function outro(local) {
     			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
     			div_transition.run(0);
+
     			current = false;
     		},
+
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching && div_transition) div_transition.end();
+    			if (detaching) {
+    				detach(div);
+    				if (div_transition) div_transition.end();
+    			}
     		}
     	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block$7.name,
-    		type: "if",
-    		source: "(393:0) {#if visible}",
-    		ctx
-    	});
-
-    	return block;
     }
 
-    function create_fragment$7(ctx) {
-    	let t0;
-    	let p0;
-    	let t2;
-    	let p1;
-    	let t4;
-    	let p2;
-    	let t6;
-    	let p3;
-    	let t8;
-    	let br0;
-    	let br1;
-    	let t9;
-    	let div0;
-    	let t10;
-    	let t11_value = /*transducerResult*/ ctx[6].length + "";
-    	let t11;
-    	let t12;
-    	let br2;
-    	let br3;
-    	let t13;
-    	let div1;
-    	let t15;
-    	let br4;
-    	let t16;
-    	let div2;
-    	let t17;
-    	let t18_value = /*A_A*/ ctx[2].join(", ") + "";
-    	let t18;
-    	let t19;
-    	let t20;
-    	let br5;
-    	let t21;
-    	let br6;
-    	let t22;
-    	let div3;
-    	let t24;
-    	let br7;
-    	let t25;
-    	let div4;
-    	let t26;
-    	let t27_value = /*B_B*/ ctx[3].join(", ") + "";
-    	let t27;
-    	let t28;
-    	let t29;
-    	let br8;
-    	let t30;
-    	let br9;
-    	let t31;
-    	let div5;
-    	let t33;
-    	let br10;
-    	let t34;
-    	let div6;
-    	let t35;
-    	let t36_value = /*C_C*/ ctx[4].join(", ") + "";
-    	let t36;
-    	let t37_1;
-    	let t38;
-    	let br11;
-    	let t39;
-    	let br12;
-    	let t40;
-    	let div7;
-    	let t42;
-    	let br13;
-    	let t43;
-    	let div8;
-    	let t44;
-    	let t45_value = /*D_D*/ ctx[5].join(", ") + "";
-    	let t45;
-    	let t46;
-    	let t47;
-    	let br14;
-    	let t48;
-    	let br15;
-    	let t49;
-    	let button0;
-    	let t51;
-    	let button1;
-    	let t53;
-    	let br16;
-    	let br17;
-    	let t54;
-    	let div9;
-    	let t55;
-    	let t56;
-    	let t57;
-    	let br18;
-    	let t58;
-    	let div10;
-    	let t59;
-    	let t60_value = /*ar74*/ ctx[1].join(", ") + "";
-    	let t60;
-    	let t61;
-    	let t62;
-    	let br19;
-    	let t63;
-    	let div11;
-    	let t65;
-    	let pre0;
-    	let t67;
-    	let p4;
-    	let t69;
-    	let div12;
-    	let t71;
-    	let pre1;
-    	let t73;
-    	let p5;
-    	let t75;
-    	let div13;
-    	let t77;
-    	let pre2;
-    	let t79;
-    	let p6;
-    	let t81;
-    	let p7;
-    	let t83;
-    	let pre3;
-    	let t85;
-    	let p8;
-    	let t87;
-    	let pre4;
-    	let t89;
-    	let span0;
-    	let t91;
-    	let a;
-    	let t93;
-    	let span1;
-    	let current;
-    	let dispose;
-    	let if_block = /*visible*/ ctx[7] && create_if_block$7(ctx);
+    function create_fragment$4(ctx) {
+    	var t0, p0, t2, p1, t4, p2, t6, p3, t8, br0, br1, t9, div0, t10, t11_value = ctx.transducerResult.length + "", t11, t12, br2, br3, t13, div1, t15, br4, t16, div2, t17, t18_value = ctx.A_A.join(", ") + "", t18, t19, t20, br5, t21, br6, t22, div3, t24, br7, t25, div4, t26, t27_value = ctx.B_B.join(", ") + "", t27, t28, t29, br8, t30, br9, t31, div5, t33, br10, t34, div6, t35, t36_value = ctx.C_C.join(", ") + "", t36, t37_1, t38, br11, t39, br12, t40, div7, t42, br13, t43, div8, t44, t45_value = ctx.D_D.join(", ") + "", t45, t46, t47, br14, t48, br15, t49, button0, t51, button1, t53, br16, br17, t54, div9, t55, t56, t57, br18, t58, div10, t59, t60_value = ctx.ar74.join(", ") + "", t60, t61, t62, br19, t63, div11, t65, pre0, t66, t67, p4, t69, div12, t71, pre1, t73, p5, t75, div13, t77, pre2, t79, p6, t81, p7, t83, pre3, t84, t85, p8, t87, pre4, t88, t89, span0, t91, a, t93, span1, current, dispose;
 
-    	const block = {
+    	var if_block =  create_if_block$4();
+
+    	return {
     		c: function create() {
     			if (if_block) if_block.c();
     			t0 = space();
@@ -4831,7 +2888,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			t54 = space();
     			div9 = element("div");
     			t55 = text("Array length: ");
-    			t56 = text(/*size*/ ctx[0]);
+    			t56 = text(ctx.size);
     			t57 = space();
     			br18 = element("br");
     			t58 = space();
@@ -4846,7 +2903,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			div11.textContent = "The modified Monad (below) could benefit from some refactoring, but it does what needs to be done for this demo. The point is that a standard transducer and Monad both use one array traversal to accomplish what the built-in dot method does by traversing the original array and seven intermediary arrays.";
     			t65 = space();
     			pre0 = element("pre");
-    			pre0.textContent = `${/*mon44*/ ctx[8]}`;
+    			t66 = text(ctx.mon44);
     			t67 = space();
     			p4 = element("p");
     			p4.textContent = "On my desktop computer, when ar74.length === 100,000 I got this and similar results:";
@@ -4873,13 +2930,13 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			p7.textContent = "Here's the definition of the increase button's callback function along with the definitions of some assoc some supportingrelated:";
     			t83 = space();
     			pre3 = element("pre");
-    			pre3.textContent = `${/*callback*/ ctx[9]}`;
+    			t84 = text(ctx.callback);
     			t85 = space();
     			p8 = element("p");
     			p8.textContent = "And here's some of the code behind the transducer demonstration:";
     			t87 = space();
     			pre4 = element("pre");
-    			pre4.textContent = `${/*call2*/ ctx[10]}`;
+    			t88 = text(ctx.call2);
     			t89 = space();
     			span0 = element("span");
     			span0.textContent = "The rest of the code can be found in the";
@@ -4889,450 +2946,455 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     			t93 = space();
     			span1 = element("span");
     			span1.textContent = ".";
-    			add_location(p0, file$7, 398, 0, 8970);
-    			add_location(p1, file$7, 399, 0, 9381);
-    			add_location(p2, file$7, 400, 0, 9627);
-    			add_location(p3, file$7, 401, 0, 9962);
-    			add_location(br0, file$7, 402, 0, 10070);
-    			add_location(br1, file$7, 402, 4, 10074);
-    			add_location(div0, file$7, 403, 0, 10079);
-    			add_location(br2, file$7, 404, 0, 10133);
-    			add_location(br3, file$7, 404, 4, 10137);
-    			attr_dev(div1, "class", "p svelte-1d81q6r");
-    			add_location(div1, file$7, 405, 0, 10142);
-    			add_location(br4, file$7, 406, 0, 10193);
-    			attr_dev(div2, "class", "q svelte-1d81q6r");
-    			add_location(div2, file$7, 407, 0, 10198);
-    			add_location(br5, file$7, 408, 0, 10239);
-    			add_location(br6, file$7, 409, 0, 10244);
-    			attr_dev(div3, "class", "p svelte-1d81q6r");
-    			add_location(div3, file$7, 410, 0, 10249);
-    			add_location(br7, file$7, 411, 0, 10310);
-    			attr_dev(div4, "class", "q svelte-1d81q6r");
-    			add_location(div4, file$7, 412, 0, 10315);
-    			add_location(br8, file$7, 413, 0, 10357);
-    			add_location(br9, file$7, 414, 0, 10362);
-    			attr_dev(div5, "class", "p svelte-1d81q6r");
-    			add_location(div5, file$7, 415, 0, 10367);
-    			add_location(br10, file$7, 416, 0, 10431);
-    			attr_dev(div6, "class", "q svelte-1d81q6r");
-    			add_location(div6, file$7, 417, 0, 10436);
-    			add_location(br11, file$7, 418, 0, 10478);
-    			add_location(br12, file$7, 419, 0, 10483);
-    			attr_dev(div7, "class", "p svelte-1d81q6r");
-    			add_location(div7, file$7, 420, 0, 10488);
-    			add_location(br13, file$7, 421, 0, 10551);
-    			attr_dev(div8, "class", "q svelte-1d81q6r");
-    			add_location(div8, file$7, 422, 0, 10556);
-    			add_location(br14, file$7, 423, 0, 10598);
-    			add_location(br15, file$7, 424, 0, 10603);
-    			attr_dev(button0, "class", "but");
-    			add_location(button0, file$7, 425, 0, 10608);
-    			attr_dev(button1, "class", "but");
-    			add_location(button1, file$7, 426, 0, 10668);
-    			add_location(br16, file$7, 427, 0, 10728);
-    			add_location(br17, file$7, 427, 4, 10732);
-    			add_location(div9, file$7, 428, 0, 10737);
-    			add_location(br18, file$7, 429, 0, 10769);
-    			add_location(div10, file$7, 430, 0, 10774);
-    			add_location(br19, file$7, 431, 0, 10811);
-    			add_location(div11, file$7, 432, 0, 10816);
-    			add_location(pre0, file$7, 433, 0, 11132);
-    			add_location(p4, file$7, 434, 0, 11151);
+    			add_location(p0, file$4, 398, 0, 8970);
+    			add_location(p1, file$4, 399, 0, 9381);
+    			add_location(p2, file$4, 400, 0, 9627);
+    			add_location(p3, file$4, 401, 0, 9962);
+    			add_location(br0, file$4, 402, 0, 10070);
+    			add_location(br1, file$4, 402, 4, 10074);
+    			add_location(div0, file$4, 403, 0, 10079);
+    			add_location(br2, file$4, 404, 0, 10133);
+    			add_location(br3, file$4, 404, 4, 10137);
+    			attr(div1, "class", "p svelte-1d81q6r");
+    			add_location(div1, file$4, 405, 0, 10142);
+    			add_location(br4, file$4, 406, 0, 10193);
+    			attr(div2, "class", "q svelte-1d81q6r");
+    			add_location(div2, file$4, 407, 0, 10198);
+    			add_location(br5, file$4, 408, 0, 10239);
+    			add_location(br6, file$4, 409, 0, 10244);
+    			attr(div3, "class", "p svelte-1d81q6r");
+    			add_location(div3, file$4, 410, 0, 10249);
+    			add_location(br7, file$4, 411, 0, 10310);
+    			attr(div4, "class", "q svelte-1d81q6r");
+    			add_location(div4, file$4, 412, 0, 10315);
+    			add_location(br8, file$4, 413, 0, 10357);
+    			add_location(br9, file$4, 414, 0, 10362);
+    			attr(div5, "class", "p svelte-1d81q6r");
+    			add_location(div5, file$4, 415, 0, 10367);
+    			add_location(br10, file$4, 416, 0, 10431);
+    			attr(div6, "class", "q svelte-1d81q6r");
+    			add_location(div6, file$4, 417, 0, 10436);
+    			add_location(br11, file$4, 418, 0, 10478);
+    			add_location(br12, file$4, 419, 0, 10483);
+    			attr(div7, "class", "p svelte-1d81q6r");
+    			add_location(div7, file$4, 420, 0, 10488);
+    			add_location(br13, file$4, 421, 0, 10551);
+    			attr(div8, "class", "q svelte-1d81q6r");
+    			add_location(div8, file$4, 422, 0, 10556);
+    			add_location(br14, file$4, 423, 0, 10598);
+    			add_location(br15, file$4, 424, 0, 10603);
+    			attr(button0, "class", "but");
+    			add_location(button0, file$4, 425, 0, 10608);
+    			attr(button1, "class", "but");
+    			add_location(button1, file$4, 426, 0, 10668);
+    			add_location(br16, file$4, 427, 0, 10728);
+    			add_location(br17, file$4, 427, 4, 10732);
+    			add_location(div9, file$4, 428, 0, 10737);
+    			add_location(br18, file$4, 429, 0, 10769);
+    			add_location(div10, file$4, 430, 0, 10774);
+    			add_location(br19, file$4, 431, 0, 10811);
+    			add_location(div11, file$4, 432, 0, 10816);
+    			add_location(pre0, file$4, 433, 0, 11132);
+    			add_location(p4, file$4, 434, 0, 11151);
     			set_style(div12, "color", "#BBFFBB");
-    			add_location(div12, file$7, 435, 0, 11245);
-    			add_location(pre1, file$7, 437, 0, 11305);
-    			add_location(p5, file$7, 441, 0, 11411);
+    			add_location(div12, file$4, 435, 0, 11245);
+    			add_location(pre1, file$4, 437, 0, 11305);
+    			add_location(p5, file$4, 441, 0, 11411);
     			set_style(div13, "color", "#BBFFBB");
-    			add_location(div13, file$7, 443, 0, 11538);
-    			add_location(pre2, file$7, 445, 0, 11614);
-    			add_location(p6, file$7, 454, 0, 11799);
-    			add_location(p7, file$7, 455, 0, 12023);
-    			add_location(pre3, file$7, 456, 0, 12162);
-    			add_location(p8, file$7, 457, 0, 12184);
-    			add_location(pre4, file$7, 458, 0, 12258);
-    			add_location(span0, file$7, 459, 0, 12277);
-    			attr_dev(a, "href", "https://github.com/dschalk/blog");
-    			add_location(a, file$7, 460, 0, 12333);
-    			add_location(span1, file$7, 461, 0, 12399);
+    			add_location(div13, file$4, 443, 0, 11538);
+    			add_location(pre2, file$4, 445, 0, 11614);
+    			add_location(p6, file$4, 454, 0, 11799);
+    			add_location(p7, file$4, 455, 0, 12023);
+    			add_location(pre3, file$4, 456, 0, 12162);
+    			add_location(p8, file$4, 457, 0, 12184);
+    			add_location(pre4, file$4, 458, 0, 12258);
+    			add_location(span0, file$4, 459, 0, 12277);
+    			attr(a, "href", "https://github.com/dschalk/blog");
+    			add_location(a, file$4, 460, 0, 12333);
+    			add_location(span1, file$4, 461, 0, 12399);
 
     			dispose = [
-    				listen_dev(button0, "click", /*increase*/ ctx[11], false, false, false),
-    				listen_dev(button1, "click", /*decrease*/ ctx[12], false, false, false)
+    				listen(button0, "click", ctx.increase),
+    				listen(button1, "click", ctx.decrease)
     			];
     		},
+
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
+
     		m: function mount(target, anchor) {
     			if (if_block) if_block.m(target, anchor);
-    			insert_dev(target, t0, anchor);
-    			insert_dev(target, p0, anchor);
-    			insert_dev(target, t2, anchor);
-    			insert_dev(target, p1, anchor);
-    			insert_dev(target, t4, anchor);
-    			insert_dev(target, p2, anchor);
-    			insert_dev(target, t6, anchor);
-    			insert_dev(target, p3, anchor);
-    			insert_dev(target, t8, anchor);
-    			insert_dev(target, br0, anchor);
-    			insert_dev(target, br1, anchor);
-    			insert_dev(target, t9, anchor);
-    			insert_dev(target, div0, anchor);
-    			append_dev(div0, t10);
-    			append_dev(div0, t11);
-    			insert_dev(target, t12, anchor);
-    			insert_dev(target, br2, anchor);
-    			insert_dev(target, br3, anchor);
-    			insert_dev(target, t13, anchor);
-    			insert_dev(target, div1, anchor);
-    			insert_dev(target, t15, anchor);
-    			insert_dev(target, br4, anchor);
-    			insert_dev(target, t16, anchor);
-    			insert_dev(target, div2, anchor);
-    			append_dev(div2, t17);
-    			append_dev(div2, t18);
-    			append_dev(div2, t19);
-    			insert_dev(target, t20, anchor);
-    			insert_dev(target, br5, anchor);
-    			insert_dev(target, t21, anchor);
-    			insert_dev(target, br6, anchor);
-    			insert_dev(target, t22, anchor);
-    			insert_dev(target, div3, anchor);
-    			insert_dev(target, t24, anchor);
-    			insert_dev(target, br7, anchor);
-    			insert_dev(target, t25, anchor);
-    			insert_dev(target, div4, anchor);
-    			append_dev(div4, t26);
-    			append_dev(div4, t27);
-    			append_dev(div4, t28);
-    			insert_dev(target, t29, anchor);
-    			insert_dev(target, br8, anchor);
-    			insert_dev(target, t30, anchor);
-    			insert_dev(target, br9, anchor);
-    			insert_dev(target, t31, anchor);
-    			insert_dev(target, div5, anchor);
-    			insert_dev(target, t33, anchor);
-    			insert_dev(target, br10, anchor);
-    			insert_dev(target, t34, anchor);
-    			insert_dev(target, div6, anchor);
-    			append_dev(div6, t35);
-    			append_dev(div6, t36);
-    			append_dev(div6, t37_1);
-    			insert_dev(target, t38, anchor);
-    			insert_dev(target, br11, anchor);
-    			insert_dev(target, t39, anchor);
-    			insert_dev(target, br12, anchor);
-    			insert_dev(target, t40, anchor);
-    			insert_dev(target, div7, anchor);
-    			insert_dev(target, t42, anchor);
-    			insert_dev(target, br13, anchor);
-    			insert_dev(target, t43, anchor);
-    			insert_dev(target, div8, anchor);
-    			append_dev(div8, t44);
-    			append_dev(div8, t45);
-    			append_dev(div8, t46);
-    			insert_dev(target, t47, anchor);
-    			insert_dev(target, br14, anchor);
-    			insert_dev(target, t48, anchor);
-    			insert_dev(target, br15, anchor);
-    			insert_dev(target, t49, anchor);
-    			insert_dev(target, button0, anchor);
-    			insert_dev(target, t51, anchor);
-    			insert_dev(target, button1, anchor);
-    			insert_dev(target, t53, anchor);
-    			insert_dev(target, br16, anchor);
-    			insert_dev(target, br17, anchor);
-    			insert_dev(target, t54, anchor);
-    			insert_dev(target, div9, anchor);
-    			append_dev(div9, t55);
-    			append_dev(div9, t56);
-    			insert_dev(target, t57, anchor);
-    			insert_dev(target, br18, anchor);
-    			insert_dev(target, t58, anchor);
-    			insert_dev(target, div10, anchor);
-    			append_dev(div10, t59);
-    			append_dev(div10, t60);
-    			append_dev(div10, t61);
-    			insert_dev(target, t62, anchor);
-    			insert_dev(target, br19, anchor);
-    			insert_dev(target, t63, anchor);
-    			insert_dev(target, div11, anchor);
-    			insert_dev(target, t65, anchor);
-    			insert_dev(target, pre0, anchor);
-    			insert_dev(target, t67, anchor);
-    			insert_dev(target, p4, anchor);
-    			insert_dev(target, t69, anchor);
-    			insert_dev(target, div12, anchor);
-    			insert_dev(target, t71, anchor);
-    			insert_dev(target, pre1, anchor);
-    			insert_dev(target, t73, anchor);
-    			insert_dev(target, p5, anchor);
-    			insert_dev(target, t75, anchor);
-    			insert_dev(target, div13, anchor);
-    			insert_dev(target, t77, anchor);
-    			insert_dev(target, pre2, anchor);
-    			insert_dev(target, t79, anchor);
-    			insert_dev(target, p6, anchor);
-    			insert_dev(target, t81, anchor);
-    			insert_dev(target, p7, anchor);
-    			insert_dev(target, t83, anchor);
-    			insert_dev(target, pre3, anchor);
-    			insert_dev(target, t85, anchor);
-    			insert_dev(target, p8, anchor);
-    			insert_dev(target, t87, anchor);
-    			insert_dev(target, pre4, anchor);
-    			insert_dev(target, t89, anchor);
-    			insert_dev(target, span0, anchor);
-    			insert_dev(target, t91, anchor);
-    			insert_dev(target, a, anchor);
-    			insert_dev(target, t93, anchor);
-    			insert_dev(target, span1, anchor);
+    			insert(target, t0, anchor);
+    			insert(target, p0, anchor);
+    			insert(target, t2, anchor);
+    			insert(target, p1, anchor);
+    			insert(target, t4, anchor);
+    			insert(target, p2, anchor);
+    			insert(target, t6, anchor);
+    			insert(target, p3, anchor);
+    			insert(target, t8, anchor);
+    			insert(target, br0, anchor);
+    			insert(target, br1, anchor);
+    			insert(target, t9, anchor);
+    			insert(target, div0, anchor);
+    			append(div0, t10);
+    			append(div0, t11);
+    			insert(target, t12, anchor);
+    			insert(target, br2, anchor);
+    			insert(target, br3, anchor);
+    			insert(target, t13, anchor);
+    			insert(target, div1, anchor);
+    			insert(target, t15, anchor);
+    			insert(target, br4, anchor);
+    			insert(target, t16, anchor);
+    			insert(target, div2, anchor);
+    			append(div2, t17);
+    			append(div2, t18);
+    			append(div2, t19);
+    			insert(target, t20, anchor);
+    			insert(target, br5, anchor);
+    			insert(target, t21, anchor);
+    			insert(target, br6, anchor);
+    			insert(target, t22, anchor);
+    			insert(target, div3, anchor);
+    			insert(target, t24, anchor);
+    			insert(target, br7, anchor);
+    			insert(target, t25, anchor);
+    			insert(target, div4, anchor);
+    			append(div4, t26);
+    			append(div4, t27);
+    			append(div4, t28);
+    			insert(target, t29, anchor);
+    			insert(target, br8, anchor);
+    			insert(target, t30, anchor);
+    			insert(target, br9, anchor);
+    			insert(target, t31, anchor);
+    			insert(target, div5, anchor);
+    			insert(target, t33, anchor);
+    			insert(target, br10, anchor);
+    			insert(target, t34, anchor);
+    			insert(target, div6, anchor);
+    			append(div6, t35);
+    			append(div6, t36);
+    			append(div6, t37_1);
+    			insert(target, t38, anchor);
+    			insert(target, br11, anchor);
+    			insert(target, t39, anchor);
+    			insert(target, br12, anchor);
+    			insert(target, t40, anchor);
+    			insert(target, div7, anchor);
+    			insert(target, t42, anchor);
+    			insert(target, br13, anchor);
+    			insert(target, t43, anchor);
+    			insert(target, div8, anchor);
+    			append(div8, t44);
+    			append(div8, t45);
+    			append(div8, t46);
+    			insert(target, t47, anchor);
+    			insert(target, br14, anchor);
+    			insert(target, t48, anchor);
+    			insert(target, br15, anchor);
+    			insert(target, t49, anchor);
+    			insert(target, button0, anchor);
+    			insert(target, t51, anchor);
+    			insert(target, button1, anchor);
+    			insert(target, t53, anchor);
+    			insert(target, br16, anchor);
+    			insert(target, br17, anchor);
+    			insert(target, t54, anchor);
+    			insert(target, div9, anchor);
+    			append(div9, t55);
+    			append(div9, t56);
+    			insert(target, t57, anchor);
+    			insert(target, br18, anchor);
+    			insert(target, t58, anchor);
+    			insert(target, div10, anchor);
+    			append(div10, t59);
+    			append(div10, t60);
+    			append(div10, t61);
+    			insert(target, t62, anchor);
+    			insert(target, br19, anchor);
+    			insert(target, t63, anchor);
+    			insert(target, div11, anchor);
+    			insert(target, t65, anchor);
+    			insert(target, pre0, anchor);
+    			append(pre0, t66);
+    			insert(target, t67, anchor);
+    			insert(target, p4, anchor);
+    			insert(target, t69, anchor);
+    			insert(target, div12, anchor);
+    			insert(target, t71, anchor);
+    			insert(target, pre1, anchor);
+    			insert(target, t73, anchor);
+    			insert(target, p5, anchor);
+    			insert(target, t75, anchor);
+    			insert(target, div13, anchor);
+    			insert(target, t77, anchor);
+    			insert(target, pre2, anchor);
+    			insert(target, t79, anchor);
+    			insert(target, p6, anchor);
+    			insert(target, t81, anchor);
+    			insert(target, p7, anchor);
+    			insert(target, t83, anchor);
+    			insert(target, pre3, anchor);
+    			append(pre3, t84);
+    			insert(target, t85, anchor);
+    			insert(target, p8, anchor);
+    			insert(target, t87, anchor);
+    			insert(target, pre4, anchor);
+    			append(pre4, t88);
+    			insert(target, t89, anchor);
+    			insert(target, span0, anchor);
+    			insert(target, t91, anchor);
+    			insert(target, a, anchor);
+    			insert(target, t93, anchor);
+    			insert(target, span1, anchor);
     			current = true;
     		},
-    		p: function update(ctx, dirty) {
-    			if ((!current || dirty[0] & /*transducerResult*/ 64) && t11_value !== (t11_value = /*transducerResult*/ ctx[6].length + "")) set_data_dev(t11, t11_value);
-    			if ((!current || dirty[0] & /*A_A*/ 4) && t18_value !== (t18_value = /*A_A*/ ctx[2].join(", ") + "")) set_data_dev(t18, t18_value);
-    			if ((!current || dirty[0] & /*B_B*/ 8) && t27_value !== (t27_value = /*B_B*/ ctx[3].join(", ") + "")) set_data_dev(t27, t27_value);
-    			if ((!current || dirty[0] & /*C_C*/ 16) && t36_value !== (t36_value = /*C_C*/ ctx[4].join(", ") + "")) set_data_dev(t36, t36_value);
-    			if ((!current || dirty[0] & /*D_D*/ 32) && t45_value !== (t45_value = /*D_D*/ ctx[5].join(", ") + "")) set_data_dev(t45, t45_value);
-    			if (!current || dirty[0] & /*size*/ 1) set_data_dev(t56, /*size*/ ctx[0]);
-    			if ((!current || dirty[0] & /*ar74*/ 2) && t60_value !== (t60_value = /*ar74*/ ctx[1].join(", ") + "")) set_data_dev(t60, t60_value);
+
+    		p: function update(changed, ctx) {
+    			{
+    				if (!if_block) {
+    					if_block = create_if_block$4();
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(t0.parentNode, t0);
+    				} else {
+    									transition_in(if_block, 1);
+    				}
+    			}
+
+    			if ((!current || changed.transducerResult) && t11_value !== (t11_value = ctx.transducerResult.length + "")) {
+    				set_data(t11, t11_value);
+    			}
+
+    			if ((!current || changed.A_A) && t18_value !== (t18_value = ctx.A_A.join(", ") + "")) {
+    				set_data(t18, t18_value);
+    			}
+
+    			if ((!current || changed.B_B) && t27_value !== (t27_value = ctx.B_B.join(", ") + "")) {
+    				set_data(t27, t27_value);
+    			}
+
+    			if ((!current || changed.C_C) && t36_value !== (t36_value = ctx.C_C.join(", ") + "")) {
+    				set_data(t36, t36_value);
+    			}
+
+    			if ((!current || changed.D_D) && t45_value !== (t45_value = ctx.D_D.join(", ") + "")) {
+    				set_data(t45, t45_value);
+    			}
+
+    			if (!current || changed.size) {
+    				set_data(t56, ctx.size);
+    			}
+
+    			if ((!current || changed.ar74) && t60_value !== (t60_value = ctx.ar74.join(", ") + "")) {
+    				set_data(t60, t60_value);
+    			}
     		},
+
     		i: function intro(local) {
     			if (current) return;
     			transition_in(if_block);
     			current = true;
     		},
+
     		o: function outro(local) {
     			transition_out(if_block);
     			current = false;
     		},
+
     		d: function destroy(detaching) {
     			if (if_block) if_block.d(detaching);
-    			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(p0);
-    			if (detaching) detach_dev(t2);
-    			if (detaching) detach_dev(p1);
-    			if (detaching) detach_dev(t4);
-    			if (detaching) detach_dev(p2);
-    			if (detaching) detach_dev(t6);
-    			if (detaching) detach_dev(p3);
-    			if (detaching) detach_dev(t8);
-    			if (detaching) detach_dev(br0);
-    			if (detaching) detach_dev(br1);
-    			if (detaching) detach_dev(t9);
-    			if (detaching) detach_dev(div0);
-    			if (detaching) detach_dev(t12);
-    			if (detaching) detach_dev(br2);
-    			if (detaching) detach_dev(br3);
-    			if (detaching) detach_dev(t13);
-    			if (detaching) detach_dev(div1);
-    			if (detaching) detach_dev(t15);
-    			if (detaching) detach_dev(br4);
-    			if (detaching) detach_dev(t16);
-    			if (detaching) detach_dev(div2);
-    			if (detaching) detach_dev(t20);
-    			if (detaching) detach_dev(br5);
-    			if (detaching) detach_dev(t21);
-    			if (detaching) detach_dev(br6);
-    			if (detaching) detach_dev(t22);
-    			if (detaching) detach_dev(div3);
-    			if (detaching) detach_dev(t24);
-    			if (detaching) detach_dev(br7);
-    			if (detaching) detach_dev(t25);
-    			if (detaching) detach_dev(div4);
-    			if (detaching) detach_dev(t29);
-    			if (detaching) detach_dev(br8);
-    			if (detaching) detach_dev(t30);
-    			if (detaching) detach_dev(br9);
-    			if (detaching) detach_dev(t31);
-    			if (detaching) detach_dev(div5);
-    			if (detaching) detach_dev(t33);
-    			if (detaching) detach_dev(br10);
-    			if (detaching) detach_dev(t34);
-    			if (detaching) detach_dev(div6);
-    			if (detaching) detach_dev(t38);
-    			if (detaching) detach_dev(br11);
-    			if (detaching) detach_dev(t39);
-    			if (detaching) detach_dev(br12);
-    			if (detaching) detach_dev(t40);
-    			if (detaching) detach_dev(div7);
-    			if (detaching) detach_dev(t42);
-    			if (detaching) detach_dev(br13);
-    			if (detaching) detach_dev(t43);
-    			if (detaching) detach_dev(div8);
-    			if (detaching) detach_dev(t47);
-    			if (detaching) detach_dev(br14);
-    			if (detaching) detach_dev(t48);
-    			if (detaching) detach_dev(br15);
-    			if (detaching) detach_dev(t49);
-    			if (detaching) detach_dev(button0);
-    			if (detaching) detach_dev(t51);
-    			if (detaching) detach_dev(button1);
-    			if (detaching) detach_dev(t53);
-    			if (detaching) detach_dev(br16);
-    			if (detaching) detach_dev(br17);
-    			if (detaching) detach_dev(t54);
-    			if (detaching) detach_dev(div9);
-    			if (detaching) detach_dev(t57);
-    			if (detaching) detach_dev(br18);
-    			if (detaching) detach_dev(t58);
-    			if (detaching) detach_dev(div10);
-    			if (detaching) detach_dev(t62);
-    			if (detaching) detach_dev(br19);
-    			if (detaching) detach_dev(t63);
-    			if (detaching) detach_dev(div11);
-    			if (detaching) detach_dev(t65);
-    			if (detaching) detach_dev(pre0);
-    			if (detaching) detach_dev(t67);
-    			if (detaching) detach_dev(p4);
-    			if (detaching) detach_dev(t69);
-    			if (detaching) detach_dev(div12);
-    			if (detaching) detach_dev(t71);
-    			if (detaching) detach_dev(pre1);
-    			if (detaching) detach_dev(t73);
-    			if (detaching) detach_dev(p5);
-    			if (detaching) detach_dev(t75);
-    			if (detaching) detach_dev(div13);
-    			if (detaching) detach_dev(t77);
-    			if (detaching) detach_dev(pre2);
-    			if (detaching) detach_dev(t79);
-    			if (detaching) detach_dev(p6);
-    			if (detaching) detach_dev(t81);
-    			if (detaching) detach_dev(p7);
-    			if (detaching) detach_dev(t83);
-    			if (detaching) detach_dev(pre3);
-    			if (detaching) detach_dev(t85);
-    			if (detaching) detach_dev(p8);
-    			if (detaching) detach_dev(t87);
-    			if (detaching) detach_dev(pre4);
-    			if (detaching) detach_dev(t89);
-    			if (detaching) detach_dev(span0);
-    			if (detaching) detach_dev(t91);
-    			if (detaching) detach_dev(a);
-    			if (detaching) detach_dev(t93);
-    			if (detaching) detach_dev(span1);
+
+    			if (detaching) {
+    				detach(t0);
+    				detach(p0);
+    				detach(t2);
+    				detach(p1);
+    				detach(t4);
+    				detach(p2);
+    				detach(t6);
+    				detach(p3);
+    				detach(t8);
+    				detach(br0);
+    				detach(br1);
+    				detach(t9);
+    				detach(div0);
+    				detach(t12);
+    				detach(br2);
+    				detach(br3);
+    				detach(t13);
+    				detach(div1);
+    				detach(t15);
+    				detach(br4);
+    				detach(t16);
+    				detach(div2);
+    				detach(t20);
+    				detach(br5);
+    				detach(t21);
+    				detach(br6);
+    				detach(t22);
+    				detach(div3);
+    				detach(t24);
+    				detach(br7);
+    				detach(t25);
+    				detach(div4);
+    				detach(t29);
+    				detach(br8);
+    				detach(t30);
+    				detach(br9);
+    				detach(t31);
+    				detach(div5);
+    				detach(t33);
+    				detach(br10);
+    				detach(t34);
+    				detach(div6);
+    				detach(t38);
+    				detach(br11);
+    				detach(t39);
+    				detach(br12);
+    				detach(t40);
+    				detach(div7);
+    				detach(t42);
+    				detach(br13);
+    				detach(t43);
+    				detach(div8);
+    				detach(t47);
+    				detach(br14);
+    				detach(t48);
+    				detach(br15);
+    				detach(t49);
+    				detach(button0);
+    				detach(t51);
+    				detach(button1);
+    				detach(t53);
+    				detach(br16);
+    				detach(br17);
+    				detach(t54);
+    				detach(div9);
+    				detach(t57);
+    				detach(br18);
+    				detach(t58);
+    				detach(div10);
+    				detach(t62);
+    				detach(br19);
+    				detach(t63);
+    				detach(div11);
+    				detach(t65);
+    				detach(pre0);
+    				detach(t67);
+    				detach(p4);
+    				detach(t69);
+    				detach(div12);
+    				detach(t71);
+    				detach(pre1);
+    				detach(t73);
+    				detach(p5);
+    				detach(t75);
+    				detach(div13);
+    				detach(t77);
+    				detach(pre2);
+    				detach(t79);
+    				detach(p6);
+    				detach(t81);
+    				detach(p7);
+    				detach(t83);
+    				detach(pre3);
+    				detach(t85);
+    				detach(p8);
+    				detach(t87);
+    				detach(pre4);
+    				detach(t89);
+    				detach(span0);
+    				detach(t91);
+    				detach(a);
+    				detach(t93);
+    				detach(span1);
+    			}
+
     			run_all(dispose);
     		}
     	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$7.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
     }
 
     function tdMap(func) {
-    	return function (reducingFunction) {
-    		return (accumulator, v) => {
-    			return reducingFunction(accumulator, func(v));
-    		};
-    	};
+    return function(reducingFunction) {
+      return (accumulator, v) => {
+        return reducingFunction(accumulator, func(v));
+      }
+    }
     }
 
     function tdFilter(test) {
-    	return function (reducingFunction) {
-    		return (accumulator, v) => {
-    			return test(v) ? reducingFunction(accumulator, v) : accumulator;
-    		};
-    	};
+    return function(reducingFunction) {
+      return (accumulator, v) => {
+        return (test(v) ? reducingFunction(accumulator, v) : accumulator)
+      };
+    };
     }
 
-    function Monad$1(AR = []) {
-    	let p, run;
-    	let ar = AR.slice();
-    	let x = ar.pop();
-
-    	return run = (function run(x) {
-    		if (x === null || x === NaN || x === undefined) x = f_("stop").pop();
-
-    		if (x instanceof Filt) {
-    			let z = ar.pop();
-    			if (x.filt(z)) x = z; else ar = [];
-    		} else if (x instanceof Promise) x.then(y => {
-    			if (y != undefined && typeof y !== "boolean" && y === y && y.name !== "f_" && y.name !== "stop") {
-    				ar.push(y);
-    			}
-    		}); else if (x != undefined && x === x && x !== false && x.name !== "f_" && x.name !== "stop") {
-    			ar.push(x);
-    		}
-
-    		
-
-    		function f_(func) {
-    			if (func === "stop" || func === "S") return ar; else if (func === "finish" || func === "F") return Object.freeze(ar); else if (typeof func !== "function") p = func; else if (x instanceof Promise) p = x.then(v => func(v)); else p = func(x);
-    			return run(p);
-    		}
-
-    		
-    		return f_;
-    	})(x);
+    function Monad$1 ( AR = [] )  {
+    let p, run;
+    let ar = AR.slice();
+    let x = ar.pop();
+    return run = (function run (x) {
+      if (x === null || x === NaN ||
+        x === undefined) x = f_('stop').pop();
+      if (x instanceof Filt) {
+        let z = ar.pop();
+        if (x.filt(z)) x = z; else ar = [];
+      }
+      else if (x instanceof Promise) x.then(y =>
+        {if (y != undefined && typeof y !== "boolean" && y === y &&
+        y.name !== "f_" &&
+        y.name !== "stop" ) {
+        ar.push(y);
+      }});
+      else if (x != undefined && x === x  && x !== false
+        && x.name !== "f_" && x.name !== "stop" ) {
+        ar.push(x);
+      }  function f_ (func) {
+        if (func === 'stop' || func === 'S') return ar;
+        else if (func === 'finish' || func === 'F') return Object.freeze(ar);
+        else if (typeof func !== "function") p = func;
+        else if (x instanceof Promise) p = x.then(v => func(v));
+        else p = func(x);
+        return run(p);
+      }
+      return f_;
+    })(x)
     }
 
-    function concat(xs, val) {
-    	return xs.concat(val);
-    }
+    function concat(xs, val) {return xs.concat(val);}
 
     function mapping(f) {
-    	return function (rf) {
-    		return (acc, val) => {
-    			return rf(acc, f(val));
-    		};
-    	};
+     return function(rf) {
+        return (acc, val) => {
+           return rf(acc, f(val));
+        }
+     }
     }
 
-    function Filt(p) {
-    	this.p = p;
+    function Filt (p) {this.p = p; this.filt = function filt (x) {return p(x)};}
 
-    	this.filt = function filt(x) {
-    		return p(x);
-    	};
-    }
+    function instance$4($$self, $$props, $$invalidate) {
 
-    function instance$7($$self, $$props, $$invalidate) {
-    	let visible = true;
-    	let k = 100000000;
-    	let ltTest = x => y => new Filt(x => y < x);
+    let isOdd = function isOdd (x) {return new Filt(v => v % 2 === 1)};
 
-    	let isOdd = function isOdd(x) {
-    		return new Filt(v => v % 2 === 1);
-    	};
+    let fives = function fives (x) {return new Filt(v => v % 10 === 5)};
 
-    	let _fives = function _fives(x) {
-    		if (typeof x === "number") {
-    			return new Filt(v => v % 10 === 5);
-    		} else if (typeof x === "string") {
-    			return Filt(v = v(v.length - 1));
-    		} else {
-    			return undefined;
-    		}
-    	};
+    let ar = "cowgirl";
 
-    	let fives = function fives(x) {
-    		return new Filt(v => v % 10 === 5);
-    	};
+    let cleanF = function cleanF (arthur = []) {
+      $$invalidate('ar', ar = arthur);
+      return ar.filter(
+        a => a === 0 || a && typeof a !== "boolean" //
+      ).reduce((a,b)=>a.concat(b),[])
+    };
 
-    	let isOddF = function isOddF(x) {
-    		return new Filt(v => v % 2 === 1);
-    	};
-
-    	
-    	let lessThan = x => y => new Filt(x => y < x);
-    	
-    	let ar = "cowgirl";
-
-    	let cleanF = function cleanF(arthur = []) {
-    		$$invalidate(13, ar = arthur);
-    		return ar.filter(a => a === 0 || a && typeof a !== "boolean").reduce((a, b) => a.concat(b), []);
-    	};
-
-    	let mon44 = `function Monad ( AR = [] )  {
+    let mon44 = `function Monad ( AR = [] )  {
   let f_, p, run;
   let ar = AR.slice();
   let x = ar.pop();
@@ -5366,63 +3428,95 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
   })(x)
 } `;
 
-    	let compose = (...fns) => fns.reduceRight((prevFn, nextFn) => (...args) => nextFn(prevFn(...args)), value => value);
+    let compose = (...fns) =>
+    fns.reduceRight((prevFn, nextFn) =>
+    (...args) => nextFn(prevFn(...args)),
+    value => value
+    );
+    let cube = function cube(v) { return v**3; };
 
-    	let add1 = function add1(v) {
-    		return v + 1;
-    	};
+    let size = 400;
 
-    	let sum = function sum(total, v) {
-    		return total + v;
-    	};
+    let ar74 = [...Array(size).keys()];
 
-    	let cube = function cube(v) {
-    		return v ** 3;
-    	};
+    let mapWRf = mapping(cube);
+    let mapRes = ar74.reduce(mapWRf(concat), []);
 
-    	let size = 400;
-    	let ar74 = [...Array(size).keys()];
-    	let mapWRf = mapping(cube);
-    	let mapRes = ar74.reduce(mapWRf(concat), []);
-    	let isEven = x => x % 2 === 0;
-    	let not = x => !x;
-    	let isOdd2 = compose(not, isEven);
-    	let map = f => ar => ar.map(v => f(v));
-    	let filter = p => ar => ar.filter(p);
-    	let reduce = f => ar => v => ar.reduce(f, v);
-    	let A_A = "H";
-    	let B_B = "s";
-    	let C_C = "G";
-    	let D_D = "I";
-    	let res1;
-    	let res2;
-    	let res3;
-    	let res4;
-    	let dotResult = [];
-    	let test9;
-    	let transducerResult;
-    	A_A = dotResult = ar74.filter(v => v % 2 === 1).map(x => x ** 4).map(x => x + 3).map(x => x - 3).filter(v => v % 10 === 5).map(x => Math.sqrt(x)).map(v => v * v).map(v => v + 1000);
-    	let td3;
-    	let xform;
-    	let xform2;
-    	let xform3;
-    	let test8 = k => ltTest(k).filt;
-    	
-    	
-    	let td1 = x => Monad$1([x])(isOdd)(v => v ** 4)(v => v + 3)(v => v - 3)(fives)(Math.sqrt)("stop").pop();
-    	let td2 = y => Monad$1([y])(v => v * v)(v => v + 1000)("stop").pop();
-    	res1 = ar74.map(x => td1(x));
-    	B_B = res2 = res1.map(y => td2(y));
-    	C_C = res3 = ar74.map(z => td2(td1(z)));
-    	xform = compose(tdFilter(x => x % 2 === 1), tdMap(x => x ** 4), tdMap(x => x + 3), tdMap(x => x - 3), tdFilter(x => x % 10 === 5), tdMap(x => Math.sqrt(x)));
-    	xform2 = compose(tdMap(x => x * x), tdMap(x => x + 1000));
-    	xform3 = compose(tdFilter(x => x % 2 === 1), tdMap(x => x ** 4), tdMap(x => x + 3), tdMap(x => x - 3), tdFilter(x => x % 10 === 5), tdMap(x => Math.sqrt(x)), tdMap(x => x * x), tdMap(x => x + 1000));
-    	D_D = transducerResult = ar74.reduce(xform3(concat), []);
-    	let t37;
+    let isEven = x => x % 2 === 0;
+    let not = x => !x;
+    let isOdd2 = compose(not, isEven);
 
-    	
+    let A_A = "H";
 
-    	let callback = `function increase () {
+    let B_B = "s";
+
+    let C_C = "G";
+
+    let D_D = "I";
+
+    let res1;
+    // $: res1;
+
+    let res2;
+    // $: res2;
+
+    let res3;
+
+    let dotResult = [];
+
+    let transducerResult;
+
+
+     $$invalidate('A_A', A_A = dotResult = ar74
+       .filter(v => (v % 2 === 1))
+       .map(x => x**4)
+       .map(x => x+3)
+       .map(x => x-3)
+       .filter(v => v % 10 === 5)
+       .map(x => Math.sqrt(x))
+       .map(v=>v*v)
+       .map(v=>v+1000)); $$invalidate('dotResult', dotResult);
+
+    let xform;
+
+    let xform2;
+
+    let xform3;
+
+      let td1 = x => Monad$1([x])(isOdd)(v=>v**4)(v=>v+3)(v=>v-3)(fives)(Math.sqrt)('stop').pop();
+      let td2 = y => Monad$1([y])(v=>v*v)(v=>v+1000)('stop').pop();
+
+    res1 = ar74.map(x => td1(x));
+    $$invalidate('B_B', B_B = res2 = res1.map(y => td2(y))); $$invalidate('res2', res2);
+    $$invalidate('C_C', C_C = res3 = ar74.map(z => td2(td1(z)))); $$invalidate('res3', res3);
+
+
+       $$invalidate('xform', xform = compose(
+          tdFilter(x=>x%2===1),
+          tdMap(x => x**4),
+          tdMap(x => x+3),
+          tdMap(x => x-3),
+          tdFilter(x => x % 10 === 5),
+          tdMap(x => Math.sqrt(x))
+       ));
+       $$invalidate('xform2', xform2 = compose(
+          tdMap(x=>x*x),
+          tdMap(x=>x+1000)
+       ));
+
+       $$invalidate('xform3', xform3 = compose(
+          tdFilter(x=>x%2===1),
+          tdMap(x => x**4),
+          tdMap(x => x+3),
+          tdMap(x => x-3),
+          tdFilter(x => x % 10 === 5),
+          tdMap(x => Math.sqrt(x)),
+          tdMap(x=>x*x),
+          tdMap(x=>x+1000)
+       ));
+       $$invalidate('D_D', D_D = transducerResult = ar74.reduce(xform3(concat),[] )); $$invalidate('transducerResult', transducerResult), $$invalidate('ar74', ar74), $$invalidate('xform3', xform3);
+
+    let callback = `function increase () {
   size = size + 10;
   ar74 = [...Array(size).keys()];
    A_A = dotResult = ar74
@@ -5448,7 +3542,7 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
   res1 = ar74.map(x => td1(x));
   let td2 = y => Monad([y])(v=>v*v)(v=>v+1000)('stop').pop()`;
 
-    	let call2 = `xform3 = compose(
+    let call2 = `xform3 = compose(
     tdFilter(x=>x%2===1),
     tdMap(x => x**4),
     tdMap(x => x+3),
@@ -5475,145 +3569,80 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     };
   }; `;
 
-    	function increase() {
-    		$$invalidate(0, size = size + 10);
-    		$$invalidate(1, ar74 = [...Array(size).keys()]);
-    		res1 = ar74.map(x => td1(x));
-    		$$invalidate(2, A_A = $$invalidate(17, dotResult = ar74.filter(v => v % 2 === 1).map(x => x ** 4).map(x => x + 3).map(x => x - 3).filter(v => v % 10 === 5).map(x => Math.sqrt(x)).map(v => v * v).map(v => v + 1000)));
-    		$$invalidate(3, B_B = $$invalidate(15, res2 = res1.map(y => td2(y))));
-    		$$invalidate(4, C_C = $$invalidate(16, res3 = ar74.map(z => td2(td1(z)))));
-    		$$invalidate(5, D_D = $$invalidate(6, transducerResult = ar74.reduce(xform3(concat), [])));
-    	}
+      function increase () {
+        $$invalidate('size', size = size + 10);
+        $$invalidate('ar74', ar74 = [...Array(size).keys()]);
+        res1 = ar74.map(x => td1(x));
+         $$invalidate('A_A', A_A = dotResult = ar74
+         .filter(v => (v % 2 === 1))
+         .map(x => x**4)
+         .map(x => x+3)
+         .map(x => x-3)
+         .filter(v => v % 10 === 5)
+         .map(x => Math.sqrt(x))
+         .map(v=>v*v)
+         .map(v=>v+1000)); $$invalidate('dotResult', dotResult);
+        $$invalidate('B_B', B_B = res2 = res1.map(y => td2(y))); $$invalidate('res2', res2);
+        $$invalidate('C_C', C_C = res3 = ar74.map(z => td2(td1(z)))); $$invalidate('res3', res3);
+        $$invalidate('D_D', D_D = transducerResult = ar74.reduce(xform3(concat),[] )); $$invalidate('transducerResult', transducerResult), $$invalidate('ar74', ar74), $$invalidate('xform3', xform3);
+      }
 
-    	function decrease() {
-    		$$invalidate(0, size = size - 10);
-    		$$invalidate(1, ar74 = [...Array(size).keys()]);
-    		res1 = ar74.map(x => td1(x));
-    		$$invalidate(2, A_A = $$invalidate(17, dotResult = ar74.filter(v => v % 2 === 1).map(x => x ** 4).map(x => x + 3).map(x => x - 3).filter(v => v % 10 === 5).map(x => Math.sqrt(x)).map(v => v * v).map(v => v + 1000)));
-    		$$invalidate(3, B_B = $$invalidate(15, res2 = res1.map(y => td2(y))));
-    		$$invalidate(4, C_C = $$invalidate(16, res3 = ar74.map(z => td2(td1(z)))));
-    		$$invalidate(5, D_D = $$invalidate(6, transducerResult = ar74.reduce(xform3(concat), [])));
-    	}
+    function decrease () {
+      $$invalidate('size', size = size - 10);
+      $$invalidate('ar74', ar74 = [...Array(size).keys()]);
+      res1 = ar74.map(x => td1(x));
+       $$invalidate('A_A', A_A = dotResult = ar74
+       .filter(v => (v % 2 === 1))
+       .map(x => x**4)
+       .map(x => x+3)
+       .map(x => x-3)
+       .filter(v => v % 10 === 5)
+       .map(x => Math.sqrt(x))
+       .map(v=>v*v)
+       .map(v=>v+1000)); $$invalidate('dotResult', dotResult);
+      $$invalidate('B_B', B_B = res2 = res1.map(y => td2(y))); $$invalidate('res2', res2);
+      $$invalidate('C_C', C_C = res3 = ar74.map(z => td2(td1(z)))); $$invalidate('res3', res3);
+      $$invalidate('D_D', D_D = transducerResult = ar74.reduce(xform3(concat),[] )); $$invalidate('transducerResult', transducerResult), $$invalidate('ar74', ar74), $$invalidate('xform3', xform3);
+    }
+    increase();
+    decrease();
 
-    	increase();
-    	decrease();
-
-    	$$self.$capture_state = () => {
-    		return {};
+    	$$self.$$.update = ($$dirty = { k: 1, ltTest: 1, ar: 1, cleanF: 1, size: 1, ar74: 1, dotResult: 1, A_A: 1, res2: 1, B_B: 1, res3: 1, C_C: 1, xform3: 1, transducerResult: 1, D_D: 1, res4: 1, test9: 1, td3: 1, xform: 1, xform2: 1, t37: 1 }) => {
+    		if ($$dirty.k) ;
+    		if ($$dirty.ltTest) ;
+    		if ($$dirty.ar) ;
+    		if ($$dirty.cleanF) ;
+    		if ($$dirty.size) ;
+    		if ($$dirty.ar74) ;
+    		if ($$dirty.dotResult) { $$invalidate('A_A', A_A = dotResult); }
+    		if ($$dirty.A_A) ;
+    		if ($$dirty.cleanF || $$dirty.res2) { $$invalidate('B_B', B_B = cleanF(res2)); }
+    		if ($$dirty.B_B) ;
+    		if ($$dirty.cleanF || $$dirty.res3) { $$invalidate('C_C', C_C = cleanF(res3)); }
+    		if ($$dirty.C_C) ;
+    		if ($$dirty.ar74 || $$dirty.xform3) { $$invalidate('transducerResult', transducerResult = ar74.reduce(xform3(concat),[] )); }
+    		if ($$dirty.transducerResult) { $$invalidate('D_D', D_D = transducerResult); }
+    		if ($$dirty.D_D) ;
+    		if ($$dirty.res3) ;
+    		if ($$dirty.res4) ;
+    		if ($$dirty.dotResult) ;
+    		if ($$dirty.test9) ;
+    		if ($$dirty.transducerResult) ;
+    		if ($$dirty.td3) ;
+    		if ($$dirty.xform) ;
+    		if ($$dirty.xform2) ;
+    		if ($$dirty.xform3) ;
+    		if ($$dirty.t37) ;
+    		if ($$dirty.dotResult) ;
+    		if ($$dirty.res2) ;
+    		if ($$dirty.res3) ;
+    		if ($$dirty.transducerResult) ;
+    		if ($$dirty.size) ;
+    		if ($$dirty.ar74) ;
     	};
 
-    	$$self.$inject_state = $$props => {
-    		if ("visible" in $$props) $$invalidate(7, visible = $$props.visible);
-    		if ("k" in $$props) $$invalidate(22, k = $$props.k);
-    		if ("ltTest" in $$props) $$invalidate(23, ltTest = $$props.ltTest);
-    		if ("isOdd" in $$props) isOdd = $$props.isOdd;
-    		if ("_fives" in $$props) _fives = $$props._fives;
-    		if ("fives" in $$props) fives = $$props.fives;
-    		if ("isOddF" in $$props) isOddF = $$props.isOddF;
-    		if ("lessThan" in $$props) lessThan = $$props.lessThan;
-    		if ("ar" in $$props) $$invalidate(13, ar = $$props.ar);
-    		if ("cleanF" in $$props) $$invalidate(29, cleanF = $$props.cleanF);
-    		if ("mon44" in $$props) $$invalidate(8, mon44 = $$props.mon44);
-    		if ("compose" in $$props) compose = $$props.compose;
-    		if ("add1" in $$props) add1 = $$props.add1;
-    		if ("sum" in $$props) sum = $$props.sum;
-    		if ("cube" in $$props) cube = $$props.cube;
-    		if ("size" in $$props) $$invalidate(0, size = $$props.size);
-    		if ("ar74" in $$props) $$invalidate(1, ar74 = $$props.ar74);
-    		if ("mapWRf" in $$props) mapWRf = $$props.mapWRf;
-    		if ("mapRes" in $$props) mapRes = $$props.mapRes;
-    		if ("isEven" in $$props) isEven = $$props.isEven;
-    		if ("not" in $$props) not = $$props.not;
-    		if ("isOdd2" in $$props) isOdd2 = $$props.isOdd2;
-    		if ("map" in $$props) map = $$props.map;
-    		if ("filter" in $$props) filter = $$props.filter;
-    		if ("reduce" in $$props) reduce = $$props.reduce;
-    		if ("A_A" in $$props) $$invalidate(2, A_A = $$props.A_A);
-    		if ("B_B" in $$props) $$invalidate(3, B_B = $$props.B_B);
-    		if ("C_C" in $$props) $$invalidate(4, C_C = $$props.C_C);
-    		if ("D_D" in $$props) $$invalidate(5, D_D = $$props.D_D);
-    		if ("res1" in $$props) res1 = $$props.res1;
-    		if ("res2" in $$props) $$invalidate(15, res2 = $$props.res2);
-    		if ("res3" in $$props) $$invalidate(16, res3 = $$props.res3);
-    		if ("res4" in $$props) $$invalidate(42, res4 = $$props.res4);
-    		if ("dotResult" in $$props) $$invalidate(17, dotResult = $$props.dotResult);
-    		if ("test9" in $$props) $$invalidate(43, test9 = $$props.test9);
-    		if ("transducerResult" in $$props) $$invalidate(6, transducerResult = $$props.transducerResult);
-    		if ("td3" in $$props) $$invalidate(44, td3 = $$props.td3);
-    		if ("xform" in $$props) $$invalidate(18, xform = $$props.xform);
-    		if ("xform2" in $$props) $$invalidate(19, xform2 = $$props.xform2);
-    		if ("xform3" in $$props) $$invalidate(20, xform3 = $$props.xform3);
-    		if ("test8" in $$props) test8 = $$props.test8;
-    		if ("td1" in $$props) td1 = $$props.td1;
-    		if ("td2" in $$props) td2 = $$props.td2;
-    		if ("t37" in $$props) $$invalidate(21, t37 = $$props.t37);
-    		if ("callback" in $$props) $$invalidate(9, callback = $$props.callback);
-    		if ("call2" in $$props) $$invalidate(10, call2 = $$props.call2);
-    	};
-
-    	$$self.$$.update = () => {
-    		if ($$self.$$.dirty[0] & /*ar*/ 8192) ;
-
-    		if ($$self.$$.dirty[0] & /*size*/ 1) ;
-
-    		if ($$self.$$.dirty[0] & /*ar74*/ 2) ;
-
-    		if ($$self.$$.dirty[0] & /*dotResult*/ 131072) {
-    			 $$invalidate(2, A_A = dotResult);
-    		}
-
-    		if ($$self.$$.dirty[0] & /*A_A*/ 4) ;
-
-    		if ($$self.$$.dirty[0] & /*res2*/ 32768) {
-    			 $$invalidate(3, B_B = cleanF(res2));
-    		}
-
-    		if ($$self.$$.dirty[0] & /*B_B*/ 8) ;
-
-    		if ($$self.$$.dirty[0] & /*res3*/ 65536) {
-    			 $$invalidate(4, C_C = cleanF(res3));
-    		}
-
-    		if ($$self.$$.dirty[0] & /*C_C*/ 16) ;
-
-    		if ($$self.$$.dirty[0] & /*ar74, xform3*/ 1048578) {
-    			 $$invalidate(6, transducerResult = ar74.reduce(xform3(concat), []));
-    		}
-
-    		if ($$self.$$.dirty[0] & /*transducerResult*/ 64) {
-    			 $$invalidate(5, D_D = transducerResult);
-    		}
-
-    		if ($$self.$$.dirty[0] & /*D_D*/ 32) ;
-
-    		if ($$self.$$.dirty[0] & /*res3*/ 65536) ;
-
-    		if ($$self.$$.dirty[0] & /*dotResult*/ 131072) ;
-
-    		if ($$self.$$.dirty[0] & /*transducerResult*/ 64) ;
-
-    		if ($$self.$$.dirty[0] & /*xform*/ 262144) ;
-
-    		if ($$self.$$.dirty[0] & /*xform2*/ 524288) ;
-
-    		if ($$self.$$.dirty[0] & /*xform3*/ 1048576) ;
-
-    		if ($$self.$$.dirty[0] & /*t37*/ 2097152) ;
-
-    		if ($$self.$$.dirty[0] & /*dotResult*/ 131072) ;
-
-    		if ($$self.$$.dirty[0] & /*res2*/ 32768) ;
-
-    		if ($$self.$$.dirty[0] & /*res3*/ 65536) ;
-
-    		if ($$self.$$.dirty[0] & /*transducerResult*/ 64) ;
-
-    		if ($$self.$$.dirty[0] & /*size*/ 1) ;
-
-    		if ($$self.$$.dirty[0] & /*ar74*/ 2) ;
-    	};
-
-    	return [
+    	return {
+    		mon44,
     		size,
     		ar74,
     		A_A,
@@ -5621,750 +3650,29 @@ This is a \"back door\" into the \'IO\' monad, allowing\'IO\' computation to be 
     		C_C,
     		D_D,
     		transducerResult,
-    		visible,
-    		mon44,
     		callback,
     		call2,
     		increase,
     		decrease
-    	];
+    	};
     }
 
     class Transducer extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$7, create_fragment$7, safe_not_equal, {}, [-1, -1]);
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "Transducer",
-    			options,
-    			id: create_fragment$7.name
-    		});
+    		init(this, options, instance$4, create_fragment$4, safe_not_equal, []);
     	}
     }
 
-    /* src/ToggleClass.svelte generated by Svelte v3.16.7 */
+    /* src/Home.svelte generated by Svelte v3.9.1 */
 
-    const file$8 = "src/ToggleClass.svelte";
+    const file$5 = "src/Home.svelte";
 
-    function create_fragment$8(ctx) {
-    	let span0;
-    	let t1;
-    	let input;
-    	let t2;
-    	let span1;
-    	let t4;
-    	let span2;
-    	let t5_value = /*num_a*/ ctx[0] + 1 + "";
-    	let t5;
-    	let t6;
-    	let t7;
-    	let br0;
-    	let br1;
-    	let t8;
-    	let button0;
-    	let t10;
-    	let button1;
-    	let t12;
-    	let button2;
-    	let t14;
-    	let span3;
-    	let t16;
-    	let span4;
-    	let t18;
-    	let a;
-    	let t20;
-    	let span5;
-    	let t22;
-    	let pre;
-    	let t24;
-    	let br2;
-    	let br3;
-    	let br4;
-    	let t25;
-    	let br5;
-    	let br6;
-    	let br7;
-    	let t26;
-    	let div;
-    	let dispose;
+    // (98:0) {#if visible}
+    function create_if_block$5(ctx) {
+    	var div, div_transition, current;
 
-    	const block = {
-    		c: function create() {
-    			span0 = element("span");
-    			span0.textContent = "Elapsed time modulo";
-    			t1 = space();
-    			input = element("input");
-    			t2 = space();
-    			span1 = element("span");
-    			span1.textContent = "is";
-    			t4 = space();
-    			span2 = element("span");
-    			t5 = text(t5_value);
-    			t6 = text(" seconds. Clicking selects a button. If you don't click, the buttons change every three seconds regardless of the elapsed time.");
-    			t7 = space();
-    			br0 = element("br");
-    			br1 = element("br");
-    			t8 = space();
-    			button0 = element("button");
-    			button0.textContent = "foo";
-    			t10 = space();
-    			button1 = element("button");
-    			button1.textContent = "bar";
-    			t12 = space();
-    			button2 = element("button");
-    			button2.textContent = "baz";
-    			t14 = space();
-    			span3 = element("span");
-    			span3.textContent = "This module demonstrates manipulation of CSS classes in Svelte. Here is the most relevant code";
-    			t16 = space();
-    			span4 = element("span");
-    			span4.textContent = "(the rest of the code is in the";
-    			t18 = space();
-    			a = element("a");
-    			a.textContent = "Repository";
-    			t20 = space();
-    			span5 = element("span");
-    			span5.textContent = "):";
-    			t22 = space();
-    			pre = element("pre");
-    			pre.textContent = `${/*code*/ ctx[4]}`;
-    			t24 = space();
-    			br2 = element("br");
-    			br3 = element("br");
-    			br4 = element("br");
-    			t25 = space();
-    			br5 = element("br");
-    			br6 = element("br");
-    			br7 = element("br");
-    			t26 = space();
-    			div = element("div");
-    			div.textContent = "_._._._";
-    			add_location(span0, file$8, 72, 0, 1088);
-    			attr_dev(input, "class", "svelte-1ic2flp");
-    			add_location(input, file$8, 73, 0, 1122);
-    			add_location(span1, file$8, 74, 0, 1151);
-    			add_location(span2, file$8, 75, 0, 1169);
-    			add_location(br0, file$8, 76, 0, 1321);
-    			add_location(br1, file$8, 76, 4, 1325);
-    			attr_dev(button0, "class", "svelte-1ic2flp");
-    			toggle_class(button0, "active", /*current*/ ctx[3] === "foo");
-    			add_location(button0, file$8, 77, 0, 1330);
-    			attr_dev(button1, "class", "svelte-1ic2flp");
-    			toggle_class(button1, "active", /*current*/ ctx[3] === "bar");
-    			add_location(button1, file$8, 82, 0, 1413);
-    			attr_dev(button2, "class", "svelte-1ic2flp");
-    			toggle_class(button2, "active", /*current*/ ctx[3] === "baz");
-    			add_location(button2, file$8, 87, 0, 1496);
-    			add_location(span3, file$8, 91, 0, 1578);
-    			add_location(span4, file$8, 92, 0, 1687);
-    			attr_dev(a, "href", "https://github.com/dschalk/blog");
-    			attr_dev(a, "target", "_blank");
-    			add_location(a, file$8, 93, 0, 1734);
-    			add_location(span5, file$8, 94, 0, 1812);
-    			set_style(pre, "color", "#aaccff");
-    			add_location(pre, file$8, 95, 0, 1828);
-    			add_location(br2, file$8, 96, 0, 1871);
-    			add_location(br3, file$8, 96, 4, 1875);
-    			add_location(br4, file$8, 96, 8, 1879);
-    			add_location(br5, file$8, 97, 0, 1884);
-    			add_location(br6, file$8, 97, 4, 1888);
-    			add_location(br7, file$8, 97, 8, 1892);
-    			set_style(div, "text-align", "center");
-    			add_location(div, file$8, 98, 0, 1897);
-
-    			dispose = [
-    				listen_dev(input, "input", /*input_input_handler*/ ctx[6]),
-    				listen_dev(button0, "click", /*click_handler*/ ctx[7], false, false, false),
-    				listen_dev(button1, "click", /*click_handler_1*/ ctx[8], false, false, false),
-    				listen_dev(button2, "click", /*click_handler_2*/ ctx[9], false, false, false)
-    			];
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span0, anchor);
-    			insert_dev(target, t1, anchor);
-    			insert_dev(target, input, anchor);
-    			set_input_value(input, /*mod*/ ctx[2]);
-    			insert_dev(target, t2, anchor);
-    			insert_dev(target, span1, anchor);
-    			insert_dev(target, t4, anchor);
-    			insert_dev(target, span2, anchor);
-    			append_dev(span2, t5);
-    			append_dev(span2, t6);
-    			insert_dev(target, t7, anchor);
-    			insert_dev(target, br0, anchor);
-    			insert_dev(target, br1, anchor);
-    			insert_dev(target, t8, anchor);
-    			insert_dev(target, button0, anchor);
-    			insert_dev(target, t10, anchor);
-    			insert_dev(target, button1, anchor);
-    			insert_dev(target, t12, anchor);
-    			insert_dev(target, button2, anchor);
-    			insert_dev(target, t14, anchor);
-    			insert_dev(target, span3, anchor);
-    			insert_dev(target, t16, anchor);
-    			insert_dev(target, span4, anchor);
-    			insert_dev(target, t18, anchor);
-    			insert_dev(target, a, anchor);
-    			insert_dev(target, t20, anchor);
-    			insert_dev(target, span5, anchor);
-    			insert_dev(target, t22, anchor);
-    			insert_dev(target, pre, anchor);
-    			insert_dev(target, t24, anchor);
-    			insert_dev(target, br2, anchor);
-    			insert_dev(target, br3, anchor);
-    			insert_dev(target, br4, anchor);
-    			insert_dev(target, t25, anchor);
-    			insert_dev(target, br5, anchor);
-    			insert_dev(target, br6, anchor);
-    			insert_dev(target, br7, anchor);
-    			insert_dev(target, t26, anchor);
-    			insert_dev(target, div, anchor);
-    		},
-    		p: function update(ctx, [dirty]) {
-    			if (dirty & /*mod*/ 4 && input.value !== /*mod*/ ctx[2]) {
-    				set_input_value(input, /*mod*/ ctx[2]);
-    			}
-
-    			if (dirty & /*num_a*/ 1 && t5_value !== (t5_value = /*num_a*/ ctx[0] + 1 + "")) set_data_dev(t5, t5_value);
-
-    			if (dirty & /*current*/ 8) {
-    				toggle_class(button0, "active", /*current*/ ctx[3] === "foo");
-    			}
-
-    			if (dirty & /*current*/ 8) {
-    				toggle_class(button1, "active", /*current*/ ctx[3] === "bar");
-    			}
-
-    			if (dirty & /*current*/ 8) {
-    				toggle_class(button2, "active", /*current*/ ctx[3] === "baz");
-    			}
-    		},
-    		i: noop,
-    		o: noop,
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span0);
-    			if (detaching) detach_dev(t1);
-    			if (detaching) detach_dev(input);
-    			if (detaching) detach_dev(t2);
-    			if (detaching) detach_dev(span1);
-    			if (detaching) detach_dev(t4);
-    			if (detaching) detach_dev(span2);
-    			if (detaching) detach_dev(t7);
-    			if (detaching) detach_dev(br0);
-    			if (detaching) detach_dev(br1);
-    			if (detaching) detach_dev(t8);
-    			if (detaching) detach_dev(button0);
-    			if (detaching) detach_dev(t10);
-    			if (detaching) detach_dev(button1);
-    			if (detaching) detach_dev(t12);
-    			if (detaching) detach_dev(button2);
-    			if (detaching) detach_dev(t14);
-    			if (detaching) detach_dev(span3);
-    			if (detaching) detach_dev(t16);
-    			if (detaching) detach_dev(span4);
-    			if (detaching) detach_dev(t18);
-    			if (detaching) detach_dev(a);
-    			if (detaching) detach_dev(t20);
-    			if (detaching) detach_dev(span5);
-    			if (detaching) detach_dev(t22);
-    			if (detaching) detach_dev(pre);
-    			if (detaching) detach_dev(t24);
-    			if (detaching) detach_dev(br2);
-    			if (detaching) detach_dev(br3);
-    			if (detaching) detach_dev(br4);
-    			if (detaching) detach_dev(t25);
-    			if (detaching) detach_dev(br5);
-    			if (detaching) detach_dev(br6);
-    			if (detaching) detach_dev(br7);
-    			if (detaching) detach_dev(t26);
-    			if (detaching) detach_dev(div);
-    			run_all(dispose);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$8.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function instance$8($$self, $$props, $$invalidate) {
-    	let current = "foo";
-    	let { num_a } = $$props;
-    	let { num_b } = $$props;
-    	let { mod } = $$props;
-    	let { car } = $$props;
-    	num_a = 0;
-    	num_b = 0;
-    	mod = 5;
-    	car = ["foo", "foo", "foo", "bar", "bar", "bar", "baz", "baz", "baz"];
-
-    	setInterval(
-    		() => {
-    			if (mod) {
-    				$$invalidate(0, num_a = $$invalidate(0, num_a += 1) % mod);
-    				$$invalidate(1, num_b = $$invalidate(1, num_b += 1) % 9);
-    				$$invalidate(3, current = car[num_b]);
-    			}
-    		},
-    		1000
-    	);
-
-    	let code = `num_a = 0;
-num_b = 0;
-mod = 5;
-car = ['foo', 'foo', 'foo', 'bar', 'bar', 'bar', 'baz', 'baz', 'baz']
-
-setInterval(() => {
-	if (mod) {
-		num_a = (num_a += 1) % mod
-		num_b = (num_b += 1) % 9
-		current = car[num_b]
-	}	
-}, 1000)
-
-<button
-class:active={current === 'foo'}
-on:click={() => num_b = 0}
->foo</button>
-
-<button
-class:active={current === 'bar'}
-on:click={() => num_b = 4}
->bar</button>
-
-<button
-class:active={current === 'baz'}
-on:click={() => num_b = 7}
->baz</button> `;
-
-    	const writable_props = ["num_a", "num_b", "mod", "car"];
-
-    	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<ToggleClass> was created with unknown prop '${key}'`);
-    	});
-
-    	function input_input_handler() {
-    		mod = this.value;
-    		$$invalidate(2, mod);
-    	}
-
-    	const click_handler = () => $$invalidate(1, num_b = 0);
-    	const click_handler_1 = () => $$invalidate(1, num_b = 4);
-    	const click_handler_2 = () => $$invalidate(1, num_b = 7);
-
-    	$$self.$set = $$props => {
-    		if ("num_a" in $$props) $$invalidate(0, num_a = $$props.num_a);
-    		if ("num_b" in $$props) $$invalidate(1, num_b = $$props.num_b);
-    		if ("mod" in $$props) $$invalidate(2, mod = $$props.mod);
-    		if ("car" in $$props) $$invalidate(5, car = $$props.car);
-    	};
-
-    	$$self.$capture_state = () => {
-    		return { current, num_a, num_b, mod, car, code };
-    	};
-
-    	$$self.$inject_state = $$props => {
-    		if ("current" in $$props) $$invalidate(3, current = $$props.current);
-    		if ("num_a" in $$props) $$invalidate(0, num_a = $$props.num_a);
-    		if ("num_b" in $$props) $$invalidate(1, num_b = $$props.num_b);
-    		if ("mod" in $$props) $$invalidate(2, mod = $$props.mod);
-    		if ("car" in $$props) $$invalidate(5, car = $$props.car);
-    		if ("code" in $$props) $$invalidate(4, code = $$props.code);
-    	};
-
-    	return [
-    		num_a,
-    		num_b,
-    		mod,
-    		current,
-    		code,
-    		car,
-    		input_input_handler,
-    		click_handler,
-    		click_handler_1,
-    		click_handler_2
-    	];
-    }
-
-    class ToggleClass extends SvelteComponentDev {
-    	constructor(options) {
-    		super(options);
-    		init(this, options, instance$8, create_fragment$8, safe_not_equal, { num_a: 0, num_b: 1, mod: 2, car: 5 });
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "ToggleClass",
-    			options,
-    			id: create_fragment$8.name
-    		});
-
-    		const { ctx } = this.$$;
-    		const props = options.props || ({});
-
-    		if (/*num_a*/ ctx[0] === undefined && !("num_a" in props)) {
-    			console.warn("<ToggleClass> was created without expected prop 'num_a'");
-    		}
-
-    		if (/*num_b*/ ctx[1] === undefined && !("num_b" in props)) {
-    			console.warn("<ToggleClass> was created without expected prop 'num_b'");
-    		}
-
-    		if (/*mod*/ ctx[2] === undefined && !("mod" in props)) {
-    			console.warn("<ToggleClass> was created without expected prop 'mod'");
-    		}
-
-    		if (/*car*/ ctx[5] === undefined && !("car" in props)) {
-    			console.warn("<ToggleClass> was created without expected prop 'car'");
-    		}
-    	}
-
-    	get num_a() {
-    		throw new Error("<ToggleClass>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set num_a(value) {
-    		throw new Error("<ToggleClass>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get num_b() {
-    		throw new Error("<ToggleClass>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set num_b(value) {
-    		throw new Error("<ToggleClass>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get mod() {
-    		throw new Error("<ToggleClass>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set mod(value) {
-    		throw new Error("<ToggleClass>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get car() {
-    		throw new Error("<ToggleClass>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set car(value) {
-    		throw new Error("<ToggleClass>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-    }
-
-    const subscriber_queue = [];
-    /**
-     * Create a `Writable` store that allows both updating and reading by subscription.
-     * @param {*=}value initial value
-     * @param {StartStopNotifier=}start start and stop notifications for subscriptions
-     */
-    function writable(value, start = noop) {
-        let stop;
-        const subscribers = [];
-        function set(new_value) {
-            if (safe_not_equal(value, new_value)) {
-                value = new_value;
-                if (stop) { // store is ready
-                    const run_queue = !subscriber_queue.length;
-                    for (let i = 0; i < subscribers.length; i += 1) {
-                        const s = subscribers[i];
-                        s[1]();
-                        subscriber_queue.push(s, value);
-                    }
-                    if (run_queue) {
-                        for (let i = 0; i < subscriber_queue.length; i += 2) {
-                            subscriber_queue[i][0](subscriber_queue[i + 1]);
-                        }
-                        subscriber_queue.length = 0;
-                    }
-                }
-            }
-        }
-        function update(fn) {
-            set(fn(value));
-        }
-        function subscribe(run, invalidate = noop) {
-            const subscriber = [run, invalidate];
-            subscribers.push(subscriber);
-            if (subscribers.length === 1) {
-                stop = start(set) || noop;
-            }
-            run(value);
-            return () => {
-                const index = subscribers.indexOf(subscriber);
-                if (index !== -1) {
-                    subscribers.splice(index, 1);
-                }
-                if (subscribers.length === 0) {
-                    stop();
-                    stop = null;
-                }
-            };
-        }
-        return { set, update, subscribe };
-    }
-
-    /* src/Stor.svelte generated by Svelte v3.16.7 */
-    const file$9 = "src/Stor.svelte";
-
-    function create_fragment$9(ctx) {
-    	let h2;
-    	let t0;
-    	let t1;
-
-    	const block = {
-    		c: function create() {
-    			h2 = element("h2");
-    			t0 = text("loc is ");
-    			t1 = text(/*$loc*/ ctx[0]);
-    			add_location(h2, file$9, 27, 0, 434);
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, h2, anchor);
-    			append_dev(h2, t0);
-    			append_dev(h2, t1);
-    		},
-    		p: function update(ctx, [dirty]) {
-    			if (dirty & /*$loc*/ 1) set_data_dev(t1, /*$loc*/ ctx[0]);
-    		},
-    		i: noop,
-    		o: noop,
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(h2);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$9.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function instance$9($$self, $$props, $$invalidate) {
-    	let $count;
-    	let $loc;
-    	const count = writable(0);
-    	validate_store(count, "count");
-    	component_subscribe($$self, count, value => $$invalidate(3, $count = value));
-    	console.log($count);
-    	count.set(1);
-    	console.log($count);
-    	set_store_value(count, $count = 2);
-    	console.log($count);
-    	const loc = writable(false);
-    	validate_store(loc, "loc");
-    	component_subscribe($$self, loc, value => $$invalidate(0, $loc = value));
-    	console.log($loc);
-    	loc.set(true);
-    	console.log($loc);
-    	set_store_value(loc, $loc = false);
-    	console.log($loc);
-    	loc.set(true);
-    	console.log($loc);
-
-    	$$self.$capture_state = () => {
-    		return {};
-    	};
-
-    	$$self.$inject_state = $$props => {
-    		if ("$count" in $$props) count.set($count = $$props.$count);
-    		if ("$loc" in $$props) loc.set($loc = $$props.$loc);
-    	};
-
-    	return [$loc, count, loc];
-    }
-
-    class Stor extends SvelteComponentDev {
-    	constructor(options) {
-    		super(options);
-    		init(this, options, instance$9, create_fragment$9, safe_not_equal, {});
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "Stor",
-    			options,
-    			id: create_fragment$9.name
-    		});
-    	}
-    }
-
-    /* src/ToggleTheme.svelte generated by Svelte v3.16.7 */
-    const file$a = "src/ToggleTheme.svelte";
-
-    // (10:1) {#if dark}
-    function create_if_block$8(ctx) {
-    	let link;
-
-    	const block = {
-    		c: function create() {
-    			link = element("link");
-    			attr_dev(link, "rel", "stylesheet");
-    			attr_dev(link, "href", "style.css");
-    			add_location(link, file$a, 10, 1, 171);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, link, anchor);
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(link);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block$8.name,
-    		type: "if",
-    		source: "(10:1) {#if dark}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function create_fragment$a(ctx) {
-    	let if_block_anchor;
-    	let t0;
-    	let h1;
-    	let t2;
-    	let t3;
-    	let button;
-    	let current;
-    	let dispose;
-    	let if_block = /*dark*/ ctx[0] && create_if_block$8(ctx);
-    	const stor = new Stor({ $$inline: true });
-
-    	const block = {
-    		c: function create() {
-    			if (if_block) if_block.c();
-    			if_block_anchor = empty();
-    			t0 = space();
-    			h1 = element("h1");
-    			h1.textContent = "Hello World!";
-    			t2 = space();
-    			create_component(stor.$$.fragment);
-    			t3 = space();
-    			button = element("button");
-    			button.textContent = "toggle theme";
-    			add_location(h1, file$a, 14, 0, 235);
-    			add_location(button, file$a, 17, 0, 267);
-    			dispose = listen_dev(button, "click", /*toggleTheme*/ ctx[1], false, false, false);
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-    		},
-    		m: function mount(target, anchor) {
-    			if (if_block) if_block.m(document.head, null);
-    			append_dev(document.head, if_block_anchor);
-    			insert_dev(target, t0, anchor);
-    			insert_dev(target, h1, anchor);
-    			insert_dev(target, t2, anchor);
-    			mount_component(stor, target, anchor);
-    			insert_dev(target, t3, anchor);
-    			insert_dev(target, button, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, [dirty]) {
-    			if (/*dark*/ ctx[0]) {
-    				if (!if_block) {
-    					if_block = create_if_block$8(ctx);
-    					if_block.c();
-    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
-    				}
-    			} else if (if_block) {
-    				if_block.d(1);
-    				if_block = null;
-    			}
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(stor.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(stor.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (if_block) if_block.d(detaching);
-    			detach_dev(if_block_anchor);
-    			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(h1);
-    			if (detaching) detach_dev(t2);
-    			destroy_component(stor, detaching);
-    			if (detaching) detach_dev(t3);
-    			if (detaching) detach_dev(button);
-    			dispose();
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$a.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function instance$a($$self, $$props, $$invalidate) {
-    	let dark = false;
-    	const toggleTheme = () => $$invalidate(0, dark = dark === false);
-
-    	$$self.$capture_state = () => {
-    		return {};
-    	};
-
-    	$$self.$inject_state = $$props => {
-    		if ("dark" in $$props) $$invalidate(0, dark = $$props.dark);
-    	};
-
-    	return [dark, toggleTheme];
-    }
-
-    class ToggleTheme extends SvelteComponentDev {
-    	constructor(options) {
-    		super(options);
-    		init(this, options, instance$a, create_fragment$a, safe_not_equal, {});
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "ToggleTheme",
-    			options,
-    			id: create_fragment$a.name
-    		});
-    	}
-    }
-
-    /* src/Home.svelte generated by Svelte v3.16.7 */
-    const file$b = "src/Home.svelte";
-
-    // (44:0) {#if visible}
-    function create_if_block$9(ctx) {
-    	let div;
-    	let div_transition;
-    	let current;
-
-    	const block = {
+    	return {
     		c: function create() {
     			div = element("div");
     			div.textContent = "INTRODUCTION";
@@ -6372,15 +3680,16 @@ on:click={() => num_b = 7}
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file$b, 44, 0, 724);
+    			add_location(div, file$5, 98, 0, 3847);
     		},
+
     		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
+    			insert(target, div, anchor);
     			current = true;
     		},
+
     		i: function intro(local) {
     			if (current) return;
-
     			add_render_callback(() => {
     				if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, true);
     				div_transition.run(1);
@@ -6388,2156 +3697,1064 @@ on:click={() => num_b = 7}
 
     			current = true;
     		},
+
     		o: function outro(local) {
     			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
     			div_transition.run(0);
+
     			current = false;
     		},
+
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching && div_transition) div_transition.end();
+    			if (detaching) {
+    				detach(div);
+    				if (div_transition) div_transition.end();
+    			}
     		}
     	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block$9.name,
-    		type: "if",
-    		source: "(44:0) {#if visible}",
-    		ctx
-    	});
-
-    	return block;
     }
 
-    function create_fragment$b(ctx) {
-    	let t0;
-    	let p;
-    	let t2;
-    	let br0;
-    	let t3;
-    	let br1;
-    	let t4;
-    	let br2;
-    	let t5;
-    	let div;
-    	let current;
-    	let if_block = /*visible*/ ctx[0] && create_if_block$9(ctx);
+    function create_fragment$5(ctx) {
+    	var t0, p0, t2, span0, t4, span1, t6, p1, t8, p2, t10, p3, t12, p4, t14, p5, t16, h30, t18, span2, t20, a0, t22, a1, t24, p6, t26, p7, t28, h31, t30, p8, t32, pre0, t33, t34, p9, t36, span3, t38, a2, t40, span4, t42, span5, t44, span6, t46, p10, t48, pre1, t49, t50, a3, t52, p11, t53, s, t54, t55, pre2, t56, t57, br0, t58, br1, t59, br2, t60, div, current;
 
-    	const block = {
+    	var if_block =  create_if_block$5();
+
+    	return {
     		c: function create() {
     			if (if_block) if_block.c();
     			t0 = space();
-    			p = element("p");
-    			p.textContent = "Each item in the menu on the left links to a Svelte component. Some components are supported by a modified Haskell Wai Websockets server.";
+    			p0 = element("p");
+    			p0.textContent = "The recursive closures called \"monads\" (on this website) are returned by factory functions called \"Monad\". The functions returned by Monad() can be anonymous or named.";
     			t2 = space();
-    			br0 = element("br");
-    			t3 = space();
-    			br1 = element("br");
+    			span0 = element("span");
+    			span0.textContent = "Each monad \"m\" created by calling, for example, \"let m = Monad()\", has its own dynamic array named \"ar\". Each monad \"m\", as defined above, either returns a function named \"_f\" that concatenates elements onto ar or, more commonly, returns a function named \"run\" that returns a function named \"_f\" that concatenates elements onto \"ar\". After monads process everything provided to them, the returned function _f lies dormant with access to the \"ar\" array in its outer function.";
     			t4 = space();
+    			span1 = element("span");
+    			span1.textContent = "Dormant monads can resume activity or spawn orthogonal branches.";
+    			t6 = space();
+    			p1 = element("p");
+    			p1.textContent = "When a monad encounters a function, say \"func\", the last item in its outer function's array, for example \"e\" in \"[a,b,c,d,e]\", becomes the func's argument and the return value is concatenated to the array. The outer functions array then becomes [a,b,c,d,e,func(e)].";
+    			t8 = space();
+    			p2 = element("p");
+    			p2.textContent = "When a suitably defined monad encounters a promise, the promise's resolution value is concatenated to the array. Values which are niether functions nor promises that that meet conditions specified in monad m's definition of \"run\" are concatenated to ar. When a monad encounters the string \"stop\" (or \"s\" defined as \"stop\") the outer function's array is returned.";
+    			t10 = space();
+    			p3 = element("p");
+    			p3.textContent = "NOTE: The definition of \"Monad\" varies from module to module on this site. An alternative would be to define \"Monad\" with more functionality and place it in a parent module.";
+    			t12 = space();
+    			p4 = element("p");
+    			p4.textContent = "When no value is provided to a monad, the monad's return value \"_f\" remains dormant waiting to resume its activity or provide a starting point for an orthogonal branch if and when it is called upon to do so. A dormant monad that is provided with the argument \"stop\" will return its outer function's array.";
+    			t14 = space();
+    			p5 = element("p");
+    			p5.textContent = "The table of contents provides links to a simple monad, a monad that interacts with a WebSockets server and a Web Worker, two monads that interact with promises, and one that functions as a transducer. A monad that combines all of this functionality can easily be defined.";
+    			t16 = space();
+    			h30 = element("h3");
+    			h30.textContent = "Functional Programming";
+    			t18 = space();
+    			span2 = element("span");
+    			span2.textContent = "Contrary to what you may have read or heard in video presentations, functional programming can and often does entail the mutation of variables and objects. Haskell, for example, is a functional language. Haskell programmers generally perform mutations inside of monads, insulated from the rest of the prograrams that contain them, but that isn't necessary.  See";
+    			t20 = space();
+    			a0 = element("a");
+    			a0.textContent = "Haskell Mutable Objects\"";
+    			t22 = text(" and  \n");
+    			a1 = element("a");
+    			a1.textContent = "Haskell Mutable Variables";
+    			t24 = space();
+    			p6 = element("p");
+    			p6.textContent = "I experimented with porting Haskell patterns and algorithms over to JavaScript. I enjoyed experimenting the way people enjoy Sudoku or crossword puzzles. My functions were pure; my \"variables\" were immutable, and my monad api's were unnecessarity complicated and pretty useless.";
+    			t26 = space();
+    			p7 = element("p");
+    			p7.textContent = "Haskell monads of a certain type can be \"lifted\" into monads of other types and normalized with flatmap. Imposing strict typing on JavaScript can be useful, especially in large group efforts where misusing functions can create bugs, but doing so prior to developing useful monads seems decidedly counterproductive. It smacks of cargo cult programming, about which I will say more later.";
+    			t28 = space();
+    			h31 = element("h3");
+    			h31.textContent = "The Word \"Monad\"";
+    			t30 = space();
+    			p8 = element("p");
+    			p8.textContent = "I call the following basic function, along with variations on its theme, a \"monad\":";
+    			t32 = space();
+    			pre0 = element("pre");
+    			t33 = text(ctx.monad_);
+    			t34 = space();
+    			p9 = element("p");
+    			p9.textContent = "I suspect that some readers will think I am misusing the word \"monad\" because my functions don't superficially resemble Haskell or Category Theory monads, and they don't mimic mimics the mechanics of composition in another language or discipline. .";
+    			t36 = space();
+    			span3 = element("span");
+    			span3.textContent = "Monad (from Greek μονάς monas, \"singularity\" in turn from μόνος monos, \"alone\"), refers, in cosmogony, to the Supreme Being, divinity or the totality of all things.";
+    			t38 = space();
+    			a2 = element("a");
+    			a2.textContent = "Wikipedia article";
+    			t40 = space();
+    			span4 = element("span");
+    			span4.textContent = "A basic unit of perceptual reality is a \"monad\" in Gottfried Leibniz'";
+    			t42 = space();
+    			span5 = element("span");
+    			span5.textContent = "Monadology";
+    			t44 = space();
+    			span6 = element("span");
+    			span6.textContent = ", published in 1714. A single note in music theory is called a monad.";
+    			t46 = space();
+    			p10 = element("p");
+    			p10.textContent = "Many bloggers, lecturers, and authors seem to have definite opinions about the meaning of \"monad\". I don't use the term the way they do but before I go into that, let's have a glimpse of what the others are saying:";
+    			t48 = space();
+    			pre1 = element("pre");
+    			t49 = text(ctx.jay);
+    			t50 = space();
+    			a3 = element("a");
+    			a3.textContent = "JavaScript Monads Made Simple";
+    			t52 = space();
+    			p11 = element("p");
+    			t53 = text("Monads in the Haskell Programming Language were inspired by Category Theory monads. The \"monads\" discussed herein are resemble Haskell monads in that they can be used to isolate pipelines of computations and hold the result for possible later use. Here'");
+    			s = element("s");
+    			t54 = text(" a very simple monad:");
+    			t55 = space();
+    			pre2 = element("pre");
+    			t56 = text(ctx.monad_);
+    			t57 = space();
+    			br0 = element("br");
+    			t58 = space();
+    			br1 = element("br");
+    			t59 = space();
     			br2 = element("br");
-    			t5 = space();
+    			t60 = space();
     			div = element("div");
-    			div.textContent = "...";
-    			add_location(p, file$b, 49, 0, 879);
-    			add_location(br0, file$b, 60, 0, 1038);
-    			add_location(br1, file$b, 61, 0, 1043);
-    			add_location(br2, file$b, 62, 0, 1048);
+    			div.textContent = ".";
+    			add_location(p0, file$5, 103, 0, 4007);
+    			add_location(span0, file$5, 104, 0, 4186);
+    			set_style(span1, "font-style", "italic");
+    			set_style(span1, "color", "#FFBBDD");
+    			add_location(span1, file$5, 104, 492, 4678);
+    			add_location(p1, file$5, 105, 0, 4803);
+    			add_location(p2, file$5, 106, 0, 5078);
+    			set_style(p3, "font-style", "italic");
+    			set_style(p3, "color", "#BBFFBB");
+    			add_location(p3, file$5, 107, 0, 5454);
+    			add_location(p4, file$5, 108, 0, 5683);
+    			add_location(p5, file$5, 109, 0, 5997);
+    			add_location(h30, file$5, 111, 0, 6280);
+    			attr(span2, "class", "tao");
+    			add_location(span2, file$5, 112, 0, 6313);
+    			attr(a0, "href", "https://en.wikibooks.org/wiki/Haskell/Mutable_objects");
+    			attr(a0, "target", "_blank");
+    			add_location(a0, file$5, 113, 0, 6702);
+    			attr(a1, "href", "https://tech.fpcomplete.com/haskell/tutorial/mutable-variables");
+    			attr(a1, "target", "_blank");
+    			add_location(a1, file$5, 114, 0, 6817);
+    			add_location(p6, file$5, 116, 0, 6937);
+    			add_location(p7, file$5, 118, 0, 7227);
+    			add_location(h31, file$5, 120, 0, 7625);
+    			add_location(p8, file$5, 121, 0, 7651);
+    			add_location(pre0, file$5, 122, 0, 7743);
+    			add_location(p9, file$5, 124, 0, 7764);
+    			attr(span3, "class", "tao");
+    			add_location(span3, file$5, 128, 1, 8027);
+    			attr(a2, "class", "tao");
+    			attr(a2, "href", "https://en.wikipedia.org/wiki/Monad_(philosophy)");
+    			attr(a2, "target", "_blank");
+    			add_location(a2, file$5, 129, 1, 8219);
+    			add_location(span4, file$5, 132, 2, 8341);
+    			set_style(span5, "font-style", "italic");
+    			add_location(span5, file$5, 133, 0, 8426);
+    			add_location(span6, file$5, 134, 0, 8481);
+    			add_location(p10, file$5, 136, 0, 8566);
+    			set_style(pre1, "color", "#77CCFF ");
+    			add_location(pre1, file$5, 137, 0, 8791);
+    			attr(a3, "class", "tao");
+    			attr(a3, "href", "https://medium.com/javascript-scene/javascript-monads-made-simple-7856be57bfe8");
+    			attr(a3, "target", "_blank");
+    			add_location(a3, file$5, 138, 0, 8835);
+    			add_location(s, file$5, 140, 257, 9250);
+    			add_location(p11, file$5, 140, 0, 8993);
+    			add_location(pre2, file$5, 142, 0, 9285);
+    			add_location(br0, file$5, 143, 0, 9305);
+    			add_location(br1, file$5, 144, 0, 9310);
+    			add_location(br2, file$5, 145, 0, 9315);
     			set_style(div, "text-align", "center");
-    			add_location(div, file$b, 63, 0, 1053);
+    			add_location(div, file$5, 146, 0, 9320);
     		},
+
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
+
     		m: function mount(target, anchor) {
     			if (if_block) if_block.m(target, anchor);
-    			insert_dev(target, t0, anchor);
-    			insert_dev(target, p, anchor);
-    			insert_dev(target, t2, anchor);
-    			insert_dev(target, br0, anchor);
-    			insert_dev(target, t3, anchor);
-    			insert_dev(target, br1, anchor);
-    			insert_dev(target, t4, anchor);
-    			insert_dev(target, br2, anchor);
-    			insert_dev(target, t5, anchor);
-    			insert_dev(target, div, anchor);
+    			insert(target, t0, anchor);
+    			insert(target, p0, anchor);
+    			insert(target, t2, anchor);
+    			insert(target, span0, anchor);
+    			insert(target, t4, anchor);
+    			insert(target, span1, anchor);
+    			insert(target, t6, anchor);
+    			insert(target, p1, anchor);
+    			insert(target, t8, anchor);
+    			insert(target, p2, anchor);
+    			insert(target, t10, anchor);
+    			insert(target, p3, anchor);
+    			insert(target, t12, anchor);
+    			insert(target, p4, anchor);
+    			insert(target, t14, anchor);
+    			insert(target, p5, anchor);
+    			insert(target, t16, anchor);
+    			insert(target, h30, anchor);
+    			insert(target, t18, anchor);
+    			insert(target, span2, anchor);
+    			insert(target, t20, anchor);
+    			insert(target, a0, anchor);
+    			insert(target, t22, anchor);
+    			insert(target, a1, anchor);
+    			insert(target, t24, anchor);
+    			insert(target, p6, anchor);
+    			insert(target, t26, anchor);
+    			insert(target, p7, anchor);
+    			insert(target, t28, anchor);
+    			insert(target, h31, anchor);
+    			insert(target, t30, anchor);
+    			insert(target, p8, anchor);
+    			insert(target, t32, anchor);
+    			insert(target, pre0, anchor);
+    			append(pre0, t33);
+    			insert(target, t34, anchor);
+    			insert(target, p9, anchor);
+    			insert(target, t36, anchor);
+    			insert(target, span3, anchor);
+    			insert(target, t38, anchor);
+    			insert(target, a2, anchor);
+    			insert(target, t40, anchor);
+    			insert(target, span4, anchor);
+    			insert(target, t42, anchor);
+    			insert(target, span5, anchor);
+    			insert(target, t44, anchor);
+    			insert(target, span6, anchor);
+    			insert(target, t46, anchor);
+    			insert(target, p10, anchor);
+    			insert(target, t48, anchor);
+    			insert(target, pre1, anchor);
+    			append(pre1, t49);
+    			insert(target, t50, anchor);
+    			insert(target, a3, anchor);
+    			insert(target, t52, anchor);
+    			insert(target, p11, anchor);
+    			append(p11, t53);
+    			append(p11, s);
+    			append(p11, t54);
+    			insert(target, t55, anchor);
+    			insert(target, pre2, anchor);
+    			append(pre2, t56);
+    			insert(target, t57, anchor);
+    			insert(target, br0, anchor);
+    			insert(target, t58, anchor);
+    			insert(target, br1, anchor);
+    			insert(target, t59, anchor);
+    			insert(target, br2, anchor);
+    			insert(target, t60, anchor);
+    			insert(target, div, anchor);
     			current = true;
     		},
-    		p: noop,
+
+    		p: function update(changed, ctx) {
+    			{
+    				if (!if_block) {
+    					if_block = create_if_block$5();
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(t0.parentNode, t0);
+    				} else {
+    									transition_in(if_block, 1);
+    				}
+    			}
+    		},
+
     		i: function intro(local) {
     			if (current) return;
     			transition_in(if_block);
     			current = true;
     		},
+
     		o: function outro(local) {
     			transition_out(if_block);
     			current = false;
     		},
+
     		d: function destroy(detaching) {
     			if (if_block) if_block.d(detaching);
-    			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(p);
-    			if (detaching) detach_dev(t2);
-    			if (detaching) detach_dev(br0);
-    			if (detaching) detach_dev(t3);
-    			if (detaching) detach_dev(br1);
-    			if (detaching) detach_dev(t4);
-    			if (detaching) detach_dev(br2);
-    			if (detaching) detach_dev(t5);
-    			if (detaching) detach_dev(div);
-    		}
-    	};
 
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$b.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function instance$b($$self) {
-    	let cache = [[1, 2, 3, 4, 5, 6, 7, 8, 9]];
-    	let j = 0;
-
-    	let ob = {
-    		x: [],
-    		push: function push(e) {
-    			ob.x.push(parseInt(e.target.id.slice(1, 2), 10));
-
-    			if (ob.x.length > 1) {
-    				let d = exchange(ob.x[0], ob.x[1]);
-    				cache.splice(j + 1, 0, d);
-    				ob.x = [];
-    				j += 1;
-    				return cache;
-    				let j = 0;
+    			if (detaching) {
+    				detach(t0);
+    				detach(p0);
+    				detach(t2);
+    				detach(span0);
+    				detach(t4);
+    				detach(span1);
+    				detach(t6);
+    				detach(p1);
+    				detach(t8);
+    				detach(p2);
+    				detach(t10);
+    				detach(p3);
+    				detach(t12);
+    				detach(p4);
+    				detach(t14);
+    				detach(p5);
+    				detach(t16);
+    				detach(h30);
+    				detach(t18);
+    				detach(span2);
+    				detach(t20);
+    				detach(a0);
+    				detach(t22);
+    				detach(a1);
+    				detach(t24);
+    				detach(p6);
+    				detach(t26);
+    				detach(p7);
+    				detach(t28);
+    				detach(h31);
+    				detach(t30);
+    				detach(p8);
+    				detach(t32);
+    				detach(pre0);
+    				detach(t34);
+    				detach(p9);
+    				detach(t36);
+    				detach(span3);
+    				detach(t38);
+    				detach(a2);
+    				detach(t40);
+    				detach(span4);
+    				detach(t42);
+    				detach(span5);
+    				detach(t44);
+    				detach(span6);
+    				detach(t46);
+    				detach(p10);
+    				detach(t48);
+    				detach(pre1);
+    				detach(t50);
+    				detach(a3);
+    				detach(t52);
+    				detach(p11);
+    				detach(t55);
+    				detach(pre2);
+    				detach(t57);
+    				detach(br0);
+    				detach(t58);
+    				detach(br1);
+    				detach(t59);
+    				detach(br2);
+    				detach(t60);
+    				detach(div);
     			}
     		}
     	};
+    }
 
-    	function exchange(k, n) {
-    		let ar = cache[j].slice();
-    		let a = ar[k];
-    		ar[k] = ar[n];
-    		ar[n] = a;
-    		return ar;
-    	}
+    function instance$5($$self, $$props, $$invalidate) {
 
-    	let back = function back() {
-    		if (j > 0) j = j -= 1; else j = j;
-    	};
+    var jay = `If you search the Internet for “monad” you’re going to get 
+bombarded by impenetrable category theory math and a bunch of people “helpfully” 
+explaining monads in terms of burritos and space suits.
 
-    	let forward = function forward() {
-    		if (j + 1 < cache.length) j = j += 1; else j = j;
-    	};
+Monads are simple. The lingo is hard. Let’s cut to the essence.
 
-    	let visible = true;
+A monad is a way of composing functions that require context in addition to the 
+return value, such as computation, branching, or I/O. Monads type lift, flatten 
+and map so that the types line up for lifting functions a => M(b), making them composable. 
+It's a mapping from some type a to some type b along with some computational context, 
 
-    	$$self.$capture_state = () => {
-    		return {};
-    	};
+hidden in the implementation details of lift, flatten, and map:
+Functions map: a => b
+Functors map with context: Functor(a) => Functor(b)
+Monads flatten and map with context: Monad(Monad(a)) => Monad(b)
+But what do “flatten” and “map” and “context” mean?
+Map means, “apply a function to an a and return a b". Given some input, return some output.
+Context is the computational detail of the monad’s composition (including lift, flatten, 
+and map). The Functor/Monad API and its workings supply the context which allows you to 
+compose the monad with the rest of the application. The point of functors and monads is 
+to abstract that context away so we don’t have to worry about it while we’re composing 
+things. Mapping inside the context means that you apply a function from a => b to the 
+value inside the context, and return a new value b wrapped inside the same kind of context. 
+Observables on the left? Observables on the right: Observable(a) => Observable(b). Arrays 
+on the left side? Arrays on the right side: Array(a) => Array(b).
 
-    	$$self.$inject_state = $$props => {
-    		if ("cache" in $$props) cache = $$props.cache;
-    		if ("j" in $$props) j = $$props.j;
-    		if ("ob" in $$props) ob = $$props.ob;
-    		if ("back" in $$props) back = $$props.back;
-    		if ("forward" in $$props) forward = $$props.forward;
-    		if ("visible" in $$props) $$invalidate(0, visible = $$props.visible);
-    	};
+Type lift means to lift a type into a context, blessing the value with an API that you can use to compute from that value, trigger contextual computations, etc… a => F(a) (Monads are a kind of functor).
+Flatten means unwrap the value from the context. F(a) => a. `;
 
-    	return [visible];
+    let monad_ = `var a = Monad(); a(3)(v=>v**3)(v=>v+3)(v=>v*v); var b = Monad(); b(a('end'))(v=>v/100)(Math.sqrt); console.log(a('stop'), b('stop'))
+var a = Monad(); a(3)(v=>v**3)(v=>v+3)(v=>v*v); var b = Monad(); b(a('end'))(v=>v/100)(Math.sqrt); console.log(a('stop'), b('stop'))
+VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
+
+    	return { jay, monad_ };
     }
 
     class Home extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$b, create_fragment$b, safe_not_equal, {});
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "Home",
-    			options,
-    			id: create_fragment$b.name
-    		});
+    		init(this, options, instance$5, create_fragment$5, safe_not_equal, []);
     	}
     }
 
-    /* src/Score.svelte generated by Svelte v3.16.7 */
-    const file$c = "src/Score.svelte";
+    /* src/Blog.svelte generated by Svelte v3.9.1 */
 
-    // (5:0) {#if visible}
-    function create_if_block$a(ctx) {
-    	let div;
-    	let div_transition;
-    	let current;
+    const file$6 = "src/Blog.svelte";
 
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			div.textContent = "GAME OF SCORE";
-    			set_style(div, "font-family", "Times New Roman");
-    			set_style(div, "text-align", "center");
-    			set_style(div, "color", "hsl(210, 90%, 90%)");
-    			set_style(div, "font-size", "32px");
-    			add_location(div, file$c, 5, 1, 93);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			current = true;
-    		},
-    		i: function intro(local) {
-    			if (current) return;
+    // (149:0) {#if j === 0}
+    function create_if_block_5(ctx) {
+    	var div, t_1, current;
 
-    			add_render_callback(() => {
-    				if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, true);
-    				div_transition.run(1);
-    			});
+    	var home = new Home({ $$inline: true });
 
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
-    			div_transition.run(0);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching && div_transition) div_transition.end();
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block$a.name,
-    		type: "if",
-    		source: "(5:0) {#if visible}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function create_fragment$c(ctx) {
-    	let t0;
-    	let br0;
-    	let t1;
-    	let p0;
-    	let t3;
-    	let p1;
-    	let t5;
-    	let p2;
-    	let t7;
-    	let a0;
-    	let t9;
-    	let span0;
-    	let t11;
-    	let a1;
-    	let t13;
-    	let br1;
-    	let br2;
-    	let t14;
-    	let span1;
-    	let t16;
-    	let a2;
-    	let t18;
-    	let span2;
-    	let t20;
-    	let a3;
-    	let t22;
-    	let span3;
-    	let t24;
-    	let a4;
-    	let t26;
-    	let span4;
-    	let t28;
-    	let a5;
-    	let t30;
-    	let span5;
-    	let t32;
-    	let a6;
-    	let t34;
-    	let span6;
-    	let current;
-    	let if_block = /*visible*/ ctx[0] && create_if_block$a(ctx);
-
-    	const block = {
-    		c: function create() {
-    			if (if_block) if_block.c();
-    			t0 = space();
-    			br0 = element("br");
-    			t1 = space();
-    			p0 = element("p");
-    			p0.textContent = "Score is an elaborate React project with a Haskell Wai WebSockets server on the back end. Users can form or join groups that play, exchange text messages, and maintain a todo list among themselves.";
-    			t3 = space();
-    			p1 = element("p");
-    			p1.textContent = "You will be in the default group \"solo\" until you join or create a group with another name. You can change the user name assigned to you by entering a new name and password, separated by a comma (name,password).";
-    			t5 = space();
-    			p2 = element("p");
-    			p2.textContent = "Game rules are available at the game site, which runs online here:";
-    			t7 = space();
-    			a0 = element("a");
-    			a0.textContent = "Online game of Score>";
-    			t9 = space();
-    			span0 = element("span");
-    			span0.textContent = "The code is here:";
-    			t11 = space();
-    			a1 = element("a");
-    			a1.textContent = "Score Github Repository";
-    			t13 = space();
-    			br1 = element("br");
-    			br2 = element("br");
-    			t14 = space();
-    			span1 = element("span");
-    			span1.textContent = "I switched from";
-    			t16 = space();
-    			a2 = element("a");
-    			a2.textContent = "Node";
-    			t18 = space();
-    			span2 = element("span");
-    			span2.textContent = "to";
-    			t20 = space();
-    			a3 = element("a");
-    			a3.textContent = "React";
-    			t22 = space();
-    			span3 = element("span");
-    			span3.textContent = "and then, a few years ago, I switched to";
-    			t24 = space();
-    			a4 = element("a");
-    			a4.textContent = "Cycle.js>";
-    			t26 = space();
-    			span4 = element("span");
-    			span4.textContent = ". Recently, I started using";
-    			t28 = space();
-    			a5 = element("a");
-    			a5.textContent = "Svelte";
-    			t30 = space();
-    			span5 = element("span");
-    			span5.textContent = ". For me, writing and maintaining code became easier and easier as I went from React to Cycle.js to Svelte. Another important feature of Svelte is that";
-    			t32 = space();
-    			a6 = element("a");
-    			a6.textContent = "substantially less code needs to be uploaded to browsers";
-    			t34 = space();
-    			span6 = element("span");
-    			span6.textContent = ". I'm impressed.";
-    			add_location(br0, file$c, 9, 0, 249);
-    			add_location(p0, file$c, 11, 0, 255);
-    			add_location(p1, file$c, 13, 0, 462);
-    			add_location(p2, file$c, 15, 0, 684);
-    			attr_dev(a0, "href", "http://game.schalk.site");
-    			attr_dev(a0, "target", "_blank");
-    			add_location(a0, file$c, 16, 0, 759);
-    			add_location(span0, file$c, 17, 0, 839);
-    			attr_dev(a1, "href", "https://github.com/dschalk/score2");
-    			attr_dev(a1, "target", "_blank");
-    			add_location(a1, file$c, 18, 0, 872);
-    			add_location(br1, file$c, 19, 0, 964);
-    			add_location(br2, file$c, 19, 4, 968);
-    			add_location(span1, file$c, 20, 0, 973);
-    			attr_dev(a2, "href", "https://nodejs.org/en/about/");
-    			attr_dev(a2, "target", "_blank");
-    			add_location(a2, file$c, 21, 0, 1004);
-    			add_location(span2, file$c, 22, 0, 1072);
-    			attr_dev(a3, "href", "https://reactjs.org/");
-    			attr_dev(a3, "target", "_blank");
-    			add_location(a3, file$c, 23, 0, 1090);
-    			add_location(span3, file$c, 24, 0, 1151);
-    			attr_dev(a4, "href", "https://cycle.js.org");
-    			attr_dev(a4, "target", "_blank");
-    			add_location(a4, file$c, 25, 0, 1207);
-    			add_location(span4, file$c, 26, 0, 1272);
-    			attr_dev(a5, "href", "https://svelte.dev/");
-    			attr_dev(a5, "target", "_blank");
-    			add_location(a5, file$c, 27, 0, 1314);
-    			add_location(span5, file$c, 28, 0, 1375);
-    			attr_dev(a6, "href", "https://www.freecodecamp.org/news/a-realworld-comparison-of-front-end-frameworks-with-benchmarks-2019-update-4be0d3c78075/");
-    			attr_dev(a6, "target", "_blank");
-    			add_location(a6, file$c, 29, 0, 1541);
-    			add_location(span6, file$c, 30, 0, 1755);
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-    		},
-    		m: function mount(target, anchor) {
-    			if (if_block) if_block.m(target, anchor);
-    			insert_dev(target, t0, anchor);
-    			insert_dev(target, br0, anchor);
-    			insert_dev(target, t1, anchor);
-    			insert_dev(target, p0, anchor);
-    			insert_dev(target, t3, anchor);
-    			insert_dev(target, p1, anchor);
-    			insert_dev(target, t5, anchor);
-    			insert_dev(target, p2, anchor);
-    			insert_dev(target, t7, anchor);
-    			insert_dev(target, a0, anchor);
-    			insert_dev(target, t9, anchor);
-    			insert_dev(target, span0, anchor);
-    			insert_dev(target, t11, anchor);
-    			insert_dev(target, a1, anchor);
-    			insert_dev(target, t13, anchor);
-    			insert_dev(target, br1, anchor);
-    			insert_dev(target, br2, anchor);
-    			insert_dev(target, t14, anchor);
-    			insert_dev(target, span1, anchor);
-    			insert_dev(target, t16, anchor);
-    			insert_dev(target, a2, anchor);
-    			insert_dev(target, t18, anchor);
-    			insert_dev(target, span2, anchor);
-    			insert_dev(target, t20, anchor);
-    			insert_dev(target, a3, anchor);
-    			insert_dev(target, t22, anchor);
-    			insert_dev(target, span3, anchor);
-    			insert_dev(target, t24, anchor);
-    			insert_dev(target, a4, anchor);
-    			insert_dev(target, t26, anchor);
-    			insert_dev(target, span4, anchor);
-    			insert_dev(target, t28, anchor);
-    			insert_dev(target, a5, anchor);
-    			insert_dev(target, t30, anchor);
-    			insert_dev(target, span5, anchor);
-    			insert_dev(target, t32, anchor);
-    			insert_dev(target, a6, anchor);
-    			insert_dev(target, t34, anchor);
-    			insert_dev(target, span6, anchor);
-    			current = true;
-    		},
-    		p: noop,
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(if_block);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(if_block);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (if_block) if_block.d(detaching);
-    			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(br0);
-    			if (detaching) detach_dev(t1);
-    			if (detaching) detach_dev(p0);
-    			if (detaching) detach_dev(t3);
-    			if (detaching) detach_dev(p1);
-    			if (detaching) detach_dev(t5);
-    			if (detaching) detach_dev(p2);
-    			if (detaching) detach_dev(t7);
-    			if (detaching) detach_dev(a0);
-    			if (detaching) detach_dev(t9);
-    			if (detaching) detach_dev(span0);
-    			if (detaching) detach_dev(t11);
-    			if (detaching) detach_dev(a1);
-    			if (detaching) detach_dev(t13);
-    			if (detaching) detach_dev(br1);
-    			if (detaching) detach_dev(br2);
-    			if (detaching) detach_dev(t14);
-    			if (detaching) detach_dev(span1);
-    			if (detaching) detach_dev(t16);
-    			if (detaching) detach_dev(a2);
-    			if (detaching) detach_dev(t18);
-    			if (detaching) detach_dev(span2);
-    			if (detaching) detach_dev(t20);
-    			if (detaching) detach_dev(a3);
-    			if (detaching) detach_dev(t22);
-    			if (detaching) detach_dev(span3);
-    			if (detaching) detach_dev(t24);
-    			if (detaching) detach_dev(a4);
-    			if (detaching) detach_dev(t26);
-    			if (detaching) detach_dev(span4);
-    			if (detaching) detach_dev(t28);
-    			if (detaching) detach_dev(a5);
-    			if (detaching) detach_dev(t30);
-    			if (detaching) detach_dev(span5);
-    			if (detaching) detach_dev(t32);
-    			if (detaching) detach_dev(a6);
-    			if (detaching) detach_dev(t34);
-    			if (detaching) detach_dev(span6);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$c.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function instance$c($$self) {
-    	let visible = true;
-
-    	$$self.$capture_state = () => {
-    		return {};
-    	};
-
-    	$$self.$inject_state = $$props => {
-    		if ("visible" in $$props) $$invalidate(0, visible = $$props.visible);
-    	};
-
-    	return [visible];
-    }
-
-    class Score extends SvelteComponentDev {
-    	constructor(options) {
-    		super(options);
-    		init(this, options, instance$c, create_fragment$c, safe_not_equal, {});
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "Score",
-    			options,
-    			id: create_fragment$c.name
-    		});
-    	}
-    }
-
-    /* src/Cargo.svelte generated by Svelte v3.16.7 */
-    const file$d = "src/Cargo.svelte";
-
-    // (18:0) {#if visible}
-    function create_if_block$b(ctx) {
-    	let div;
-    	let div_transition;
-    	let current;
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			div.textContent = "FUNCTIONAL PROGRAMMING";
-    			set_style(div, "font-family", "Times New Roman");
-    			set_style(div, "text-align", "center");
-    			set_style(div, "color", "hsl(210, 90%, 90%)");
-    			set_style(div, "font-size", "32px");
-    			add_location(div, file$d, 18, 1, 196);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			current = true;
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-
-    			add_render_callback(() => {
-    				if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, true);
-    				div_transition.run(1);
-    			});
-
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
-    			div_transition.run(0);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching && div_transition) div_transition.end();
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block$b.name,
-    		type: "if",
-    		source: "(18:0) {#if visible}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function create_fragment$d(ctx) {
-    	let t0;
-    	let p0;
-    	let p1;
-    	let t3;
-    	let a0;
-    	let t5;
-    	let p2;
-    	let t7;
-    	let p3;
-    	let t9;
-    	let p4;
-    	let t11;
-    	let p5;
-    	let t13;
-    	let h3;
-    	let t15;
-    	let a1;
-    	let t17;
-    	let br0;
-    	let br1;
-    	let t18;
-    	let a2;
-    	let t20;
-    	let br2;
-    	let br3;
-    	let br4;
-    	let t21;
-    	let div;
-    	let current;
-    	let if_block = /*visible*/ ctx[0] && create_if_block$b(ctx);
-
-    	const block = {
-    		c: function create() {
-    			if (if_block) if_block.c();
-    			t0 = space();
-    			p0 = element("p");
-    			p0.textContent = "\"Functional programming\" means different things to different people. Applied to JavaScript, I wish it meant making good use JavaScript functions. \n\n\n";
-    			p1 = element("p");
-    			p1.textContent = "Mimicking features of the Haskell programming language vaguely hoping Haskell's reliability, ease of maintenance, and other conveniences will come your way reminds me of the cargo cults. \"The name derives from the belief which began among Melanesians in the late 19th and early 20th centuries that various ritualistic acts such as the building of an airplane runway will result in the appearance of material wealth, particularly highly desirable Western goods (i.e., \"cargo\"), via Western airplanes.\"";
-    			t3 = space();
-    			a0 = element("a");
-    			a0.textContent = "Cargo Cult";
-    			t5 = space();
-    			p2 = element("p");
-    			p2.textContent = "According to the Wikipedia article \"Cargo Cult\", \"a cargo cult is a belief system among members of a relatively undeveloped society in which adherents practice superstitious rituals hoping to bring modern goods supplied by a more technologically advanced society. https://en.wikipedia.org/wiki/Cargo_cult The article goes on to say, \"The name derives from the belief which began among Melanesians in the late 19th and early 20th centuries that various ritualistic acts such as the building of an airplane runway will result in the appearance of material wealth, particularly highly desirable Western goods (i.e., \"cargo\"), via Western airplanes.\" citing Burridge, Kenelm (1969). New Heaven, New Earth: A study of Millenarian Activities. London: Basil Blackwell. p. 48 and Lindstrom, Lamont (1993). Cargo Cult: Strange Stories of desire from Melanesia and beyond. Honolulu: University of Hawaii Press.";
-    			t7 = space();
-    			p3 = element("p");
-    			p3.textContent = "Haskell programming language code has, in my experience, been wonderfully reliable and maintainable. The WebSockets server supporting two games and one of the monad demonstrations is a good example. Hoping to bring some of this Haskell goodness into my JavaScript code, I toyed with what I call \"cargo cult functional JavaScript\" for a time. Without thinking things through intelligently, I imposed strict type checking, referential transparency, and immutability on my JavaScript code in situations where these things needlessly caused clutter, inefficiency, code bloat, and obfuscation. I invented all sorts of \"monads\" along with monad transformers and mechanisms for lifting values into composite monadic types.";
-    			t9 = space();
-    			p4 = element("p");
-    			p4.textContent = "Now that I have abandoned the folly of mindlessly mimicking features of functional programming languages, I can console myself with the thought that I wasn't the first and I wasn't the last JavaScript programmer to got lost in this manner. Strict typing where it serves no useful purpose and insisting on immutability where all it does is polute memory with useless intermediate values is trendy these days.";
-    			t11 = space();
-    			p5 = element("p");
-    			p5.textContent = "Code where functions might collide over mutable global variables leads programmers to religeously avoid mutable global variables. I'm using the Svelte framework for this project, and my numerous modules are quite small. Mutable global variables can't cause problems because I have no modules or heirarchies of nested modules in which clashes might occur. Were I to constrain my creativity by following \"best practices\" regarding global variables, I would be engaging in another form of cargo cult coding, mindlessly micking forms that have no value.";
-    			t13 = space();
-    			h3 = element("h3");
-    			h3.textContent = "References";
-    			t15 = space();
-    			a1 = element("a");
-    			a1.textContent = "Cargo Cult Programming video presentation";
-    			t17 = space();
-    			br0 = element("br");
-    			br1 = element("br");
-    			t18 = space();
-    			a2 = element("a");
-    			a2.textContent = "Cargo Cult Science -- Richard Feynman's 1974 Caltech lecture";
-    			t20 = space();
-    			br2 = element("br");
-    			br3 = element("br");
-    			br4 = element("br");
-    			t21 = space();
-    			div = element("div");
-    			div.textContent = "...";
-    			add_location(p0, file$d, 22, 0, 359);
-    			add_location(p1, file$d, 25, 0, 512);
-    			attr_dev(a0, "href", "https://en.wikipedia.org/wiki/Cargo_cult");
-    			attr_dev(a0, "target", "_blank");
-    			add_location(a0, file$d, 28, 0, 1025);
-    			add_location(p2, file$d, 30, 0, 1110);
-    			add_location(p3, file$d, 32, 0, 2019);
-    			add_location(p4, file$d, 35, 0, 2744);
-    			add_location(p5, file$d, 36, 0, 3160);
-    			attr_dev(h3, "class", "svelte-hw6ke3");
-    			add_location(h3, file$d, 38, 0, 3719);
-    			attr_dev(a1, "href", "https://www.youtube.com/watch?v=nm22duia0jU");
-    			attr_dev(a1, "target", "_blank");
-    			add_location(a1, file$d, 40, 0, 3740);
-    			add_location(br0, file$d, 41, 0, 3856);
-    			add_location(br1, file$d, 41, 4, 3860);
-    			attr_dev(a2, "href", "https://www.youtube.com/watch?v=yvfAtIJbatg");
-    			attr_dev(a2, "target", "_blank");
-    			add_location(a2, file$d, 42, 0, 3865);
-    			add_location(br2, file$d, 44, 0, 4003);
-    			add_location(br3, file$d, 44, 4, 4007);
-    			add_location(br4, file$d, 44, 8, 4011);
-    			set_style(div, "text-align", "center");
-    			add_location(div, file$d, 45, 0, 4016);
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-    		},
-    		m: function mount(target, anchor) {
-    			if (if_block) if_block.m(target, anchor);
-    			insert_dev(target, t0, anchor);
-    			insert_dev(target, p0, anchor);
-    			insert_dev(target, p1, anchor);
-    			insert_dev(target, t3, anchor);
-    			insert_dev(target, a0, anchor);
-    			insert_dev(target, t5, anchor);
-    			insert_dev(target, p2, anchor);
-    			insert_dev(target, t7, anchor);
-    			insert_dev(target, p3, anchor);
-    			insert_dev(target, t9, anchor);
-    			insert_dev(target, p4, anchor);
-    			insert_dev(target, t11, anchor);
-    			insert_dev(target, p5, anchor);
-    			insert_dev(target, t13, anchor);
-    			insert_dev(target, h3, anchor);
-    			insert_dev(target, t15, anchor);
-    			insert_dev(target, a1, anchor);
-    			insert_dev(target, t17, anchor);
-    			insert_dev(target, br0, anchor);
-    			insert_dev(target, br1, anchor);
-    			insert_dev(target, t18, anchor);
-    			insert_dev(target, a2, anchor);
-    			insert_dev(target, t20, anchor);
-    			insert_dev(target, br2, anchor);
-    			insert_dev(target, br3, anchor);
-    			insert_dev(target, br4, anchor);
-    			insert_dev(target, t21, anchor);
-    			insert_dev(target, div, anchor);
-    			current = true;
-    		},
-    		p: noop,
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(if_block);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(if_block);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (if_block) if_block.d(detaching);
-    			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(p0);
-    			if (detaching) detach_dev(p1);
-    			if (detaching) detach_dev(t3);
-    			if (detaching) detach_dev(a0);
-    			if (detaching) detach_dev(t5);
-    			if (detaching) detach_dev(p2);
-    			if (detaching) detach_dev(t7);
-    			if (detaching) detach_dev(p3);
-    			if (detaching) detach_dev(t9);
-    			if (detaching) detach_dev(p4);
-    			if (detaching) detach_dev(t11);
-    			if (detaching) detach_dev(p5);
-    			if (detaching) detach_dev(t13);
-    			if (detaching) detach_dev(h3);
-    			if (detaching) detach_dev(t15);
-    			if (detaching) detach_dev(a1);
-    			if (detaching) detach_dev(t17);
-    			if (detaching) detach_dev(br0);
-    			if (detaching) detach_dev(br1);
-    			if (detaching) detach_dev(t18);
-    			if (detaching) detach_dev(a2);
-    			if (detaching) detach_dev(t20);
-    			if (detaching) detach_dev(br2);
-    			if (detaching) detach_dev(br3);
-    			if (detaching) detach_dev(br4);
-    			if (detaching) detach_dev(t21);
-    			if (detaching) detach_dev(div);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$d.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function instance$d($$self) {
-    	let visible = true;
-
-    	$$self.$capture_state = () => {
-    		return {};
-    	};
-
-    	$$self.$inject_state = $$props => {
-    		if ("visible" in $$props) $$invalidate(0, visible = $$props.visible);
-    	};
-
-    	return [visible];
-    }
-
-    class Cargo extends SvelteComponentDev {
-    	constructor(options) {
-    		super(options);
-    		init(this, options, instance$d, create_fragment$d, safe_not_equal, {});
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "Cargo",
-    			options,
-    			id: create_fragment$d.name
-    		});
-    	}
-    }
-
-    /* src/Blog.svelte generated by Svelte v3.16.7 */
-    const file$e = "src/Blog.svelte";
-
-    // (218:0) {#if j === 0}
-    function create_if_block_12(ctx) {
-    	let div;
-    	let t1;
-    	let current;
-    	const home = new Home({ $$inline: true });
-
-    	const block = {
+    	return {
     		c: function create() {
     			div = element("div");
     			div.textContent = "Home";
-    			t1 = space();
-    			create_component(home.$$.fragment);
-    			attr_dev(div, "class", "show svelte-15w100o");
-    			add_location(div, file$e, 218, 0, 6148);
+    			t_1 = space();
+    			home.$$.fragment.c();
+    			attr(div, "class", "show svelte-1rvgrtu");
+    			add_location(div, file$6, 149, 0, 2905);
     		},
+
     		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			insert_dev(target, t1, anchor);
+    			insert(target, div, anchor);
+    			insert(target, t_1, anchor);
     			mount_component(home, target, anchor);
     			current = true;
     		},
+
     		i: function intro(local) {
     			if (current) return;
     			transition_in(home.$$.fragment, local);
+
     			current = true;
     		},
+
     		o: function outro(local) {
     			transition_out(home.$$.fragment, local);
     			current = false;
     		},
+
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching) detach_dev(t1);
+    			if (detaching) {
+    				detach(div);
+    				detach(t_1);
+    			}
+
     			destroy_component(home, detaching);
     		}
     	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_12.name,
-    		type: "if",
-    		source: "(218:0) {#if j === 0}",
-    		ctx
-    	});
-
-    	return block;
     }
 
-    // (222:0) {#if j === 1}
-    function create_if_block_11(ctx) {
-    	let div;
-    	let t1;
-    	let current;
-    	const monad = new Monad_1({ $$inline: true });
+    // (153:0) {#if j === 1}
+    function create_if_block_4(ctx) {
+    	var div, t_1, current;
 
-    	const block = {
+    	var monad1 = new Monad1({ $$inline: true });
+
+    	return {
     		c: function create() {
     			div = element("div");
     			div.textContent = "Simple Monad";
-    			t1 = space();
-    			create_component(monad.$$.fragment);
-    			attr_dev(div, "class", "show svelte-15w100o");
-    			add_location(div, file$e, 222, 0, 6206);
+    			t_1 = space();
+    			monad1.$$.fragment.c();
+    			attr(div, "class", "show svelte-1rvgrtu");
+    			add_location(div, file$6, 153, 0, 2963);
     		},
+
     		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			insert_dev(target, t1, anchor);
-    			mount_component(monad, target, anchor);
+    			insert(target, div, anchor);
+    			insert(target, t_1, anchor);
+    			mount_component(monad1, target, anchor);
     			current = true;
     		},
+
     		i: function intro(local) {
     			if (current) return;
-    			transition_in(monad.$$.fragment, local);
+    			transition_in(monad1.$$.fragment, local);
+
     			current = true;
     		},
+
     		o: function outro(local) {
-    			transition_out(monad.$$.fragment, local);
+    			transition_out(monad1.$$.fragment, local);
     			current = false;
     		},
+
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching) detach_dev(t1);
-    			destroy_component(monad, detaching);
+    			if (detaching) {
+    				detach(div);
+    				detach(t_1);
+    			}
+
+    			destroy_component(monad1, detaching);
     		}
     	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_11.name,
-    		type: "if",
-    		source: "(222:0) {#if j === 1}",
-    		ctx
-    	});
-
-    	return block;
     }
 
-    // (226:0) {#if j === 2}
-    function create_if_block_10(ctx) {
-    	let div;
-    	let t1;
-    	let current;
-    	const monad2 = new Monad2({ $$inline: true });
+    // (157:0) {#if j === 2}
+    function create_if_block_3(ctx) {
+    	var div, t_1, current;
 
-    	const block = {
+    	var monad2 = new Monad2({ $$inline: true });
+
+    	return {
     		c: function create() {
     			div = element("div");
     			div.textContent = "Messages Monad";
-    			t1 = space();
-    			create_component(monad2.$$.fragment);
-    			attr_dev(div, "class", "show svelte-15w100o");
-    			add_location(div, file$e, 226, 0, 6273);
+    			t_1 = space();
+    			monad2.$$.fragment.c();
+    			attr(div, "class", "show svelte-1rvgrtu");
+    			add_location(div, file$6, 157, 0, 3031);
     		},
+
     		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			insert_dev(target, t1, anchor);
+    			insert(target, div, anchor);
+    			insert(target, t_1, anchor);
     			mount_component(monad2, target, anchor);
     			current = true;
     		},
+
     		i: function intro(local) {
     			if (current) return;
     			transition_in(monad2.$$.fragment, local);
+
     			current = true;
     		},
+
     		o: function outro(local) {
     			transition_out(monad2.$$.fragment, local);
     			current = false;
     		},
+
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching) detach_dev(t1);
+    			if (detaching) {
+    				detach(div);
+    				detach(t_1);
+    			}
+
     			destroy_component(monad2, detaching);
     		}
     	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_10.name,
-    		type: "if",
-    		source: "(226:0) {#if j === 2}",
-    		ctx
-    	});
-
-    	return block;
     }
 
-    // (230:0) {#if j === 3}
-    function create_if_block_9(ctx) {
-    	let div;
-    	let t1;
-    	let current;
-    	const monad3 = new Monad3({ $$inline: true });
+    // (161:0) {#if j === 3}
+    function create_if_block_2(ctx) {
+    	var div, t_1, current;
 
-    	const block = {
+    	var monad3 = new Monad3({ $$inline: true });
+
+    	return {
     		c: function create() {
     			div = element("div");
     			div.textContent = "Promises Monad";
-    			t1 = space();
-    			create_component(monad3.$$.fragment);
-    			attr_dev(div, "class", "show svelte-15w100o");
-    			add_location(div, file$e, 230, 0, 6343);
+    			t_1 = space();
+    			monad3.$$.fragment.c();
+    			attr(div, "class", "show svelte-1rvgrtu");
+    			add_location(div, file$6, 161, 0, 3101);
     		},
+
     		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			insert_dev(target, t1, anchor);
+    			insert(target, div, anchor);
+    			insert(target, t_1, anchor);
     			mount_component(monad3, target, anchor);
     			current = true;
     		},
+
     		i: function intro(local) {
     			if (current) return;
     			transition_in(monad3.$$.fragment, local);
+
     			current = true;
     		},
+
     		o: function outro(local) {
     			transition_out(monad3.$$.fragment, local);
     			current = false;
     		},
+
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching) detach_dev(t1);
+    			if (detaching) {
+    				detach(div);
+    				detach(t_1);
+    			}
+
     			destroy_component(monad3, detaching);
     		}
     	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_9.name,
-    		type: "if",
-    		source: "(230:0) {#if j === 3}",
-    		ctx
-    	});
-
-    	return block;
     }
 
-    // (234:0) {#if j === 14}
-    function create_if_block_8(ctx) {
-    	let div;
-    	let t1;
-    	let current;
-    	const monad5 = new Monad5({ $$inline: true });
+    // (165:0) {#if j === 4}
+    function create_if_block_1(ctx) {
+    	var div, t_1, current;
 
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			div.textContent = "Promises II";
-    			t1 = space();
-    			create_component(monad5.$$.fragment);
-    			attr_dev(div, "class", "show svelte-15w100o");
-    			add_location(div, file$e, 234, 0, 6414);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			insert_dev(target, t1, anchor);
-    			mount_component(monad5, target, anchor);
-    			current = true;
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(monad5.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(monad5.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching) detach_dev(t1);
-    			destroy_component(monad5, detaching);
-    		}
-    	};
+    	var transducer = new Transducer({ $$inline: true });
 
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_8.name,
-    		type: "if",
-    		source: "(234:0) {#if j === 14}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (238:0) {#if j === 4}
-    function create_if_block_7(ctx) {
-    	let div;
-    	let t1;
-    	let current;
-    	const transducer = new Transducer({ $$inline: true });
-
-    	const block = {
+    	return {
     		c: function create() {
     			div = element("div");
     			div.textContent = "Transducer Monad";
-    			t1 = space();
-    			create_component(transducer.$$.fragment);
-    			attr_dev(div, "class", "show svelte-15w100o");
-    			add_location(div, file$e, 238, 0, 6481);
+    			t_1 = space();
+    			transducer.$$.fragment.c();
+    			attr(div, "class", "show svelte-1rvgrtu");
+    			add_location(div, file$6, 165, 0, 3171);
     		},
+
     		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			insert_dev(target, t1, anchor);
+    			insert(target, div, anchor);
+    			insert(target, t_1, anchor);
     			mount_component(transducer, target, anchor);
     			current = true;
     		},
+
     		i: function intro(local) {
     			if (current) return;
     			transition_in(transducer.$$.fragment, local);
+
     			current = true;
     		},
+
     		o: function outro(local) {
     			transition_out(transducer.$$.fragment, local);
     			current = false;
     		},
+
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching) detach_dev(t1);
+    			if (detaching) {
+    				detach(div);
+    				detach(t_1);
+    			}
+
     			destroy_component(transducer, detaching);
     		}
     	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_7.name,
-    		type: "if",
-    		source: "(238:0) {#if j === 4}",
-    		ctx
-    	});
-
-    	return block;
     }
 
-    // (242:0) {#if j === 5}
-    function create_if_block_6(ctx) {
-    	let div;
-    	let t1;
-    	let current;
-    	const matrix = new Matrix({ $$inline: true });
+    // (169:0) {#if j === 5}
+    function create_if_block$6(ctx) {
+    	var div, t_1, current;
 
-    	const block = {
+    	var matrix = new Matrix({ $$inline: true });
+
+    	return {
     		c: function create() {
     			div = element("div");
     			div.textContent = "Why Svelte";
-    			t1 = space();
-    			create_component(matrix.$$.fragment);
-    			attr_dev(div, "class", "show svelte-15w100o");
-    			add_location(div, file$e, 242, 0, 6557);
+    			t_1 = space();
+    			matrix.$$.fragment.c();
+    			attr(div, "class", "show svelte-1rvgrtu");
+    			add_location(div, file$6, 169, 0, 3247);
     		},
+
     		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			insert_dev(target, t1, anchor);
+    			insert(target, div, anchor);
+    			insert(target, t_1, anchor);
     			mount_component(matrix, target, anchor);
     			current = true;
     		},
+
     		i: function intro(local) {
     			if (current) return;
     			transition_in(matrix.$$.fragment, local);
+
     			current = true;
     		},
+
     		o: function outro(local) {
     			transition_out(matrix.$$.fragment, local);
     			current = false;
     		},
+
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching) detach_dev(t1);
+    			if (detaching) {
+    				detach(div);
+    				detach(t_1);
+    			}
+
     			destroy_component(matrix, detaching);
     		}
     	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_6.name,
-    		type: "if",
-    		source: "(242:0) {#if j === 5}",
-    		ctx
-    	});
-
-    	return block;
     }
 
-    // (246:0) {#if j === 6}
-    function create_if_block_5(ctx) {
-    	let div;
-    	let t1;
-    	let current;
-    	const haskell = new Haskell({ $$inline: true });
+    function create_fragment$6(ctx) {
+    	var div0, t1, div1, t3, div7, div2, t5, div3, t7, br0, t8, div4, t10, div5, t12, div6, t14, div15, br1, t15, div8, t17, div14, br2, t18, div9, t20, br3, t21, div10, t23, br4, t24, div11, t26, br5, t27, div12, t29, br6, t30, div13, t31, br7, t32, br8, t33, t34, div16, br9, t35, t36, t37, t38, t39, t40, t41, br10, br11, t42, t43, br12, br13, t44, br14, br15, t45, br16, br17, current, dispose;
 
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			div.textContent = "Haskell Tip";
-    			t1 = space();
-    			create_component(haskell.$$.fragment);
-    			attr_dev(div, "class", "show svelte-15w100o");
-    			add_location(div, file$e, 246, 0, 6623);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			insert_dev(target, t1, anchor);
-    			mount_component(haskell, target, anchor);
-    			current = true;
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(haskell.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(haskell.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching) detach_dev(t1);
-    			destroy_component(haskell, detaching);
-    		}
-    	};
+    	var if_block0 = (ctx.j === 0) && create_if_block_5();
 
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_5.name,
-    		type: "if",
-    		source: "(246:0) {#if j === 6}",
-    		ctx
-    	});
+    	var if_block1 = (ctx.j === 1) && create_if_block_4();
 
-    	return block;
-    }
+    	var if_block2 = (ctx.j === 2) && create_if_block_3();
 
-    // (250:0) {#if j === 7}
-    function create_if_block_4(ctx) {
-    	let div;
-    	let t1;
-    	let current;
-    	const score = new Score({ $$inline: true });
+    	var if_block3 = (ctx.j === 3) && create_if_block_2();
 
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			div.textContent = "Game of Score";
-    			t1 = space();
-    			create_component(score.$$.fragment);
-    			attr_dev(div, "class", "show svelte-15w100o");
-    			add_location(div, file$e, 250, 0, 6691);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			insert_dev(target, t1, anchor);
-    			mount_component(score, target, anchor);
-    			current = true;
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(score.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(score.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching) detach_dev(t1);
-    			destroy_component(score, detaching);
-    		}
-    	};
+    	var if_block4 = (ctx.j === 4) && create_if_block_1();
 
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_4.name,
-    		type: "if",
-    		source: "(250:0) {#if j === 7}",
-    		ctx
-    	});
+    	var if_block5 = (ctx.j === 5) && create_if_block$6();
 
-    	return block;
-    }
+    	const default_slot_template = ctx.$$slots.default;
+    	const default_slot = create_slot(default_slot_template, ctx, null);
 
-    // (254:0) {#if j === 8}
-    function create_if_block_3(ctx) {
-    	let div;
-    	let t1;
-    	let current;
-    	const cargo = new Cargo({ $$inline: true });
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			div.textContent = "Cargo Cult";
-    			t1 = space();
-    			create_component(cargo.$$.fragment);
-    			attr_dev(div, "class", "show svelte-15w100o");
-    			add_location(div, file$e, 254, 0, 6759);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			insert_dev(target, t1, anchor);
-    			mount_component(cargo, target, anchor);
-    			current = true;
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(cargo.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(cargo.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching) detach_dev(t1);
-    			destroy_component(cargo, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_3.name,
-    		type: "if",
-    		source: "(254:0) {#if j === 8}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (258:0) {#if j === 9}
-    function create_if_block_2(ctx) {
-    	let div;
-    	let t1;
-    	let current;
-    	const bugs = new Bugs({ $$inline: true });
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			div.textContent = "Bed Bugs";
-    			t1 = space();
-    			create_component(bugs.$$.fragment);
-    			attr_dev(div, "class", "show svelte-15w100o");
-    			add_location(div, file$e, 258, 0, 6824);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			insert_dev(target, t1, anchor);
-    			mount_component(bugs, target, anchor);
-    			current = true;
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(bugs.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(bugs.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching) detach_dev(t1);
-    			destroy_component(bugs, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_2.name,
-    		type: "if",
-    		source: "(258:0) {#if j === 9}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (262:0) {#if j === 10}
-    function create_if_block_1(ctx) {
-    	let div;
-    	let t1;
-    	let current;
-    	const toggleclass = new ToggleClass({ $$inline: true });
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			div.textContent = "Toggle Class";
-    			t1 = space();
-    			create_component(toggleclass.$$.fragment);
-    			attr_dev(div, "class", "show svelte-15w100o");
-    			add_location(div, file$e, 262, 0, 6887);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			insert_dev(target, t1, anchor);
-    			mount_component(toggleclass, target, anchor);
-    			current = true;
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(toggleclass.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(toggleclass.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching) detach_dev(t1);
-    			destroy_component(toggleclass, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_1.name,
-    		type: "if",
-    		source: "(262:0) {#if j === 10}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (266:0) {#if j === 11}
-    function create_if_block$c(ctx) {
-    	let div;
-    	let t1;
-    	let current;
-    	const toggletheme = new ToggleTheme({ $$inline: true });
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			div.textContent = "Toggle Theme";
-    			t1 = space();
-    			create_component(toggletheme.$$.fragment);
-    			attr_dev(div, "class", "show svelte-15w100o");
-    			add_location(div, file$e, 266, 0, 6961);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			insert_dev(target, t1, anchor);
-    			mount_component(toggletheme, target, anchor);
-    			current = true;
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(toggletheme.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(toggletheme.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching) detach_dev(t1);
-    			destroy_component(toggletheme, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block$c.name,
-    		type: "if",
-    		source: "(266:0) {#if j === 11}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function create_fragment$e(ctx) {
-    	let div0;
-    	let t1;
-    	let div4;
-    	let div1;
-    	let t3;
-    	let div2;
-    	let t5;
-    	let div3;
-    	let t7;
-    	let div22;
-    	let div5;
-    	let t9;
-    	let div21;
-    	let br0;
-    	let t10;
-    	let div6;
-    	let t12;
-    	let br1;
-    	let t13;
-    	let div7;
-    	let t15;
-    	let div8;
-    	let t17;
-    	let br2;
-    	let t18;
-    	let div9;
-    	let t20;
-    	let br3;
-    	let t21;
-    	let div10;
-    	let t23;
-    	let br4;
-    	let t24;
-    	let div11;
-    	let t26;
-    	let br5;
-    	let t27;
-    	let div12;
-    	let t29;
-    	let br6;
-    	let t30;
-    	let div13;
-    	let t32;
-    	let br7;
-    	let t33;
-    	let div14;
-    	let t35;
-    	let br8;
-    	let t36;
-    	let div15;
-    	let t38;
-    	let br9;
-    	let t39;
-    	let div16;
-    	let t41;
-    	let br10;
-    	let t42;
-    	let div17;
-    	let t44;
-    	let br11;
-    	let t45;
-    	let div18;
-    	let t47;
-    	let br12;
-    	let t48;
-    	let div19;
-    	let t50;
-    	let br13;
-    	let t51;
-    	let div20;
-    	let t53;
-    	let br14;
-    	let t54;
-    	let div23;
-    	let br15;
-    	let t55;
-    	let t56;
-    	let t57;
-    	let t58;
-    	let t59;
-    	let t60;
-    	let t61;
-    	let t62;
-    	let t63;
-    	let t64;
-    	let t65;
-    	let t66;
-    	let t67;
-    	let t68;
-    	let br16;
-    	let br17;
-    	let t69;
-    	let t70;
-    	let br18;
-    	let br19;
-    	let t71;
-    	let br20;
-    	let br21;
-    	let t72;
-    	let br22;
-    	let br23;
-    	let current;
-    	let dispose;
-    	let if_block0 = /*j*/ ctx[0] === 0 && create_if_block_12(ctx);
-    	let if_block1 = /*j*/ ctx[0] === 1 && create_if_block_11(ctx);
-    	let if_block2 = /*j*/ ctx[0] === 2 && create_if_block_10(ctx);
-    	let if_block3 = /*j*/ ctx[0] === 3 && create_if_block_9(ctx);
-    	let if_block4 = /*j*/ ctx[0] === 14 && create_if_block_8(ctx);
-    	let if_block5 = /*j*/ ctx[0] === 4 && create_if_block_7(ctx);
-    	let if_block6 = /*j*/ ctx[0] === 5 && create_if_block_6(ctx);
-    	let if_block7 = /*j*/ ctx[0] === 6 && create_if_block_5(ctx);
-    	let if_block8 = /*j*/ ctx[0] === 7 && create_if_block_4(ctx);
-    	let if_block9 = /*j*/ ctx[0] === 8 && create_if_block_3(ctx);
-    	let if_block10 = /*j*/ ctx[0] === 9 && create_if_block_2(ctx);
-    	let if_block11 = /*j*/ ctx[0] === 10 && create_if_block_1(ctx);
-    	let if_block12 = /*j*/ ctx[0] === 11 && create_if_block$c(ctx);
-    	const default_slot_template = /*$$slots*/ ctx[2].default;
-    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[1], null);
-
-    	const block = {
+    	return {
     		c: function create() {
     			div0 = element("div");
-    			div0.textContent = "Functions In JavaScript";
+    			div0.textContent = "Powerful JavaScript Monads";
     			t1 = space();
-    			div4 = element("div");
     			div1 = element("div");
-    			div1.textContent = "David E. Schalk";
+    			div1.textContent = "Asynchronously link functions, primitive values, and objects of all types with recursive closures.";
     			t3 = space();
+    			div7 = element("div");
     			div2 = element("div");
-    			div2.textContent = "fp3216@protonmail.com";
+    			div2.textContent = "A Svelte front-end with a";
     			t5 = space();
     			div3 = element("div");
-    			div3.textContent = "https://github.com/dschalk";
+    			div3.textContent = "Haskell WebSockets server";
     			t7 = space();
-    			div22 = element("div");
-    			div5 = element("div");
-    			div5.textContent = "Table of Contents";
-    			t9 = space();
-    			div21 = element("div");
     			br0 = element("br");
+    			t8 = space();
+    			div4 = element("div");
+    			div4.textContent = "David E. Schalk";
     			t10 = space();
-    			div6 = element("div");
-    			div6.textContent = "Home";
+    			div5 = element("div");
+    			div5.textContent = "fp3216@protonmail.com";
     			t12 = space();
+    			div6 = element("div");
+    			div6.textContent = "https://github.com/dschalk";
+    			t14 = space();
+    			div15 = element("div");
     			br1 = element("br");
-    			t13 = space();
-    			div7 = element("div");
-    			div7.textContent = "Composable Closures";
     			t15 = space();
     			div8 = element("div");
-    			div8.textContent = "A/K/A \"Monads\"";
+    			div8.textContent = "Table of Contents";
     			t17 = space();
+    			div14 = element("div");
     			br2 = element("br");
     			t18 = space();
     			div9 = element("div");
-    			div9.textContent = "A Simple Monad";
+    			div9.textContent = "Home";
     			t20 = space();
     			br3 = element("br");
     			t21 = space();
     			div10 = element("div");
-    			div10.textContent = "A Messaging Monad";
+    			div10.textContent = "A Simple Monad";
     			t23 = space();
     			br4 = element("br");
     			t24 = space();
     			div11 = element("div");
-    			div11.textContent = "A Promises Monad";
+    			div11.textContent = "A Messaging Monad";
     			t26 = space();
     			br5 = element("br");
     			t27 = space();
     			div12 = element("div");
-    			div12.textContent = "Another Promises Monad";
+    			div12.textContent = "A Promises Monad";
     			t29 = space();
     			br6 = element("br");
     			t30 = space();
     			div13 = element("div");
-    			div13.textContent = "A Transducer Monad";
-    			t32 = space();
+    			t31 = text("Why Svelte>\n  ");
     			br7 = element("br");
-    			t33 = space();
-    			div14 = element("div");
-    			div14.textContent = "Why Svelte";
-    			t35 = space();
+    			t32 = space();
     			br8 = element("br");
-    			t36 = space();
-    			div15 = element("div");
-    			div15.textContent = "Haskell Secrets";
-    			t38 = space();
-    			br9 = element("br");
-    			t39 = space();
+    			t33 = text(">");
+    			t34 = space();
     			div16 = element("div");
-    			div16.textContent = "React Game of Score";
+    			br9 = element("br");
+    			t35 = space();
+    			if (if_block0) if_block0.c();
+    			t36 = space();
+    			if (if_block1) if_block1.c();
+    			t37 = space();
+    			if (if_block2) if_block2.c();
+    			t38 = space();
+    			if (if_block3) if_block3.c();
+    			t39 = space();
+    			if (if_block4) if_block4.c();
+    			t40 = space();
+    			if (if_block5) if_block5.c();
     			t41 = space();
     			br10 = element("br");
-    			t42 = space();
-    			div17 = element("div");
-    			div17.textContent = "Functional Cargo Cult";
-    			t44 = space();
     			br11 = element("br");
-    			t45 = space();
-    			div18 = element("div");
-    			div18.textContent = "Eradicating Bed Bugs";
-    			t47 = space();
+    			t42 = space();
+
+    			if (default_slot) default_slot.c();
+    			t43 = space();
     			br12 = element("br");
-    			t48 = space();
-    			div19 = element("div");
-    			div19.textContent = "Toggle Class";
-    			t50 = space();
     			br13 = element("br");
-    			t51 = space();
-    			div20 = element("div");
-    			div20.textContent = "Toggle Theme";
-    			t53 = space();
+    			t44 = space();
     			br14 = element("br");
-    			t54 = space();
-    			div23 = element("div");
     			br15 = element("br");
-    			t55 = space();
-    			if (if_block0) if_block0.c();
-    			t56 = space();
-    			if (if_block1) if_block1.c();
-    			t57 = space();
-    			if (if_block2) if_block2.c();
-    			t58 = space();
-    			if (if_block3) if_block3.c();
-    			t59 = space();
-    			if (if_block4) if_block4.c();
-    			t60 = space();
-    			if (if_block5) if_block5.c();
-    			t61 = space();
-    			if (if_block6) if_block6.c();
-    			t62 = space();
-    			if (if_block7) if_block7.c();
-    			t63 = space();
-    			if (if_block8) if_block8.c();
-    			t64 = space();
-    			if (if_block9) if_block9.c();
-    			t65 = space();
-    			if (if_block10) if_block10.c();
-    			t66 = space();
-    			if (if_block11) if_block11.c();
-    			t67 = space();
-    			if (if_block12) if_block12.c();
-    			t68 = space();
+    			t45 = space();
     			br16 = element("br");
     			br17 = element("br");
-    			t69 = space();
-    			if (default_slot) default_slot.c();
-    			t70 = space();
-    			br18 = element("br");
-    			br19 = element("br");
-    			t71 = space();
-    			br20 = element("br");
-    			br21 = element("br");
-    			t72 = space();
-    			br22 = element("br");
-    			br23 = element("br");
-    			set_style(div0, "font-size", "56px");
+    			set_style(div0, "font-size", "58px");
     			set_style(div0, "color", "#FFD700");
     			set_style(div0, "text-align", "center");
-    			attr_dev(div0, "class", "svelte-15w100o");
-    			add_location(div0, file$e, 121, 0, 2130);
-    			set_style(div1, "font-size", "24px");
-    			attr_dev(div1, "class", "svelte-15w100o");
-    			add_location(div1, file$e, 124, 0, 2248);
-    			attr_dev(div2, "class", "svelte-15w100o");
-    			add_location(div2, file$e, 125, 0, 2303);
-    			attr_dev(div3, "class", "svelte-15w100o");
-    			add_location(div3, file$e, 126, 0, 2336);
-    			attr_dev(div4, "class", "stat svelte-15w100o");
-    			add_location(div4, file$e, 123, 0, 2229);
-    			attr_dev(div5, "class", "dropbtn svelte-15w100o");
-    			add_location(div5, file$e, 131, 2, 2408);
-    			add_location(br0, file$e, 133, 2, 2488);
-    			attr_dev(div6, "class", "menu svelte-15w100o");
-    			add_location(div6, file$e, 134, 0, 2493);
-    			add_location(br1, file$e, 135, 2, 2550);
-    			attr_dev(div7, "class", "large svelte-15w100o");
-    			add_location(div7, file$e, 136, 0, 2555);
-    			attr_dev(div8, "class", "large svelte-15w100o");
-    			add_location(div8, file$e, 137, 0, 2600);
-    			add_location(br2, file$e, 138, 2, 2642);
-    			attr_dev(div9, "class", "menu svelte-15w100o");
-    			add_location(div9, file$e, 139, 0, 2647);
-    			add_location(br3, file$e, 140, 2, 2714);
-    			attr_dev(div10, "class", "menu svelte-15w100o");
-    			add_location(div10, file$e, 141, 0, 2719);
-    			add_location(br4, file$e, 142, 2, 2789);
-    			attr_dev(div11, "class", "menu svelte-15w100o");
-    			add_location(div11, file$e, 143, 0, 2794);
-    			add_location(br5, file$e, 144, 2, 2863);
-    			attr_dev(div12, "class", "menu svelte-15w100o");
-    			add_location(div12, file$e, 145, 0, 2868);
-    			add_location(br6, file$e, 146, 2, 2944);
-    			attr_dev(div13, "class", "menu svelte-15w100o");
-    			add_location(div13, file$e, 147, 0, 2949);
-    			add_location(br7, file$e, 148, 2, 3020);
-    			attr_dev(div14, "class", "menu svelte-15w100o");
-    			add_location(div14, file$e, 149, 0, 3025);
-    			add_location(br8, file$e, 150, 2, 3088);
-    			attr_dev(div15, "class", "menu svelte-15w100o");
-    			add_location(div15, file$e, 151, 0, 3093);
-    			add_location(br9, file$e, 152, 2, 3161);
-    			attr_dev(div16, "class", "menu svelte-15w100o");
-    			add_location(div16, file$e, 153, 0, 3166);
-    			add_location(br10, file$e, 154, 2, 3238);
-    			attr_dev(div17, "class", "menu svelte-15w100o");
-    			add_location(div17, file$e, 155, 0, 3243);
-    			add_location(br11, file$e, 156, 2, 3317);
-    			attr_dev(div18, "class", "menu svelte-15w100o");
-    			add_location(div18, file$e, 157, 0, 3322);
-    			add_location(br12, file$e, 158, 2, 3395);
-    			attr_dev(div19, "class", "menu svelte-15w100o");
-    			add_location(div19, file$e, 159, 0, 3400);
-    			add_location(br13, file$e, 160, 2, 3466);
-    			attr_dev(div20, "class", "menu svelte-15w100o");
-    			add_location(div20, file$e, 161, 0, 3471);
-    			add_location(br14, file$e, 162, 2, 3537);
-    			attr_dev(div21, "class", "dropdown-content svelte-15w100o");
-    			add_location(div21, file$e, 132, 2, 2455);
-    			attr_dev(div22, "class", "dropdown svelte-15w100o");
-    			add_location(div22, file$e, 130, 0, 2383);
-    			add_location(br15, file$e, 215, 1, 6128);
-    			set_style(div23, "margin-left", "25%");
-    			set_style(div23, "margin-right", "25%");
-    			attr_dev(div23, "class", "svelte-15w100o");
-    			add_location(div23, file$e, 213, 0, 6073);
-    			add_location(br16, file$e, 271, 0, 7028);
-    			add_location(br17, file$e, 271, 4, 7032);
-    			add_location(br18, file$e, 274, 0, 7047);
-    			add_location(br19, file$e, 274, 4, 7051);
-    			add_location(br20, file$e, 275, 0, 7056);
-    			add_location(br21, file$e, 275, 4, 7060);
-    			add_location(br22, file$e, 276, 0, 7065);
-    			add_location(br23, file$e, 276, 4, 7069);
+    			attr(div0, "class", "svelte-1rvgrtu");
+    			add_location(div0, file$6, 111, 0, 1796);
+    			set_style(div1, "font-size", "32px");
+    			set_style(div1, "color", "#FFBBBB");
+    			set_style(div1, "font-style", "italic");
+    			set_style(div1, "text-align", "center");
+    			set_style(div1, "margin-left", "27%");
+    			set_style(div1, "margin-right", "27%");
+    			attr(div1, "class", "svelte-1rvgrtu");
+    			add_location(div1, file$6, 112, 0, 1896);
+    			attr(div2, "class", "svelte-1rvgrtu");
+    			add_location(div2, file$6, 116, 0, 2149);
+    			attr(div3, "class", "svelte-1rvgrtu");
+    			add_location(div3, file$6, 117, 0, 2186);
+    			add_location(br0, file$6, 118, 0, 2223);
+    			attr(div4, "class", "svelte-1rvgrtu");
+    			add_location(div4, file$6, 119, 0, 2228);
+    			attr(div5, "class", "svelte-1rvgrtu");
+    			add_location(div5, file$6, 120, 0, 2258);
+    			attr(div6, "class", "svelte-1rvgrtu");
+    			add_location(div6, file$6, 121, 0, 2291);
+    			attr(div7, "class", "stat svelte-1rvgrtu");
+    			add_location(div7, file$6, 115, 0, 2130);
+    			add_location(br1, file$6, 124, 0, 2359);
+    			attr(div8, "class", "dropbtn svelte-1rvgrtu");
+    			add_location(div8, file$6, 125, 2, 2366);
+    			add_location(br2, file$6, 127, 2, 2446);
+    			attr(div9, "class", "menu svelte-1rvgrtu");
+    			add_location(div9, file$6, 128, 0, 2451);
+    			add_location(br3, file$6, 129, 2, 2508);
+    			attr(div10, "class", "menu svelte-1rvgrtu");
+    			add_location(div10, file$6, 130, 0, 2513);
+    			add_location(br4, file$6, 131, 2, 2580);
+    			attr(div11, "class", "menu svelte-1rvgrtu");
+    			add_location(div11, file$6, 132, 0, 2585);
+    			add_location(br5, file$6, 133, 2, 2655);
+    			attr(div12, "class", "menu svelte-1rvgrtu");
+    			add_location(div12, file$6, 134, 0, 2660);
+    			add_location(br6, file$6, 135, 2, 2729);
+    			add_location(br7, file$6, 137, 2, 2792);
+    			add_location(br8, file$6, 138, 2, 2799);
+    			attr(div13, "class", "menu svelte-1rvgrtu");
+    			add_location(div13, file$6, 136, 0, 2734);
+    			attr(div14, "class", "dropdown-content svelte-1rvgrtu");
+    			add_location(div14, file$6, 126, 2, 2413);
+    			attr(div15, "class", "dropdown svelte-1rvgrtu");
+    			add_location(div15, file$6, 123, 0, 2336);
+    			add_location(br9, file$6, 146, 1, 2885);
+    			set_style(div16, "margin-left", "25%");
+    			set_style(div16, "margin-right", "25%");
+    			attr(div16, "class", "svelte-1rvgrtu");
+    			add_location(div16, file$6, 144, 0, 2830);
+    			add_location(br10, file$6, 175, 0, 3308);
+    			add_location(br11, file$6, 175, 4, 3312);
+
+    			add_location(br12, file$6, 178, 0, 3327);
+    			add_location(br13, file$6, 178, 4, 3331);
+    			add_location(br14, file$6, 179, 0, 3336);
+    			add_location(br15, file$6, 179, 4, 3340);
+    			add_location(br16, file$6, 180, 0, 3345);
+    			add_location(br17, file$6, 180, 4, 3349);
 
     			dispose = [
-    				listen_dev(div6, "click", /*click_handler*/ ctx[3], false, false, false),
-    				listen_dev(div9, "click", /*click_handler_1*/ ctx[4], false, false, false),
-    				listen_dev(div10, "click", /*click_handler_2*/ ctx[5], false, false, false),
-    				listen_dev(div11, "click", /*click_handler_3*/ ctx[6], false, false, false),
-    				listen_dev(div12, "click", /*click_handler_4*/ ctx[7], false, false, false),
-    				listen_dev(div13, "click", /*click_handler_5*/ ctx[8], false, false, false),
-    				listen_dev(div14, "click", /*click_handler_6*/ ctx[9], false, false, false),
-    				listen_dev(div15, "click", /*click_handler_7*/ ctx[10], false, false, false),
-    				listen_dev(div16, "click", /*click_handler_8*/ ctx[11], false, false, false),
-    				listen_dev(div17, "click", /*click_handler_9*/ ctx[12], false, false, false),
-    				listen_dev(div18, "click", /*click_handler_10*/ ctx[13], false, false, false),
-    				listen_dev(div19, "click", /*click_handler_11*/ ctx[14], false, false, false),
-    				listen_dev(div20, "click", /*click_handler_12*/ ctx[15], false, false, false)
+    				listen(div9, "click", ctx.click_handler),
+    				listen(div10, "click", ctx.click_handler_1),
+    				listen(div11, "click", ctx.click_handler_2),
+    				listen(div12, "click", ctx.click_handler_3),
+    				listen(div13, "click", ctx.click_handler_4)
     			];
     		},
+
     		l: function claim(nodes) {
+    			if (default_slot) default_slot.l(nodes);
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
+
     		m: function mount(target, anchor) {
-    			insert_dev(target, div0, anchor);
-    			insert_dev(target, t1, anchor);
-    			insert_dev(target, div4, anchor);
-    			append_dev(div4, div1);
-    			append_dev(div4, t3);
-    			append_dev(div4, div2);
-    			append_dev(div4, t5);
-    			append_dev(div4, div3);
-    			insert_dev(target, t7, anchor);
-    			insert_dev(target, div22, anchor);
-    			append_dev(div22, div5);
-    			append_dev(div22, t9);
-    			append_dev(div22, div21);
-    			append_dev(div21, br0);
-    			append_dev(div21, t10);
-    			append_dev(div21, div6);
-    			append_dev(div21, t12);
-    			append_dev(div21, br1);
-    			append_dev(div21, t13);
-    			append_dev(div21, div7);
-    			append_dev(div21, t15);
-    			append_dev(div21, div8);
-    			append_dev(div21, t17);
-    			append_dev(div21, br2);
-    			append_dev(div21, t18);
-    			append_dev(div21, div9);
-    			append_dev(div21, t20);
-    			append_dev(div21, br3);
-    			append_dev(div21, t21);
-    			append_dev(div21, div10);
-    			append_dev(div21, t23);
-    			append_dev(div21, br4);
-    			append_dev(div21, t24);
-    			append_dev(div21, div11);
-    			append_dev(div21, t26);
-    			append_dev(div21, br5);
-    			append_dev(div21, t27);
-    			append_dev(div21, div12);
-    			append_dev(div21, t29);
-    			append_dev(div21, br6);
-    			append_dev(div21, t30);
-    			append_dev(div21, div13);
-    			append_dev(div21, t32);
-    			append_dev(div21, br7);
-    			append_dev(div21, t33);
-    			append_dev(div21, div14);
-    			append_dev(div21, t35);
-    			append_dev(div21, br8);
-    			append_dev(div21, t36);
-    			append_dev(div21, div15);
-    			append_dev(div21, t38);
-    			append_dev(div21, br9);
-    			append_dev(div21, t39);
-    			append_dev(div21, div16);
-    			append_dev(div21, t41);
-    			append_dev(div21, br10);
-    			append_dev(div21, t42);
-    			append_dev(div21, div17);
-    			append_dev(div21, t44);
-    			append_dev(div21, br11);
-    			append_dev(div21, t45);
-    			append_dev(div21, div18);
-    			append_dev(div21, t47);
-    			append_dev(div21, br12);
-    			append_dev(div21, t48);
-    			append_dev(div21, div19);
-    			append_dev(div21, t50);
-    			append_dev(div21, br13);
-    			append_dev(div21, t51);
-    			append_dev(div21, div20);
-    			append_dev(div21, t53);
-    			append_dev(div21, br14);
-    			insert_dev(target, t54, anchor);
-    			insert_dev(target, div23, anchor);
-    			append_dev(div23, br15);
-    			append_dev(div23, t55);
-    			if (if_block0) if_block0.m(div23, null);
-    			append_dev(div23, t56);
-    			if (if_block1) if_block1.m(div23, null);
-    			append_dev(div23, t57);
-    			if (if_block2) if_block2.m(div23, null);
-    			append_dev(div23, t58);
-    			if (if_block3) if_block3.m(div23, null);
-    			append_dev(div23, t59);
-    			if (if_block4) if_block4.m(div23, null);
-    			append_dev(div23, t60);
-    			if (if_block5) if_block5.m(div23, null);
-    			append_dev(div23, t61);
-    			if (if_block6) if_block6.m(div23, null);
-    			append_dev(div23, t62);
-    			if (if_block7) if_block7.m(div23, null);
-    			append_dev(div23, t63);
-    			if (if_block8) if_block8.m(div23, null);
-    			append_dev(div23, t64);
-    			if (if_block9) if_block9.m(div23, null);
-    			append_dev(div23, t65);
-    			if (if_block10) if_block10.m(div23, null);
-    			append_dev(div23, t66);
-    			if (if_block11) if_block11.m(div23, null);
-    			append_dev(div23, t67);
-    			if (if_block12) if_block12.m(div23, null);
-    			insert_dev(target, t68, anchor);
-    			insert_dev(target, br16, anchor);
-    			insert_dev(target, br17, anchor);
-    			insert_dev(target, t69, anchor);
+    			insert(target, div0, anchor);
+    			insert(target, t1, anchor);
+    			insert(target, div1, anchor);
+    			insert(target, t3, anchor);
+    			insert(target, div7, anchor);
+    			append(div7, div2);
+    			append(div7, t5);
+    			append(div7, div3);
+    			append(div7, t7);
+    			append(div7, br0);
+    			append(div7, t8);
+    			append(div7, div4);
+    			append(div7, t10);
+    			append(div7, div5);
+    			append(div7, t12);
+    			append(div7, div6);
+    			insert(target, t14, anchor);
+    			insert(target, div15, anchor);
+    			append(div15, br1);
+    			append(div15, t15);
+    			append(div15, div8);
+    			append(div15, t17);
+    			append(div15, div14);
+    			append(div14, br2);
+    			append(div14, t18);
+    			append(div14, div9);
+    			append(div14, t20);
+    			append(div14, br3);
+    			append(div14, t21);
+    			append(div14, div10);
+    			append(div14, t23);
+    			append(div14, br4);
+    			append(div14, t24);
+    			append(div14, div11);
+    			append(div14, t26);
+    			append(div14, br5);
+    			append(div14, t27);
+    			append(div14, div12);
+    			append(div14, t29);
+    			append(div14, br6);
+    			append(div14, t30);
+    			append(div14, div13);
+    			append(div13, t31);
+    			append(div13, br7);
+    			append(div13, t32);
+    			append(div13, br8);
+    			append(div14, t33);
+    			insert(target, t34, anchor);
+    			insert(target, div16, anchor);
+    			append(div16, br9);
+    			append(div16, t35);
+    			if (if_block0) if_block0.m(div16, null);
+    			append(div16, t36);
+    			if (if_block1) if_block1.m(div16, null);
+    			append(div16, t37);
+    			if (if_block2) if_block2.m(div16, null);
+    			append(div16, t38);
+    			if (if_block3) if_block3.m(div16, null);
+    			append(div16, t39);
+    			if (if_block4) if_block4.m(div16, null);
+    			append(div16, t40);
+    			if (if_block5) if_block5.m(div16, null);
+    			insert(target, t41, anchor);
+    			insert(target, br10, anchor);
+    			insert(target, br11, anchor);
+    			insert(target, t42, anchor);
 
     			if (default_slot) {
     				default_slot.m(target, anchor);
     			}
 
-    			insert_dev(target, t70, anchor);
-    			insert_dev(target, br18, anchor);
-    			insert_dev(target, br19, anchor);
-    			insert_dev(target, t71, anchor);
-    			insert_dev(target, br20, anchor);
-    			insert_dev(target, br21, anchor);
-    			insert_dev(target, t72, anchor);
-    			insert_dev(target, br22, anchor);
-    			insert_dev(target, br23, anchor);
+    			insert(target, t43, anchor);
+    			insert(target, br12, anchor);
+    			insert(target, br13, anchor);
+    			insert(target, t44, anchor);
+    			insert(target, br14, anchor);
+    			insert(target, br15, anchor);
+    			insert(target, t45, anchor);
+    			insert(target, br16, anchor);
+    			insert(target, br17, anchor);
     			current = true;
     		},
-    		p: function update(ctx, [dirty]) {
-    			if (/*j*/ ctx[0] === 0) {
+
+    		p: function update(changed, ctx) {
+    			if (ctx.j === 0) {
     				if (!if_block0) {
-    					if_block0 = create_if_block_12(ctx);
+    					if_block0 = create_if_block_5();
     					if_block0.c();
     					transition_in(if_block0, 1);
-    					if_block0.m(div23, t56);
+    					if_block0.m(div16, t36);
     				} else {
-    					transition_in(if_block0, 1);
+    									transition_in(if_block0, 1);
     				}
     			} else if (if_block0) {
     				group_outros();
-
     				transition_out(if_block0, 1, 1, () => {
     					if_block0 = null;
     				});
-
     				check_outros();
     			}
 
-    			if (/*j*/ ctx[0] === 1) {
+    			if (ctx.j === 1) {
     				if (!if_block1) {
-    					if_block1 = create_if_block_11(ctx);
+    					if_block1 = create_if_block_4();
     					if_block1.c();
     					transition_in(if_block1, 1);
-    					if_block1.m(div23, t57);
+    					if_block1.m(div16, t37);
     				} else {
-    					transition_in(if_block1, 1);
+    									transition_in(if_block1, 1);
     				}
     			} else if (if_block1) {
     				group_outros();
-
     				transition_out(if_block1, 1, 1, () => {
     					if_block1 = null;
     				});
-
     				check_outros();
     			}
 
-    			if (/*j*/ ctx[0] === 2) {
+    			if (ctx.j === 2) {
     				if (!if_block2) {
-    					if_block2 = create_if_block_10(ctx);
+    					if_block2 = create_if_block_3();
     					if_block2.c();
     					transition_in(if_block2, 1);
-    					if_block2.m(div23, t58);
+    					if_block2.m(div16, t38);
     				} else {
-    					transition_in(if_block2, 1);
+    									transition_in(if_block2, 1);
     				}
     			} else if (if_block2) {
     				group_outros();
-
     				transition_out(if_block2, 1, 1, () => {
     					if_block2 = null;
     				});
-
     				check_outros();
     			}
 
-    			if (/*j*/ ctx[0] === 3) {
+    			if (ctx.j === 3) {
     				if (!if_block3) {
-    					if_block3 = create_if_block_9(ctx);
+    					if_block3 = create_if_block_2();
     					if_block3.c();
     					transition_in(if_block3, 1);
-    					if_block3.m(div23, t59);
+    					if_block3.m(div16, t39);
     				} else {
-    					transition_in(if_block3, 1);
+    									transition_in(if_block3, 1);
     				}
     			} else if (if_block3) {
     				group_outros();
-
     				transition_out(if_block3, 1, 1, () => {
     					if_block3 = null;
     				});
-
     				check_outros();
     			}
 
-    			if (/*j*/ ctx[0] === 14) {
+    			if (ctx.j === 4) {
     				if (!if_block4) {
-    					if_block4 = create_if_block_8(ctx);
+    					if_block4 = create_if_block_1();
     					if_block4.c();
     					transition_in(if_block4, 1);
-    					if_block4.m(div23, t60);
+    					if_block4.m(div16, t40);
     				} else {
-    					transition_in(if_block4, 1);
+    									transition_in(if_block4, 1);
     				}
     			} else if (if_block4) {
     				group_outros();
-
     				transition_out(if_block4, 1, 1, () => {
     					if_block4 = null;
     				});
-
     				check_outros();
     			}
 
-    			if (/*j*/ ctx[0] === 4) {
+    			if (ctx.j === 5) {
     				if (!if_block5) {
-    					if_block5 = create_if_block_7(ctx);
+    					if_block5 = create_if_block$6();
     					if_block5.c();
     					transition_in(if_block5, 1);
-    					if_block5.m(div23, t61);
+    					if_block5.m(div16, null);
     				} else {
-    					transition_in(if_block5, 1);
+    									transition_in(if_block5, 1);
     				}
     			} else if (if_block5) {
     				group_outros();
-
     				transition_out(if_block5, 1, 1, () => {
     					if_block5 = null;
     				});
-
     				check_outros();
     			}
 
-    			if (/*j*/ ctx[0] === 5) {
-    				if (!if_block6) {
-    					if_block6 = create_if_block_6(ctx);
-    					if_block6.c();
-    					transition_in(if_block6, 1);
-    					if_block6.m(div23, t62);
-    				} else {
-    					transition_in(if_block6, 1);
-    				}
-    			} else if (if_block6) {
-    				group_outros();
-
-    				transition_out(if_block6, 1, 1, () => {
-    					if_block6 = null;
-    				});
-
-    				check_outros();
-    			}
-
-    			if (/*j*/ ctx[0] === 6) {
-    				if (!if_block7) {
-    					if_block7 = create_if_block_5(ctx);
-    					if_block7.c();
-    					transition_in(if_block7, 1);
-    					if_block7.m(div23, t63);
-    				} else {
-    					transition_in(if_block7, 1);
-    				}
-    			} else if (if_block7) {
-    				group_outros();
-
-    				transition_out(if_block7, 1, 1, () => {
-    					if_block7 = null;
-    				});
-
-    				check_outros();
-    			}
-
-    			if (/*j*/ ctx[0] === 7) {
-    				if (!if_block8) {
-    					if_block8 = create_if_block_4(ctx);
-    					if_block8.c();
-    					transition_in(if_block8, 1);
-    					if_block8.m(div23, t64);
-    				} else {
-    					transition_in(if_block8, 1);
-    				}
-    			} else if (if_block8) {
-    				group_outros();
-
-    				transition_out(if_block8, 1, 1, () => {
-    					if_block8 = null;
-    				});
-
-    				check_outros();
-    			}
-
-    			if (/*j*/ ctx[0] === 8) {
-    				if (!if_block9) {
-    					if_block9 = create_if_block_3(ctx);
-    					if_block9.c();
-    					transition_in(if_block9, 1);
-    					if_block9.m(div23, t65);
-    				} else {
-    					transition_in(if_block9, 1);
-    				}
-    			} else if (if_block9) {
-    				group_outros();
-
-    				transition_out(if_block9, 1, 1, () => {
-    					if_block9 = null;
-    				});
-
-    				check_outros();
-    			}
-
-    			if (/*j*/ ctx[0] === 9) {
-    				if (!if_block10) {
-    					if_block10 = create_if_block_2(ctx);
-    					if_block10.c();
-    					transition_in(if_block10, 1);
-    					if_block10.m(div23, t66);
-    				} else {
-    					transition_in(if_block10, 1);
-    				}
-    			} else if (if_block10) {
-    				group_outros();
-
-    				transition_out(if_block10, 1, 1, () => {
-    					if_block10 = null;
-    				});
-
-    				check_outros();
-    			}
-
-    			if (/*j*/ ctx[0] === 10) {
-    				if (!if_block11) {
-    					if_block11 = create_if_block_1(ctx);
-    					if_block11.c();
-    					transition_in(if_block11, 1);
-    					if_block11.m(div23, t67);
-    				} else {
-    					transition_in(if_block11, 1);
-    				}
-    			} else if (if_block11) {
-    				group_outros();
-
-    				transition_out(if_block11, 1, 1, () => {
-    					if_block11 = null;
-    				});
-
-    				check_outros();
-    			}
-
-    			if (/*j*/ ctx[0] === 11) {
-    				if (!if_block12) {
-    					if_block12 = create_if_block$c(ctx);
-    					if_block12.c();
-    					transition_in(if_block12, 1);
-    					if_block12.m(div23, null);
-    				} else {
-    					transition_in(if_block12, 1);
-    				}
-    			} else if (if_block12) {
-    				group_outros();
-
-    				transition_out(if_block12, 1, 1, () => {
-    					if_block12 = null;
-    				});
-
-    				check_outros();
-    			}
-
-    			if (default_slot && default_slot.p && dirty & /*$$scope*/ 2) {
-    				default_slot.p(get_slot_context(default_slot_template, ctx, /*$$scope*/ ctx[1], null), get_slot_changes(default_slot_template, /*$$scope*/ ctx[1], dirty, null));
+    			if (default_slot && default_slot.p && changed.$$scope) {
+    				default_slot.p(
+    					get_slot_changes(default_slot_template, ctx, changed, null),
+    					get_slot_context(default_slot_template, ctx, null)
+    				);
     			}
     		},
+
     		i: function intro(local) {
     			if (current) return;
     			transition_in(if_block0);
@@ -8546,16 +4763,10 @@ on:click={() => num_b = 7}
     			transition_in(if_block3);
     			transition_in(if_block4);
     			transition_in(if_block5);
-    			transition_in(if_block6);
-    			transition_in(if_block7);
-    			transition_in(if_block8);
-    			transition_in(if_block9);
-    			transition_in(if_block10);
-    			transition_in(if_block11);
-    			transition_in(if_block12);
     			transition_in(default_slot, local);
     			current = true;
     		},
+
     		o: function outro(local) {
     			transition_out(if_block0);
     			transition_out(if_block1);
@@ -8563,133 +4774,117 @@ on:click={() => num_b = 7}
     			transition_out(if_block3);
     			transition_out(if_block4);
     			transition_out(if_block5);
-    			transition_out(if_block6);
-    			transition_out(if_block7);
-    			transition_out(if_block8);
-    			transition_out(if_block9);
-    			transition_out(if_block10);
-    			transition_out(if_block11);
-    			transition_out(if_block12);
     			transition_out(default_slot, local);
     			current = false;
     		},
+
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div0);
-    			if (detaching) detach_dev(t1);
-    			if (detaching) detach_dev(div4);
-    			if (detaching) detach_dev(t7);
-    			if (detaching) detach_dev(div22);
-    			if (detaching) detach_dev(t54);
-    			if (detaching) detach_dev(div23);
+    			if (detaching) {
+    				detach(div0);
+    				detach(t1);
+    				detach(div1);
+    				detach(t3);
+    				detach(div7);
+    				detach(t14);
+    				detach(div15);
+    				detach(t34);
+    				detach(div16);
+    			}
+
     			if (if_block0) if_block0.d();
     			if (if_block1) if_block1.d();
     			if (if_block2) if_block2.d();
     			if (if_block3) if_block3.d();
     			if (if_block4) if_block4.d();
     			if (if_block5) if_block5.d();
-    			if (if_block6) if_block6.d();
-    			if (if_block7) if_block7.d();
-    			if (if_block8) if_block8.d();
-    			if (if_block9) if_block9.d();
-    			if (if_block10) if_block10.d();
-    			if (if_block11) if_block11.d();
-    			if (if_block12) if_block12.d();
-    			if (detaching) detach_dev(t68);
-    			if (detaching) detach_dev(br16);
-    			if (detaching) detach_dev(br17);
-    			if (detaching) detach_dev(t69);
+
+    			if (detaching) {
+    				detach(t41);
+    				detach(br10);
+    				detach(br11);
+    				detach(t42);
+    			}
+
     			if (default_slot) default_slot.d(detaching);
-    			if (detaching) detach_dev(t70);
-    			if (detaching) detach_dev(br18);
-    			if (detaching) detach_dev(br19);
-    			if (detaching) detach_dev(t71);
-    			if (detaching) detach_dev(br20);
-    			if (detaching) detach_dev(br21);
-    			if (detaching) detach_dev(t72);
-    			if (detaching) detach_dev(br22);
-    			if (detaching) detach_dev(br23);
+
+    			if (detaching) {
+    				detach(t43);
+    				detach(br12);
+    				detach(br13);
+    				detach(t44);
+    				detach(br14);
+    				detach(br15);
+    				detach(t45);
+    				detach(br16);
+    				detach(br17);
+    			}
+
     			run_all(dispose);
     		}
     	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$e.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
     }
 
-    function instance$e($$self, $$props, $$invalidate) {
+    function instance$6($$self, $$props, $$invalidate) {
     	let { j = 0 } = $$props;
-    	const writable_props = ["j"];
 
+    	const writable_props = ['j'];
     	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Blog> was created with unknown prop '${key}'`);
+    		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<Blog> was created with unknown prop '${key}'`);
     	});
 
     	let { $$slots = {}, $$scope } = $$props;
-    	const click_handler = () => $$invalidate(0, j = 0);
-    	const click_handler_1 = () => $$invalidate(0, j = 1);
-    	const click_handler_2 = () => $$invalidate(0, j = 2);
-    	const click_handler_3 = () => $$invalidate(0, j = 3);
-    	const click_handler_4 = () => $$invalidate(0, j = 14);
-    	const click_handler_5 = () => $$invalidate(0, j = 4);
-    	const click_handler_6 = () => $$invalidate(0, j = 5);
-    	const click_handler_7 = () => $$invalidate(0, j = 6);
-    	const click_handler_8 = () => $$invalidate(0, j = 7);
-    	const click_handler_9 = () => $$invalidate(0, j = 8);
-    	const click_handler_10 = () => $$invalidate(0, j = 9);
-    	const click_handler_11 = () => $$invalidate(0, j = 10);
-    	const click_handler_12 = () => $$invalidate(0, j = 11);
+
+    	function click_handler() {
+    		const $$result = j = 0;
+    		$$invalidate('j', j);
+    		return $$result;
+    	}
+
+    	function click_handler_1() {
+    		const $$result = j = 1;
+    		$$invalidate('j', j);
+    		return $$result;
+    	}
+
+    	function click_handler_2() {
+    		const $$result = j = 2;
+    		$$invalidate('j', j);
+    		return $$result;
+    	}
+
+    	function click_handler_3() {
+    		const $$result = j = 3;
+    		$$invalidate('j', j);
+    		return $$result;
+    	}
+
+    	function click_handler_4() {
+    		const $$result = j = 5;
+    		$$invalidate('j', j);
+    		return $$result;
+    	}
 
     	$$self.$set = $$props => {
-    		if ("j" in $$props) $$invalidate(0, j = $$props.j);
-    		if ("$$scope" in $$props) $$invalidate(1, $$scope = $$props.$$scope);
+    		if ('j' in $$props) $$invalidate('j', j = $$props.j);
+    		if ('$$scope' in $$props) $$invalidate('$$scope', $$scope = $$props.$$scope);
     	};
 
-    	$$self.$capture_state = () => {
-    		return { j };
-    	};
-
-    	$$self.$inject_state = $$props => {
-    		if ("j" in $$props) $$invalidate(0, j = $$props.j);
-    	};
-
-    	return [
+    	return {
     		j,
-    		$$scope,
-    		$$slots,
     		click_handler,
     		click_handler_1,
     		click_handler_2,
     		click_handler_3,
     		click_handler_4,
-    		click_handler_5,
-    		click_handler_6,
-    		click_handler_7,
-    		click_handler_8,
-    		click_handler_9,
-    		click_handler_10,
-    		click_handler_11,
-    		click_handler_12
-    	];
+    		$$slots,
+    		$$scope
+    	};
     }
 
     class Blog extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$e, create_fragment$e, safe_not_equal, { j: 0 });
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "Blog",
-    			options,
-    			id: create_fragment$e.name
-    		});
+    		init(this, options, instance$6, create_fragment$6, safe_not_equal, ["j"]);
     	}
 
     	get j() {
@@ -8701,60 +4896,51 @@ on:click={() => num_b = 7}
     	}
     }
 
-    /* src/App.svelte generated by Svelte v3.16.7 */
+    /* src/App.svelte generated by Svelte v3.9.1 */
 
-    function create_fragment$f(ctx) {
-    	let current;
-    	const blog = new Blog({ $$inline: true });
+    function create_fragment$7(ctx) {
+    	var current;
 
-    	const block = {
+    	var blog = new Blog({ $$inline: true });
+
+    	return {
     		c: function create() {
-    			create_component(blog.$$.fragment);
+    			blog.$$.fragment.c();
     		},
+
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
+
     		m: function mount(target, anchor) {
     			mount_component(blog, target, anchor);
     			current = true;
     		},
+
     		p: noop,
+
     		i: function intro(local) {
     			if (current) return;
     			transition_in(blog.$$.fragment, local);
+
     			current = true;
     		},
+
     		o: function outro(local) {
     			transition_out(blog.$$.fragment, local);
     			current = false;
     		},
+
     		d: function destroy(detaching) {
     			destroy_component(blog, detaching);
     		}
     	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$f.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
     }
 
     class App extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, null, create_fragment$f, safe_not_equal, {});
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "App",
-    			options,
-    			id: create_fragment$f.name
-    		});
+    		init(this, options, null, create_fragment$7, safe_not_equal, []);
     	}
     }
 
