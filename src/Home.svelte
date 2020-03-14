@@ -37,6 +37,7 @@ else j = j;
 import {fade} from "svelte/transition"
 let visible = true;
 
+
 let text = `A monad is a way of composing functions that require context in addition to the return value, such as
 map(a→b)
 f latten
@@ -88,9 +89,22 @@ on the left side? Arrays on the right side: Array(a) => Array(b).
 Type lift means to lift a type into a context, blessing the value with an API that you can use to compute from that value, trigger contextual computations, etc… a => F(a) (Monads are a kind of functor).
 Flatten means unwrap the value from the context. F(a) => a. `
 
-let monad_ = `var a = Monad(); a(3)(v=>v**3)(v=>v+3)(v=>v*v); var b = Monad(); b(a('end'))(v=>v/100)(Math.sqrt); console.log(a('stop'), b('stop'))
-var a = Monad(); a(3)(v=>v**3)(v=>v+3)(v=>v*v); var b = Monad(); b(a('end'))(v=>v/100)(Math.sqrt); console.log(a('stop'), b('stop'))
-VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`
+let monad_ = ` function Monad () { 
+  var ar = []
+  var s = "stop";
+  return function _f (func) {
+      if (func === "stop") return ar
+      if (typeof func !== "function") {
+          ar = ar.concat(func); 
+          return _f
+      } 
+      else  {
+          ar = ar.concat(func(ar.slice(-1)[0]));
+          return _f;
+      }
+   };
+} `
+
 
 
 </script>
@@ -107,7 +121,7 @@ INTRODUCTION
 <p>  When a suitably defined monad encounters a promise, the promise's resolution value is concatenated to the array. Values which are niether functions nor promises that that meet conditions specified in monad m's definition of "run" are concatenated to ar. When a monad encounters the string "stop" (or "s" defined as "stop") the outer function's array is returned.</p>    
 <p style = "font-style: italic; color: #BBFFBB;"> NOTE: The definition of "Monad" varies from module to module on this site. An alternative would be to define "Monad" with more functionality and place it in a parent module. </p>
 <p> When no value is provided to a monad, the monad's return value "_f" remains dormant waiting to resume its activity or provide a starting point for an orthogonal branch if and when it is called upon to do so. A dormant monad that is provided with the argument "stop" will return its outer function's array.</p>
-<p> The table of contents provides links to a simple monad, a monad that interacts with a WebSockets server and a Web Worker, two monads that interact with promises, and one that functions as a transducer. A monad that combines all of this functionality can easily be defined. </p>
+<p> The table of contents provides links to a simple monad, a monad that interacts with a WebSockets server and a Web Worker, two monads that nteract with promises, and one that functions as a transducer. A monad that combines all of this functionality can easily be defined. </p>
 
 <h3> Functional Programming</h3>
 <span class = tao> Contrary to what you may have read or heard in video presentations, functional programming can and often does entail the mutation of variables and objects. Haskell, for example, is a functional language. Haskell programmers generally perform mutations inside of monads, insulated from the rest of the prograrams that contain them, but that isn't necessary.  See </span>
@@ -121,14 +135,12 @@ INTRODUCTION
 <h3>The Word "Monad"</h3>
 <p> I call the following basic function, along with variations on its theme, a "monad":</p>
 <pre>{monad_}</pre>
-
-<p> I suspect that some readers will think I am misusing the word "monad" because my functions don't superficially resemble Haskell or Category Theory monads, and they don't mimic mimics the mechanics of composition in another language or discipline. .  </p>
-
-
-
- <span class = tao> Monad (from Greek μονάς monas, "singularity" in turn from μόνος monos, "alone"), refers, in cosmogony, to the Supreme Being, divinity or the totality of all things.</span>
- <a class = tao  href = "https://en.wikipedia.org/wiki/Monad_(philosophy)" target = "_blank">Wikipedia article </a> 
+<p>The table of contents has links to monads that handle WebSockets and Web Worker messages along with monads that handle promises and behave like transducers.</p>
+ <span class = tao> Monad (from Greek μονάς monas, "singularity" in turn from μόνος monos, "alone"), has many meanings going back to antiquity. The Pythagoreans called the first thing that came into existence.  Leibniz' used the term to denote an elementary particle. In Category Theory, a Monad is a monoid in the category of endofunctors. <a  href = "https://www.reddit.com/r/haskell/comments/5ez9b1/monoid_in_the_category_of_endofunctors/" target = "_blank">Reddit topic </a></span>
+ <span>Another Wikipedia article describes "monad" as "a design pattern that allows structuring programs generically while automating away boilerplate code needed by the program logic."</span>
+ <a href = " https://en.wikipedia.org/wiki/Monad_(functional_programming) " target = "_blank">Monad (functional programming)"</a> 
  
+ <p>The monads described here are unusual in that they are distinguished from one another by definitions in discrete modules rather than by types. In a less modular framework, alternative names such as "Monad1" and "Monad2" could be used. Like Haskell monads, the monads presented on this site encapsulate chains of computations whose results can be returned whenever they are wanted. Lazy evaluation would be nice, but that is for another day. </p>
  
   <span> A basic unit of perceptual reality is a "monad" in Gottfried Leibniz' </span>
 <span style = "font-style: italic"> Monadology </span>

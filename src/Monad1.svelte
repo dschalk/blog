@@ -50,18 +50,19 @@ let s = "stop";
 
 var code1 = `function Monad () { 
   var ar = []
+  var s = "stop";
   return function _f (func) {
-    if (func === "stop") return ar.slice();
-    if (typeof func !== "function") {
-      ar = ar.concat(func); 
-      return _f
-    } 
-    else  {
-      ar = ar.concat(func(ar.slice(-1)[0]));
-      return _f;
-    }
-  };
-}`
+      if (func === "stop") return ar
+      if (typeof func !== "function") {
+          ar = ar.concat(func); 
+          return _f
+      } 
+      else  {
+          ar = ar.concat(func(ar.slice(-1)[0]));
+          return _f;
+      }
+   };
+} `
 
 var code2 =  `
 let a = Monad()

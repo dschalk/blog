@@ -16,14 +16,14 @@ var app = (function () {
             loc: { file, line, column, char }
         };
     }
-    function run$1(fn) {
+    function run(fn) {
         return fn();
     }
     function blank_object() {
         return Object.create(null);
     }
     function run_all(fns) {
-        fns.forEach(run$1);
+        fns.forEach(run);
     }
     function is_function(thing) {
         return typeof thing === 'function';
@@ -405,7 +405,7 @@ var app = (function () {
         fragment.m(target, anchor);
         // onMount happens before the initial afterUpdate
         add_render_callback(() => {
-            const new_on_destroy = on_mount.map(run$1).filter(is_function);
+            const new_on_destroy = on_mount.map(run).filter(is_function);
             if (on_destroy) {
                 on_destroy.push(...new_on_destroy);
             }
@@ -535,7 +535,7 @@ var app = (function () {
 
     const file = "src/Monad1.svelte";
 
-    // (83:0) {#if visible}
+    // (84:0) {#if visible}
     function create_if_block(ctx) {
     	var div, div_transition, current;
 
@@ -547,7 +547,7 @@ var app = (function () {
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file, 83, 0, 2046);
+    			add_location(div, file, 84, 0, 2083);
     		},
 
     		m: function mount(target, anchor) {
@@ -645,23 +645,23 @@ var app = (function () {
     			h2 = element("h2");
     			t38 = text("demo3:");
     			t39 = text(t39_value);
-    			add_location(br, file, 88, 0, 2207);
-    			add_location(p0, file, 89, 0, 2212);
-    			add_location(pre0, file, 90, 0, 2639);
-    			add_location(p1, file, 91, 0, 2658);
-    			add_location(pre1, file, 93, 0, 2680);
-    			add_location(p2, file, 95, 0, 2700);
-    			add_location(pre2, file, 96, 0, 2801);
+    			add_location(br, file, 89, 0, 2244);
+    			add_location(p0, file, 90, 0, 2249);
+    			add_location(pre0, file, 91, 0, 2676);
+    			add_location(p1, file, 92, 0, 2695);
+    			add_location(pre1, file, 94, 0, 2717);
+    			add_location(p2, file, 96, 0, 2737);
+    			add_location(pre2, file, 97, 0, 2838);
     			attr(input, "type", "number");
-    			add_location(input, file, 98, 0, 2821);
-    			add_location(h30, file, 102, 0, 2869);
-    			add_location(h31, file, 103, 0, 2892);
-    			add_location(h32, file, 104, 0, 2915);
-    			add_location(h33, file, 105, 0, 2938);
-    			add_location(h34, file, 107, 0, 2962);
-    			add_location(h35, file, 108, 0, 3003);
-    			add_location(h36, file, 110, 0, 3045);
-    			add_location(h2, file, 112, 0, 3090);
+    			add_location(input, file, 99, 0, 2858);
+    			add_location(h30, file, 103, 0, 2906);
+    			add_location(h31, file, 104, 0, 2929);
+    			add_location(h32, file, 105, 0, 2952);
+    			add_location(h33, file, 106, 0, 2975);
+    			add_location(h34, file, 108, 0, 2999);
+    			add_location(h35, file, 109, 0, 3040);
+    			add_location(h36, file, 111, 0, 3082);
+    			add_location(h2, file, 113, 0, 3127);
     			dispose = listen(input, "input", demo);
     		},
 
@@ -858,18 +858,19 @@ var app = (function () {
 
     var code1 = `function Monad () { 
   var ar = []
+  var s = "stop";
   return function _f (func) {
-    if (func === "stop") return ar.slice();
-    if (typeof func !== "function") {
-      ar = ar.concat(func); 
-      return _f
-    } 
-    else  {
-      ar = ar.concat(func(ar.slice(-1)[0]));
-      return _f;
-    }
-  };
-}`;
+      if (func === "stop") return ar
+      if (typeof func !== "function") {
+          ar = ar.concat(func); 
+          return _f
+      } 
+      else  {
+          ar = ar.concat(func(ar.slice(-1)[0]));
+          return _f;
+      }
+   };
+} `;
 
     var code2 =  `
 let a = Monad()
@@ -971,7 +972,7 @@ let res4 = b(v=>v*2)(v=>v*7) (s)                  // [3,27,30,900,9,3,6,42] `;
 
     const file$1 = "src/Monad2.svelte";
 
-    // (312:0) {#if j === 2}
+    // (308:0) {#if j === 2}
     function create_if_block$1(ctx) {
     	var div_1, div_1_transition, current;
 
@@ -983,7 +984,7 @@ let res4 = b(v=>v*2)(v=>v*7) (s)                  // [3,27,30,900,9,3,6,42] `;
     			set_style(div_1, "text-align", "center");
     			set_style(div_1, "color", "hsl(210, 90%, 90%)");
     			set_style(div_1, "font-size", "38px");
-    			add_location(div_1, file$1, 312, 0, 5862);
+    			add_location(div_1, file$1, 308, 0, 5919);
     		},
 
     		m: function mount(target, anchor) {
@@ -1064,7 +1065,7 @@ let res4 = b(v=>v*2)(v=>v*7) (s)                  // [3,27,30,900,9,3,6,42] `;
     			t23 = text(" [");
     			t24 = text(t24_value);
     			t25 = text("]");
-    			t26 = space();
+    			t26 = text(";\n");
     			br8 = element("br");
     			t27 = space();
     			br9 = element("br");
@@ -1132,62 +1133,62 @@ let res4 = b(v=>v*2)(v=>v*7) (s)                  // [3,27,30,900,9,3,6,42] `;
     			t68 = space();
     			a = element("a");
     			a.textContent = "GitHub repository";
-    			add_location(br0, file$1, 310, 0, 5838);
-    			add_location(br1, file$1, 310, 4, 5842);
-    			add_location(br2, file$1, 317, 0, 6033);
-    			add_location(p0, file$1, 318, 0, 6038);
-    			add_location(br3, file$1, 319, 0, 6438);
+    			add_location(br0, file$1, 306, 0, 5895);
+    			add_location(br1, file$1, 306, 4, 5899);
+    			add_location(br2, file$1, 313, 0, 6090);
+    			add_location(p0, file$1, 314, 0, 6095);
+    			add_location(br3, file$1, 315, 0, 6495);
     			set_style(div0, "color", "#BBBBFF");
     			set_style(div0, "font-size", "20px");
-    			add_location(div0, file$1, 325, 0, 6448);
+    			add_location(div0, file$1, 321, 0, 6505);
     			set_style(div1, "color", "#FFFFCD");
     			set_style(div1, "font-size", "20px");
-    			add_location(div1, file$1, 326, 0, 6576);
-    			add_location(br4, file$1, 329, 0, 6662);
+    			add_location(div1, file$1, 322, 0, 6633);
+    			add_location(br4, file$1, 325, 0, 6719);
     			set_style(span0, "color", "#CDCDFF");
     			set_style(span0, "font-size", "20px");
-    			add_location(span0, file$1, 330, 0, 6667);
-    			add_location(br5, file$1, 332, 0, 6856);
-    			add_location(br6, file$1, 332, 25, 6881);
-    			add_location(br7, file$1, 332, 50, 6906);
+    			add_location(span0, file$1, 326, 0, 6724);
+    			add_location(br5, file$1, 328, 0, 6913);
+    			add_location(br6, file$1, 328, 25, 6938);
+    			add_location(br7, file$1, 328, 50, 6963);
     			set_style(span1, "color", "#FFFFCD");
     			set_style(span1, "font-size", "20px");
-    			add_location(span1, file$1, 331, 0, 6806);
-    			add_location(br8, file$1, 333, 0, 6938);
-    			add_location(br9, file$1, 334, 0, 6943);
-    			add_location(pre0, file$1, 336, 0, 6978);
+    			add_location(span1, file$1, 327, 0, 6863);
+    			add_location(br8, file$1, 329, 0, 6996);
+    			add_location(br9, file$1, 330, 0, 7001);
+    			add_location(pre0, file$1, 332, 0, 7036);
     			attr(button, "class", "svelte-8aass1");
-    			add_location(button, file$1, 335, 0, 6948);
-    			add_location(br10, file$1, 339, 0, 7009);
-    			add_location(br11, file$1, 339, 4, 7013);
-    			add_location(br12, file$1, 339, 8, 7017);
+    			add_location(button, file$1, 331, 0, 7006);
+    			add_location(br10, file$1, 335, 0, 7067);
+    			add_location(br11, file$1, 335, 4, 7071);
+    			add_location(br12, file$1, 335, 8, 7075);
     			set_style(span2, "font-size", "24px");
     			set_style(span2, "color", "#FF0B0B");
-    			add_location(span2, file$1, 344, 42, 7116);
-    			add_location(br13, file$1, 345, 0, 7206);
+    			add_location(span2, file$1, 338, 42, 7172);
+    			add_location(br13, file$1, 339, 0, 7262);
     			set_style(span3, "font-size", "24px");
     			set_style(span3, "color", "#FF0B0B");
-    			add_location(span3, file$1, 346, 42, 7253);
-    			add_location(br14, file$1, 347, 0, 7343);
+    			add_location(span3, file$1, 340, 42, 7309);
+    			add_location(br14, file$1, 341, 0, 7399);
     			set_style(span4, "font-size", "24px");
     			set_style(span4, "color", "#FF0B0B");
-    			add_location(span4, file$1, 348, 44, 7392);
-    			add_location(br15, file$1, 349, 0, 7482);
+    			add_location(span4, file$1, 342, 44, 7448);
+    			add_location(br15, file$1, 343, 0, 7538);
     			set_style(div2, "color", "#FFFFCD");
     			set_style(div2, "font-size", "20px");
-    			add_location(div2, file$1, 343, 0, 7025);
-    			add_location(p1, file$1, 354, 0, 7497);
-    			add_location(pre1, file$1, 356, 0, 7672);
-    			add_location(p2, file$1, 358, 0, 7690);
-    			add_location(pre2, file$1, 359, 0, 8144);
-    			add_location(p3, file$1, 360, 0, 8170);
-    			add_location(pre3, file$1, 361, 0, 8240);
-    			add_location(p4, file$1, 362, 0, 8266);
-    			add_location(br16, file$1, 363, 0, 8420);
-    			add_location(span5, file$1, 364, 0, 8425);
+    			add_location(div2, file$1, 337, 0, 7081);
+    			add_location(p1, file$1, 348, 0, 7553);
+    			add_location(pre1, file$1, 350, 0, 7728);
+    			add_location(p2, file$1, 352, 0, 7746);
+    			add_location(pre2, file$1, 353, 0, 8200);
+    			add_location(p3, file$1, 354, 0, 8226);
+    			add_location(pre3, file$1, 355, 0, 8296);
+    			add_location(p4, file$1, 356, 0, 8322);
+    			add_location(br16, file$1, 357, 0, 8476);
+    			add_location(span5, file$1, 358, 0, 8481);
     			attr(a, "href", "https://github.com/dschalk/blog/");
     			attr(a, "target", "_blank");
-    			add_location(a, file$1, 365, 0, 8483);
+    			add_location(a, file$1, 359, 0, 8539);
     			dispose = listen(button, "click", ctx.factors);
     		},
 
@@ -1458,7 +1459,10 @@ let res4 = b(v=>v*2)(v=>v*7) (s)                  // [3,27,30,900,9,3,6,42] `;
     }
 
     function instance$1($$self, $$props, $$invalidate) {
-    var f_ = function f_ () {};
+    	
+
+    var O = {};
+    O["Mandy"] = [23]; $$invalidate('O', O);
 
     var O = new Object();
     O.d0 = [2,3,4]; $$invalidate('O', O);
@@ -1470,23 +1474,25 @@ let res4 = b(v=>v*2)(v=>v*7) (s)                  // [3,27,30,900,9,3,6,42] `;
 
     O.generic = ["Nobody"]; $$invalidate('O', O);
 
-    const Monad = function Monad ( AR = [],  name = "generic",  f_ = f_Func,  rF = runFunc )  {
-    var x = AR.slice();
-    O[name] = ar; $$invalidate('O', O);
-    rF(x); 
-    };
-    var runFunc = function  runFunc () { 
-    varx = O[name].pop();   //  x will be replaced below
-    return run = (function run (x) {
-    if (x != undefined  && x === x  && x !== false && x.name !== "f_" && x.name !== "stop" )  {
-      O[name] = O[name].concat(x); $$invalidate('O', O);
-    }return f_;
-    })
-    };
+    const  Monad =function Monad ( AR = [],  name = "generic" )  {
+    var x = AR.pop();
+    O[name] = AR; $$invalidate('O', O);
+     (function run (xx) {
+    if (typeof xx != "undefined"  && xx === xx  && xx !== false && xx.name !== "f_" && xx.name !== "stop" )  {
+      O[name] = O[name].concat(xx); $$invalidate('O', O);
+    }var  f_ = function f_ (func) {
+        if (func === 'stop'  || func === 's') return O[name]
+        else if (typeof func !== "function") p = func(x);
+        else if (x instanceof Promise) p = x.then(v => func(v));
+        return run(p);
+      };
+      return f_;
+    }) (x);
+    }; 
 
-    /* let a0 = *Monad([3])(cube)
-    (add(3))(square)(div(100))
-    (sqrt)(()=>this)(halt); */
+
+    var cow = Monad([], "cow");
+    console.log("cow is", cow);
 
     // var socket = new WebSocket("ws://localhost:3055")
     var socket = new WebSocket("ws://167.71.168.53:3055");
@@ -1524,7 +1530,7 @@ let res4 = b(v=>v*2)(v=>v*7) (s)                  // [3,27,30,900,9,3,6,42] `;
     }
     }, 200);
     }
-    const factors = function factors () {
+    var factors = function factors () {
     socket.send("BE#$42,solo,name,10000");
     socket.send("BE#$42,solo,name,100000");
     socket.send("BE#$42,solo,name,1000");
@@ -1539,27 +1545,24 @@ let res4 = b(v=>v*2)(v=>v*7) (s)                  // [3,27,30,900,9,3,6,42] `;
       M = -1;
     }
     };
-    var mon = `const Monad = function Monad ( AR = [], name = "generic" )  {
-var f_, p, run;
-var ar = AR.slice();
-var name = name;
-O[name] = ar;
-let x = O[name].pop();
-return run = (function run (x) {
-if (x != undefined && x === x  && x !== false
-&& x.name !== "f_" && x.name !== "halt" ) {
-  O[name] = O[name].concat(x)
-};
-function f_ (func) {
-  if (func === 'halt' || func === 'S') return O[name];
-  else if (typeof func !== "function") p = func;
-  else if (x instanceof Promise) p = x.then(v => func(v));
-  else p = func(x);
-  return run(p);
-};
-return f_;
-})(x);
-} `;
+    var mon = `const  Monad =function Monad ( AR = [],  name = "generic" )  {
+    var x = AR.pop(); // x will be replaced in the function "run" (below)
+    O[name] = AR;
+    var s = "stop";
+    (function run (xx) {
+        if (typeof xx != "undefined"  && xx === xx  && xx !== false && 
+        xx.name !== "f_" && xx.name !== "stop" )  {
+            O[name] = O[name].concat(xx)
+        };
+        var  f_ = function f_ (func) {
+            if (func === 'stop'  || func === 's') return O[name]
+            else if (typeof func !== "function") p = func(x)
+            else if (x instanceof Promise) p = x.then(v => func(v));
+            return run(p);
+        }
+        return f_;
+    }) (x);
+}  `;
 
     var onmessServer = `ar v = e.data.split(',');
 if (v[0] === "BE#$42") {
@@ -3435,7 +3438,7 @@ just the code and html cut and pasted inside of back quotes: </p>
     );
     let cube = function cube(v) { return v**3; };
 
-    let size = 400;
+    let size = 100;
 
     let ar74 = [...Array(size).keys()];
 
@@ -3668,7 +3671,7 @@ just the code and html cut and pasted inside of back quotes: </p>
 
     const file$5 = "src/Home.svelte";
 
-    // (98:0) {#if visible}
+    // (112:0) {#if visible}
     function create_if_block$5(ctx) {
     	var div, div_transition, current;
 
@@ -3680,7 +3683,7 @@ just the code and html cut and pasted inside of back quotes: </p>
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file$5, 98, 0, 3847);
+    			add_location(div, file$5, 112, 0, 3840);
     		},
 
     		m: function mount(target, anchor) {
@@ -3715,7 +3718,7 @@ just the code and html cut and pasted inside of back quotes: </p>
     }
 
     function create_fragment$5(ctx) {
-    	var t0, p0, t2, span0, t4, span1, t6, p1, t8, p2, t10, p3, t12, p4, t14, p5, t16, h30, t18, span2, t20, a0, t22, a1, t24, p6, t26, p7, t28, h31, t30, p8, t32, pre0, t33, t34, p9, t36, span3, t38, a2, t40, span4, t42, span5, t44, span6, t46, p10, t48, pre1, t49, t50, a3, t52, p11, t53, s, t54, t55, pre2, t56, t57, br0, t58, br1, t59, br2, t60, div, current;
+    	var t0, p0, t2, span0, t4, span1, t6, p1, t8, p2, t10, p3, t12, p4, t14, p5, t16, h30, t18, span2, t20, a0, t22, a1, t24, p6, t26, p7, t28, h31, t30, p8, t32, pre0, t33, t34, p9, t36, span3, t37, a2, t39, span4, t41, a3, t43, p10, t45, span5, t47, span6, t49, span7, t51, p11, t53, pre1, t54, t55, a4, t57, p12, t58, s, t59, t60, pre2, t61, t62, br0, t63, br1, t64, br2, t65, div, current;
 
     	var if_block =  create_if_block$5();
 
@@ -3745,7 +3748,7 @@ just the code and html cut and pasted inside of back quotes: </p>
     			p4.textContent = "When no value is provided to a monad, the monad's return value \"_f\" remains dormant waiting to resume its activity or provide a starting point for an orthogonal branch if and when it is called upon to do so. A dormant monad that is provided with the argument \"stop\" will return its outer function's array.";
     			t14 = space();
     			p5 = element("p");
-    			p5.textContent = "The table of contents provides links to a simple monad, a monad that interacts with a WebSockets server and a Web Worker, two monads that interact with promises, and one that functions as a transducer. A monad that combines all of this functionality can easily be defined.";
+    			p5.textContent = "The table of contents provides links to a simple monad, a monad that interacts with a WebSockets server and a Web Worker, two monads that nteract with promises, and one that functions as a transducer. A monad that combines all of this functionality can easily be defined.";
     			t16 = space();
     			h30 = element("h3");
     			h30.textContent = "Functional Programming";
@@ -3775,100 +3778,112 @@ just the code and html cut and pasted inside of back quotes: </p>
     			t33 = text(ctx.monad_);
     			t34 = space();
     			p9 = element("p");
-    			p9.textContent = "I suspect that some readers will think I am misusing the word \"monad\" because my functions don't superficially resemble Haskell or Category Theory monads, and they don't mimic mimics the mechanics of composition in another language or discipline. .";
+    			p9.textContent = "The table of contents has links to monads that handle WebSockets and Web Worker messages along with monads that handle promises and behave like transducers.";
     			t36 = space();
     			span3 = element("span");
-    			span3.textContent = "Monad (from Greek μονάς monas, \"singularity\" in turn from μόνος monos, \"alone\"), refers, in cosmogony, to the Supreme Being, divinity or the totality of all things.";
-    			t38 = space();
+    			t37 = text("Monad (from Greek μονάς monas, \"singularity\" in turn from μόνος monos, \"alone\"), has many meanings going back to antiquity. The Pythagoreans called the first thing that came into existence.  Leibniz' used the term to denote an elementary particle. In Category Theory, a Monad is a monoid in the category of endofunctors. ");
     			a2 = element("a");
-    			a2.textContent = "Wikipedia article";
-    			t40 = space();
+    			a2.textContent = "Reddit topic";
+    			t39 = space();
     			span4 = element("span");
-    			span4.textContent = "A basic unit of perceptual reality is a \"monad\" in Gottfried Leibniz'";
-    			t42 = space();
-    			span5 = element("span");
-    			span5.textContent = "Monadology";
-    			t44 = space();
-    			span6 = element("span");
-    			span6.textContent = ", published in 1714. A single note in music theory is called a monad.";
-    			t46 = space();
-    			p10 = element("p");
-    			p10.textContent = "Many bloggers, lecturers, and authors seem to have definite opinions about the meaning of \"monad\". I don't use the term the way they do but before I go into that, let's have a glimpse of what the others are saying:";
-    			t48 = space();
-    			pre1 = element("pre");
-    			t49 = text(ctx.jay);
-    			t50 = space();
+    			span4.textContent = "Another Wikipedia article describes \"monad\" as \"a design pattern that allows structuring programs generically while automating away boilerplate code needed by the program logic.\"";
+    			t41 = space();
     			a3 = element("a");
-    			a3.textContent = "JavaScript Monads Made Simple";
-    			t52 = space();
+    			a3.textContent = "Monad (functional programming)\"";
+    			t43 = space();
+    			p10 = element("p");
+    			p10.textContent = "The monads described here are unusual in that they are distinguished from one another by definitions in discrete modules rather than by types. In a less modular framework, alternative names such as \"Monad1\" and \"Monad2\" could be used. Like Haskell monads, the monads presented on this site encapsulate chains of computations whose results can be returned whenever they are wanted. Lazy evaluation would be nice, but that is for another day.";
+    			t45 = space();
+    			span5 = element("span");
+    			span5.textContent = "A basic unit of perceptual reality is a \"monad\" in Gottfried Leibniz'";
+    			t47 = space();
+    			span6 = element("span");
+    			span6.textContent = "Monadology";
+    			t49 = space();
+    			span7 = element("span");
+    			span7.textContent = ", published in 1714. A single note in music theory is called a monad.";
+    			t51 = space();
     			p11 = element("p");
-    			t53 = text("Monads in the Haskell Programming Language were inspired by Category Theory monads. The \"monads\" discussed herein are resemble Haskell monads in that they can be used to isolate pipelines of computations and hold the result for possible later use. Here'");
-    			s = element("s");
-    			t54 = text(" a very simple monad:");
+    			p11.textContent = "Many bloggers, lecturers, and authors seem to have definite opinions about the meaning of \"monad\". I don't use the term the way they do but before I go into that, let's have a glimpse of what the others are saying:";
+    			t53 = space();
+    			pre1 = element("pre");
+    			t54 = text(ctx.jay);
     			t55 = space();
-    			pre2 = element("pre");
-    			t56 = text(ctx.monad_);
+    			a4 = element("a");
+    			a4.textContent = "JavaScript Monads Made Simple";
     			t57 = space();
-    			br0 = element("br");
-    			t58 = space();
-    			br1 = element("br");
-    			t59 = space();
-    			br2 = element("br");
+    			p12 = element("p");
+    			t58 = text("Monads in the Haskell Programming Language were inspired by Category Theory monads. The \"monads\" discussed herein are resemble Haskell monads in that they can be used to isolate pipelines of computations and hold the result for possible later use. Here'");
+    			s = element("s");
+    			t59 = text(" a very simple monad:");
     			t60 = space();
+    			pre2 = element("pre");
+    			t61 = text(ctx.monad_);
+    			t62 = space();
+    			br0 = element("br");
+    			t63 = space();
+    			br1 = element("br");
+    			t64 = space();
+    			br2 = element("br");
+    			t65 = space();
     			div = element("div");
     			div.textContent = ".";
-    			add_location(p0, file$5, 103, 0, 4007);
-    			add_location(span0, file$5, 104, 0, 4186);
+    			add_location(p0, file$5, 117, 0, 4000);
+    			add_location(span0, file$5, 118, 0, 4179);
     			set_style(span1, "font-style", "italic");
     			set_style(span1, "color", "#FFBBDD");
-    			add_location(span1, file$5, 104, 492, 4678);
-    			add_location(p1, file$5, 105, 0, 4803);
-    			add_location(p2, file$5, 106, 0, 5078);
+    			add_location(span1, file$5, 118, 492, 4671);
+    			add_location(p1, file$5, 119, 0, 4796);
+    			add_location(p2, file$5, 120, 0, 5071);
     			set_style(p3, "font-style", "italic");
     			set_style(p3, "color", "#BBFFBB");
-    			add_location(p3, file$5, 107, 0, 5454);
-    			add_location(p4, file$5, 108, 0, 5683);
-    			add_location(p5, file$5, 109, 0, 5997);
-    			add_location(h30, file$5, 111, 0, 6280);
+    			add_location(p3, file$5, 121, 0, 5447);
+    			add_location(p4, file$5, 122, 0, 5676);
+    			add_location(p5, file$5, 123, 0, 5990);
+    			add_location(h30, file$5, 125, 0, 6272);
     			attr(span2, "class", "tao");
-    			add_location(span2, file$5, 112, 0, 6313);
+    			add_location(span2, file$5, 126, 0, 6305);
     			attr(a0, "href", "https://en.wikibooks.org/wiki/Haskell/Mutable_objects");
     			attr(a0, "target", "_blank");
-    			add_location(a0, file$5, 113, 0, 6702);
+    			add_location(a0, file$5, 127, 0, 6694);
     			attr(a1, "href", "https://tech.fpcomplete.com/haskell/tutorial/mutable-variables");
     			attr(a1, "target", "_blank");
-    			add_location(a1, file$5, 114, 0, 6817);
-    			add_location(p6, file$5, 116, 0, 6937);
-    			add_location(p7, file$5, 118, 0, 7227);
-    			add_location(h31, file$5, 120, 0, 7625);
-    			add_location(p8, file$5, 121, 0, 7651);
-    			add_location(pre0, file$5, 122, 0, 7743);
-    			add_location(p9, file$5, 124, 0, 7764);
-    			attr(span3, "class", "tao");
-    			add_location(span3, file$5, 128, 1, 8027);
-    			attr(a2, "class", "tao");
-    			attr(a2, "href", "https://en.wikipedia.org/wiki/Monad_(philosophy)");
+    			add_location(a1, file$5, 128, 0, 6809);
+    			add_location(p6, file$5, 130, 0, 6929);
+    			add_location(p7, file$5, 132, 0, 7219);
+    			add_location(h31, file$5, 134, 0, 7617);
+    			add_location(p8, file$5, 135, 0, 7643);
+    			add_location(pre0, file$5, 136, 0, 7735);
+    			add_location(p9, file$5, 137, 0, 7755);
+    			attr(a2, "href", "https://www.reddit.com/r/haskell/comments/5ez9b1/monoid_in_the_category_of_endofunctors/");
     			attr(a2, "target", "_blank");
-    			add_location(a2, file$5, 129, 1, 8219);
-    			add_location(span4, file$5, 132, 2, 8341);
-    			set_style(span5, "font-style", "italic");
-    			add_location(span5, file$5, 133, 0, 8426);
-    			add_location(span6, file$5, 134, 0, 8481);
-    			add_location(p10, file$5, 136, 0, 8566);
-    			set_style(pre1, "color", "#77CCFF ");
-    			add_location(pre1, file$5, 137, 0, 8791);
-    			attr(a3, "class", "tao");
-    			attr(a3, "href", "https://medium.com/javascript-scene/javascript-monads-made-simple-7856be57bfe8");
+    			add_location(a2, file$5, 138, 341, 8260);
+    			attr(span3, "class", "tao");
+    			add_location(span3, file$5, 138, 1, 7920);
+    			add_location(span4, file$5, 139, 1, 8406);
+    			attr(a3, "href", " https://en.wikipedia.org/wiki/Monad_(functional_programming) ");
     			attr(a3, "target", "_blank");
-    			add_location(a3, file$5, 138, 0, 8835);
-    			add_location(s, file$5, 140, 257, 9250);
-    			add_location(p11, file$5, 140, 0, 8993);
-    			add_location(pre2, file$5, 142, 0, 9285);
-    			add_location(br0, file$5, 143, 0, 9305);
-    			add_location(br1, file$5, 144, 0, 9310);
-    			add_location(br2, file$5, 145, 0, 9315);
+    			add_location(a3, file$5, 140, 1, 8599);
+    			add_location(p10, file$5, 142, 1, 8732);
+    			add_location(span5, file$5, 144, 2, 9185);
+    			set_style(span6, "font-style", "italic");
+    			add_location(span6, file$5, 145, 0, 9270);
+    			add_location(span7, file$5, 146, 0, 9325);
+    			add_location(p11, file$5, 148, 0, 9410);
+    			set_style(pre1, "color", "#77CCFF ");
+    			add_location(pre1, file$5, 149, 0, 9635);
+    			attr(a4, "class", "tao");
+    			attr(a4, "href", "https://medium.com/javascript-scene/javascript-monads-made-simple-7856be57bfe8");
+    			attr(a4, "target", "_blank");
+    			add_location(a4, file$5, 150, 0, 9679);
+    			add_location(s, file$5, 152, 257, 10094);
+    			add_location(p12, file$5, 152, 0, 9837);
+    			add_location(pre2, file$5, 154, 0, 10129);
+    			add_location(br0, file$5, 155, 0, 10149);
+    			add_location(br1, file$5, 156, 0, 10154);
+    			add_location(br2, file$5, 157, 0, 10159);
     			set_style(div, "text-align", "center");
-    			add_location(div, file$5, 146, 0, 9320);
+    			add_location(div, file$5, 158, 0, 10164);
     		},
 
     		l: function claim(nodes) {
@@ -3916,36 +3931,42 @@ just the code and html cut and pasted inside of back quotes: </p>
     			insert(target, p9, anchor);
     			insert(target, t36, anchor);
     			insert(target, span3, anchor);
-    			insert(target, t38, anchor);
-    			insert(target, a2, anchor);
-    			insert(target, t40, anchor);
+    			append(span3, t37);
+    			append(span3, a2);
+    			insert(target, t39, anchor);
     			insert(target, span4, anchor);
-    			insert(target, t42, anchor);
-    			insert(target, span5, anchor);
-    			insert(target, t44, anchor);
-    			insert(target, span6, anchor);
-    			insert(target, t46, anchor);
-    			insert(target, p10, anchor);
-    			insert(target, t48, anchor);
-    			insert(target, pre1, anchor);
-    			append(pre1, t49);
-    			insert(target, t50, anchor);
+    			insert(target, t41, anchor);
     			insert(target, a3, anchor);
-    			insert(target, t52, anchor);
+    			insert(target, t43, anchor);
+    			insert(target, p10, anchor);
+    			insert(target, t45, anchor);
+    			insert(target, span5, anchor);
+    			insert(target, t47, anchor);
+    			insert(target, span6, anchor);
+    			insert(target, t49, anchor);
+    			insert(target, span7, anchor);
+    			insert(target, t51, anchor);
     			insert(target, p11, anchor);
-    			append(p11, t53);
-    			append(p11, s);
-    			append(p11, t54);
+    			insert(target, t53, anchor);
+    			insert(target, pre1, anchor);
+    			append(pre1, t54);
     			insert(target, t55, anchor);
-    			insert(target, pre2, anchor);
-    			append(pre2, t56);
+    			insert(target, a4, anchor);
     			insert(target, t57, anchor);
-    			insert(target, br0, anchor);
-    			insert(target, t58, anchor);
-    			insert(target, br1, anchor);
-    			insert(target, t59, anchor);
-    			insert(target, br2, anchor);
+    			insert(target, p12, anchor);
+    			append(p12, t58);
+    			append(p12, s);
+    			append(p12, t59);
     			insert(target, t60, anchor);
+    			insert(target, pre2, anchor);
+    			append(pre2, t61);
+    			insert(target, t62, anchor);
+    			insert(target, br0, anchor);
+    			insert(target, t63, anchor);
+    			insert(target, br1, anchor);
+    			insert(target, t64, anchor);
+    			insert(target, br2, anchor);
+    			insert(target, t65, anchor);
     			insert(target, div, anchor);
     			current = true;
     		},
@@ -4016,31 +4037,35 @@ just the code and html cut and pasted inside of back quotes: </p>
     				detach(p9);
     				detach(t36);
     				detach(span3);
-    				detach(t38);
-    				detach(a2);
-    				detach(t40);
+    				detach(t39);
     				detach(span4);
-    				detach(t42);
-    				detach(span5);
-    				detach(t44);
-    				detach(span6);
-    				detach(t46);
-    				detach(p10);
-    				detach(t48);
-    				detach(pre1);
-    				detach(t50);
+    				detach(t41);
     				detach(a3);
-    				detach(t52);
+    				detach(t43);
+    				detach(p10);
+    				detach(t45);
+    				detach(span5);
+    				detach(t47);
+    				detach(span6);
+    				detach(t49);
+    				detach(span7);
+    				detach(t51);
     				detach(p11);
+    				detach(t53);
+    				detach(pre1);
     				detach(t55);
-    				detach(pre2);
+    				detach(a4);
     				detach(t57);
-    				detach(br0);
-    				detach(t58);
-    				detach(br1);
-    				detach(t59);
-    				detach(br2);
+    				detach(p12);
     				detach(t60);
+    				detach(pre2);
+    				detach(t62);
+    				detach(br0);
+    				detach(t63);
+    				detach(br1);
+    				detach(t64);
+    				detach(br2);
+    				detach(t65);
     				detach(div);
     			}
     		}
@@ -4078,9 +4103,21 @@ on the left side? Arrays on the right side: Array(a) => Array(b).
 Type lift means to lift a type into a context, blessing the value with an API that you can use to compute from that value, trigger contextual computations, etc… a => F(a) (Monads are a kind of functor).
 Flatten means unwrap the value from the context. F(a) => a. `;
 
-    let monad_ = `var a = Monad(); a(3)(v=>v**3)(v=>v+3)(v=>v*v); var b = Monad(); b(a('end'))(v=>v/100)(Math.sqrt); console.log(a('stop'), b('stop'))
-var a = Monad(); a(3)(v=>v**3)(v=>v+3)(v=>v*v); var b = Monad(); b(a('end'))(v=>v/100)(Math.sqrt); console.log(a('stop'), b('stop'))
-VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
+    let monad_ = ` function Monad () { 
+  var ar = []
+  var s = "stop";
+  return function _f (func) {
+      if (func === "stop") return ar
+      if (typeof func !== "function") {
+          ar = ar.concat(func); 
+          return _f
+      } 
+      else  {
+          ar = ar.concat(func(ar.slice(-1)[0]));
+          return _f;
+      }
+   };
+} `;
 
     	return { jay, monad_ };
     }
@@ -4096,7 +4133,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
 
     const file$6 = "src/Blog.svelte";
 
-    // (149:0) {#if j === 0}
+    // (151:0) {#if j === 0}
     function create_if_block_5(ctx) {
     	var div, t_1, current;
 
@@ -4109,7 +4146,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     			t_1 = space();
     			home.$$.fragment.c();
     			attr(div, "class", "show svelte-1rvgrtu");
-    			add_location(div, file$6, 149, 0, 2905);
+    			add_location(div, file$6, 151, 0, 2976);
     		},
 
     		m: function mount(target, anchor) {
@@ -4142,7 +4179,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     	};
     }
 
-    // (153:0) {#if j === 1}
+    // (155:0) {#if j === 1}
     function create_if_block_4(ctx) {
     	var div, t_1, current;
 
@@ -4155,7 +4192,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     			t_1 = space();
     			monad1.$$.fragment.c();
     			attr(div, "class", "show svelte-1rvgrtu");
-    			add_location(div, file$6, 153, 0, 2963);
+    			add_location(div, file$6, 155, 0, 3034);
     		},
 
     		m: function mount(target, anchor) {
@@ -4188,7 +4225,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     	};
     }
 
-    // (157:0) {#if j === 2}
+    // (159:0) {#if j === 2}
     function create_if_block_3(ctx) {
     	var div, t_1, current;
 
@@ -4201,7 +4238,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     			t_1 = space();
     			monad2.$$.fragment.c();
     			attr(div, "class", "show svelte-1rvgrtu");
-    			add_location(div, file$6, 157, 0, 3031);
+    			add_location(div, file$6, 159, 0, 3102);
     		},
 
     		m: function mount(target, anchor) {
@@ -4234,7 +4271,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     	};
     }
 
-    // (161:0) {#if j === 3}
+    // (163:0) {#if j === 3}
     function create_if_block_2(ctx) {
     	var div, t_1, current;
 
@@ -4247,7 +4284,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     			t_1 = space();
     			monad3.$$.fragment.c();
     			attr(div, "class", "show svelte-1rvgrtu");
-    			add_location(div, file$6, 161, 0, 3101);
+    			add_location(div, file$6, 163, 0, 3172);
     		},
 
     		m: function mount(target, anchor) {
@@ -4280,7 +4317,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     	};
     }
 
-    // (165:0) {#if j === 4}
+    // (167:0) {#if j === 4}
     function create_if_block_1(ctx) {
     	var div, t_1, current;
 
@@ -4293,7 +4330,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     			t_1 = space();
     			transducer.$$.fragment.c();
     			attr(div, "class", "show svelte-1rvgrtu");
-    			add_location(div, file$6, 165, 0, 3171);
+    			add_location(div, file$6, 167, 0, 3242);
     		},
 
     		m: function mount(target, anchor) {
@@ -4326,7 +4363,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     	};
     }
 
-    // (169:0) {#if j === 5}
+    // (171:0) {#if j === 5}
     function create_if_block$6(ctx) {
     	var div, t_1, current;
 
@@ -4339,7 +4376,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     			t_1 = space();
     			matrix.$$.fragment.c();
     			attr(div, "class", "show svelte-1rvgrtu");
-    			add_location(div, file$6, 169, 0, 3247);
+    			add_location(div, file$6, 171, 0, 3318);
     		},
 
     		m: function mount(target, anchor) {
@@ -4373,7 +4410,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     }
 
     function create_fragment$6(ctx) {
-    	var div0, t1, div1, t3, div7, div2, t5, div3, t7, br0, t8, div4, t10, div5, t12, div6, t14, div15, br1, t15, div8, t17, div14, br2, t18, div9, t20, br3, t21, div10, t23, br4, t24, div11, t26, br5, t27, div12, t29, br6, t30, div13, t31, br7, t32, br8, t33, t34, div16, br9, t35, t36, t37, t38, t39, t40, t41, br10, br11, t42, t43, br12, br13, t44, br14, br15, t45, br16, br17, current, dispose;
+    	var div0, t1, div1, t3, div7, div2, t5, div3, t7, br0, t8, div4, t10, div5, t12, div6, t14, div16, br1, t15, div8, t17, div15, br2, t18, div9, t20, br3, t21, div10, t23, br4, t24, div11, t26, br5, t27, div12, t29, br6, t30, div13, t32, br7, t33, div14, t34, br8, t35, br9, t36, t37, div17, br10, t38, t39, t40, t41, t42, t43, t44, br11, br12, t45, t46, br13, br14, t47, br15, br16, t48, br17, br18, current, dispose;
 
     	var if_block0 = (ctx.j === 0) && create_if_block_5();
 
@@ -4416,13 +4453,13 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     			div6 = element("div");
     			div6.textContent = "https://github.com/dschalk";
     			t14 = space();
-    			div15 = element("div");
+    			div16 = element("div");
     			br1 = element("br");
     			t15 = space();
     			div8 = element("div");
     			div8.textContent = "Table of Contents";
     			t17 = space();
-    			div14 = element("div");
+    			div15 = element("div");
     			br2 = element("br");
     			t18 = space();
     			div9 = element("div");
@@ -4446,43 +4483,48 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     			br6 = element("br");
     			t30 = space();
     			div13 = element("div");
-    			t31 = text("Why Svelte>\n  ");
-    			br7 = element("br");
+    			div13.textContent = "Transducer Monad";
     			t32 = space();
+    			br7 = element("br");
+    			t33 = space();
+    			div14 = element("div");
+    			t34 = text("Why Svelte>\n  ");
     			br8 = element("br");
-    			t33 = text(">");
-    			t34 = space();
-    			div16 = element("div");
-    			br9 = element("br");
     			t35 = space();
-    			if (if_block0) if_block0.c();
-    			t36 = space();
-    			if (if_block1) if_block1.c();
+    			br9 = element("br");
+    			t36 = text(">");
     			t37 = space();
-    			if (if_block2) if_block2.c();
-    			t38 = space();
-    			if (if_block3) if_block3.c();
-    			t39 = space();
-    			if (if_block4) if_block4.c();
-    			t40 = space();
-    			if (if_block5) if_block5.c();
-    			t41 = space();
+    			div17 = element("div");
     			br10 = element("br");
-    			br11 = element("br");
+    			t38 = space();
+    			if (if_block0) if_block0.c();
+    			t39 = space();
+    			if (if_block1) if_block1.c();
+    			t40 = space();
+    			if (if_block2) if_block2.c();
+    			t41 = space();
+    			if (if_block3) if_block3.c();
     			t42 = space();
+    			if (if_block4) if_block4.c();
+    			t43 = space();
+    			if (if_block5) if_block5.c();
+    			t44 = space();
+    			br11 = element("br");
+    			br12 = element("br");
+    			t45 = space();
 
     			if (default_slot) default_slot.c();
-    			t43 = space();
-    			br12 = element("br");
+    			t46 = space();
     			br13 = element("br");
-    			t44 = space();
     			br14 = element("br");
+    			t47 = space();
     			br15 = element("br");
-    			t45 = space();
     			br16 = element("br");
+    			t48 = space();
     			br17 = element("br");
+    			br18 = element("br");
     			set_style(div0, "font-size", "58px");
-    			set_style(div0, "color", "#FFD700");
+    			set_style(div0, "color", "gold");
     			set_style(div0, "text-align", "center");
     			attr(div0, "class", "svelte-1rvgrtu");
     			add_location(div0, file$6, 111, 0, 1796);
@@ -4493,65 +4535,69 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     			set_style(div1, "margin-left", "27%");
     			set_style(div1, "margin-right", "27%");
     			attr(div1, "class", "svelte-1rvgrtu");
-    			add_location(div1, file$6, 112, 0, 1896);
+    			add_location(div1, file$6, 112, 0, 1893);
     			attr(div2, "class", "svelte-1rvgrtu");
-    			add_location(div2, file$6, 116, 0, 2149);
+    			add_location(div2, file$6, 116, 0, 2146);
     			attr(div3, "class", "svelte-1rvgrtu");
-    			add_location(div3, file$6, 117, 0, 2186);
-    			add_location(br0, file$6, 118, 0, 2223);
+    			add_location(div3, file$6, 117, 0, 2183);
+    			add_location(br0, file$6, 118, 0, 2220);
     			attr(div4, "class", "svelte-1rvgrtu");
-    			add_location(div4, file$6, 119, 0, 2228);
+    			add_location(div4, file$6, 119, 0, 2225);
     			attr(div5, "class", "svelte-1rvgrtu");
-    			add_location(div5, file$6, 120, 0, 2258);
+    			add_location(div5, file$6, 120, 0, 2255);
     			attr(div6, "class", "svelte-1rvgrtu");
-    			add_location(div6, file$6, 121, 0, 2291);
+    			add_location(div6, file$6, 121, 0, 2288);
     			attr(div7, "class", "stat svelte-1rvgrtu");
-    			add_location(div7, file$6, 115, 0, 2130);
-    			add_location(br1, file$6, 124, 0, 2359);
+    			add_location(div7, file$6, 115, 0, 2127);
+    			add_location(br1, file$6, 124, 0, 2356);
     			attr(div8, "class", "dropbtn svelte-1rvgrtu");
-    			add_location(div8, file$6, 125, 2, 2366);
-    			add_location(br2, file$6, 127, 2, 2446);
+    			add_location(div8, file$6, 125, 2, 2363);
+    			add_location(br2, file$6, 127, 2, 2443);
     			attr(div9, "class", "menu svelte-1rvgrtu");
-    			add_location(div9, file$6, 128, 0, 2451);
-    			add_location(br3, file$6, 129, 2, 2508);
+    			add_location(div9, file$6, 128, 0, 2448);
+    			add_location(br3, file$6, 129, 2, 2505);
     			attr(div10, "class", "menu svelte-1rvgrtu");
-    			add_location(div10, file$6, 130, 0, 2513);
-    			add_location(br4, file$6, 131, 2, 2580);
+    			add_location(div10, file$6, 130, 0, 2510);
+    			add_location(br4, file$6, 131, 2, 2577);
     			attr(div11, "class", "menu svelte-1rvgrtu");
-    			add_location(div11, file$6, 132, 0, 2585);
-    			add_location(br5, file$6, 133, 2, 2655);
+    			add_location(div11, file$6, 132, 0, 2582);
+    			add_location(br5, file$6, 133, 2, 2652);
     			attr(div12, "class", "menu svelte-1rvgrtu");
-    			add_location(div12, file$6, 134, 0, 2660);
-    			add_location(br6, file$6, 135, 2, 2729);
-    			add_location(br7, file$6, 137, 2, 2792);
-    			add_location(br8, file$6, 138, 2, 2799);
+    			add_location(div12, file$6, 134, 0, 2657);
+    			add_location(br6, file$6, 135, 2, 2726);
     			attr(div13, "class", "menu svelte-1rvgrtu");
-    			add_location(div13, file$6, 136, 0, 2734);
-    			attr(div14, "class", "dropdown-content svelte-1rvgrtu");
-    			add_location(div14, file$6, 126, 2, 2413);
-    			attr(div15, "class", "dropdown svelte-1rvgrtu");
-    			add_location(div15, file$6, 123, 0, 2336);
-    			add_location(br9, file$6, 146, 1, 2885);
-    			set_style(div16, "margin-left", "25%");
-    			set_style(div16, "margin-right", "25%");
-    			attr(div16, "class", "svelte-1rvgrtu");
-    			add_location(div16, file$6, 144, 0, 2830);
-    			add_location(br10, file$6, 175, 0, 3308);
-    			add_location(br11, file$6, 175, 4, 3312);
+    			add_location(div13, file$6, 136, 0, 2731);
+    			add_location(br7, file$6, 137, 2, 2800);
+    			add_location(br8, file$6, 139, 2, 2863);
+    			add_location(br9, file$6, 140, 2, 2870);
+    			attr(div14, "class", "menu svelte-1rvgrtu");
+    			add_location(div14, file$6, 138, 0, 2805);
+    			attr(div15, "class", "dropdown-content svelte-1rvgrtu");
+    			add_location(div15, file$6, 126, 2, 2410);
+    			attr(div16, "class", "dropdown svelte-1rvgrtu");
+    			add_location(div16, file$6, 123, 0, 2333);
+    			add_location(br10, file$6, 148, 1, 2956);
+    			set_style(div17, "margin-left", "25%");
+    			set_style(div17, "margin-right", "25%");
+    			attr(div17, "class", "svelte-1rvgrtu");
+    			add_location(div17, file$6, 146, 0, 2901);
+    			add_location(br11, file$6, 177, 0, 3379);
+    			add_location(br12, file$6, 177, 4, 3383);
 
-    			add_location(br12, file$6, 178, 0, 3327);
-    			add_location(br13, file$6, 178, 4, 3331);
-    			add_location(br14, file$6, 179, 0, 3336);
-    			add_location(br15, file$6, 179, 4, 3340);
-    			add_location(br16, file$6, 180, 0, 3345);
-    			add_location(br17, file$6, 180, 4, 3349);
+    			add_location(br13, file$6, 180, 0, 3398);
+    			add_location(br14, file$6, 180, 4, 3402);
+    			add_location(br15, file$6, 181, 0, 3407);
+    			add_location(br16, file$6, 181, 4, 3411);
+    			add_location(br17, file$6, 182, 0, 3416);
+    			add_location(br18, file$6, 182, 4, 3420);
 
     			dispose = [
     				listen(div9, "click", ctx.click_handler),
     				listen(div10, "click", ctx.click_handler_1),
     				listen(div11, "click", ctx.click_handler_2),
     				listen(div12, "click", ctx.click_handler_3),
-    				listen(div13, "click", ctx.click_handler_4)
+    				listen(div13, "click", ctx.click_handler_4),
+    				listen(div14, "click", ctx.click_handler_5)
     			];
     		},
 
@@ -4578,69 +4624,73 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     			append(div7, t12);
     			append(div7, div6);
     			insert(target, t14, anchor);
-    			insert(target, div15, anchor);
-    			append(div15, br1);
-    			append(div15, t15);
-    			append(div15, div8);
-    			append(div15, t17);
-    			append(div15, div14);
-    			append(div14, br2);
-    			append(div14, t18);
-    			append(div14, div9);
-    			append(div14, t20);
-    			append(div14, br3);
-    			append(div14, t21);
-    			append(div14, div10);
-    			append(div14, t23);
-    			append(div14, br4);
-    			append(div14, t24);
-    			append(div14, div11);
-    			append(div14, t26);
-    			append(div14, br5);
-    			append(div14, t27);
-    			append(div14, div12);
-    			append(div14, t29);
-    			append(div14, br6);
-    			append(div14, t30);
-    			append(div14, div13);
-    			append(div13, t31);
-    			append(div13, br7);
-    			append(div13, t32);
-    			append(div13, br8);
-    			append(div14, t33);
-    			insert(target, t34, anchor);
     			insert(target, div16, anchor);
-    			append(div16, br9);
-    			append(div16, t35);
-    			if (if_block0) if_block0.m(div16, null);
-    			append(div16, t36);
-    			if (if_block1) if_block1.m(div16, null);
-    			append(div16, t37);
-    			if (if_block2) if_block2.m(div16, null);
-    			append(div16, t38);
-    			if (if_block3) if_block3.m(div16, null);
-    			append(div16, t39);
-    			if (if_block4) if_block4.m(div16, null);
-    			append(div16, t40);
-    			if (if_block5) if_block5.m(div16, null);
-    			insert(target, t41, anchor);
-    			insert(target, br10, anchor);
+    			append(div16, br1);
+    			append(div16, t15);
+    			append(div16, div8);
+    			append(div16, t17);
+    			append(div16, div15);
+    			append(div15, br2);
+    			append(div15, t18);
+    			append(div15, div9);
+    			append(div15, t20);
+    			append(div15, br3);
+    			append(div15, t21);
+    			append(div15, div10);
+    			append(div15, t23);
+    			append(div15, br4);
+    			append(div15, t24);
+    			append(div15, div11);
+    			append(div15, t26);
+    			append(div15, br5);
+    			append(div15, t27);
+    			append(div15, div12);
+    			append(div15, t29);
+    			append(div15, br6);
+    			append(div15, t30);
+    			append(div15, div13);
+    			append(div15, t32);
+    			append(div15, br7);
+    			append(div15, t33);
+    			append(div15, div14);
+    			append(div14, t34);
+    			append(div14, br8);
+    			append(div14, t35);
+    			append(div14, br9);
+    			append(div15, t36);
+    			insert(target, t37, anchor);
+    			insert(target, div17, anchor);
+    			append(div17, br10);
+    			append(div17, t38);
+    			if (if_block0) if_block0.m(div17, null);
+    			append(div17, t39);
+    			if (if_block1) if_block1.m(div17, null);
+    			append(div17, t40);
+    			if (if_block2) if_block2.m(div17, null);
+    			append(div17, t41);
+    			if (if_block3) if_block3.m(div17, null);
+    			append(div17, t42);
+    			if (if_block4) if_block4.m(div17, null);
+    			append(div17, t43);
+    			if (if_block5) if_block5.m(div17, null);
+    			insert(target, t44, anchor);
     			insert(target, br11, anchor);
-    			insert(target, t42, anchor);
+    			insert(target, br12, anchor);
+    			insert(target, t45, anchor);
 
     			if (default_slot) {
     				default_slot.m(target, anchor);
     			}
 
-    			insert(target, t43, anchor);
-    			insert(target, br12, anchor);
+    			insert(target, t46, anchor);
     			insert(target, br13, anchor);
-    			insert(target, t44, anchor);
     			insert(target, br14, anchor);
+    			insert(target, t47, anchor);
     			insert(target, br15, anchor);
-    			insert(target, t45, anchor);
     			insert(target, br16, anchor);
+    			insert(target, t48, anchor);
     			insert(target, br17, anchor);
+    			insert(target, br18, anchor);
     			current = true;
     		},
 
@@ -4650,7 +4700,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     					if_block0 = create_if_block_5();
     					if_block0.c();
     					transition_in(if_block0, 1);
-    					if_block0.m(div16, t36);
+    					if_block0.m(div17, t39);
     				} else {
     									transition_in(if_block0, 1);
     				}
@@ -4667,7 +4717,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     					if_block1 = create_if_block_4();
     					if_block1.c();
     					transition_in(if_block1, 1);
-    					if_block1.m(div16, t37);
+    					if_block1.m(div17, t40);
     				} else {
     									transition_in(if_block1, 1);
     				}
@@ -4684,7 +4734,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     					if_block2 = create_if_block_3();
     					if_block2.c();
     					transition_in(if_block2, 1);
-    					if_block2.m(div16, t38);
+    					if_block2.m(div17, t41);
     				} else {
     									transition_in(if_block2, 1);
     				}
@@ -4701,7 +4751,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     					if_block3 = create_if_block_2();
     					if_block3.c();
     					transition_in(if_block3, 1);
-    					if_block3.m(div16, t39);
+    					if_block3.m(div17, t42);
     				} else {
     									transition_in(if_block3, 1);
     				}
@@ -4718,7 +4768,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     					if_block4 = create_if_block_1();
     					if_block4.c();
     					transition_in(if_block4, 1);
-    					if_block4.m(div16, t40);
+    					if_block4.m(div17, t43);
     				} else {
     									transition_in(if_block4, 1);
     				}
@@ -4735,7 +4785,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     					if_block5 = create_if_block$6();
     					if_block5.c();
     					transition_in(if_block5, 1);
-    					if_block5.m(div16, null);
+    					if_block5.m(div17, null);
     				} else {
     									transition_in(if_block5, 1);
     				}
@@ -4786,9 +4836,9 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     				detach(t3);
     				detach(div7);
     				detach(t14);
-    				detach(div15);
-    				detach(t34);
     				detach(div16);
+    				detach(t37);
+    				detach(div17);
     			}
 
     			if (if_block0) if_block0.d();
@@ -4799,24 +4849,24 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     			if (if_block5) if_block5.d();
 
     			if (detaching) {
-    				detach(t41);
-    				detach(br10);
+    				detach(t44);
     				detach(br11);
-    				detach(t42);
+    				detach(br12);
+    				detach(t45);
     			}
 
     			if (default_slot) default_slot.d(detaching);
 
     			if (detaching) {
-    				detach(t43);
-    				detach(br12);
+    				detach(t46);
     				detach(br13);
-    				detach(t44);
     				detach(br14);
+    				detach(t47);
     				detach(br15);
-    				detach(t45);
     				detach(br16);
+    				detach(t48);
     				detach(br17);
+    				detach(br18);
     			}
 
     			run_all(dispose);
@@ -4859,6 +4909,12 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     	}
 
     	function click_handler_4() {
+    		const $$result = j = 4;
+    		$$invalidate('j', j);
+    		return $$result;
+    	}
+
+    	function click_handler_5() {
     		const $$result = j = 5;
     		$$invalidate('j', j);
     		return $$result;
@@ -4876,6 +4932,7 @@ VM2285:1 (3) [3, 27, 30] (3) [900, 9, 3[3, 27, 30] (3) [900, 9, 3]`;
     		click_handler_2,
     		click_handler_3,
     		click_handler_4,
+    		click_handler_5,
     		$$slots,
     		$$scope
     	};

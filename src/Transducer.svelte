@@ -137,7 +137,7 @@ let add1 = function add1(v) { return v + 1; };
 let sum = function sum(total,v) { return total + v; };
 let cube = function cube(v) { return v**3; };
 
-let size = 400;
+let size = 100;
 $: size;
 
 let ar74 = [...Array(size).keys()];

@@ -109,7 +109,7 @@ background-color:#361B01;}
 .dropbtn {color: gold; background-color: #361B01;}
 
 </style>
-<div style = "font-size: 58px; color: #FFD700; text-align: center">Powerful JavaScript Monads</div>
+<div style = "font-size: 58px; color: gold; text-align: center">Powerful JavaScript Monads</div>
 <div style = "font-size: 32px; color: #FFBBBB; font-style:italic; text-align: center; margin-left: 27%; margin-right: 27%" > Asynchronously link functions, primitive values, and objects of all types with recursive closures. </div> 
 
 
@@ -133,6 +133,8 @@ background-color:#361B01;}
 <div class = menu on:click = {() => j = 2}> A Messaging Monad</div>
   <br>
 <div class = menu on:click = {() => j = 3}> A Promises Monad</div>
+  <br>
+<div class = menu on:click = {() => j = 4}> Transducer Monad</div>
   <br>
 <div class = menu on:click = {() => j = 5}> Why Svelte>
   <br>

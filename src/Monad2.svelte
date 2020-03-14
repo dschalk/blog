@@ -3,6 +3,11 @@
 import {fade} from "svelte/transition"
 let visible = true;
 
+var O = {};
+var test_2 = function test_2 () {};
+var name = "Mandy";
+O["Mandy"] = [23];
+
 function wait(ms) {
 return new Promise(r => setTimeout(r, ms));
 }
@@ -114,33 +119,27 @@ var lock = false;
 
 O.generic = ["Nobody"];
 
-const Monad = function Monad ( AR = [],  name = "generic",  f_ = f_Func,  rF = runFunc )  {
-var x = AR.slice();
-O[name] = ar;
+const  Monad =function Monad ( AR = [],  name = "generic" )  {
+var x = AR.pop();
+O[name] = AR;
 var s = "stop";
-rF(x); 
-}
-
-test_2
-var runFunc = function  runFunc () { 
-varx = O[name].pop();   //  x will be replaced below
-return run = (function run (x) {
-if (x != undefined  && x === x  && x !== false && x.name !== "f_" && x.name !== "stop" )  {
-  O[name] = O[name].concat(x)
+ (function run (xx) {
+if (typeof xx != "undefined"  && xx === xx  && xx !== false && xx.name !== "f_" && xx.name !== "stop" )  {
+  O[name] = O[name].concat(xx)
 };
-return f_;
-})
-}
-var f_mFunc = function f_Func_ (func) {
-  if (func === 'stop'  || func === 's') return O[name];
-  else if (typeof func !== "function") p = func(x);
-  else if (x instanceof Promise) p = x.then(v => func(v));
-  return run(p);
-};
+var  f_ = function f_ (func) {
+    if (func === 'stop'  || func === 's') return O[name]
+    else if (typeof func !== "function") p = func(x)
+    else if (x instanceof Promise) p = x.then(v => func(v));
+    return run(p);
+  }
+  return f_;
+}) (x);
+} 
 
-/* let a0 = *Monad([3])(cube)
-(add(3))(square)(div(100))
-(sqrt)(()=>this)(halt); */
+
+var cow = Monad([], "cow")
+console.log("cow is", cow);
 
 // var socket = new WebSocket("ws://localhost:3055")
 var socket = new WebSocket("ws://167.71.168.53:3055")
@@ -203,7 +202,7 @@ var clearOb = function clearOb (ob) {
 for (var x in ob) delete ob[x]
 }
 
-const factors = function factors () {
+var factors = function factors () {
 socket.send("BE#$42,solo,name,10000")
 socket.send("BE#$42,solo,name,100000")
 socket.send("BE#$42,solo,name,1000")
@@ -219,27 +218,24 @@ if (M === 2) {
 }
 }
 
-var mon = `const Monad = function Monad ( AR = [], name = "generic" )  {
-var f_, p, run;
-var ar = AR.slice();
-var name = name;
-O[name] = ar;
-let x = O[name].pop();
-return run = (function run (x) {
-if (x != undefined && x === x  && x !== false
-&& x.name !== "f_" && x.name !== "halt" ) {
-  O[name] = O[name].concat(x)
-};
-function f_ (func) {
-  if (func === 'halt' || func === 'S') return O[name];
-  else if (typeof func !== "function") p = func;
-  else if (x instanceof Promise) p = x.then(v => func(v));
-  else p = func(x);
-  return run(p);
-};
-return f_;
-})(x);
-} `
+var mon = `const  Monad =function Monad ( AR = [],  name = "generic" )  {
+    var x = AR.pop(); // x will be replaced in the function "run" (below)
+    O[name] = AR;
+    var s = "stop";
+    (function run (xx) {
+        if (typeof xx != "undefined"  && xx === xx  && xx !== false && 
+        xx.name !== "f_" && xx.name !== "stop" )  {
+            O[name] = O[name].concat(xx)
+        };
+        var  f_ = function f_ (func) {
+            if (func === 'stop'  || func === 's') return O[name]
+            else if (typeof func !== "function") p = func(x)
+            else if (x instanceof Promise) p = x.then(v => func(v));
+            return run(p);
+        }
+        return f_;
+    }) (x);
+}  `
 
 var statement = `    Monad(["value"], "key")(x => "This is the " + x)(x => x + ".")(halt)
 O.key   // ["value", "This is the value", "This is the value."]`
@@ -330,7 +326,7 @@ ASYNCHRONOUSLY MODIFIED STATE
 <br>
 <span style = "color: #CDCDFF; font-size: 20px;"> The web worker sent these arrays of prime factors (now at O.d0, O.d1, and O.d2): </span>
 <span style = "color: #FFFFCD; font-size: 20px;">
-<br> [{O.d0.join(', ')}] <br> [{O.d1.join(', ')}] <br> [{O.d2.join(', ')}]</span>
+<br> [{O.d0.join(', ')}] <br> [{O.d1.join(', ')}] <br> [{O.d2.join(', ')}]</span>;
 <br>
 <br>
 <button on:click = {factors}>
@@ -338,8 +334,6 @@ ASYNCHRONOUSLY MODIFIED STATE
 
 </button>
 <br><br><br>
-
-
 
 <div style = "color: #FFFFCD; font-size: 20px;">
 [{O.d0}].reduce((a,b) => a*b) === {O.c0}: <span style = "font-size:24px; color:#FF0B0B" >{O.d0.reduce((a,b) => a*b) == O.c0}</span>
