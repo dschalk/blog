@@ -535,7 +535,7 @@ var app = (function () {
 
     const file = "src/Monad1.svelte";
 
-    // (84:0) {#if visible}
+    // (82:0) {#if visible}
     function create_if_block(ctx) {
     	var div, div_transition, current;
 
@@ -547,7 +547,7 @@ var app = (function () {
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file, 84, 0, 2083);
+    			add_location(div, file, 82, 0, 2080);
     		},
 
     		m: function mount(target, anchor) {
@@ -645,23 +645,23 @@ var app = (function () {
     			h2 = element("h2");
     			t38 = text("demo3:");
     			t39 = text(t39_value);
-    			add_location(br, file, 89, 0, 2244);
-    			add_location(p0, file, 90, 0, 2249);
-    			add_location(pre0, file, 91, 0, 2676);
-    			add_location(p1, file, 92, 0, 2695);
-    			add_location(pre1, file, 94, 0, 2717);
-    			add_location(p2, file, 96, 0, 2737);
-    			add_location(pre2, file, 97, 0, 2838);
+    			add_location(br, file, 87, 0, 2241);
+    			add_location(p0, file, 88, 0, 2246);
+    			add_location(pre0, file, 89, 0, 2673);
+    			add_location(p1, file, 90, 0, 2692);
+    			add_location(pre1, file, 92, 0, 2714);
+    			add_location(p2, file, 94, 0, 2734);
+    			add_location(pre2, file, 95, 0, 2835);
     			attr(input, "type", "number");
-    			add_location(input, file, 99, 0, 2858);
-    			add_location(h30, file, 103, 0, 2906);
-    			add_location(h31, file, 104, 0, 2929);
-    			add_location(h32, file, 105, 0, 2952);
-    			add_location(h33, file, 106, 0, 2975);
-    			add_location(h34, file, 108, 0, 2999);
-    			add_location(h35, file, 109, 0, 3040);
-    			add_location(h36, file, 111, 0, 3082);
-    			add_location(h2, file, 113, 0, 3127);
+    			add_location(input, file, 97, 0, 2855);
+    			add_location(h30, file, 101, 0, 2903);
+    			add_location(h31, file, 102, 0, 2926);
+    			add_location(h32, file, 103, 0, 2949);
+    			add_location(h33, file, 104, 0, 2972);
+    			add_location(h34, file, 106, 0, 2996);
+    			add_location(h35, file, 107, 0, 3037);
+    			add_location(h36, file, 109, 0, 3079);
+    			add_location(h2, file, 111, 0, 3124);
     			dispose = listen(input, "input", demo);
     		},
 
@@ -1140,55 +1140,55 @@ let res4 = b(v=>v*2)(v=>v*7) (s)                  // [3,27,30,900,9,3,6,42] `;
     			add_location(br3, file$1, 315, 0, 6495);
     			set_style(div0, "color", "#BBBBFF");
     			set_style(div0, "font-size", "20px");
-    			add_location(div0, file$1, 321, 0, 6505);
+    			add_location(div0, file$1, 316, 0, 6500);
     			set_style(div1, "color", "#FFFFCD");
     			set_style(div1, "font-size", "20px");
-    			add_location(div1, file$1, 322, 0, 6633);
-    			add_location(br4, file$1, 325, 0, 6719);
+    			add_location(div1, file$1, 317, 0, 6628);
+    			add_location(br4, file$1, 320, 0, 6714);
     			set_style(span0, "color", "#CDCDFF");
     			set_style(span0, "font-size", "20px");
-    			add_location(span0, file$1, 326, 0, 6724);
-    			add_location(br5, file$1, 328, 0, 6913);
-    			add_location(br6, file$1, 328, 25, 6938);
-    			add_location(br7, file$1, 328, 50, 6963);
+    			add_location(span0, file$1, 321, 0, 6719);
+    			add_location(br5, file$1, 323, 0, 6908);
+    			add_location(br6, file$1, 323, 25, 6933);
+    			add_location(br7, file$1, 323, 50, 6958);
     			set_style(span1, "color", "#FFFFCD");
     			set_style(span1, "font-size", "20px");
-    			add_location(span1, file$1, 327, 0, 6863);
-    			add_location(br8, file$1, 329, 0, 6996);
-    			add_location(br9, file$1, 330, 0, 7001);
-    			add_location(pre0, file$1, 332, 0, 7036);
+    			add_location(span1, file$1, 322, 0, 6858);
+    			add_location(br8, file$1, 324, 0, 6991);
+    			add_location(br9, file$1, 325, 0, 6996);
+    			add_location(pre0, file$1, 327, 0, 7031);
     			attr(button, "class", "svelte-8aass1");
-    			add_location(button, file$1, 331, 0, 7006);
-    			add_location(br10, file$1, 335, 0, 7067);
-    			add_location(br11, file$1, 335, 4, 7071);
-    			add_location(br12, file$1, 335, 8, 7075);
+    			add_location(button, file$1, 326, 0, 7001);
+    			add_location(br10, file$1, 330, 0, 7062);
+    			add_location(br11, file$1, 330, 4, 7066);
+    			add_location(br12, file$1, 330, 8, 7070);
     			set_style(span2, "font-size", "24px");
     			set_style(span2, "color", "#FF0B0B");
-    			add_location(span2, file$1, 338, 42, 7172);
-    			add_location(br13, file$1, 339, 0, 7262);
+    			add_location(span2, file$1, 333, 42, 7167);
+    			add_location(br13, file$1, 334, 0, 7257);
     			set_style(span3, "font-size", "24px");
     			set_style(span3, "color", "#FF0B0B");
-    			add_location(span3, file$1, 340, 42, 7309);
-    			add_location(br14, file$1, 341, 0, 7399);
+    			add_location(span3, file$1, 335, 42, 7304);
+    			add_location(br14, file$1, 336, 0, 7394);
     			set_style(span4, "font-size", "24px");
     			set_style(span4, "color", "#FF0B0B");
-    			add_location(span4, file$1, 342, 44, 7448);
-    			add_location(br15, file$1, 343, 0, 7538);
+    			add_location(span4, file$1, 337, 44, 7443);
+    			add_location(br15, file$1, 338, 0, 7533);
     			set_style(div2, "color", "#FFFFCD");
     			set_style(div2, "font-size", "20px");
-    			add_location(div2, file$1, 337, 0, 7081);
-    			add_location(p1, file$1, 348, 0, 7553);
-    			add_location(pre1, file$1, 350, 0, 7728);
-    			add_location(p2, file$1, 352, 0, 7746);
-    			add_location(pre2, file$1, 353, 0, 8200);
-    			add_location(p3, file$1, 354, 0, 8226);
-    			add_location(pre3, file$1, 355, 0, 8296);
-    			add_location(p4, file$1, 356, 0, 8322);
-    			add_location(br16, file$1, 357, 0, 8476);
-    			add_location(span5, file$1, 358, 0, 8481);
+    			add_location(div2, file$1, 332, 0, 7076);
+    			add_location(p1, file$1, 343, 0, 7548);
+    			add_location(pre1, file$1, 345, 0, 7723);
+    			add_location(p2, file$1, 347, 0, 7741);
+    			add_location(pre2, file$1, 348, 0, 8195);
+    			add_location(p3, file$1, 349, 0, 8221);
+    			add_location(pre3, file$1, 350, 0, 8291);
+    			add_location(p4, file$1, 351, 0, 8317);
+    			add_location(br16, file$1, 352, 0, 8471);
+    			add_location(span5, file$1, 353, 0, 8476);
     			attr(a, "href", "https://github.com/dschalk/blog/");
     			attr(a, "target", "_blank");
-    			add_location(a, file$1, 359, 0, 8539);
+    			add_location(a, file$1, 354, 0, 8534);
     			dispose = listen(button, "click", ctx.factors);
     		},
 
@@ -1609,7 +1609,7 @@ socket.send(\"BE#$42,solo,name,1000\")    `;
 
     const file$2 = "src/Monad3.svelte";
 
-    // (408:2) {#if j === 3}
+    // (404:2) {#if j === 3}
     function create_if_block$2(ctx) {
     	var div2, div0, t_1, div1, div2_transition, current;
 
@@ -1620,15 +1620,15 @@ socket.send(\"BE#$42,solo,name,1000\")    `;
     			div0.textContent = "PROMISE MANIPULATION";
     			t_1 = space();
     			div1 = element("div");
-    			div1.textContent = "Computations Easily Resumed and Branched";
+    			div1.textContent = "Accessing Prior Resolution Values";
     			set_style(div0, "font-size", "32px");
-    			add_location(div0, file$2, 409, 0, 8567);
+    			add_location(div0, file$2, 405, 0, 8547);
     			set_style(div1, "font-size", "22px");
-    			add_location(div1, file$2, 410, 0, 8627);
+    			add_location(div1, file$2, 406, 0, 8607);
     			set_style(div2, "font-family", "Times New Roman");
     			set_style(div2, "text-align", "center");
     			set_style(div2, "color", "hsl(210, 90%, 90%)");
-    			add_location(div2, file$2, 408, 1, 8456);
+    			add_location(div2, file$2, 404, 1, 8436);
     		},
 
     		m: function mount(target, anchor) {
@@ -1666,7 +1666,7 @@ socket.send(\"BE#$42,solo,name,1000\")    `;
     }
 
     function create_fragment$2(ctx) {
-    	var t0, br0, t1, p0, t3, p1, t5, button, t7, h30, t8, t9, t10, h31, t11, t12_value = ctx.B[ctx.sym1] + "", t12, t13, h32, t14, t15_value = ctx.B[ctx.sym2] + "", t15, t16, h33, t17, t18_value = ctx.B[ctx.sym3] + "", t18, t19, p2, t21, pre0, t22, t23, pre1, t24, t25, pre2, t26, t27, pre3, t28, t29, br1, t30, br2, t31, p3, t32, br3, current, dispose;
+    	var t0, br0, t1, div_1, t3, br1, t4, p0, t6, button, t8, h30, t9, t10, t11, h31, t12, t13_value = ctx.B[ctx.sym1] + "", t13, t14, h32, t15, t16_value = ctx.B[ctx.sym2] + "", t16, t17, h33, t18, t19_value = ctx.B[ctx.sym3] + "", t19, t20, pre0, t21, t22, pre1, t23, t24, pre2, t25, t26, pre3, t27, t28, br2, t29, p1, t30, br3, current, dispose;
 
     	var if_block =  create_if_block$2();
 
@@ -1676,80 +1676,78 @@ socket.send(\"BE#$42,solo,name,1000\")    `;
     			t0 = space();
     			br0 = element("br");
     			t1 = space();
-    			p0 = element("p");
-    			p0.textContent = "The ES6 Promises API doesn't provide a way to access prior Promise resolution values in chains of composed procedures or in units of state saved for possible future use. In the previous module, Monad() instances saved their array payloads in the object \"O\". By the naming convention, for any array \"O.ar\" in \"O\", \"ar = Monad(O.ar)\" reactivates the Monad() instance \"ar\" and \"ar2 = Monad(O.ar)\" initiates a branch.";
+    			div_1 = element("div");
+    			div_1.textContent = "NOTE: If you select a link in the table of contents while computations are in progress, the result might be displayed beneath what you see here.";
     			t3 = space();
-    			p1 = element("p");
-    			p1.textContent = "In this module, the object \"B\" contains the functions returned by instances of \"Mona()\", defined below. Instances of Mona() close over a function named \"f_\", giving f_() access to the array held in Mona() instance that spawned it. These little functions name \"f_\" have unique keys in \"B\", and can resume activity under their original names (corresponding to their keys) or initiate new branches. Clicking the button below calls start() which runs test_3() after any previously queued runs have finished .";
-    			t5 = space();
-    			button = element("button");
-    			button.textContent = "test_3()";
-    			t7 = space();
-    			h30 = element("h3");
-    			t8 = text("lok is ");
-    			t9 = text(ctx.lok);
-    			t10 = space();
-    			h31 = element("h3");
-    			t11 = text("B[sym1] is ");
-    			t12 = text(t12_value);
-    			t13 = space();
-    			h32 = element("h3");
-    			t14 = text("B[sym2] is ");
-    			t15 = text(t15_value);
-    			t16 = space();
-    			h33 = element("h3");
-    			t17 = text("B[sym3] is ");
-    			t18 = text(t18_value);
-    			t19 = space();
-    			p2 = element("p");
-    			p2.textContent = "Symbols are used as names and as the second parameter of Mona(). Mona() instances in object \"A\" populate and update object B with their arrays. Mona() instances in \"A\" and their arrays in \"B\" have identical object keys.";
-    			t21 = space();
-    			pre0 = element("pre");
-    			t22 = text(ctx.syms);
-    			t23 = space();
-    			pre1 = element("pre");
-    			t24 = text(ctx.t_3);
-    			t25 = space();
-    			pre2 = element("pre");
-    			t26 = text(ctx.code);
-    			t27 = space();
-    			pre3 = element("pre");
-    			t28 = text(ctx.funcs);
-    			t29 = space();
     			br1 = element("br");
-    			t30 = space();
+    			t4 = space();
+    			p0 = element("p");
+    			p0.textContent = "If you click the button (below) while computations are in progress, test_3 will run again after the current run completes. The \"loc\" feature - which allows execution to begin only when loc === false - facilitates queueing any number of runs of test_3.";
+    			t6 = space();
+    			button = element("button");
+    			button.textContent = "test_3 ()";
+    			t8 = space();
+    			h30 = element("h3");
+    			t9 = text("lok is ");
+    			t10 = text(ctx.lok);
+    			t11 = space();
+    			h31 = element("h3");
+    			t12 = text("B[sym1] is ");
+    			t13 = text(t13_value);
+    			t14 = space();
+    			h32 = element("h3");
+    			t15 = text("B[sym2] is ");
+    			t16 = text(t16_value);
+    			t17 = space();
+    			h33 = element("h3");
+    			t18 = text("B[sym3] is ");
+    			t19 = text(t19_value);
+    			t20 = space();
+    			pre0 = element("pre");
+    			t21 = text(ctx.syms);
+    			t22 = space();
+    			pre1 = element("pre");
+    			t23 = text(ctx.t_3);
+    			t24 = space();
+    			pre2 = element("pre");
+    			t25 = text(ctx.code);
+    			t26 = space();
+    			pre3 = element("pre");
+    			t27 = text(ctx.funcs);
+    			t28 = space();
     			br2 = element("br");
-    			t31 = space();
-    			p3 = element("p");
-    			t32 = space();
+    			t29 = space();
+    			p1 = element("p");
+    			t30 = space();
     			br3 = element("br");
-    			add_location(br0, file$2, 413, 2, 8723);
-    			add_location(p0, file$2, 414, 0, 8728);
-    			add_location(p1, file$2, 415, 0, 9151);
+    			add_location(br0, file$2, 409, 2, 8696);
+    			set_style(div_1, "font-style", "italic");
+    			set_style(div_1, "color", "#FFCC00");
+    			add_location(div_1, file$2, 411, 0, 8702);
+    			add_location(br1, file$2, 413, 0, 8907);
+    			add_location(p0, file$2, 414, 0, 8912);
     			set_style(button, "text-align", "left");
     			attr(button, "class", "svelte-77grfh");
-    			add_location(button, file$2, 417, 0, 9666);
-    			add_location(h30, file$2, 421, 0, 9743);
-    			add_location(h31, file$2, 422, 0, 9765);
-    			add_location(h32, file$2, 423, 0, 9797);
-    			add_location(h33, file$2, 424, 0, 9829);
-    			add_location(p2, file$2, 426, 0, 9862);
+    			add_location(button, file$2, 415, 0, 9177);
+    			add_location(h30, file$2, 419, 0, 9255);
+    			add_location(h31, file$2, 420, 0, 9277);
+    			add_location(h32, file$2, 421, 0, 9309);
+    			add_location(h33, file$2, 422, 0, 9341);
     			set_style(pre0, "font-size", "18");
     			attr(pre0, "class", "svelte-77grfh");
-    			add_location(pre0, file$2, 428, 0, 10091);
+    			add_location(pre0, file$2, 424, 0, 9374);
     			set_style(pre1, "font-size", "18");
     			attr(pre1, "class", "svelte-77grfh");
-    			add_location(pre1, file$2, 429, 0, 10133);
+    			add_location(pre1, file$2, 425, 0, 9416);
     			set_style(pre2, "font-size", "18");
     			attr(pre2, "class", "svelte-77grfh");
-    			add_location(pre2, file$2, 430, 0, 10175);
+    			add_location(pre2, file$2, 426, 0, 9458);
     			set_style(pre3, "font-size", "18");
     			attr(pre3, "class", "svelte-77grfh");
-    			add_location(pre3, file$2, 431, 0, 10217);
-    			add_location(br1, file$2, 434, 2, 10264);
-    			add_location(br2, file$2, 436, 2, 10272);
-    			add_location(p3, file$2, 439, 2, 10282);
-    			add_location(br3, file$2, 442, 2, 10298);
+    			add_location(pre3, file$2, 427, 0, 9500);
+    			add_location(br2, file$2, 429, 2, 9546);
+    			add_location(p1, file$2, 430, 2, 9553);
+    			add_location(br3, file$2, 431, 2, 9563);
     			dispose = listen(button, "click", ctx.start);
     		},
 
@@ -1762,48 +1760,46 @@ socket.send(\"BE#$42,solo,name,1000\")    `;
     			insert(target, t0, anchor);
     			insert(target, br0, anchor);
     			insert(target, t1, anchor);
-    			insert(target, p0, anchor);
+    			insert(target, div_1, anchor);
     			insert(target, t3, anchor);
-    			insert(target, p1, anchor);
-    			insert(target, t5, anchor);
-    			insert(target, button, anchor);
-    			insert(target, t7, anchor);
-    			insert(target, h30, anchor);
-    			append(h30, t8);
-    			append(h30, t9);
-    			insert(target, t10, anchor);
-    			insert(target, h31, anchor);
-    			append(h31, t11);
-    			append(h31, t12);
-    			insert(target, t13, anchor);
-    			insert(target, h32, anchor);
-    			append(h32, t14);
-    			append(h32, t15);
-    			insert(target, t16, anchor);
-    			insert(target, h33, anchor);
-    			append(h33, t17);
-    			append(h33, t18);
-    			insert(target, t19, anchor);
-    			insert(target, p2, anchor);
-    			insert(target, t21, anchor);
-    			insert(target, pre0, anchor);
-    			append(pre0, t22);
-    			insert(target, t23, anchor);
-    			insert(target, pre1, anchor);
-    			append(pre1, t24);
-    			insert(target, t25, anchor);
-    			insert(target, pre2, anchor);
-    			append(pre2, t26);
-    			insert(target, t27, anchor);
-    			insert(target, pre3, anchor);
-    			append(pre3, t28);
-    			insert(target, t29, anchor);
     			insert(target, br1, anchor);
-    			insert(target, t30, anchor);
+    			insert(target, t4, anchor);
+    			insert(target, p0, anchor);
+    			insert(target, t6, anchor);
+    			insert(target, button, anchor);
+    			insert(target, t8, anchor);
+    			insert(target, h30, anchor);
+    			append(h30, t9);
+    			append(h30, t10);
+    			insert(target, t11, anchor);
+    			insert(target, h31, anchor);
+    			append(h31, t12);
+    			append(h31, t13);
+    			insert(target, t14, anchor);
+    			insert(target, h32, anchor);
+    			append(h32, t15);
+    			append(h32, t16);
+    			insert(target, t17, anchor);
+    			insert(target, h33, anchor);
+    			append(h33, t18);
+    			append(h33, t19);
+    			insert(target, t20, anchor);
+    			insert(target, pre0, anchor);
+    			append(pre0, t21);
+    			insert(target, t22, anchor);
+    			insert(target, pre1, anchor);
+    			append(pre1, t23);
+    			insert(target, t24, anchor);
+    			insert(target, pre2, anchor);
+    			append(pre2, t25);
+    			insert(target, t26, anchor);
+    			insert(target, pre3, anchor);
+    			append(pre3, t27);
+    			insert(target, t28, anchor);
     			insert(target, br2, anchor);
-    			insert(target, t31, anchor);
-    			insert(target, p3, anchor);
-    			insert(target, t32, anchor);
+    			insert(target, t29, anchor);
+    			insert(target, p1, anchor);
+    			insert(target, t30, anchor);
     			insert(target, br3, anchor);
     			current = true;
     		},
@@ -1821,19 +1817,19 @@ socket.send(\"BE#$42,solo,name,1000\")    `;
     			}
 
     			if (!current || changed.lok) {
-    				set_data(t9, ctx.lok);
+    				set_data(t10, ctx.lok);
     			}
 
-    			if ((!current || changed.B) && t12_value !== (t12_value = ctx.B[ctx.sym1] + "")) {
-    				set_data(t12, t12_value);
+    			if ((!current || changed.B) && t13_value !== (t13_value = ctx.B[ctx.sym1] + "")) {
+    				set_data(t13, t13_value);
     			}
 
-    			if ((!current || changed.B) && t15_value !== (t15_value = ctx.B[ctx.sym2] + "")) {
-    				set_data(t15, t15_value);
+    			if ((!current || changed.B) && t16_value !== (t16_value = ctx.B[ctx.sym2] + "")) {
+    				set_data(t16, t16_value);
     			}
 
-    			if ((!current || changed.B) && t18_value !== (t18_value = ctx.B[ctx.sym3] + "")) {
-    				set_data(t18, t18_value);
+    			if ((!current || changed.B) && t19_value !== (t19_value = ctx.B[ctx.sym3] + "")) {
+    				set_data(t19, t19_value);
     			}
     		},
 
@@ -1855,36 +1851,34 @@ socket.send(\"BE#$42,solo,name,1000\")    `;
     				detach(t0);
     				detach(br0);
     				detach(t1);
-    				detach(p0);
+    				detach(div_1);
     				detach(t3);
-    				detach(p1);
-    				detach(t5);
-    				detach(button);
-    				detach(t7);
-    				detach(h30);
-    				detach(t10);
-    				detach(h31);
-    				detach(t13);
-    				detach(h32);
-    				detach(t16);
-    				detach(h33);
-    				detach(t19);
-    				detach(p2);
-    				detach(t21);
-    				detach(pre0);
-    				detach(t23);
-    				detach(pre1);
-    				detach(t25);
-    				detach(pre2);
-    				detach(t27);
-    				detach(pre3);
-    				detach(t29);
     				detach(br1);
-    				detach(t30);
+    				detach(t4);
+    				detach(p0);
+    				detach(t6);
+    				detach(button);
+    				detach(t8);
+    				detach(h30);
+    				detach(t11);
+    				detach(h31);
+    				detach(t14);
+    				detach(h32);
+    				detach(t17);
+    				detach(h33);
+    				detach(t20);
+    				detach(pre0);
+    				detach(t22);
+    				detach(pre1);
+    				detach(t24);
+    				detach(pre2);
+    				detach(t26);
+    				detach(pre3);
+    				detach(t28);
     				detach(br2);
-    				detach(t31);
-    				detach(p3);
-    				detach(t32);
+    				detach(t29);
+    				detach(p1);
+    				detach(t30);
     				detach(br3);
     			}
 
@@ -1942,7 +1936,8 @@ socket.send(\"BE#$42,solo,name,1000\")    `;
     B[sym1] = []; $$invalidate('B', B);
     B[sym2] = []; $$invalidate('B', B);
     B[sym3] = []; $$invalidate('B', B);
-    let Mona = function Mona ( AR = [], ar = [] )  {  
+
+    let Mona = function Mona ( AR = [],  ar = "name" )  {  
       let p, run, f_;
       B[ar] = AR.slice(); $$invalidate('B', B);
       let x = B[ar].slice(-1)[0] ;
@@ -2034,21 +2029,23 @@ B[sym3] = [];
 
 $: B;
 
-let Mona = function Mona ( AR = [], ar = [] )  {  
+  const A = {};
+  
+let Mona = function Mona ( AR = [],  ar = "name" )  {  
   let p, run, f_;
   B[ar] = AR.slice();
   let x = B[ar].slice(-1)[0] ;
   return run = (function run (x) {
   if (x instanceof Promise) {x.then(y => {
-    if (!( y.name == "f_" || y == lok || y == NaN || y == undefined || 
-    typeof y == "undefined" || y != y  ) ){B[ar] = B[ar].concat(y)}
-    else if (!(x.name == "f_" || x == lok || x instanceof Promise || x == undefined ||
-     x == NaN)) {B[ar] = B[ar].concat(x);
+    if (!( y.name == "f_" || y == lok || y == NaN || y == undefined ||
+      typeof y == "undefined" || y != y  ) ){B[ar] = B[ar].concat(y)}
+    else if (!(x.name == "f_" || x == lok || x instanceof Promise ||
+      x == undefined || x == NaN)) {B[ar] = B[ar].concat(x);
   }   }  )  }
     f_ = function f_ (func) {
       console.log("B[ar] is", B[ar]);
       if (func === 'halt' || func === 'h' || func == undefined ||
-       typeof func == "undefined" || func == NaN ) {
+        typeof func == "undefined" || func == NaN ) {
         B[ar] = B[ar]; 
         return B[ar].slice();
       }
@@ -2061,8 +2058,6 @@ let Mona = function Mona ( AR = [], ar = [] )  {
     return f_;
   })(x);
 }
-
-  const A = {};
 
   A[sym1] = Mona([0], sym1);
   A[sym2] = Mona([], sym2);
@@ -2176,12 +2171,9 @@ async function sqrtP (x) {
   return x**(1/2)
 }`;
 
-    	$$self.$$.update = ($$dirty = { j: 1, lock: 1, B: 1, lok: 1 }) => {
+    	$$self.$$.update = ($$dirty = { j: 1, lock: 1, lok: 1 }) => {
     		if ($$dirty.j) ;
     		if ($$dirty.lock) ;
-    		if ($$dirty.B) ;
-    		if ($$dirty.B) ;
-    		if ($$dirty.B) ;
     		if ($$dirty.lok) ;
     	};
 
@@ -2206,24 +2198,23 @@ async function sqrtP (x) {
     	}
     }
 
-    /* src/Matrix.svelte generated by Svelte v3.9.1 */
+    /* src/Monad6.svelte generated by Svelte v3.9.1 */
 
-    const file$3 = "src/Matrix.svelte";
+    const file$3 = "src/Monad6.svelte";
 
-    // (150:0) {#if visible}
+    // (137:0) {#if j === 2}
     function create_if_block$3(ctx) {
     	var div, div_transition, current;
 
     	return {
     		c: function create() {
     			div = element("div");
-    			div.textContent = "A LITTLE SVELTE MODULE";
+    			div.textContent = "ASYNCHRONOUSLY MODIFIED STATE";
     			set_style(div, "font-family", "Times New Roman");
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "38px");
-    			set_style(div, "text-align", "center");
-    			add_location(div, file$3, 150, 0, 3690);
+    			add_location(div, file$3, 137, 0, 3070);
     		},
 
     		m: function mount(target, anchor) {
@@ -2258,9 +2249,360 @@ async function sqrtP (x) {
     }
 
     function create_fragment$3(ctx) {
-    	var t0, br0, t1, br1, t2, div3, div1, button0, t4, br2, t5, br3, t6, div0, button1, t7, t8, br4, t9, button2, t11, br5, t12, br6, t13, div2, button3, t14_value = ctx.cache[ctx.j][0] + "", t14, t15, button4, t16_value = ctx.cache[ctx.j][1] + "", t16, t17, button5, t18_value = ctx.cache[ctx.j][2] + "", t18, t19, br7, t20, br8, t21, button6, t22_value = ctx.cache[ctx.j][3] + "", t22, t23, button7, t24_value = ctx.cache[ctx.j][4] + "", t24, t25, button8, t26_value = ctx.cache[ctx.j][5] + "", t26, t27, br9, t28, br10, t29, button9, t30_value = ctx.cache[ctx.j][6] + "", t30, t31, button10, t32_value = ctx.cache[ctx.j][7] + "", t32, t33, button11, t34_value = ctx.cache[ctx.j][8] + "", t34, t35, br11, t36, p0, t38, pre0, t39, t40, p1, t42, pre1, t43, t44, p2, current, dispose;
+    	var br0, br1, t0, t1, br2, t2, p0, t4, div, t5_value = ctx.GO[0] + "", t5, t6, br3, t7, t8_value = ctx.GO[1] + "", t8, t9, br4, t10, t11_value = ctx.GO[2] + "", t11, t12, br5, t13, t14_value = ctx.GO[3] + "", t14, t15, br6, t16, t17_value = ctx.GO[4] + "", t17, t18, br7, t19, button, pre, t20, t21, br8, t22, p1, current, dispose;
 
     	var if_block =  create_if_block$3();
+
+    	return {
+    		c: function create() {
+    			br0 = element("br");
+    			br1 = element("br");
+    			t0 = space();
+    			if (if_block) if_block.c();
+    			t1 = space();
+    			br2 = element("br");
+    			t2 = space();
+    			p0 = element("p");
+    			p0.textContent = "Clicking the button below sends three requests to the server asking for quasi-random integers.";
+    			t4 = space();
+    			div = element("div");
+    			t5 = text(t5_value);
+    			t6 = space();
+    			br3 = element("br");
+    			t7 = space();
+    			t8 = text(t8_value);
+    			t9 = space();
+    			br4 = element("br");
+    			t10 = space();
+    			t11 = text(t11_value);
+    			t12 = space();
+    			br5 = element("br");
+    			t13 = space();
+    			t14 = text(t14_value);
+    			t15 = space();
+    			br6 = element("br");
+    			t16 = space();
+    			t17 = text(t17_value);
+    			t18 = space();
+    			br7 = element("br");
+    			t19 = space();
+    			button = element("button");
+    			pre = element("pre");
+    			t20 = text(ctx.btn);
+    			t21 = space();
+    			br8 = element("br");
+    			t22 = space();
+    			p1 = element("p");
+    			p1.textContent = "Messages sent to the Haskell WebSockets server with prefix BE#$42 are requests for pseudo-random integers between 1 and an upper bound.specified at the end of each request.  The server sends a message back to the browser prefixed by \"BE#$42\" and ending with the requested pseudo-random number.  That number is extracted from the message in socket.onmessage and sent to a Web Worker named worker_OO. which returns a message containing the pseudo-random number's prime factors.";
+    			add_location(br0, file$3, 135, 0, 3046);
+    			add_location(br1, file$3, 135, 4, 3050);
+    			add_location(br2, file$3, 141, 0, 3240);
+    			add_location(p0, file$3, 142, 0, 3245);
+    			add_location(br3, file$3, 145, 0, 3425);
+    			add_location(br4, file$3, 147, 0, 3439);
+    			add_location(br5, file$3, 149, 0, 3453);
+    			add_location(br6, file$3, 151, 0, 3467);
+    			set_style(div, "font-size", "28");
+    			set_style(div, "margin-left", "130px");
+    			set_style(div, "color", "#EECCFF");
+    			add_location(div, file$3, 143, 0, 3350);
+    			add_location(br7, file$3, 154, 0, 3489);
+    			add_location(pre, file$3, 156, 2, 3527);
+    			attr(button, "class", "svelte-wex9zq");
+    			add_location(button, file$3, 155, 0, 3494);
+    			add_location(br8, file$3, 159, 0, 3555);
+    			add_location(p1, file$3, 161, 0, 3561);
+    			dispose = listen(button, "click", ctx.factors);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert(target, br0, anchor);
+    			insert(target, br1, anchor);
+    			insert(target, t0, anchor);
+    			if (if_block) if_block.m(target, anchor);
+    			insert(target, t1, anchor);
+    			insert(target, br2, anchor);
+    			insert(target, t2, anchor);
+    			insert(target, p0, anchor);
+    			insert(target, t4, anchor);
+    			insert(target, div, anchor);
+    			append(div, t5);
+    			append(div, t6);
+    			append(div, br3);
+    			append(div, t7);
+    			append(div, t8);
+    			append(div, t9);
+    			append(div, br4);
+    			append(div, t10);
+    			append(div, t11);
+    			append(div, t12);
+    			append(div, br5);
+    			append(div, t13);
+    			append(div, t14);
+    			append(div, t15);
+    			append(div, br6);
+    			append(div, t16);
+    			append(div, t17);
+    			insert(target, t18, anchor);
+    			insert(target, br7, anchor);
+    			insert(target, t19, anchor);
+    			insert(target, button, anchor);
+    			append(button, pre);
+    			append(pre, t20);
+    			insert(target, t21, anchor);
+    			insert(target, br8, anchor);
+    			insert(target, t22, anchor);
+    			insert(target, p1, anchor);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			{
+    				if (!if_block) {
+    					if_block = create_if_block$3();
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(t1.parentNode, t1);
+    				} else {
+    									transition_in(if_block, 1);
+    				}
+    			}
+
+    			if ((!current || changed.GO) && t5_value !== (t5_value = ctx.GO[0] + "")) {
+    				set_data(t5, t5_value);
+    			}
+
+    			if ((!current || changed.GO) && t8_value !== (t8_value = ctx.GO[1] + "")) {
+    				set_data(t8, t8_value);
+    			}
+
+    			if ((!current || changed.GO) && t11_value !== (t11_value = ctx.GO[2] + "")) {
+    				set_data(t11, t11_value);
+    			}
+
+    			if ((!current || changed.GO) && t14_value !== (t14_value = ctx.GO[3] + "")) {
+    				set_data(t14, t14_value);
+    			}
+
+    			if ((!current || changed.GO) && t17_value !== (t17_value = ctx.GO[4] + "")) {
+    				set_data(t17, t17_value);
+    			}
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			transition_out(if_block);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(br0);
+    				detach(br1);
+    				detach(t0);
+    			}
+
+    			if (if_block) if_block.d(detaching);
+
+    			if (detaching) {
+    				detach(t1);
+    				detach(br2);
+    				detach(t2);
+    				detach(p0);
+    				detach(t4);
+    				detach(div);
+    				detach(t18);
+    				detach(br7);
+    				detach(t19);
+    				detach(button);
+    				detach(t21);
+    				detach(br8);
+    				detach(t22);
+    				detach(p1);
+    			}
+
+    			dispose();
+    		}
+    	};
+    }
+
+    var s$1 = "stop";
+
+    var h = "halt";
+
+    function instance$3($$self, $$props, $$invalidate) {
+    	
+
+    let GO = "Cornucopia";var koo;
+    var ko = [];
+    var jo = [];
+    var bo = [];
+
+    function ff (m) {
+    ko = [];
+    bo = m(s$1);
+    var ar = [...bo.keys()];
+    jo = m(h);
+    koo = [...bo.keys()].map(v =>ko.concat(`The prime fuctors of ${bo[v]} are ${jo[v]}`));
+    ko = koo.map(v => v[0]);
+    $$invalidate('GO', GO = koo);
+    return koo;
+    }
+
+    var toInt = function toInt (a) {
+        if (Array.isArray(a)) return NaN; 
+        else return parseInt(a, 10)
+    };
+
+    function Monad () { 
+        var ar1 = [];
+        var ar2 = [];
+        console.log("New Monad");
+        function _f (func) {
+            if (func === "stop") return ar1
+            else if (func === "halt") return ar2
+            else if (func === "clear") {ar1 = []; ar2 = [];}
+            else if (toInt(func) === toInt(func) && typeof func !== "function" ) {
+                ar1.push(func); 
+            }
+            else if (Array.isArray(func)) ar2.push(func);
+            else if (typeof func ==="function") ar3.push (func(ar1));
+        } 
+       return _f;
+    }
+
+    var ace = Monad();
+
+    var worker_OO = new Worker('worker_OO.js');
+
+    worker_OO.onmessage = function(e) {
+         ace(e.data); 
+         ff(ace);
+    };
+    // var socket = new WebSocket("ws://localhost:3055")
+    // var socket = new WebSocket("ws://167.71.168.53:3055")
+    var socket = new WebSocket("ws://schalk.net:3055");
+
+    socket.onclose = function (event) {
+    console.log('<><><> ALERT - socket is closing. <><><> ', event);
+    };
+    socket.onmessage = function(e) {
+    // console.log("WebSocket message is", e);
+    var v = e.data.split(',');
+    if (v[0] === "BE#$42") {
+        ace(v[3]);
+        worker_OO.postMessage([v[3]]);
+    }
+    };
+    login();
+
+    function login() {
+    console.log('00000000000000000000000000000000 Entering login', socket.readyState);
+    setTimeout(function () {
+    if (socket.readyState === 1) {
+      console.log('readyState is', socket.readyState);
+      var v = Math.random().toString().substring(5);
+      var v2 = v.toString().substring(2);
+      var combo = v + '<o>' + v2;
+      socket.send('CC#$42' + combo);
+      factors();
+      // socket.send(`GZ#$42,solo,${v}`);
+    } else {
+      login();
+    }
+    }, 200);
+    }
+
+    function factors () {
+      ace("clear");
+      socket.send("BE#$42,solo,name,10000"); 
+      socket.send("BE#$42,solo,name,100000"); 
+      socket.send("BE#$42,solo,name,1000  "); 
+      socket.send("BE#$42,solo,name,100000"); 
+      socket.send("BE#$42,solo,name,10000  "); 
+    }  
+
+    var btn = `ace('clear')
+socket.send("BE#$42,solo,name,10000")
+socket.send("BE#$42,solo,name,100000")
+socket.send("BE#$42,solo,name,1000 ")
+socket.send("BE#$42,solo,name,100000")
+socket.send("BE#$42,solo,name,10000 ")`;
+
+    	return { GO, factors, btn };
+    }
+
+    class Monad6 extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$3, create_fragment$3, safe_not_equal, []);
+    	}
+    }
+
+    /* src/Matrix.svelte generated by Svelte v3.9.1 */
+
+    const file$4 = "src/Matrix.svelte";
+
+    // (150:0) {#if visible}
+    function create_if_block$4(ctx) {
+    	var div, div_transition, current;
+
+    	return {
+    		c: function create() {
+    			div = element("div");
+    			div.textContent = "A LITTLE SVELTE MODULE";
+    			set_style(div, "font-family", "Times New Roman");
+    			set_style(div, "text-align", "center");
+    			set_style(div, "color", "hsl(210, 90%, 90%)");
+    			set_style(div, "font-size", "38px");
+    			set_style(div, "text-align", "center");
+    			add_location(div, file$4, 150, 0, 3690);
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert(target, div, anchor);
+    			current = true;
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			add_render_callback(() => {
+    				if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, true);
+    				div_transition.run(1);
+    			});
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
+    			div_transition.run(0);
+
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(div);
+    				if (div_transition) div_transition.end();
+    			}
+    		}
+    	};
+    }
+
+    function create_fragment$4(ctx) {
+    	var t0, br0, t1, br1, t2, div3, div1, button0, t4, br2, t5, br3, t6, div0, button1, t7, t8, br4, t9, button2, t11, br5, t12, br6, t13, div2, button3, t14_value = ctx.cache[ctx.j][0] + "", t14, t15, button4, t16_value = ctx.cache[ctx.j][1] + "", t16, t17, button5, t18_value = ctx.cache[ctx.j][2] + "", t18, t19, br7, t20, br8, t21, button6, t22_value = ctx.cache[ctx.j][3] + "", t22, t23, button7, t24_value = ctx.cache[ctx.j][4] + "", t24, t25, button8, t26_value = ctx.cache[ctx.j][5] + "", t26, t27, br9, t28, br10, t29, button9, t30_value = ctx.cache[ctx.j][6] + "", t30, t31, button10, t32_value = ctx.cache[ctx.j][7] + "", t32, t33, button11, t34_value = ctx.cache[ctx.j][8] + "", t34, t35, br11, t36, p0, t38, pre0, t39, t40, p1, t42, pre1, t43, t44, p2, current, dispose;
+
+    	var if_block =  create_if_block$4();
 
     	return {
     		c: function create() {
@@ -2344,55 +2686,55 @@ async function sqrtP (x) {
     			t44 = space();
     			p2 = element("p");
     			p2.textContent = "Svelte implements this and other apps so simply, neatly, and transparently that, for the foreseeable future, it will remain my goto framework for small, mid-sized, and possibly large applications.";
-    			add_location(br0, file$3, 155, 0, 3874);
-    			add_location(br1, file$3, 156, 0, 3879);
-    			add_location(button0, file$3, 160, 0, 4016);
-    			add_location(br2, file$3, 163, 0, 4056);
-    			add_location(br3, file$3, 164, 0, 4061);
-    			add_location(button1, file$3, 165, 30, 4096);
+    			add_location(br0, file$4, 155, 0, 3874);
+    			add_location(br1, file$4, 156, 0, 3879);
+    			add_location(button0, file$4, 160, 0, 4016);
+    			add_location(br2, file$4, 163, 0, 4056);
+    			add_location(br3, file$4, 164, 0, 4061);
+    			add_location(button1, file$4, 165, 30, 4096);
     			set_style(div0, "text-indent", "20px");
-    			add_location(div0, file$3, 165, 0, 4066);
-    			add_location(br4, file$3, 166, 0, 4125);
-    			add_location(button2, file$3, 167, 0, 4130);
-    			add_location(br5, file$3, 170, 0, 4176);
-    			add_location(br6, file$3, 171, 0, 4181);
+    			add_location(div0, file$4, 165, 0, 4066);
+    			add_location(br4, file$4, 166, 0, 4125);
+    			add_location(button2, file$4, 167, 0, 4130);
+    			add_location(br5, file$4, 170, 0, 4176);
+    			add_location(br6, file$4, 171, 0, 4181);
     			set_style(div1, "text-align", "right");
     			set_style(div1, "margin-right", "2%");
     			set_style(div1, "width", "20%");
-    			add_location(div1, file$3, 158, 18, 3950);
+    			add_location(div1, file$4, 158, 18, 3950);
     			attr(button3, "id", "m0");
-    			add_location(button3, file$3, 176, 0, 4273);
+    			add_location(button3, file$4, 176, 0, 4273);
     			attr(button4, "id", "m1");
-    			add_location(button4, file$3, 177, 0, 4335);
+    			add_location(button4, file$4, 177, 0, 4335);
     			attr(button5, "id", "m2");
-    			add_location(button5, file$3, 178, 0, 4397);
-    			add_location(br7, file$3, 179, 0, 4459);
-    			add_location(br8, file$3, 180, 0, 4464);
+    			add_location(button5, file$4, 178, 0, 4397);
+    			add_location(br7, file$4, 179, 0, 4459);
+    			add_location(br8, file$4, 180, 0, 4464);
     			attr(button6, "id", "m3");
-    			add_location(button6, file$3, 181, 0, 4469);
+    			add_location(button6, file$4, 181, 0, 4469);
     			attr(button7, "id", "m4");
-    			add_location(button7, file$3, 182, 0, 4531);
+    			add_location(button7, file$4, 182, 0, 4531);
     			attr(button8, "id", "m5");
-    			add_location(button8, file$3, 183, 0, 4593);
-    			add_location(br9, file$3, 184, 0, 4655);
-    			add_location(br10, file$3, 185, 0, 4660);
+    			add_location(button8, file$4, 183, 0, 4593);
+    			add_location(br9, file$4, 184, 0, 4655);
+    			add_location(br10, file$4, 185, 0, 4660);
     			attr(button9, "id", "m6");
-    			add_location(button9, file$3, 186, 0, 4665);
+    			add_location(button9, file$4, 186, 0, 4665);
     			attr(button10, "id", "m7");
-    			add_location(button10, file$3, 187, 0, 4727);
+    			add_location(button10, file$4, 187, 0, 4727);
     			attr(button11, "id", "m8");
-    			add_location(button11, file$3, 188, 0, 4789);
+    			add_location(button11, file$4, 188, 0, 4789);
     			set_style(div2, "marginRight", "0%");
     			set_style(div2, "width", "80%");
-    			add_location(div2, file$3, 174, 9, 4227);
+    			add_location(div2, file$4, 174, 9, 4227);
     			set_style(div3, "display", "flex");
-    			add_location(div3, file$3, 157, 18, 3902);
-    			add_location(br11, file$3, 191, 0, 4865);
-    			add_location(p0, file$3, 193, 0, 4871);
-    			add_location(pre0, file$3, 194, 0, 5068);
-    			add_location(p1, file$3, 195, 0, 5086);
-    			add_location(pre1, file$3, 196, 0, 5122);
-    			add_location(p2, file$3, 197, 0, 5140);
+    			add_location(div3, file$4, 157, 18, 3902);
+    			add_location(br11, file$4, 191, 0, 4865);
+    			add_location(p0, file$4, 193, 0, 4871);
+    			add_location(pre0, file$4, 194, 0, 5068);
+    			add_location(p1, file$4, 195, 0, 5086);
+    			add_location(pre1, file$4, 196, 0, 5122);
+    			add_location(p2, file$4, 197, 0, 5140);
 
     			dispose = [
     				listen(button0, "click", ctx.back),
@@ -2495,7 +2837,7 @@ async function sqrtP (x) {
     		p: function update(changed, ctx) {
     			{
     				if (!if_block) {
-    					if_block = create_if_block$3();
+    					if_block = create_if_block$4();
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(t0.parentNode, t0);
@@ -2585,7 +2927,7 @@ async function sqrtP (x) {
     	};
     }
 
-    function instance$3($$self, $$props, $$invalidate) {
+    function instance$4($$self, $$props, $$invalidate) {
     	
 
     var cache = [[1,2,3,4,5,6,7,8,9]];
@@ -2739,16 +3081,16 @@ just the code and html cut and pasted inside of back quotes: </p>
     class Matrix extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$3, create_fragment$3, safe_not_equal, []);
+    		init(this, options, instance$4, create_fragment$4, safe_not_equal, []);
     	}
     }
 
     /* src/Transducer.svelte generated by Svelte v3.9.1 */
 
-    const file$4 = "src/Transducer.svelte";
+    const file$5 = "src/Transducer.svelte";
 
     // (393:0) {#if visible}
-    function create_if_block$4(ctx) {
+    function create_if_block$5(ctx) {
     	var div, div_transition, current;
 
     	return {
@@ -2759,7 +3101,7 @@ just the code and html cut and pasted inside of back quotes: </p>
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file$4, 393, 1, 8806);
+    			add_location(div, file$5, 393, 1, 8806);
     		},
 
     		m: function mount(target, anchor) {
@@ -2793,10 +3135,10 @@ just the code and html cut and pasted inside of back quotes: </p>
     	};
     }
 
-    function create_fragment$4(ctx) {
+    function create_fragment$5(ctx) {
     	var t0, p0, t2, p1, t4, p2, t6, p3, t8, br0, br1, t9, div0, t10, t11_value = ctx.transducerResult.length + "", t11, t12, br2, br3, t13, div1, t15, br4, t16, div2, t17, t18_value = ctx.A_A.join(", ") + "", t18, t19, t20, br5, t21, br6, t22, div3, t24, br7, t25, div4, t26, t27_value = ctx.B_B.join(", ") + "", t27, t28, t29, br8, t30, br9, t31, div5, t33, br10, t34, div6, t35, t36_value = ctx.C_C.join(", ") + "", t36, t37_1, t38, br11, t39, br12, t40, div7, t42, br13, t43, div8, t44, t45_value = ctx.D_D.join(", ") + "", t45, t46, t47, br14, t48, br15, t49, button0, t51, button1, t53, br16, br17, t54, div9, t55, t56, t57, br18, t58, div10, t59, t60_value = ctx.ar74.join(", ") + "", t60, t61, t62, br19, t63, div11, t65, pre0, t66, t67, p4, t69, div12, t71, pre1, t73, p5, t75, div13, t77, pre2, t79, p6, t81, p7, t83, pre3, t84, t85, p8, t87, pre4, t88, t89, span0, t91, a, t93, span1, current, dispose;
 
-    	var if_block =  create_if_block$4();
+    	var if_block =  create_if_block$5();
 
     	return {
     		c: function create() {
@@ -2949,72 +3291,72 @@ just the code and html cut and pasted inside of back quotes: </p>
     			t93 = space();
     			span1 = element("span");
     			span1.textContent = ".";
-    			add_location(p0, file$4, 398, 0, 8970);
-    			add_location(p1, file$4, 399, 0, 9381);
-    			add_location(p2, file$4, 400, 0, 9627);
-    			add_location(p3, file$4, 401, 0, 9962);
-    			add_location(br0, file$4, 402, 0, 10070);
-    			add_location(br1, file$4, 402, 4, 10074);
-    			add_location(div0, file$4, 403, 0, 10079);
-    			add_location(br2, file$4, 404, 0, 10133);
-    			add_location(br3, file$4, 404, 4, 10137);
+    			add_location(p0, file$5, 398, 0, 8970);
+    			add_location(p1, file$5, 399, 0, 9381);
+    			add_location(p2, file$5, 400, 0, 9627);
+    			add_location(p3, file$5, 401, 0, 9962);
+    			add_location(br0, file$5, 402, 0, 10070);
+    			add_location(br1, file$5, 402, 4, 10074);
+    			add_location(div0, file$5, 403, 0, 10079);
+    			add_location(br2, file$5, 404, 0, 10133);
+    			add_location(br3, file$5, 404, 4, 10137);
     			attr(div1, "class", "p svelte-1d81q6r");
-    			add_location(div1, file$4, 405, 0, 10142);
-    			add_location(br4, file$4, 406, 0, 10193);
+    			add_location(div1, file$5, 405, 0, 10142);
+    			add_location(br4, file$5, 406, 0, 10193);
     			attr(div2, "class", "q svelte-1d81q6r");
-    			add_location(div2, file$4, 407, 0, 10198);
-    			add_location(br5, file$4, 408, 0, 10239);
-    			add_location(br6, file$4, 409, 0, 10244);
+    			add_location(div2, file$5, 407, 0, 10198);
+    			add_location(br5, file$5, 408, 0, 10239);
+    			add_location(br6, file$5, 409, 0, 10244);
     			attr(div3, "class", "p svelte-1d81q6r");
-    			add_location(div3, file$4, 410, 0, 10249);
-    			add_location(br7, file$4, 411, 0, 10310);
+    			add_location(div3, file$5, 410, 0, 10249);
+    			add_location(br7, file$5, 411, 0, 10310);
     			attr(div4, "class", "q svelte-1d81q6r");
-    			add_location(div4, file$4, 412, 0, 10315);
-    			add_location(br8, file$4, 413, 0, 10357);
-    			add_location(br9, file$4, 414, 0, 10362);
+    			add_location(div4, file$5, 412, 0, 10315);
+    			add_location(br8, file$5, 413, 0, 10357);
+    			add_location(br9, file$5, 414, 0, 10362);
     			attr(div5, "class", "p svelte-1d81q6r");
-    			add_location(div5, file$4, 415, 0, 10367);
-    			add_location(br10, file$4, 416, 0, 10431);
+    			add_location(div5, file$5, 415, 0, 10367);
+    			add_location(br10, file$5, 416, 0, 10431);
     			attr(div6, "class", "q svelte-1d81q6r");
-    			add_location(div6, file$4, 417, 0, 10436);
-    			add_location(br11, file$4, 418, 0, 10478);
-    			add_location(br12, file$4, 419, 0, 10483);
+    			add_location(div6, file$5, 417, 0, 10436);
+    			add_location(br11, file$5, 418, 0, 10478);
+    			add_location(br12, file$5, 419, 0, 10483);
     			attr(div7, "class", "p svelte-1d81q6r");
-    			add_location(div7, file$4, 420, 0, 10488);
-    			add_location(br13, file$4, 421, 0, 10551);
+    			add_location(div7, file$5, 420, 0, 10488);
+    			add_location(br13, file$5, 421, 0, 10551);
     			attr(div8, "class", "q svelte-1d81q6r");
-    			add_location(div8, file$4, 422, 0, 10556);
-    			add_location(br14, file$4, 423, 0, 10598);
-    			add_location(br15, file$4, 424, 0, 10603);
+    			add_location(div8, file$5, 422, 0, 10556);
+    			add_location(br14, file$5, 423, 0, 10598);
+    			add_location(br15, file$5, 424, 0, 10603);
     			attr(button0, "class", "but");
-    			add_location(button0, file$4, 425, 0, 10608);
+    			add_location(button0, file$5, 425, 0, 10608);
     			attr(button1, "class", "but");
-    			add_location(button1, file$4, 426, 0, 10668);
-    			add_location(br16, file$4, 427, 0, 10728);
-    			add_location(br17, file$4, 427, 4, 10732);
-    			add_location(div9, file$4, 428, 0, 10737);
-    			add_location(br18, file$4, 429, 0, 10769);
-    			add_location(div10, file$4, 430, 0, 10774);
-    			add_location(br19, file$4, 431, 0, 10811);
-    			add_location(div11, file$4, 432, 0, 10816);
-    			add_location(pre0, file$4, 433, 0, 11132);
-    			add_location(p4, file$4, 434, 0, 11151);
+    			add_location(button1, file$5, 426, 0, 10668);
+    			add_location(br16, file$5, 427, 0, 10728);
+    			add_location(br17, file$5, 427, 4, 10732);
+    			add_location(div9, file$5, 428, 0, 10737);
+    			add_location(br18, file$5, 429, 0, 10769);
+    			add_location(div10, file$5, 430, 0, 10774);
+    			add_location(br19, file$5, 431, 0, 10811);
+    			add_location(div11, file$5, 432, 0, 10816);
+    			add_location(pre0, file$5, 433, 0, 11132);
+    			add_location(p4, file$5, 434, 0, 11151);
     			set_style(div12, "color", "#BBFFBB");
-    			add_location(div12, file$4, 435, 0, 11245);
-    			add_location(pre1, file$4, 437, 0, 11305);
-    			add_location(p5, file$4, 441, 0, 11411);
+    			add_location(div12, file$5, 435, 0, 11245);
+    			add_location(pre1, file$5, 437, 0, 11305);
+    			add_location(p5, file$5, 441, 0, 11411);
     			set_style(div13, "color", "#BBFFBB");
-    			add_location(div13, file$4, 443, 0, 11538);
-    			add_location(pre2, file$4, 445, 0, 11614);
-    			add_location(p6, file$4, 454, 0, 11799);
-    			add_location(p7, file$4, 455, 0, 12023);
-    			add_location(pre3, file$4, 456, 0, 12162);
-    			add_location(p8, file$4, 457, 0, 12184);
-    			add_location(pre4, file$4, 458, 0, 12258);
-    			add_location(span0, file$4, 459, 0, 12277);
+    			add_location(div13, file$5, 443, 0, 11538);
+    			add_location(pre2, file$5, 445, 0, 11614);
+    			add_location(p6, file$5, 454, 0, 11799);
+    			add_location(p7, file$5, 455, 0, 12023);
+    			add_location(pre3, file$5, 456, 0, 12162);
+    			add_location(p8, file$5, 457, 0, 12184);
+    			add_location(pre4, file$5, 458, 0, 12258);
+    			add_location(span0, file$5, 459, 0, 12277);
     			attr(a, "href", "https://github.com/dschalk/blog");
-    			add_location(a, file$4, 460, 0, 12333);
-    			add_location(span1, file$4, 461, 0, 12399);
+    			add_location(a, file$5, 460, 0, 12333);
+    			add_location(span1, file$5, 461, 0, 12399);
 
     			dispose = [
     				listen(button0, "click", ctx.increase),
@@ -3159,7 +3501,7 @@ just the code and html cut and pasted inside of back quotes: </p>
     		p: function update(changed, ctx) {
     			{
     				if (!if_block) {
-    					if_block = create_if_block$4();
+    					if_block = create_if_block$5();
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(t0.parentNode, t0);
@@ -3382,7 +3724,7 @@ just the code and html cut and pasted inside of back quotes: </p>
 
     function Filt (p) {this.p = p; this.filt = function filt (x) {return p(x)};}
 
-    function instance$4($$self, $$props, $$invalidate) {
+    function instance$5($$self, $$props, $$invalidate) {
 
     let isOdd = function isOdd (x) {return new Filt(v => v % 2 === 1)};
 
@@ -3663,16 +4005,16 @@ just the code and html cut and pasted inside of back quotes: </p>
     class Transducer extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$4, create_fragment$4, safe_not_equal, []);
+    		init(this, options, instance$5, create_fragment$5, safe_not_equal, []);
     	}
     }
 
     /* src/Home.svelte generated by Svelte v3.9.1 */
 
-    const file$5 = "src/Home.svelte";
+    const file$6 = "src/Home.svelte";
 
     // (112:0) {#if visible}
-    function create_if_block$5(ctx) {
+    function create_if_block$6(ctx) {
     	var div, div_transition, current;
 
     	return {
@@ -3683,7 +4025,7 @@ just the code and html cut and pasted inside of back quotes: </p>
     			set_style(div, "text-align", "center");
     			set_style(div, "color", "hsl(210, 90%, 90%)");
     			set_style(div, "font-size", "32px");
-    			add_location(div, file$5, 112, 0, 3840);
+    			add_location(div, file$6, 112, 0, 3840);
     		},
 
     		m: function mount(target, anchor) {
@@ -3717,10 +4059,10 @@ just the code and html cut and pasted inside of back quotes: </p>
     	};
     }
 
-    function create_fragment$5(ctx) {
+    function create_fragment$6(ctx) {
     	var t0, p0, t2, span0, t4, span1, t6, p1, t8, p2, t10, p3, t12, p4, t14, p5, t16, h30, t18, span2, t20, a0, t22, a1, t24, p6, t26, p7, t28, h31, t30, p8, t32, pre0, t33, t34, p9, t36, span3, t37, a2, t39, span4, t41, a3, t43, p10, t45, span5, t47, span6, t49, span7, t51, p11, t53, pre1, t54, t55, a4, t57, p12, t58, s, t59, t60, pre2, t61, t62, br0, t63, br1, t64, br2, t65, div, current;
 
-    	var if_block =  create_if_block$5();
+    	var if_block =  create_if_block$6();
 
     	return {
     		c: function create() {
@@ -3828,62 +4170,62 @@ just the code and html cut and pasted inside of back quotes: </p>
     			t65 = space();
     			div = element("div");
     			div.textContent = ".";
-    			add_location(p0, file$5, 117, 0, 4000);
-    			add_location(span0, file$5, 118, 0, 4179);
+    			add_location(p0, file$6, 117, 0, 4000);
+    			add_location(span0, file$6, 118, 0, 4179);
     			set_style(span1, "font-style", "italic");
     			set_style(span1, "color", "#FFBBDD");
-    			add_location(span1, file$5, 118, 492, 4671);
-    			add_location(p1, file$5, 119, 0, 4796);
-    			add_location(p2, file$5, 120, 0, 5071);
+    			add_location(span1, file$6, 118, 492, 4671);
+    			add_location(p1, file$6, 119, 0, 4796);
+    			add_location(p2, file$6, 120, 0, 5071);
     			set_style(p3, "font-style", "italic");
     			set_style(p3, "color", "#BBFFBB");
-    			add_location(p3, file$5, 121, 0, 5447);
-    			add_location(p4, file$5, 122, 0, 5676);
-    			add_location(p5, file$5, 123, 0, 5990);
-    			add_location(h30, file$5, 125, 0, 6272);
+    			add_location(p3, file$6, 121, 0, 5447);
+    			add_location(p4, file$6, 122, 0, 5676);
+    			add_location(p5, file$6, 123, 0, 5990);
+    			add_location(h30, file$6, 125, 0, 6272);
     			attr(span2, "class", "tao");
-    			add_location(span2, file$5, 126, 0, 6305);
+    			add_location(span2, file$6, 126, 0, 6305);
     			attr(a0, "href", "https://en.wikibooks.org/wiki/Haskell/Mutable_objects");
     			attr(a0, "target", "_blank");
-    			add_location(a0, file$5, 127, 0, 6694);
+    			add_location(a0, file$6, 127, 0, 6694);
     			attr(a1, "href", "https://tech.fpcomplete.com/haskell/tutorial/mutable-variables");
     			attr(a1, "target", "_blank");
-    			add_location(a1, file$5, 128, 0, 6809);
-    			add_location(p6, file$5, 130, 0, 6929);
-    			add_location(p7, file$5, 132, 0, 7219);
-    			add_location(h31, file$5, 134, 0, 7617);
-    			add_location(p8, file$5, 135, 0, 7643);
-    			add_location(pre0, file$5, 136, 0, 7735);
-    			add_location(p9, file$5, 137, 0, 7755);
+    			add_location(a1, file$6, 128, 0, 6809);
+    			add_location(p6, file$6, 130, 0, 6929);
+    			add_location(p7, file$6, 132, 0, 7219);
+    			add_location(h31, file$6, 134, 0, 7617);
+    			add_location(p8, file$6, 135, 0, 7643);
+    			add_location(pre0, file$6, 136, 0, 7735);
+    			add_location(p9, file$6, 137, 0, 7755);
     			attr(a2, "href", "https://www.reddit.com/r/haskell/comments/5ez9b1/monoid_in_the_category_of_endofunctors/");
     			attr(a2, "target", "_blank");
-    			add_location(a2, file$5, 138, 341, 8260);
+    			add_location(a2, file$6, 138, 341, 8260);
     			attr(span3, "class", "tao");
-    			add_location(span3, file$5, 138, 1, 7920);
-    			add_location(span4, file$5, 139, 1, 8406);
+    			add_location(span3, file$6, 138, 1, 7920);
+    			add_location(span4, file$6, 139, 1, 8406);
     			attr(a3, "href", " https://en.wikipedia.org/wiki/Monad_(functional_programming) ");
     			attr(a3, "target", "_blank");
-    			add_location(a3, file$5, 140, 1, 8599);
-    			add_location(p10, file$5, 142, 1, 8732);
-    			add_location(span5, file$5, 144, 2, 9185);
+    			add_location(a3, file$6, 140, 1, 8599);
+    			add_location(p10, file$6, 142, 1, 8732);
+    			add_location(span5, file$6, 144, 2, 9185);
     			set_style(span6, "font-style", "italic");
-    			add_location(span6, file$5, 145, 0, 9270);
-    			add_location(span7, file$5, 146, 0, 9325);
-    			add_location(p11, file$5, 148, 0, 9410);
+    			add_location(span6, file$6, 145, 0, 9270);
+    			add_location(span7, file$6, 146, 0, 9325);
+    			add_location(p11, file$6, 148, 0, 9410);
     			set_style(pre1, "color", "#77CCFF ");
-    			add_location(pre1, file$5, 149, 0, 9635);
+    			add_location(pre1, file$6, 149, 0, 9635);
     			attr(a4, "class", "tao");
     			attr(a4, "href", "https://medium.com/javascript-scene/javascript-monads-made-simple-7856be57bfe8");
     			attr(a4, "target", "_blank");
-    			add_location(a4, file$5, 150, 0, 9679);
-    			add_location(s, file$5, 152, 257, 10094);
-    			add_location(p12, file$5, 152, 0, 9837);
-    			add_location(pre2, file$5, 154, 0, 10129);
-    			add_location(br0, file$5, 155, 0, 10149);
-    			add_location(br1, file$5, 156, 0, 10154);
-    			add_location(br2, file$5, 157, 0, 10159);
+    			add_location(a4, file$6, 150, 0, 9679);
+    			add_location(s, file$6, 152, 257, 10094);
+    			add_location(p12, file$6, 152, 0, 9837);
+    			add_location(pre2, file$6, 154, 0, 10129);
+    			add_location(br0, file$6, 155, 0, 10149);
+    			add_location(br1, file$6, 156, 0, 10154);
+    			add_location(br2, file$6, 157, 0, 10159);
     			set_style(div, "text-align", "center");
-    			add_location(div, file$5, 158, 0, 10164);
+    			add_location(div, file$6, 158, 0, 10164);
     		},
 
     		l: function claim(nodes) {
@@ -3974,7 +4316,7 @@ just the code and html cut and pasted inside of back quotes: </p>
     		p: function update(changed, ctx) {
     			{
     				if (!if_block) {
-    					if_block = create_if_block$5();
+    					if_block = create_if_block$6();
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(t0.parentNode, t0);
@@ -4072,7 +4414,7 @@ just the code and html cut and pasted inside of back quotes: </p>
     	};
     }
 
-    function instance$5($$self, $$props, $$invalidate) {
+    function instance$6($$self, $$props, $$invalidate) {
 
     var jay = `If you search the Internet for “monad” you’re going to get 
 bombarded by impenetrable category theory math and a bunch of people “helpfully” 
@@ -4125,16 +4467,16 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     class Home extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$5, create_fragment$5, safe_not_equal, []);
+    		init(this, options, instance$6, create_fragment$6, safe_not_equal, []);
     	}
     }
 
     /* src/Blog.svelte generated by Svelte v3.9.1 */
 
-    const file$6 = "src/Blog.svelte";
+    const file$7 = "src/Blog.svelte";
 
-    // (151:0) {#if j === 0}
-    function create_if_block_5(ctx) {
+    // (154:0) {#if j === 0}
+    function create_if_block_6(ctx) {
     	var div, t_1, current;
 
     	var home = new Home({ $$inline: true });
@@ -4146,7 +4488,7 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     			t_1 = space();
     			home.$$.fragment.c();
     			attr(div, "class", "show svelte-1rvgrtu");
-    			add_location(div, file$6, 151, 0, 2976);
+    			add_location(div, file$7, 154, 0, 3092);
     		},
 
     		m: function mount(target, anchor) {
@@ -4179,8 +4521,8 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     	};
     }
 
-    // (155:0) {#if j === 1}
-    function create_if_block_4(ctx) {
+    // (158:0) {#if j === 1}
+    function create_if_block_5(ctx) {
     	var div, t_1, current;
 
     	var monad1 = new Monad1({ $$inline: true });
@@ -4192,7 +4534,7 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     			t_1 = space();
     			monad1.$$.fragment.c();
     			attr(div, "class", "show svelte-1rvgrtu");
-    			add_location(div, file$6, 155, 0, 3034);
+    			add_location(div, file$7, 158, 0, 3150);
     		},
 
     		m: function mount(target, anchor) {
@@ -4225,8 +4567,8 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     	};
     }
 
-    // (159:0) {#if j === 2}
-    function create_if_block_3(ctx) {
+    // (162:0) {#if j === 2}
+    function create_if_block_4(ctx) {
     	var div, t_1, current;
 
     	var monad2 = new Monad2({ $$inline: true });
@@ -4238,7 +4580,7 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     			t_1 = space();
     			monad2.$$.fragment.c();
     			attr(div, "class", "show svelte-1rvgrtu");
-    			add_location(div, file$6, 159, 0, 3102);
+    			add_location(div, file$7, 162, 0, 3218);
     		},
 
     		m: function mount(target, anchor) {
@@ -4271,8 +4613,8 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     	};
     }
 
-    // (163:0) {#if j === 3}
-    function create_if_block_2(ctx) {
+    // (166:0) {#if j === 3}
+    function create_if_block_3(ctx) {
     	var div, t_1, current;
 
     	var monad3 = new Monad3({ $$inline: true });
@@ -4280,11 +4622,11 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     	return {
     		c: function create() {
     			div = element("div");
-    			div.textContent = "Promises Monad";
+    			div.textContent = "Promises Snownad";
     			t_1 = space();
     			monad3.$$.fragment.c();
     			attr(div, "class", "show svelte-1rvgrtu");
-    			add_location(div, file$6, 163, 0, 3172);
+    			add_location(div, file$7, 166, 0, 3288);
     		},
 
     		m: function mount(target, anchor) {
@@ -4317,8 +4659,8 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     	};
     }
 
-    // (167:0) {#if j === 4}
-    function create_if_block_1(ctx) {
+    // (170:0) {#if j === 4}
+    function create_if_block_2(ctx) {
     	var div, t_1, current;
 
     	var transducer = new Transducer({ $$inline: true });
@@ -4330,7 +4672,7 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     			t_1 = space();
     			transducer.$$.fragment.c();
     			attr(div, "class", "show svelte-1rvgrtu");
-    			add_location(div, file$6, 167, 0, 3242);
+    			add_location(div, file$7, 170, 0, 3360);
     		},
 
     		m: function mount(target, anchor) {
@@ -4363,8 +4705,8 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     	};
     }
 
-    // (171:0) {#if j === 5}
-    function create_if_block$6(ctx) {
+    // (174:0) {#if j === 5}
+    function create_if_block_1(ctx) {
     	var div, t_1, current;
 
     	var matrix = new Matrix({ $$inline: true });
@@ -4376,7 +4718,7 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     			t_1 = space();
     			matrix.$$.fragment.c();
     			attr(div, "class", "show svelte-1rvgrtu");
-    			add_location(div, file$6, 171, 0, 3318);
+    			add_location(div, file$7, 174, 0, 3436);
     		},
 
     		m: function mount(target, anchor) {
@@ -4409,20 +4751,68 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     	};
     }
 
-    function create_fragment$6(ctx) {
-    	var div0, t1, div1, t3, div7, div2, t5, div3, t7, br0, t8, div4, t10, div5, t12, div6, t14, div16, br1, t15, div8, t17, div15, br2, t18, div9, t20, br3, t21, div10, t23, br4, t24, div11, t26, br5, t27, div12, t29, br6, t30, div13, t32, br7, t33, div14, t34, br8, t35, br9, t36, t37, div17, br10, t38, t39, t40, t41, t42, t43, t44, br11, br12, t45, t46, br13, br14, t47, br15, br16, t48, br17, br18, current, dispose;
+    // (178:0) {#if j === 6}
+    function create_if_block$7(ctx) {
+    	var div, t_1, current;
 
-    	var if_block0 = (ctx.j === 0) && create_if_block_5();
+    	var monad6 = new Monad6({ $$inline: true });
 
-    	var if_block1 = (ctx.j === 1) && create_if_block_4();
+    	return {
+    		c: function create() {
+    			div = element("div");
+    			div.textContent = "Monad6";
+    			t_1 = space();
+    			monad6.$$.fragment.c();
+    			attr(div, "class", "show svelte-1rvgrtu");
+    			add_location(div, file$7, 178, 0, 3502);
+    		},
 
-    	var if_block2 = (ctx.j === 2) && create_if_block_3();
+    		m: function mount(target, anchor) {
+    			insert(target, div, anchor);
+    			insert(target, t_1, anchor);
+    			mount_component(monad6, target, anchor);
+    			current = true;
+    		},
 
-    	var if_block3 = (ctx.j === 3) && create_if_block_2();
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(monad6.$$.fragment, local);
 
-    	var if_block4 = (ctx.j === 4) && create_if_block_1();
+    			current = true;
+    		},
 
-    	var if_block5 = (ctx.j === 5) && create_if_block$6();
+    		o: function outro(local) {
+    			transition_out(monad6.$$.fragment, local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(div);
+    				detach(t_1);
+    			}
+
+    			destroy_component(monad6, detaching);
+    		}
+    	};
+    }
+
+    function create_fragment$7(ctx) {
+    	var div0, t1, div1, t3, div7, div2, t5, div3, t7, br0, t8, div4, t10, div5, t12, div6, t14, div17, br1, t15, div8, t17, div16, br2, t18, div9, t20, br3, t21, div10, t23, br4, t24, div11, t26, br5, t27, div12, t29, br6, t30, div13, t32, br7, t33, div14, t35, br8, t36, div15, t38, br9, t39, br10, t40, div18, br11, t41, t42, t43, t44, t45, t46, t47, t48, br12, br13, t49, t50, br14, br15, t51, br16, br17, t52, br18, br19, current, dispose;
+
+    	var if_block0 = (ctx.j === 0) && create_if_block_6();
+
+    	var if_block1 = (ctx.j === 1) && create_if_block_5();
+
+    	var if_block2 = (ctx.j === 2) && create_if_block_4();
+
+    	var if_block3 = (ctx.j === 3) && create_if_block_3();
+
+    	var if_block4 = (ctx.j === 4) && create_if_block_2();
+
+    	var if_block5 = (ctx.j === 5) && create_if_block_1();
+
+    	var if_block6 = (ctx.j === 6) && create_if_block$7();
 
     	const default_slot_template = ctx.$$slots.default;
     	const default_slot = create_slot(default_slot_template, ctx, null);
@@ -4433,7 +4823,7 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     			div0.textContent = "Powerful JavaScript Monads";
     			t1 = space();
     			div1 = element("div");
-    			div1.textContent = "Asynchronously link functions, primitive values, and objects of all types with recursive closures.";
+    			div1.textContent = "Asynchronously linking functions, primitive values, promises, and objects of all types with recursive closures.";
     			t3 = space();
     			div7 = element("div");
     			div2 = element("div");
@@ -4453,13 +4843,13 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     			div6 = element("div");
     			div6.textContent = "https://github.com/dschalk";
     			t14 = space();
-    			div16 = element("div");
+    			div17 = element("div");
     			br1 = element("br");
     			t15 = space();
     			div8 = element("div");
     			div8.textContent = "Table of Contents";
     			t17 = space();
-    			div15 = element("div");
+    			div16 = element("div");
     			br2 = element("br");
     			t18 = space();
     			div9 = element("div");
@@ -4488,46 +4878,53 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     			br7 = element("br");
     			t33 = space();
     			div14 = element("div");
-    			t34 = text("Why Svelte>\n  ");
-    			br8 = element("br");
+    			div14.textContent = "Why Svelte";
     			t35 = space();
-    			br9 = element("br");
-    			t36 = text(">");
-    			t37 = space();
-    			div17 = element("div");
-    			br10 = element("br");
+    			br8 = element("br");
+    			t36 = space();
+    			div15 = element("div");
+    			div15.textContent = "Experiment";
     			t38 = space();
-    			if (if_block0) if_block0.c();
+    			br9 = element("br");
     			t39 = space();
-    			if (if_block1) if_block1.c();
+    			br10 = element("br");
     			t40 = space();
-    			if (if_block2) if_block2.c();
-    			t41 = space();
-    			if (if_block3) if_block3.c();
-    			t42 = space();
-    			if (if_block4) if_block4.c();
-    			t43 = space();
-    			if (if_block5) if_block5.c();
-    			t44 = space();
+    			div18 = element("div");
     			br11 = element("br");
-    			br12 = element("br");
+    			t41 = space();
+    			if (if_block0) if_block0.c();
+    			t42 = space();
+    			if (if_block1) if_block1.c();
+    			t43 = space();
+    			if (if_block2) if_block2.c();
+    			t44 = space();
+    			if (if_block3) if_block3.c();
     			t45 = space();
+    			if (if_block4) if_block4.c();
+    			t46 = space();
+    			if (if_block5) if_block5.c();
+    			t47 = space();
+    			if (if_block6) if_block6.c();
+    			t48 = space();
+    			br12 = element("br");
+    			br13 = element("br");
+    			t49 = space();
 
     			if (default_slot) default_slot.c();
-    			t46 = space();
-    			br13 = element("br");
+    			t50 = space();
     			br14 = element("br");
-    			t47 = space();
     			br15 = element("br");
+    			t51 = space();
     			br16 = element("br");
-    			t48 = space();
     			br17 = element("br");
+    			t52 = space();
     			br18 = element("br");
+    			br19 = element("br");
     			set_style(div0, "font-size", "58px");
     			set_style(div0, "color", "gold");
     			set_style(div0, "text-align", "center");
     			attr(div0, "class", "svelte-1rvgrtu");
-    			add_location(div0, file$6, 111, 0, 1796);
+    			add_location(div0, file$7, 112, 0, 1833);
     			set_style(div1, "font-size", "32px");
     			set_style(div1, "color", "#FFBBBB");
     			set_style(div1, "font-style", "italic");
@@ -4535,61 +4932,64 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     			set_style(div1, "margin-left", "27%");
     			set_style(div1, "margin-right", "27%");
     			attr(div1, "class", "svelte-1rvgrtu");
-    			add_location(div1, file$6, 112, 0, 1893);
+    			add_location(div1, file$7, 113, 0, 1930);
     			attr(div2, "class", "svelte-1rvgrtu");
-    			add_location(div2, file$6, 116, 0, 2146);
+    			add_location(div2, file$7, 117, 0, 2196);
     			attr(div3, "class", "svelte-1rvgrtu");
-    			add_location(div3, file$6, 117, 0, 2183);
-    			add_location(br0, file$6, 118, 0, 2220);
+    			add_location(div3, file$7, 118, 0, 2233);
+    			add_location(br0, file$7, 119, 0, 2270);
     			attr(div4, "class", "svelte-1rvgrtu");
-    			add_location(div4, file$6, 119, 0, 2225);
+    			add_location(div4, file$7, 120, 0, 2275);
     			attr(div5, "class", "svelte-1rvgrtu");
-    			add_location(div5, file$6, 120, 0, 2255);
+    			add_location(div5, file$7, 121, 0, 2305);
     			attr(div6, "class", "svelte-1rvgrtu");
-    			add_location(div6, file$6, 121, 0, 2288);
+    			add_location(div6, file$7, 122, 0, 2338);
     			attr(div7, "class", "stat svelte-1rvgrtu");
-    			add_location(div7, file$6, 115, 0, 2127);
-    			add_location(br1, file$6, 124, 0, 2356);
+    			add_location(div7, file$7, 116, 0, 2177);
+    			add_location(br1, file$7, 125, 0, 2406);
     			attr(div8, "class", "dropbtn svelte-1rvgrtu");
-    			add_location(div8, file$6, 125, 2, 2363);
-    			add_location(br2, file$6, 127, 2, 2443);
+    			add_location(div8, file$7, 126, 2, 2413);
+    			add_location(br2, file$7, 128, 2, 2493);
     			attr(div9, "class", "menu svelte-1rvgrtu");
-    			add_location(div9, file$6, 128, 0, 2448);
-    			add_location(br3, file$6, 129, 2, 2505);
+    			add_location(div9, file$7, 129, 0, 2498);
+    			add_location(br3, file$7, 130, 2, 2555);
     			attr(div10, "class", "menu svelte-1rvgrtu");
-    			add_location(div10, file$6, 130, 0, 2510);
-    			add_location(br4, file$6, 131, 2, 2577);
+    			add_location(div10, file$7, 131, 0, 2560);
+    			add_location(br4, file$7, 132, 2, 2627);
     			attr(div11, "class", "menu svelte-1rvgrtu");
-    			add_location(div11, file$6, 132, 0, 2582);
-    			add_location(br5, file$6, 133, 2, 2652);
+    			add_location(div11, file$7, 133, 0, 2632);
+    			add_location(br5, file$7, 134, 2, 2702);
     			attr(div12, "class", "menu svelte-1rvgrtu");
-    			add_location(div12, file$6, 134, 0, 2657);
-    			add_location(br6, file$6, 135, 2, 2726);
+    			add_location(div12, file$7, 135, 0, 2707);
+    			add_location(br6, file$7, 136, 2, 2776);
     			attr(div13, "class", "menu svelte-1rvgrtu");
-    			add_location(div13, file$6, 136, 0, 2731);
-    			add_location(br7, file$6, 137, 2, 2800);
-    			add_location(br8, file$6, 139, 2, 2863);
-    			add_location(br9, file$6, 140, 2, 2870);
+    			add_location(div13, file$7, 137, 0, 2781);
+    			add_location(br7, file$7, 138, 2, 2850);
     			attr(div14, "class", "menu svelte-1rvgrtu");
-    			add_location(div14, file$6, 138, 0, 2805);
-    			attr(div15, "class", "dropdown-content svelte-1rvgrtu");
-    			add_location(div15, file$6, 126, 2, 2410);
-    			attr(div16, "class", "dropdown svelte-1rvgrtu");
-    			add_location(div16, file$6, 123, 0, 2333);
-    			add_location(br10, file$6, 148, 1, 2956);
-    			set_style(div17, "margin-left", "25%");
-    			set_style(div17, "margin-right", "25%");
-    			attr(div17, "class", "svelte-1rvgrtu");
-    			add_location(div17, file$6, 146, 0, 2901);
-    			add_location(br11, file$6, 177, 0, 3379);
-    			add_location(br12, file$6, 177, 4, 3383);
+    			add_location(div14, file$7, 139, 0, 2855);
+    			add_location(br8, file$7, 140, 2, 2918);
+    			attr(div15, "class", "menu svelte-1rvgrtu");
+    			add_location(div15, file$7, 141, 0, 2923);
+    			add_location(br9, file$7, 142, 2, 2986);
+    			add_location(br10, file$7, 143, 2, 2993);
+    			attr(div16, "class", "dropdown-content svelte-1rvgrtu");
+    			add_location(div16, file$7, 127, 2, 2460);
+    			attr(div17, "class", "dropdown svelte-1rvgrtu");
+    			add_location(div17, file$7, 124, 0, 2383);
+    			add_location(br11, file$7, 151, 1, 3072);
+    			add_location(br12, file$7, 182, 0, 3551);
+    			add_location(br13, file$7, 182, 4, 3555);
 
-    			add_location(br13, file$6, 180, 0, 3398);
-    			add_location(br14, file$6, 180, 4, 3402);
-    			add_location(br15, file$6, 181, 0, 3407);
-    			add_location(br16, file$6, 181, 4, 3411);
-    			add_location(br17, file$6, 182, 0, 3416);
-    			add_location(br18, file$6, 182, 4, 3420);
+    			add_location(br14, file$7, 185, 0, 3570);
+    			add_location(br15, file$7, 185, 4, 3574);
+    			add_location(br16, file$7, 186, 0, 3579);
+    			add_location(br17, file$7, 186, 4, 3583);
+    			add_location(br18, file$7, 187, 0, 3588);
+    			add_location(br19, file$7, 187, 4, 3592);
+    			set_style(div18, "margin-left", "25%");
+    			set_style(div18, "margin-right", "25%");
+    			attr(div18, "class", "svelte-1rvgrtu");
+    			add_location(div18, file$7, 149, 0, 3017);
 
     			dispose = [
     				listen(div9, "click", ctx.click_handler),
@@ -4597,12 +4997,13 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     				listen(div11, "click", ctx.click_handler_2),
     				listen(div12, "click", ctx.click_handler_3),
     				listen(div13, "click", ctx.click_handler_4),
-    				listen(div14, "click", ctx.click_handler_5)
+    				listen(div14, "click", ctx.click_handler_5),
+    				listen(div15, "click", ctx.click_handler_6)
     			];
     		},
 
     		l: function claim(nodes) {
-    			if (default_slot) default_slot.l(nodes);
+    			if (default_slot) default_slot.l(div18_nodes);
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
 
@@ -4624,83 +5025,88 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     			append(div7, t12);
     			append(div7, div6);
     			insert(target, t14, anchor);
-    			insert(target, div16, anchor);
-    			append(div16, br1);
-    			append(div16, t15);
-    			append(div16, div8);
-    			append(div16, t17);
-    			append(div16, div15);
-    			append(div15, br2);
-    			append(div15, t18);
-    			append(div15, div9);
-    			append(div15, t20);
-    			append(div15, br3);
-    			append(div15, t21);
-    			append(div15, div10);
-    			append(div15, t23);
-    			append(div15, br4);
-    			append(div15, t24);
-    			append(div15, div11);
-    			append(div15, t26);
-    			append(div15, br5);
-    			append(div15, t27);
-    			append(div15, div12);
-    			append(div15, t29);
-    			append(div15, br6);
-    			append(div15, t30);
-    			append(div15, div13);
-    			append(div15, t32);
-    			append(div15, br7);
-    			append(div15, t33);
-    			append(div15, div14);
-    			append(div14, t34);
-    			append(div14, br8);
-    			append(div14, t35);
-    			append(div14, br9);
-    			append(div15, t36);
-    			insert(target, t37, anchor);
     			insert(target, div17, anchor);
-    			append(div17, br10);
-    			append(div17, t38);
-    			if (if_block0) if_block0.m(div17, null);
-    			append(div17, t39);
-    			if (if_block1) if_block1.m(div17, null);
-    			append(div17, t40);
-    			if (if_block2) if_block2.m(div17, null);
-    			append(div17, t41);
-    			if (if_block3) if_block3.m(div17, null);
-    			append(div17, t42);
-    			if (if_block4) if_block4.m(div17, null);
-    			append(div17, t43);
-    			if (if_block5) if_block5.m(div17, null);
-    			insert(target, t44, anchor);
-    			insert(target, br11, anchor);
-    			insert(target, br12, anchor);
-    			insert(target, t45, anchor);
+    			append(div17, br1);
+    			append(div17, t15);
+    			append(div17, div8);
+    			append(div17, t17);
+    			append(div17, div16);
+    			append(div16, br2);
+    			append(div16, t18);
+    			append(div16, div9);
+    			append(div16, t20);
+    			append(div16, br3);
+    			append(div16, t21);
+    			append(div16, div10);
+    			append(div16, t23);
+    			append(div16, br4);
+    			append(div16, t24);
+    			append(div16, div11);
+    			append(div16, t26);
+    			append(div16, br5);
+    			append(div16, t27);
+    			append(div16, div12);
+    			append(div16, t29);
+    			append(div16, br6);
+    			append(div16, t30);
+    			append(div16, div13);
+    			append(div16, t32);
+    			append(div16, br7);
+    			append(div16, t33);
+    			append(div16, div14);
+    			append(div16, t35);
+    			append(div16, br8);
+    			append(div16, t36);
+    			append(div16, div15);
+    			append(div16, t38);
+    			append(div16, br9);
+    			append(div16, t39);
+    			append(div16, br10);
+    			insert(target, t40, anchor);
+    			insert(target, div18, anchor);
+    			append(div18, br11);
+    			append(div18, t41);
+    			if (if_block0) if_block0.m(div18, null);
+    			append(div18, t42);
+    			if (if_block1) if_block1.m(div18, null);
+    			append(div18, t43);
+    			if (if_block2) if_block2.m(div18, null);
+    			append(div18, t44);
+    			if (if_block3) if_block3.m(div18, null);
+    			append(div18, t45);
+    			if (if_block4) if_block4.m(div18, null);
+    			append(div18, t46);
+    			if (if_block5) if_block5.m(div18, null);
+    			append(div18, t47);
+    			if (if_block6) if_block6.m(div18, null);
+    			append(div18, t48);
+    			append(div18, br12);
+    			append(div18, br13);
+    			append(div18, t49);
 
     			if (default_slot) {
-    				default_slot.m(target, anchor);
+    				default_slot.m(div18, null);
     			}
 
-    			insert(target, t46, anchor);
-    			insert(target, br13, anchor);
-    			insert(target, br14, anchor);
-    			insert(target, t47, anchor);
-    			insert(target, br15, anchor);
-    			insert(target, br16, anchor);
-    			insert(target, t48, anchor);
-    			insert(target, br17, anchor);
-    			insert(target, br18, anchor);
+    			append(div18, t50);
+    			append(div18, br14);
+    			append(div18, br15);
+    			append(div18, t51);
+    			append(div18, br16);
+    			append(div18, br17);
+    			append(div18, t52);
+    			append(div18, br18);
+    			append(div18, br19);
     			current = true;
     		},
 
     		p: function update(changed, ctx) {
     			if (ctx.j === 0) {
     				if (!if_block0) {
-    					if_block0 = create_if_block_5();
+    					if_block0 = create_if_block_6();
     					if_block0.c();
     					transition_in(if_block0, 1);
-    					if_block0.m(div17, t39);
+    					if_block0.m(div18, t42);
     				} else {
     									transition_in(if_block0, 1);
     				}
@@ -4714,10 +5120,10 @@ Flatten means unwrap the value from the context. F(a) => a. `;
 
     			if (ctx.j === 1) {
     				if (!if_block1) {
-    					if_block1 = create_if_block_4();
+    					if_block1 = create_if_block_5();
     					if_block1.c();
     					transition_in(if_block1, 1);
-    					if_block1.m(div17, t40);
+    					if_block1.m(div18, t43);
     				} else {
     									transition_in(if_block1, 1);
     				}
@@ -4731,10 +5137,10 @@ Flatten means unwrap the value from the context. F(a) => a. `;
 
     			if (ctx.j === 2) {
     				if (!if_block2) {
-    					if_block2 = create_if_block_3();
+    					if_block2 = create_if_block_4();
     					if_block2.c();
     					transition_in(if_block2, 1);
-    					if_block2.m(div17, t41);
+    					if_block2.m(div18, t44);
     				} else {
     									transition_in(if_block2, 1);
     				}
@@ -4748,10 +5154,10 @@ Flatten means unwrap the value from the context. F(a) => a. `;
 
     			if (ctx.j === 3) {
     				if (!if_block3) {
-    					if_block3 = create_if_block_2();
+    					if_block3 = create_if_block_3();
     					if_block3.c();
     					transition_in(if_block3, 1);
-    					if_block3.m(div17, t42);
+    					if_block3.m(div18, t45);
     				} else {
     									transition_in(if_block3, 1);
     				}
@@ -4765,10 +5171,10 @@ Flatten means unwrap the value from the context. F(a) => a. `;
 
     			if (ctx.j === 4) {
     				if (!if_block4) {
-    					if_block4 = create_if_block_1();
+    					if_block4 = create_if_block_2();
     					if_block4.c();
     					transition_in(if_block4, 1);
-    					if_block4.m(div17, t43);
+    					if_block4.m(div18, t46);
     				} else {
     									transition_in(if_block4, 1);
     				}
@@ -4782,10 +5188,10 @@ Flatten means unwrap the value from the context. F(a) => a. `;
 
     			if (ctx.j === 5) {
     				if (!if_block5) {
-    					if_block5 = create_if_block$6();
+    					if_block5 = create_if_block_1();
     					if_block5.c();
     					transition_in(if_block5, 1);
-    					if_block5.m(div17, null);
+    					if_block5.m(div18, t47);
     				} else {
     									transition_in(if_block5, 1);
     				}
@@ -4793,6 +5199,23 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     				group_outros();
     				transition_out(if_block5, 1, 1, () => {
     					if_block5 = null;
+    				});
+    				check_outros();
+    			}
+
+    			if (ctx.j === 6) {
+    				if (!if_block6) {
+    					if_block6 = create_if_block$7();
+    					if_block6.c();
+    					transition_in(if_block6, 1);
+    					if_block6.m(div18, t48);
+    				} else {
+    									transition_in(if_block6, 1);
+    				}
+    			} else if (if_block6) {
+    				group_outros();
+    				transition_out(if_block6, 1, 1, () => {
+    					if_block6 = null;
     				});
     				check_outros();
     			}
@@ -4813,6 +5236,7 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     			transition_in(if_block3);
     			transition_in(if_block4);
     			transition_in(if_block5);
+    			transition_in(if_block6);
     			transition_in(default_slot, local);
     			current = true;
     		},
@@ -4824,6 +5248,7 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     			transition_out(if_block3);
     			transition_out(if_block4);
     			transition_out(if_block5);
+    			transition_out(if_block6);
     			transition_out(default_slot, local);
     			current = false;
     		},
@@ -4836,9 +5261,9 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     				detach(t3);
     				detach(div7);
     				detach(t14);
-    				detach(div16);
-    				detach(t37);
     				detach(div17);
+    				detach(t40);
+    				detach(div18);
     			}
 
     			if (if_block0) if_block0.d();
@@ -4847,34 +5272,15 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     			if (if_block3) if_block3.d();
     			if (if_block4) if_block4.d();
     			if (if_block5) if_block5.d();
-
-    			if (detaching) {
-    				detach(t44);
-    				detach(br11);
-    				detach(br12);
-    				detach(t45);
-    			}
+    			if (if_block6) if_block6.d();
 
     			if (default_slot) default_slot.d(detaching);
-
-    			if (detaching) {
-    				detach(t46);
-    				detach(br13);
-    				detach(br14);
-    				detach(t47);
-    				detach(br15);
-    				detach(br16);
-    				detach(t48);
-    				detach(br17);
-    				detach(br18);
-    			}
-
     			run_all(dispose);
     		}
     	};
     }
 
-    function instance$6($$self, $$props, $$invalidate) {
+    function instance$7($$self, $$props, $$invalidate) {
     	let { j = 0 } = $$props;
 
     	const writable_props = ['j'];
@@ -4920,6 +5326,12 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     		return $$result;
     	}
 
+    	function click_handler_6() {
+    		const $$result = j = 6;
+    		$$invalidate('j', j);
+    		return $$result;
+    	}
+
     	$$self.$set = $$props => {
     		if ('j' in $$props) $$invalidate('j', j = $$props.j);
     		if ('$$scope' in $$props) $$invalidate('$$scope', $$scope = $$props.$$scope);
@@ -4933,6 +5345,7 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     		click_handler_3,
     		click_handler_4,
     		click_handler_5,
+    		click_handler_6,
     		$$slots,
     		$$scope
     	};
@@ -4941,7 +5354,7 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     class Blog extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$6, create_fragment$6, safe_not_equal, ["j"]);
+    		init(this, options, instance$7, create_fragment$7, safe_not_equal, ["j"]);
     	}
 
     	get j() {
@@ -4955,7 +5368,7 @@ Flatten means unwrap the value from the context. F(a) => a. `;
 
     /* src/App.svelte generated by Svelte v3.9.1 */
 
-    function create_fragment$7(ctx) {
+    function create_fragment$8(ctx) {
     	var current;
 
     	var blog = new Blog({ $$inline: true });
@@ -4997,7 +5410,7 @@ Flatten means unwrap the value from the context. F(a) => a. `;
     class App extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, null, create_fragment$7, safe_not_equal, []);
+    		init(this, options, null, create_fragment$8, safe_not_equal, []);
     	}
     }
 

@@ -115,8 +115,7 @@ B[sym1] = [];
 B[sym2] = [];
 B[sym3] = [];
 
-$: B;
-let Mona = function Mona ( AR = [], ar = [] )  {  
+let Mona = function Mona ( AR = [],  ar = "name" )  {  
   let p, run, f_;
   B[ar] = AR.slice();
   let x = B[ar].slice(-1)[0] ;
@@ -149,9 +148,6 @@ let Mona = function Mona ( AR = [], ar = [] )  {
   A[sym1] = Mona([0], sym1);
   A[sym2] = Mona([], sym2);
   A[sym3] = Mona([], sym3);
-
-  $: B[sym1];
-  $: B[sym2];
 
 function test_3 () {
   lok = true;
@@ -220,21 +216,23 @@ B[sym3] = [];
 
 $: B;
 
-let Mona = function Mona ( AR = [], ar = [] )  {  
+  const A = {};
+  
+let Mona = function Mona ( AR = [],  ar = "name" )  {  
   let p, run, f_;
   B[ar] = AR.slice();
   let x = B[ar].slice(-1)[0] ;
   return run = (function run (x) {
   if (x instanceof Promise) {x.then(y => {
-    if (!( y.name == "f_" || y == lok || y == NaN || y == undefined || 
-    typeof y == "undefined" || y != y  ) ){B[ar] = B[ar].concat(y)}
-    else if (!(x.name == "f_" || x == lok || x instanceof Promise || x == undefined ||
-     x == NaN)) {B[ar] = B[ar].concat(x);
+    if (!( y.name == "f_" || y == lok || y == NaN || y == undefined ||
+      typeof y == "undefined" || y != y  ) ){B[ar] = B[ar].concat(y)}
+    else if (!(x.name == "f_" || x == lok || x instanceof Promise ||
+      x == undefined || x == NaN)) {B[ar] = B[ar].concat(x);
   }   }  )  }
     f_ = function f_ (func) {
       console.log("B[ar] is", B[ar]);
       if (func === 'halt' || func === 'h' || func == undefined ||
-       typeof func == "undefined" || func == NaN ) {
+        typeof func == "undefined" || func == NaN ) {
         B[ar] = B[ar]; 
         return B[ar].slice();
       }
@@ -247,8 +245,6 @@ let Mona = function Mona ( AR = [], ar = [] )  {
     return f_;
   })(x);
 }
-
-  const A = {};
 
   A[sym1] = Mona([0], sym1);
   A[sym2] = Mona([], sym2);
@@ -408,15 +404,17 @@ pre:hover {
   {#if j === 3}
  <div style = "font-family: Times New Roman;  text-align: center; color: hsl(210, 90%, 90%); " transition:fade>
 <div style = "font-size: 32px;"> PROMISE MANIPULATION</div>
-<div style = "font-size: 22px;">Computations Easily Resumed and Branched</div>  
+<div style = "font-size: 22px;">Accessing Prior Resolution Values</div>  
 </div>
 {/if}
   <br>
-<p> The ES6 Promises API doesn't provide a way to access prior Promise resolution values in chains of composed procedures or in units of state saved for possible future use. In the previous module, Monad() instances saved their array payloads in the object "O". By the naming convention, for any array "O.ar" in "O", "ar = Monad(O.ar)" reactivates the Monad() instance "ar" and "ar2 = Monad(O.ar)" initiates a branch. </p>
-<p> In this module, the object "B" contains the functions returned by instances of "Mona()", defined below. Instances of Mona() close over a function named "f_", giving f_() access to the array held in Mona() instance that spawned it. These little functions name "f_" have unique keys in "B", and can resume activity under their original names (corresponding to their keys) or initiate new branches. Clicking the button below calls start() which runs test_3() after any previously queued runs have finished . </p>
 
+<div style = "font-style:italic; color: #FFCC00; ">NOTE: If you select a link in the table of contents while computations are in progress, the result might be displayed beneath what you see here. </div> 
+
+<br>
+<p> If you click the button (below) while computations are in progress, test_3 will run again after the current run completes. The "loc" feature - which allows execution to begin only when loc === false - facilitates queueing any number of runs of test_3.    </p> 
 <button style = "text-align: left" on:click = {start}>  
-test_3()
+test_3 ()
 </button>
 
 <h3>lok is {lok}</h3>
@@ -424,20 +422,11 @@ test_3()
 <h3> B[sym2] is {B[sym2]} </h3>
 <h3> B[sym3] is {B[sym3]} </h3>
 
-<p> Symbols are used as names and as the second parameter of Mona(). Mona() instances in object "A" populate and update object B with their arrays. Mona() instances in "A" and their arrays in "B" have identical object keys.</p>
-
 <pre style = "font-size: 18">{syms}</pre>
 <pre style = "font-size: 18">{t_3}</pre> 
 <pre style = "font-size: 18">{code}</pre>
 <pre style = "font-size: 18">{funcs}</pre>
 
-
   <br>
-
-  <br>
- 
-
   <p></p>
-  
-  
   <br> 

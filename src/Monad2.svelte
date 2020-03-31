@@ -314,11 +314,6 @@ ASYNCHRONOUSLY MODIFIED STATE
 <br>
 <p> Clicking the button below sends three requests to the Haskell WebSockets server asking for quasi-random integers. As the numbers come in from the server, they are placed in the object named "O" with keys prefixed by "c", and then forwarded to a web worker. The worker returns arrays containing the prime factors of the numbers it recieves. These are placed in "O" with keys prefixed by "d".</p> 
 <br>
-
-
-
-
-
 <div style = "color: #BBBBFF; font-size: 20px;"> The WebSockets server sent these numbers (now at O.c0, O.c1, and O.c2): </div>
 <div style = "color: #FFFFCD; font-size: 20px; ">
 {O.c0}, {O.c1}, and {O.c2}  

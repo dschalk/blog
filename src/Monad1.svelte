@@ -2,8 +2,6 @@
 <script>
 import {fade} from "svelte/transition"
 let visible = true;
- 
-
 
 function Monad () { 
   var ar = []

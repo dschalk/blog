@@ -5,6 +5,7 @@ export let j = 0;
 import Monad1 from './Monad1.svelte'
 import Monad2 from './Monad2.svelte'
 import Monad3 from './Monad3.svelte'
+import Monad6 from './Monad6.svelte'
 import Matrix from './Matrix.svelte'
 import Transducer from './Transducer.svelte'
 import Home from './Home.svelte'
@@ -110,7 +111,7 @@ background-color:#361B01;}
 
 </style>
 <div style = "font-size: 58px; color: gold; text-align: center">Powerful JavaScript Monads</div>
-<div style = "font-size: 32px; color: #FFBBBB; font-style:italic; text-align: center; margin-left: 27%; margin-right: 27%" > Asynchronously link functions, primitive values, and objects of all types with recursive closures. </div> 
+<div style = "font-size: 32px; color: #FFBBBB; font-style:italic; text-align: center; margin-left: 27%; margin-right: 27%" > Asynchronously linking functions, primitive values, promises, and objects of all types with recursive closures. </div> 
 
 
 <div class = stat>
@@ -136,12 +137,14 @@ background-color:#361B01;}
   <br>
 <div class = menu on:click = {() => j = 4}> Transducer Monad</div>
   <br>
-<div class = menu on:click = {() => j = 5}> Why Svelte>
+<div class = menu on:click = {() => j = 5}> Why Svelte</div>
   <br>
-  <br></div>>
+<div class = menu on:click = {() => j = 6}> Experiment</div>
+  <br>
+  <br></div>
 
   </div>
-</div>
+
 
 
 <div style = "margin-left: 25%; margin-right: 25%;">
@@ -161,7 +164,7 @@ background-color:#361B01;}
 <Monad2 />
 {/if}
 {#if j === 3}
-<div class = show>Promises Monad</div>
+<div class = show>Promises Snownad</div>
 <Monad3 />
 {/if}
 {#if j === 4}
@@ -172,9 +175,11 @@ background-color:#361B01;}
 <div class = show>Why Svelte</div>
 <Matrix />
 {/if}
+{#if j === 6}
+<div class = show>Monad6</div>
+<Monad6 />
+{/if}
 
-
-</div>
 <br><br>
 <slot />
 
@@ -182,5 +187,5 @@ background-color:#361B01;}
 <br><br>
 <br><br>
 
-
+</div>
 
